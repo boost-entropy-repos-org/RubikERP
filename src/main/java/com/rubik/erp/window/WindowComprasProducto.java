@@ -5,8 +5,9 @@
  */
 package com.rubik.erp.window;
 
-import com.rubik.erp.domain.ProveedorDomain;
+import com.rubik.erp.domain.ProductoDomain;
 import com.rubik.erp.model.Empleado;
+import com.rubik.erp.model.Producto;
 import com.rubik.erp.model.Proveedor;
 import com.vaadin.data.Binder;
 import com.vaadin.server.VaadinSession;
@@ -28,59 +29,58 @@ import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
  *
  * @author Dev
  */
-public class WindowComprasProveedor extends Window {
+public class WindowComprasProducto extends Window {
     
     Empleado empleado = (Empleado) VaadinSession.getCurrent().getSession().getAttribute("USUARIO_ACTIVO");
     
     VerticalLayout cont = new VerticalLayout();
-    String title_window = "CATALOGOS DE PROVEEDORES";
+    String title_window = "CATALOGOS DE PRODUCTOS";
 
-    public Proveedor proveedor = new Proveedor();
+    public Producto proveedor = new Producto();
     public Boolean isEdit = false;
 
-    TextField txtClaveProveedor = new TextField("Clave Proveedor:");
-    TextField txtRazonSocial = new TextField("Razon Social:");
-    TextField txtRfc = new TextField("RFC:");
-    TextField txtDomicilio = new TextField("Domicilio:");
-    TextField txtCiudad = new TextField("Ciudad:");
-    TextField txtEstado = new TextField("Estado:");
-    NativeSelect<String> cboPais = new NativeSelect("Pais:");
-    TextField txtCp = new TextField("CP:");
+    TextField txtCodigoInterno = new TextField("Codigo Interno:");
+    TextField txtDescripcionCorta = new TextField("Desc. Corta:");
+    TextField txtDescripcion = new TextField("Descripcion:");
     NativeSelect<String> cboClasificacion = new NativeSelect("Clasificacion:");
-    NativeSelect<String>cboTipo = new NativeSelect("Tipo:");
-    NativeSelect<Integer> cboDiasCredito = new NativeSelect("Dias de Credito:");
-    TextField txtContactoCompraTelefono = new TextField("Telefono:");
-    TextField txtContactoCompraNombre = new TextField("Nombre:");
-    TextField txtContactoCompraEmail = new TextField("Email:");
-    TextField txtContactoContaTelefono = new TextField("Telefono:");
-    TextField txtContactoContaNombre = new TextField("Nombre:");
-    TextField txtContactoContaEmail = new TextField("Email:");
-    TextField txtNoCuenta_1 = new TextField("Numero de Cuenta:");
-    TextField txtClabe_1 = new TextField("Clabe Interbancaria:");
-    TextField txtBanco_1 = new TextField("Banco:");
-    TextField txtSucursal_1 = new TextField("Sucursal:");
-    TextField txtNoCuenta_2 = new TextField("Numero de Cuenta:");
-    TextField txtClabe_2 = new TextField("Clabe Interbancaria:");
-    TextField txtBanco_2 = new TextField("Banco:");
-    TextField txtSucursal_2 = new TextField("Sucursal:");
-    TextField txtNoCuenta_3 = new TextField("Numero de Cuenta:");
-    TextField txtClabe_3 = new TextField("Clabe Interbancaria:");
-    TextField txtBanco_3 = new TextField("Banco:");
-    TextField txtSucursal_3 = new TextField("Sucursal:");
+    TextField txtModelo = new TextField("Modelo:");
+    TextField txtNoParte = new TextField("No Parte:");
+    TextField txtNoSerie = new TextField("No Serie:");
+    TextField txtMarca = new TextField("Marca:");
+    NativeSelect<String> cboUnidadMedida = new NativeSelect("Unidad:");
+    
+    CheckBox chkInventariable = new CheckBox("Inventariable", true);
+    TextField txtInventarioActual = new TextField("Nombre:");
+    TextField txtInventarioMaximo = new TextField("Email:");
+    TextField txtInventarioMinimo = new TextField("Telefono:");
+    
+    NativeSelect<Double> cboIVA = new NativeSelect("% IVA:");
+    TextField txtDoublePrecioCompra = new TextField("Telefono:");
+    TextField txtIVACompra = new TextField("Numero de Cuenta:");    
+    TextField txtPrecioVenta = new TextField("Banco:");
+    TextField txtIVAVenta = new TextField("Clabe Interbancaria:");
+    
+    TextField txtIVADescuento = new TextField("Sucursal:");
+    TextField txtDescuentoVenta = new TextField("Numero de Cuenta:");
+    TextField txtUtilidad = new TextField("Clabe Interbancaria:");
+    
+    NativeSelect<Proveedor> cboProveedor1 = new NativeSelect("Proveedor 1:");
+    NativeSelect<Proveedor> cboProveedor2 = new NativeSelect("Proveedor 2:");
+
     CheckBox chkActivo = new CheckBox("Activo", true);
 
-    public WindowComprasProveedor() {
+    public WindowComprasProducto() {
         setCaption("ALTA DEL PROVEEDOR");
         initComponents();
         
-        ProveedorDomain service = new ProveedorDomain();
+        ProductoDomain service = new ProductoDomain();
         txtClaveProveedor.setValue(service.getMaxID().toString());
     }
 
-    public WindowComprasProveedor(Proveedor prov) {
+    public WindowComprasProducto(Producto prod) {
         setCaption("MODIFICACION DEL PROVEEDOR");
         isEdit = true;
-        this.proveedor = prov;
+        this.proveedor = prod;
         initComponents();
     }
 
@@ -96,7 +96,7 @@ public class WindowComprasProveedor extends Window {
         Button btnGuardar = new Button("Guardar", Fam3SilkIcon.DISK);
         Button btnCancelar = new Button("Cancelar", Fam3SilkIcon.CANCEL);
     
-        Binder<Proveedor> binder = new Binder<>();
+        Binder<Producto> binder = new Binder<>();
         binder.forField(txtClaveProveedor).bind(Proveedor::getClave_proveedor, Proveedor::setClave_proveedor);
         binder.forField(txtRazonSocial).bind(Proveedor::getRazon_social, Proveedor::setRazon_social);
         binder.forField(txtRfc).bind(Proveedor::getRfc, Proveedor::setRfc);
@@ -141,7 +141,7 @@ public class WindowComprasProveedor extends Window {
                 binder.writeBean(proveedor);
                 toUpperCase();
 
-                ProveedorDomain service = new ProveedorDomain();
+                ProductoDomain service = new ProductoDomain();
 
                 proveedor.setUnidad_id(empleado.getUsuario_id());
                 proveedor.setUnidad(empleado.getUnidad());
@@ -152,9 +152,9 @@ public class WindowComprasProveedor extends Window {
 
                 if (isEdit) {
                     proveedor.setFecha_modificacion(new Date());
-                    service.ProveedorUpdate(proveedor);
+                    service.ProductoUpdate(proveedor);
                 } else {
-                    service.ProveedorInsert(proveedor);
+                    service.ProductoInsert(proveedor);
                 }
 
                 if (service.getOk()) {
