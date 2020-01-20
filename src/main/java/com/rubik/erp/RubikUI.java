@@ -4,6 +4,7 @@ import com.rubik.erp.views.ComprasProductos;
 import com.rubik.erp.views.ComprasProveedores;
 import com.rubik.erp.views.Login;
 import com.rubik.erp.views.MainPage;
+import com.rubik.erp.views.VentasClientes;
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
@@ -42,6 +43,7 @@ public class RubikUI extends UI {
         navigator.addView(MainPage.NAME, MainPage.class);
         navigator.addView(ComprasProveedores.NAME, ComprasProveedores.class);
         navigator.addView(ComprasProductos.NAME, ComprasProductos.class);
+        navigator.addView(VentasClientes.NAME, VentasClientes.class);
         
         navigator.navigateTo(Login.NAME);
     }

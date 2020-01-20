@@ -57,7 +57,7 @@ public class Login  extends VerticalLayout implements View {
         loginPanel.addStyleName("login-panel");
 
         Image logoGrucas = new Image(null, new ThemeResource("img/cubeLogo.png"));
-        logoGrucas.setWidth("170px");
+        logoGrucas.setWidth("140px");
 
         btnRecuperarPas.setStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
 

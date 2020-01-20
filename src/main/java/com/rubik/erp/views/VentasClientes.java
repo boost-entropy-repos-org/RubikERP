@@ -5,11 +5,11 @@
  */
 package com.rubik.erp.views;
 
-import com.rubik.erp.domain.ProductoDomain;
+import com.rubik.erp.domain.ClienteDomain;
 import com.rubik.erp.fragments.FragmentTop;
+import com.rubik.erp.model.Cliente;
 import com.rubik.erp.model.Empleado;
-import com.rubik.erp.model.Producto;
-import com.rubik.erp.window.WindowComprasProducto;
+import com.rubik.erp.window.WindowVentasCliente;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinSession;
@@ -30,27 +30,27 @@ import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
  *
  * @author Dev
  */
-public class ComprasProductos extends Panel implements View {
+public class VentasClientes extends Panel implements View {
 
-    public static final String NAME = "PRODUCTOS";
+    public static final String NAME = "CLIENTES";
     VerticalLayout container = new VerticalLayout();
 
     Empleado empleado = (Empleado) VaadinSession.getCurrent().getSession().getAttribute("USUARIO_ACTIVO");
 
     TextField txtBusqueda = new TextField();
     
-    Grid<Producto> gridProducto = new Grid<>();
+    Grid<Cliente> gridCliente = new Grid<>();
     Button btnAdd = new Button("Agregar", Fam3SilkIcon.ADD);
     Button btnModify = new Button("Modificar", Fam3SilkIcon.PENCIL);
     Button btnSearch = new Button(Fam3SilkIcon.MAGNIFIER);
-    List<Producto> listProducto = new ArrayList<>();
+    List<Cliente> listProveedor = new ArrayList<>();
 
-    public ComprasProductos() {
+    public VentasClientes() {
         initComponents();
 
         HorizontalLayout hLayoutAux = new HorizontalLayout(txtBusqueda,btnSearch,btnAdd, btnModify);
 
-        Label lblTitulo = new Label("PRODUCTOS") {
+        Label lblTitulo = new Label("Clientes") {
             {
                 setStyleName("h1");
             }
@@ -63,7 +63,7 @@ public class ComprasProductos extends Panel implements View {
         container.addComponents(new FragmentTop(),
                 lblTitulo,
                 hLayoutAux,
-                gridProducto);
+                gridCliente);
         
         container.setComponentAlignment(container.getComponent(0), Alignment.MIDDLE_CENTER);
         container.setComponentAlignment(container.getComponent(1), Alignment.MIDDLE_CENTER);
@@ -77,37 +77,36 @@ public class ComprasProductos extends Panel implements View {
         setSizeFull();
         
         txtBusqueda.setWidth("310");
-        txtBusqueda.setPlaceholder("Producto a buscar");      
+        txtBusqueda.setPlaceholder("RFC o Razon Social a buscar");      
 
-        gridProducto.addColumn(Producto::getCodigo_interno).setCaption("CODIGO").setId("CODIGO").setWidth(105);
-        gridProducto.addColumn(Producto::getNo_serie).setCaption("NS").setId("NS").setWidth(97);
-        gridProducto.addColumn(Producto::getMarca).setCaption("MARCA").setId("MARCA").setWidth(135);
-        gridProducto.addColumn(Producto::getDescripcion_corta).setCaption("DESCRIPCION").setId("DESCRIPCION");
-        gridProducto.addColumn(Producto::getInventario_actual).setCaption("INVENTARIO").setId("INVENTARIO").setWidth(80);
-        
+        gridCliente.addColumn(Cliente::getRazon_social).setCaption("RAZON SOCIAL").setId("RAZON SOCIAL");
+        gridCliente.addColumn(Cliente::getRfc).setCaption("RFC").setId("RFC").setWidth(150);
+        gridCliente.addColumn(Cliente::getTipo_cliente).setCaption("TIPO").setId("TIPO").setWidth(120);
+        gridCliente.addColumn(Cliente::getContacto_venta_nombre).setCaption("CONTACTO").setId("CONTACTO");
+        gridCliente.addColumn(Cliente::getContacto_venta_email).setCaption("EMAIL").setId("EMAIL").setWidth(200);;
 
-        gridProducto.setItems(getProveedor());
-        gridProducto.setSelectionMode(Grid.SelectionMode.SINGLE);
-        gridProducto.setSizeFull();
-        gridProducto.setHeight("500px");
+        gridCliente.setItems(getClientes());
+        gridCliente.setSelectionMode(Grid.SelectionMode.SINGLE);
+        gridCliente.setSizeFull();
+        gridCliente.setHeight("500px");
 
         btnAdd.addClickListener((event) -> {
-            WindowComprasProducto windows = new WindowComprasProducto();
+            WindowVentasCliente windows = new WindowVentasCliente();
             windows.center();
             windows.setModal(true);
             windows.addCloseListener(ev -> {
-                gridProducto.setItems(getProveedor());
+                gridCliente.setItems(getClientes());
             });
             getUI().addWindow(windows);
         });
 
         btnModify.addClickListener((event) -> {
-            if (gridProducto.getSelectedItems().size() == 1) {
-                WindowComprasProducto windows = new WindowComprasProducto(gridProducto.getSelectedItems().iterator().next());
+            if (gridCliente.getSelectedItems().size() == 1) {
+                WindowVentasCliente windows = new WindowVentasCliente(gridCliente.getSelectedItems().iterator().next());
                 windows.center();
                 windows.setModal(true);
                 windows.addCloseListener((e) -> {
-                    gridProducto.setItems(getProveedor());
+                    gridCliente.setItems(getClientes());
                 });
                 getUI().addWindow(windows);
             } else {
@@ -120,7 +119,7 @@ public class ComprasProductos extends Panel implements View {
         });
         
         btnSearch.addClickListener((event) -> {
-            gridProducto.setItems(getProveedor());
+            gridCliente.setItems(getClientes());
             txtBusqueda.setValue("");
 
         });
@@ -131,20 +130,16 @@ public class ComprasProductos extends Panel implements View {
     public void enter(ViewChangeListener.ViewChangeEvent event) {
     }
 
-    public List getProveedor() {
+    public List getClientes() {
         String strWhere = " activo = 1 ";
 
         if (txtBusqueda.getValue() != "") {
-            strWhere += " AND descripcion_corta LIKE '%" + txtBusqueda.getValue().toUpperCase() + "%' "
-                    + "OR marca LIKE '%" + txtBusqueda.getValue().toUpperCase() + "%' "
-                    + "OR modelo LIKE '%" + txtBusqueda.getValue().toUpperCase() + "%' "
-                    + "OR descripcion LIKE '%" + txtBusqueda.getValue().toUpperCase() + "%' "
-                    + "OR numero_serie LIKE '%" + txtBusqueda.getValue().toUpperCase() + "%' ";
+            strWhere += " AND razon_social LIKE '%" + txtBusqueda.getValue().toUpperCase() + "%' OR rfc LIKE '%" + txtBusqueda.getValue().toUpperCase() + "%' ";
         }
 
-        ProductoDomain service = new ProductoDomain();
-        service.getProducto(strWhere, "", "descripcion ASC");
-        listProducto = service.getObjects();
+        ClienteDomain service = new ClienteDomain();
+        service.getCliente(strWhere, "", "razon_social ASC");
+        listProveedor = service.getObjects();
 
         if (!service.getOk()) {
             MessageBox.createError()
@@ -153,7 +148,7 @@ public class ComprasProductos extends Panel implements View {
                     .withRetryButton()
                     .open();
         }
-        return listProducto;
+        return listProveedor;
     }
     
 }

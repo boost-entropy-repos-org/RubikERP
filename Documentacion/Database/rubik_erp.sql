@@ -16,6 +16,57 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`rubik_erp` /*!40100 DEFAULT CHARACTER S
 
 USE `rubik_erp`;
 
+/*Table structure for table `cliente` */
+
+DROP TABLE IF EXISTS `cliente`;
+
+CREATE TABLE `cliente` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `fecha_elaboracion` datetime DEFAULT NULL,
+  `fecha_modificacion` datetime DEFAULT NULL,
+  `empresa_id` int(10) DEFAULT NULL,
+  `empresa` varchar(100) DEFAULT NULL,
+  `unidad_id` int(10) DEFAULT NULL,
+  `unidad` varchar(100) DEFAULT NULL,
+  `usuario_id` int(10) DEFAULT NULL,
+  `usuario` varchar(100) DEFAULT NULL,
+  `activo` tinyint(1) DEFAULT '1',
+  `clave_cliente` varchar(100) DEFAULT NULL,
+  `razon_social` varchar(100) DEFAULT NULL,
+  `nombre_corto` varchar(100) DEFAULT NULL,
+  `rfc` varchar(100) DEFAULT NULL,
+  `domicilio` varchar(100) DEFAULT NULL,
+  `ciudad` varchar(100) DEFAULT NULL,
+  `estado` varchar(100) DEFAULT NULL,
+  `cp` varchar(100) DEFAULT NULL,
+  `pais` varchar(100) DEFAULT NULL,
+  `tipo_cliente` varchar(100) DEFAULT NULL,
+  `dias_credito` int(10) DEFAULT NULL,
+  `limite_credito` double DEFAULT NULL,
+  `saldo_a_favor` double DEFAULT NULL,
+  `saldo_pendiente` double DEFAULT NULL,
+  `no_contable` varchar(100) DEFAULT NULL,
+  `contacto_general_nombre` varchar(100) DEFAULT NULL,
+  `contacto_general_email` varchar(100) DEFAULT NULL,
+  `contacto_telefono_general` varchar(100) DEFAULT NULL,
+  `contacto_venta_nombre` varchar(100) DEFAULT NULL,
+  `contacto_venta_email` varchar(100) DEFAULT NULL,
+  `contacto_venta_telefono` varchar(100) DEFAULT NULL,
+  `contacto_contabilidad_nombre` varchar(100) DEFAULT NULL,
+  `contacto_contabilidad_email` varchar(100) DEFAULT NULL,
+  `contacto_contabilidad_telefono` varchar(100) DEFAULT NULL,
+  `matriz` tinyint(1) DEFAULT '1',
+  `sucursal` tinyint(1) DEFAULT '1',
+  `id_matriz` int(10) DEFAULT NULL,
+  `cuenta_clientes` varchar(100) DEFAULT NULL,
+  `cuenta_pagos` varchar(100) DEFAULT NULL,
+  `cuenta_anticipos` varchar(100) DEFAULT NULL,
+  `cuenta_honorarios` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `cliente` */
+
 /*Table structure for table `empleado` */
 
 DROP TABLE IF EXISTS `empleado`;

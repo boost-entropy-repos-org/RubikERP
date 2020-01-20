@@ -9,6 +9,7 @@ import com.rubik.erp.model.Empleado;
 import com.rubik.erp.views.ComprasProductos;
 import com.rubik.erp.views.ComprasProveedores;
 import com.rubik.erp.views.Login;
+import com.rubik.erp.views.VentasClientes;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
@@ -45,7 +46,7 @@ public class FragmentTop extends HorizontalLayout {
     MenuBar.MenuItem subReporteOrdenDeCompra;
     
     MenuBar.MenuItem menuComercial;
-    MenuBar.MenuItem subProductosServicios;
+    MenuBar.MenuItem subClientes;
     MenuBar.MenuItem subProspectoClientes;
     
     MenuBar.MenuItem menuRecursosHumanos;
@@ -148,12 +149,12 @@ public class FragmentTop extends HorizontalLayout {
         
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
-//----------------------------------------------------------------- COMERCIAL
-        menuComercial = menubar.addItem("Comercial", null);
-        menuComercial.setIcon(Fam3SilkIcon.BELL_GO);
+//----------------------------------------------------------------- VENTAS
+        menuComercial = menubar.addItem("Ventas", null);
+        menuComercial.setIcon(Fam3SilkIcon.FOLDER_GO);
 
-        subProductosServicios = menuComercial.addItem("Productos & Servicios", actionMenu);
-        subProductosServicios.setIcon(Fam3SilkIcon.BRICK_GO);
+        subClientes = menuComercial.addItem("Clientes", actionMenu);
+        subClientes.setIcon(Fam3SilkIcon.USER_SUIT);
         
         menuComercial.addSeparator();
         
@@ -232,6 +233,15 @@ public class FragmentTop extends HorizontalLayout {
 //                case "Reporte de Ordenes de Compra":
 //                    getUI().getNavigator().navigateTo(ViewComprasReporteOrdenesCompra.NAME);
 //                    break;
+
+// ------------- COMERCIAL
+                case "Clientes":
+                    getUI().getNavigator().navigateTo(VentasClientes.NAME);
+                    break;
+//                    
+//                case "Prospecto de Clientes":
+//                    getUI().getNavigator().navigateTo(ViewComerciaClienteslProspecto.NAME);
+//                    break;
                     
  // ------------- RECURSOS HUMANOS
 //                case "Departamentos":
@@ -245,15 +255,6 @@ public class FragmentTop extends HorizontalLayout {
 //                    break;
 //                case "Usuarios":
 //                    getUI().getNavigator().navigateTo(ViewUsuario.NAME);
-//                    break;
-                    
-// ------------- COMERCIAL
-//                case "Productos & Servicios":
-//                    getUI().getNavigator().navigateTo(ViewComercialProductoServicio.NAME);
-//                    break;
-//                    
-//                case "Prospecto de Clientes":
-//                    getUI().getNavigator().navigateTo(ViewComerciaClienteslProspecto.NAME);
 //                    break;
                     
 // ------------- EXPEDIENTE DIGITAL ---------- DOCUMENTOS
