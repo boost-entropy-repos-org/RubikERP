@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.rubik.erp.views;
+package com.rubik.erp.modulo.generic;
 
 import com.rubik.erp.domain.EmpleadoDomain;
 import com.rubik.erp.model.Empleado;

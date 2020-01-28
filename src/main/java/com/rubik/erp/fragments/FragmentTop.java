@@ -6,10 +6,11 @@
 package com.rubik.erp.fragments;
 
 import com.rubik.erp.model.Empleado;
-import com.rubik.erp.views.ComprasProductos;
-import com.rubik.erp.views.ComprasProveedores;
-import com.rubik.erp.views.Login;
-import com.rubik.erp.views.VentasClientes;
+import com.rubik.erp.modulo.compras.ComprasProductos;
+import com.rubik.erp.modulo.compras.ComprasProveedores;
+import com.rubik.erp.modulo.compras.ComprasRemisiones;
+import com.rubik.erp.modulo.generic.Login;
+import com.rubik.erp.modulo.ventas.VentasClientes;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
@@ -37,7 +38,7 @@ public class FragmentTop extends HorizontalLayout {
     MenuBar.MenuItem menuCompras;
     MenuBar.MenuItem subProveedor;
     MenuBar.MenuItem subProducto;
-    MenuBar.MenuItem subRequisicion;
+    MenuBar.MenuItem subRemisiones;
     MenuBar.MenuItem subOrdenDeCompra;
     MenuBar.MenuItem subMonitoreoRequi;
     MenuBar.MenuItem subMonitoreoOC;
@@ -124,8 +125,8 @@ public class FragmentTop extends HorizontalLayout {
         
         menuCompras.addSeparator();
 
-        subRequisicion = menuCompras.addItem("Requisiciones", actionMenu);
-        subRequisicion.setIcon(Fam3SilkIcon.PAGE);
+        subRemisiones = menuCompras.addItem("Remisiones", actionMenu);
+        subRemisiones.setIcon(Fam3SilkIcon.PAGE);
 
         subOrdenDeCompra = menuCompras.addItem("Ordenes de Compra", actionMenu);
         subOrdenDeCompra.setIcon(Fam3SilkIcon.PAGE_GO);
@@ -213,9 +214,9 @@ public class FragmentTop extends HorizontalLayout {
                 case "Productos":
                     getUI().getNavigator().navigateTo(ComprasProductos.NAME);
                     break;
-//                case "Requisiciones":
-//                    getUI().getNavigator().navigateTo(ViewComprasRequisicion.NAME);
-//                    break;                    
+                case "Remisiones":
+                    getUI().getNavigator().navigateTo(ComprasRemisiones.NAME);
+                    break;                    
 //                case "Ordenes de Compra":
 //                    getUI().getNavigator().navigateTo(ViewComprasOrdenCompra.NAME);
 //                    break;
@@ -370,7 +371,7 @@ public class FragmentTop extends HorizontalLayout {
 //                || usuario.getClasificacion_puesto().equals(_ClasificacionDePuestos.LIDER_DE_AREA)){
 //            
 //            menuCompras.setVisible(true);
-//            subRequisicion.setVisible(true);
+//            subRemisiones.setVisible(true);
 //            subMonitoreoRequi.setVisible(true);
 //        }
 //

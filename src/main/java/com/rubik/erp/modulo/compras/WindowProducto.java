@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.rubik.erp.window;
+package com.rubik.erp.modulo.compras;
 
 import com.rubik.erp.domain.ProductoDomain;
 import com.rubik.erp.domain.ProveedorDomain;
@@ -35,7 +35,7 @@ import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
  *
  * @author Dev
  */
-public class WindowComprasProducto extends Window {
+public class WindowProducto extends Window {
     
     Empleado empleado = (Empleado) VaadinSession.getCurrent().getSession().getAttribute("USUARIO_ACTIVO");
     
@@ -73,7 +73,7 @@ public class WindowComprasProducto extends Window {
 
     CheckBox chkActivo = new CheckBox("Activo", true);
 
-    public WindowComprasProducto() {
+    public WindowProducto() {
         setCaption("ALTA DEL PRODUCTO");
         initComponents();
         
@@ -81,7 +81,7 @@ public class WindowComprasProducto extends Window {
         txtCodigoInterno.setValue(service.getMaxID().toString());
     }
 
-    public WindowComprasProducto(Producto prod) {
+    public WindowProducto(Producto prod) {
         setCaption("MODIFICACION DEL PRODUCTO");
         isEdit = true;
         this.producto = prod;

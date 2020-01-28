@@ -1,10 +1,11 @@
 package com.rubik.erp;
 
-import com.rubik.erp.views.ComprasProductos;
-import com.rubik.erp.views.ComprasProveedores;
-import com.rubik.erp.views.Login;
-import com.rubik.erp.views.MainPage;
-import com.rubik.erp.views.VentasClientes;
+import com.rubik.erp.modulo.compras.ComprasProductos;
+import com.rubik.erp.modulo.compras.ComprasProveedores;
+import com.rubik.erp.modulo.compras.ComprasRemisiones;
+import com.rubik.erp.modulo.generic.Login;
+import com.rubik.erp.modulo.generic.MainPage;
+import com.rubik.erp.modulo.ventas.VentasClientes;
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
@@ -41,8 +42,11 @@ public class RubikUI extends UI {
         navigator = new Navigator(this, ccsLayout);
         navigator.addView(Login.NAME, Login.class);
         navigator.addView(MainPage.NAME, MainPage.class);
+        
         navigator.addView(ComprasProveedores.NAME, ComprasProveedores.class);
         navigator.addView(ComprasProductos.NAME, ComprasProductos.class);
+        navigator.addView(ComprasRemisiones.NAME, ComprasRemisiones.class);
+        
         navigator.addView(VentasClientes.NAME, VentasClientes.class);
         
         navigator.navigateTo(Login.NAME);

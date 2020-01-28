@@ -212,6 +212,58 @@ CREATE TABLE `proveedor` (
 
 insert  into `proveedor`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`no_paper`,`activo`,`clasificacion_proveedor`,`tipo_proveedor`,`dias_credito`,`clave_proveedor`,`razon_social`,`rfc`,`domicilio`,`ciudad`,`estado`,`pais`,`cp`,`contacto_compra_telefono`,`contacto_compra_nombre`,`contacto_compra_email`,`contacto_contabilidad_telefono`,`contacto_contabilidad_nombre`,`contacto_contabilidad_email`,`no_cuenta_1`,`clave_interbancaria_1`,`banco_1`,`sucursal_1`,`no_cuenta_2`,`clave_interbancaria_2`,`banco_2`,`sucursal_2`,`no_cuenta_3`,`clave_interbancaria_3`,`banco_3`,`sucursal_3`) values (1,NULL,'2020-01-12 22:07:22',1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',1,1,'PROVEEDOR','CONTADO',0,'1','PABLO BENAVIDES MOLINA','BEMP8905273G1','LOMA BONITA 206-4 COL. JESUS ELIAS PIÑA III','TAMPICO','TAMAULIPAS','MEXICO','89365','8331243823','Fulanito de tal','pblo.benavides@gmail.com','','','','','','','','','','','','','','','');
 
+/*Table structure for table `remision` */
+
+DROP TABLE IF EXISTS `remision`;
+
+CREATE TABLE `remision` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `fecha_elaboracion` datetime DEFAULT NULL,
+  `fecha_modificacion` datetime DEFAULT NULL,
+  `empresa_id` int(10) DEFAULT NULL,
+  `empresa` varchar(100) DEFAULT NULL,
+  `unidad_id` int(10) DEFAULT NULL,
+  `unidad` varchar(100) DEFAULT NULL,
+  `usuario_id` int(10) DEFAULT NULL,
+  `usuario` varchar(100) DEFAULT NULL,
+  `estado_doc` varchar(100) DEFAULT NULL,
+  `estado` varchar(100) DEFAULT NULL,
+  `folio` varchar(100) DEFAULT NULL,
+  `serie` varchar(100) DEFAULT NULL,
+  `observaciones` text,
+  `tipo_documento` varchar(100) DEFAULT NULL,
+  `tipo_archivo` varchar(100) DEFAULT NULL,
+  `razon_cancelar` varchar(100) DEFAULT NULL,
+  `cliente_id` int(10) DEFAULT NULL,
+  `cliente` varchar(100) DEFAULT NULL,
+  `cliente_rfc` varchar(100) DEFAULT NULL,
+  `metodo_pago` varchar(100) DEFAULT NULL,
+  `moneda` varchar(100) DEFAULT NULL,
+  `tipo_cambio` double DEFAULT NULL,
+  `importe` double DEFAULT NULL,
+  `descuento` double DEFAULT NULL,
+  `subtotal` double DEFAULT NULL,
+  `iva` double DEFAULT NULL,
+  `total` double DEFAULT NULL,
+  `porc_iva` int(10) DEFAULT NULL,
+  `importe_letra` varchar(100) DEFAULT NULL,
+  `activo` tinyint(1) DEFAULT '1',
+  `prioridad` varchar(100) DEFAULT NULL,
+  `fecha_requerida` datetime DEFAULT NULL,
+  `direccion_entrega` varchar(100) DEFAULT NULL,
+  `fecha_orden_compra` datetime DEFAULT NULL,
+  `folio_orden_compra` varchar(100) DEFAULT NULL,
+  `autoriza_id` int(10) DEFAULT NULL,
+  `autoriza` varchar(100) DEFAULT NULL,
+  `fecha_autorizo` datetime DEFAULT NULL,
+  `firma_autorizo` varchar(100) DEFAULT NULL,
+  `solicita` varchar(100) DEFAULT NULL,
+  `firma_solicita` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `remision` */
+
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;

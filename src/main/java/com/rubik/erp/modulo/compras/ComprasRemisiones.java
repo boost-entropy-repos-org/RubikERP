@@ -3,18 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.rubik.erp.views;
+package com.rubik.erp.modulo.compras;
 
-import com.rubik.erp.domain.ClienteDomain;
+import com.rubik.erp.domain.RemisionDomain;
 import com.rubik.erp.fragments.FragmentTop;
-import com.rubik.erp.model.Cliente;
 import com.rubik.erp.model.Empleado;
-import com.rubik.erp.window.WindowVentasCliente;
+import com.rubik.erp.model.Remision;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.DateField;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -30,27 +30,35 @@ import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
  *
  * @author Dev
  */
-public class VentasClientes extends Panel implements View {
+public class ComprasRemisiones extends Panel implements View {
 
-    public static final String NAME = "CLIENTES";
+    public static final String NAME = "REMISIONES";
     VerticalLayout container = new VerticalLayout();
 
     Empleado empleado = (Empleado) VaadinSession.getCurrent().getSession().getAttribute("USUARIO_ACTIVO");
 
     TextField txtBusqueda = new TextField();
     
-    Grid<Cliente> gridCliente = new Grid<>();
+    Grid<Remision> gridRemisiones = new Grid<>();
+    DateField txtFechaIni = new DateField();
+    DateField txtFechaFin = new DateField();
     Button btnAdd = new Button("Agregar", Fam3SilkIcon.ADD);
     Button btnModify = new Button("Modificar", Fam3SilkIcon.PENCIL);
+    Button btnCancel = new Button("Cancelar", Fam3SilkIcon.CANCEL);
     Button btnSearch = new Button(Fam3SilkIcon.MAGNIFIER);
-    List<Cliente> listProveedor = new ArrayList<>();
+    List<Remision> listProducto = new ArrayList<>();
 
-    public VentasClientes() {
+    public ComprasRemisiones() {
         initComponents();
 
-        HorizontalLayout hLayoutAux = new HorizontalLayout(txtBusqueda,btnSearch,btnAdd, btnModify);
-
-        Label lblTitulo = new Label("Clientes") {
+        HorizontalLayout hLayoutAux = new HorizontalLayout(
+                txtBusqueda,
+                new Label("Fecha: "),txtFechaIni,new Label("A: "),txtFechaFin,
+                btnSearch,btnAdd, btnModify);
+        hLayoutAux.setComponentAlignment(hLayoutAux.getComponent(1), Alignment.MIDDLE_CENTER);
+        hLayoutAux.setComponentAlignment(hLayoutAux.getComponent(3), Alignment.MIDDLE_CENTER);
+        
+        Label lblTitulo = new Label("REMISIONES") {
             {
                 setStyleName("h1");
             }
@@ -63,7 +71,7 @@ public class VentasClientes extends Panel implements View {
         container.addComponents(new FragmentTop(),
                 lblTitulo,
                 hLayoutAux,
-                gridCliente);
+                gridRemisiones);
         
         container.setComponentAlignment(container.getComponent(0), Alignment.MIDDLE_CENTER);
         container.setComponentAlignment(container.getComponent(1), Alignment.MIDDLE_CENTER);
@@ -75,38 +83,43 @@ public class VentasClientes extends Panel implements View {
 
     public void initComponents() {
         setSizeFull();
+
+        txtFechaIni.setWidth("115");
+        txtFechaFin.setWidth("115");
         
         txtBusqueda.setWidth("310");
-        txtBusqueda.setPlaceholder("RFC o Razon Social a buscar");      
+        txtBusqueda.setPlaceholder("Folio de Remision a buscar");      
 
-        gridCliente.addColumn(Cliente::getRazon_social).setCaption("RAZON SOCIAL").setId("RAZON SOCIAL");
-        gridCliente.addColumn(Cliente::getRfc).setCaption("RFC").setId("RFC").setWidth(150);
-        gridCliente.addColumn(Cliente::getTipo_cliente).setCaption("TIPO").setId("TIPO").setWidth(120);
-        gridCliente.addColumn(Cliente::getContacto_venta_nombre).setCaption("CONTACTO").setId("CONTACTO");
-        gridCliente.addColumn(Cliente::getContacto_venta_email).setCaption("EMAIL").setId("EMAIL").setWidth(200);;
+        gridRemisiones.addColumn(Remision::getFecha_requerida).setCaption("F. REQ").setId("F. REQ").setWidth(120);
+        gridRemisiones.addColumn(Remision::getFolio).setCaption("FOLIO").setId("FOLIO").setWidth(120);
+        gridRemisiones.addColumn(Remision::getPrioridad).setCaption("PRIORIDAD").setId("PRIORIDAD").setWidth(135);
+        gridRemisiones.addColumn(Remision::getEstado_doc).setCaption("ESTADO").setId("ESTADO").setWidth(135);
+        gridRemisiones.addColumn(Remision::getFecha_orden_compra).setCaption("FECHA OC").setId("FECHA OC").setWidth(120);
+        gridRemisiones.addColumn(Remision::getFolio_orden_compra).setCaption("FOLIO OC").setId("FOLIO OC").setWidth(120);
+        gridRemisiones.addColumn(Remision::getRazon_cancelar).setCaption("CANCELACION").setId("CANCELACION");
 
-        gridCliente.setItems(getClientes());
-        gridCliente.setSelectionMode(Grid.SelectionMode.SINGLE);
-        gridCliente.setSizeFull();
-        gridCliente.setHeight("500px");
+        gridRemisiones.setItems(getRemisiones());
+        gridRemisiones.setSelectionMode(Grid.SelectionMode.SINGLE);
+        gridRemisiones.setSizeFull();
+        gridRemisiones.setHeight("500px");
 
         btnAdd.addClickListener((event) -> {
-            WindowVentasCliente windows = new WindowVentasCliente();
+            WindowRemision windows = new WindowRemision();
             windows.center();
             windows.setModal(true);
             windows.addCloseListener(ev -> {
-                gridCliente.setItems(getClientes());
+                gridRemisiones.setItems(getRemisiones());
             });
             getUI().addWindow(windows);
         });
 
         btnModify.addClickListener((event) -> {
-            if (gridCliente.getSelectedItems().size() == 1) {
-                WindowVentasCliente windows = new WindowVentasCliente(gridCliente.getSelectedItems().iterator().next());
+            if (gridRemisiones.getSelectedItems().size() == 1) {
+                WindowRemision windows = new WindowRemision(gridRemisiones.getSelectedItems().iterator().next());
                 windows.center();
                 windows.setModal(true);
                 windows.addCloseListener((e) -> {
-                    gridCliente.setItems(getClientes());
+                    gridRemisiones.setItems(getRemisiones());
                 });
                 getUI().addWindow(windows);
             } else {
@@ -119,7 +132,7 @@ public class VentasClientes extends Panel implements View {
         });
         
         btnSearch.addClickListener((event) -> {
-            gridCliente.setItems(getClientes());
+            gridRemisiones.setItems(getRemisiones());
             txtBusqueda.setValue("");
 
         });
@@ -130,16 +143,20 @@ public class VentasClientes extends Panel implements View {
     public void enter(ViewChangeListener.ViewChangeEvent event) {
     }
 
-    public List getClientes() {
+    public List getRemisiones() {
         String strWhere = " activo = 1 ";
 
-        if (txtBusqueda.getValue() != "") {
-            strWhere += " AND razon_social LIKE '%" + txtBusqueda.getValue().toUpperCase() + "%' OR rfc LIKE '%" + txtBusqueda.getValue().toUpperCase() + "%' ";
+        if (!"".equals(txtBusqueda.getValue())) {
+            strWhere += " AND folio = '" + txtBusqueda.getValue().toUpperCase() + "'";
+        }
+        
+        if(txtFechaIni.getValue() != null && txtFechaFin.getValue() != null){
+            strWhere += "";
         }
 
-        ClienteDomain service = new ClienteDomain();
-        service.getCliente(strWhere, "", "razon_social ASC");
-        listProveedor = service.getObjects();
+        RemisionDomain service = new RemisionDomain();
+        service.getRemision(strWhere, "", "fecha_requerida DESC");
+        listProducto = service.getObjects();
 
         if (!service.getOk()) {
             MessageBox.createError()
@@ -148,7 +165,7 @@ public class VentasClientes extends Panel implements View {
                     .withRetryButton()
                     .open();
         }
-        return listProveedor;
+        return listProducto;
     }
     
 }
