@@ -10,6 +10,7 @@ import com.rubik.erp.domain.ProveedorDomain;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.Producto;
 import com.rubik.erp.model.Proveedor;
+import com.rubik.variables.UnidadesDeMedida;
 import com.vaadin.data.Binder;
 import com.vaadin.data.converter.StringToDoubleConverter;
 import com.vaadin.data.converter.StringToIntegerConverter;
@@ -63,7 +64,7 @@ public class WindowProducto extends Window {
     NativeSelect<Double> cboIVA = new NativeSelect("% IVA:");
     TextField txtPrecioCompra = new TextField("Precio Compra:");
     TextField txtPrecioVenta = new TextField("Precio Venta:");
-    TextField txtUtilidad = new TextField("Utilidad:");
+    TextField txtUtilidad = new TextField("Utilidad: % ");
     
     NativeSelect<Proveedor> cboProveedor1 = new NativeSelect("Proveedor 1:");
     NativeSelect<Proveedor> cboProveedor2 = new NativeSelect("Proveedor 2:");
@@ -72,6 +73,9 @@ public class WindowProducto extends Window {
     List<Proveedor> proveedorList2 = new ArrayList<>();
 
     CheckBox chkActivo = new CheckBox("Activo", true);
+    
+    Button btnGuardar = new Button("Guardar", Fam3SilkIcon.DISK);
+    Button btnCancelar = new Button("Cancelar", Fam3SilkIcon.CANCEL);
 
     public WindowProducto() {
         setCaption("ALTA DEL PRODUCTO");
@@ -96,9 +100,6 @@ public class WindowProducto extends Window {
         
         setWidth("600");
         setHeight("80%");
-        
-        Button btnGuardar = new Button("Guardar", Fam3SilkIcon.DISK);
-        Button btnCancelar = new Button("Cancelar", Fam3SilkIcon.CANCEL);
     
         Binder<Producto> binder = new Binder<>();
         binder.forField(txtCodigoInterno).bind(Producto::getCodigo_interno, Producto::setCodigo_interno);
@@ -119,6 +120,14 @@ public class WindowProducto extends Window {
         binder.forField(txtPrecioVenta).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(Producto::getPrecio_venta, Producto::setPrecio_venta);
         binder.forField(txtUtilidad).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(Producto::getPorc_utilidad, Producto::setPorc_utilidad);
         binder.forField(chkActivo).bind(Producto::getActivo, Producto::setActivo);
+        
+        cboProveedor1.setItems(getProveedor(1));
+        cboProveedor1.setSelectedItem(proveedorList1.get(0));
+        cboProveedor1.setEmptySelectionAllowed(false);
+        
+        cboProveedor2.setItems(getProveedor(2));
+        cboProveedor2.setSelectedItem(proveedorList2.get(0));
+        cboProveedor2.setEmptySelectionAllowed(false);
         
         if (isEdit) {
             binder.readBean(producto);
@@ -147,13 +156,34 @@ public class WindowProducto extends Window {
 
                 ProductoDomain service = new ProductoDomain();
 
+                Proveedor prov1 = cboProveedor1.getValue();
+                Proveedor prov2 = cboProveedor2.getValue();
+                
+                if(prov1 != null){
+                    producto.setProveedor_1(prov1.getRazon_social());
+                    producto.setProveedor_id_1(prov1.getId());
+                }else{
+                    producto.setProveedor_1("");
+                    producto.setProveedor_id_1(0);
+                }
+                
+                if(prov2 != null){
+                    producto.setProveedor_2(prov2.getRazon_social());
+                    producto.setProveedor_id_2(prov2.getId());                    
+                }else{
+                    producto.setProveedor_2("");
+                    producto.setProveedor_id_2(0);
+                }
+                
                 if (isEdit) {
                     producto.setFecha_modificacion(new Date());
                     service.ProductoUpdate(producto);
                 } else {
+                    producto.setFecha_elaboracion(new Date());
+                    producto.setFecha_modificacion(new Date());
                     service.ProductoInsert(producto);
                 }
-
+                
                 if (service.getOk()) {
                     MessageBox.createInfo()
                             .withCaption("Atencion")
@@ -190,8 +220,8 @@ public class WindowProducto extends Window {
         txtMarca.setMaxLength(50);
         
         cboUnidadMedida.setEmptySelectionAllowed(false);
-        cboUnidadMedida.setItems("MEXICO", "ESTADOS UNIDOS");
-        cboUnidadMedida.setValue("MEXICO");
+        cboUnidadMedida.setItems(UnidadesDeMedida.UNIDADES_LIST);
+        cboUnidadMedida.setValue(UnidadesDeMedida.UNIDADES_LIST.get(0));
         
         txtInventarioActual.setMaxLength(4);
         txtInventarioMaximo.setMaxLength(4);
@@ -223,14 +253,6 @@ public class WindowProducto extends Window {
         txtUtilidad.setWidth(strWidth);
         cboProveedor1.setWidth(strWidth);
         cboProveedor2.setWidth(strWidth);
-        
-        cboProveedor1.setItems(getProveedor(1));
-        cboProveedor1.setSelectedItem(proveedorList1.get(0));
-        cboProveedor1.setEmptySelectionAllowed(false);
-        
-        cboProveedor2.setItems(getProveedor(2));
-        cboProveedor2.setSelectedItem(proveedorList2.get(0));
-        cboProveedor2.setEmptySelectionAllowed(false);
         
         FormLayout fLay = new FormLayout();
         

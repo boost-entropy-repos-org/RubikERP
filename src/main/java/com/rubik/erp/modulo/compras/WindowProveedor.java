@@ -143,12 +143,8 @@ public class WindowProveedor extends Window {
 
                 ProveedorDomain service = new ProveedorDomain();
 
-                proveedor.setUnidad_id(empleado.getUsuario_id());
-                proveedor.setUnidad(empleado.getUnidad());
-                proveedor.setUsuario_id(empleado.getId());
-                proveedor.setUsuario(empleado.getNombre_completo());
-                proveedor.setEmpresa(empleado.getEmpresa());
-                proveedor.setEmpresa_id(empleado.getEmpresa_id());
+                proveedor.setFecha_elaboracion(new Date());
+                proveedor.setFecha_modificacion(new Date());
 
                 if (isEdit) {
                     proveedor.setFecha_modificacion(new Date());

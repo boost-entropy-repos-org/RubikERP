@@ -1,5 +1,5 @@
 /*
-SQLyog Ultimate v9.10 
+SQLyog Ultimate v11.13 (64 bit)
 MySQL - 5.5.62 : Database - rubik_erp
 *********************************************************************
 */
@@ -66,6 +66,27 @@ CREATE TABLE `cliente` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `cliente` */
+
+/*Table structure for table `configuracion` */
+
+DROP TABLE IF EXISTS `configuracion`;
+
+CREATE TABLE `configuracion` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `serie_remision` varchar(5) DEFAULT NULL,
+  `folio_remision` int(10) DEFAULT '0',
+  `serie_orden_compra` varchar(5) DEFAULT NULL,
+  `folio_orden_compra` int(10) DEFAULT '0',
+  `serie_cotizacion` varchar(5) DEFAULT NULL,
+  `folio_cotizacion` int(10) DEFAULT '0',
+  `serie_factura` varchar(5) DEFAULT NULL,
+  `folio_factura` int(10) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+/*Data for the table `configuracion` */
+
+insert  into `configuracion`(`id`,`serie_remision`,`folio_remision`,`serie_orden_compra`,`folio_orden_compra`,`serie_cotizacion`,`folio_cotizacion`,`serie_factura`,`folio_factura`) values (1,'RM',0,'OC',0,'CT',0,'FA',0);
 
 /*Table structure for table `empleado` */
 
@@ -156,9 +177,11 @@ CREATE TABLE `producto` (
   `proveedor_id_2` int(10) DEFAULT NULL,
   `proveedor_2` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 /*Data for the table `producto` */
+
+insert  into `producto`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`activo`,`codigo_interno`,`descripcion_corta`,`descripcion`,`modelo`,`no_parte`,`no_serie`,`marca`,`unidad_medida`,`tipo_producto`,`sub_tipo_producto`,`clasificacion`,`inventariable`,`inventario_actual`,`inventario_maximo`,`inventario_minimo`,`porc_iva`,`precio_compra`,`iva_compra`,`precio_venta`,`iva_venta`,`porc_descuento`,`descuento_venta`,`porc_utilidad`,`proveedor_id_1`,`proveedor_1`,`proveedor_id_2`,`proveedor_2`) values (1,'2020-01-30 22:28:38','2020-01-30 22:28:38',0,'',0,'',0,'',1,'1','PRODUCTO 1','PRODUCTO 1','345SDFQEQ2','23423df','5467UFGYE4','MARCA 1','SERVICIO','','','SERVICIO',1,0,10,2,16,100,0,200,0,0,0,0,3,'PROVEEDOR 3',0,''),(2,'2020-01-30 22:28:38','2020-01-30 22:28:38',0,'',0,'',0,'',1,'2','PRODUCTO 2','PRODUCTO 2','242AW','23','A2','4R32','NO APLICA','','','PRODUCTO',1,2,20,10,16,10,0,20,0,0,0,0,2,'PROVEEDOR 2',3,'PROVEEDOR 3'),(3,'2020-01-30 22:28:38','2020-01-30 22:28:38',0,NULL,NULL,NULL,NULL,NULL,1,'3','PRODUCTO 3','PRODUCTO 3','215454','55687','6568','4','PIEZA',NULL,NULL,'PRODUCTO',1,0,10,5,16,10,0,20,0,0,0,0,1,'PROVEEDOR 1',3,'PROVEEDOR 3'),(4,'2020-01-30 22:28:38','2020-01-30 22:28:38',0,NULL,NULL,NULL,NULL,NULL,1,'4','PRODUCTO 4','PRODUCTO 4','212889','5658','85','4','PIEZA',NULL,NULL,'PRODUCTO',1,0,10,5,16,1000,0,2000,0,0,0,0,2,'PROVEEDOR 2',3,'PROVEEDOR 3'),(5,'2020-01-30 22:28:38','2020-01-30 22:28:38',0,NULL,NULL,NULL,NULL,NULL,1,'5','PRODUCTO 5','PRODUCTO 5','6659657','526858','4','65','PIEZA',NULL,NULL,'PRODUCTO',1,0,10,5,16,10,0,20,0,0,0,0,1,'PROVEEDOR 1',3,'PROVEEDOR 3'),(6,'2020-01-30 22:28:38','2020-01-30 22:28:38',0,NULL,NULL,NULL,NULL,NULL,1,'6','PRODUCTO 6','PRODUCTO 6','88748','2558','654','458','NO APLICA',NULL,NULL,'PRODUCTO',1,0,10,5,16,100,0,200,0,0,0,0,1,'PROVEEDOR 1',3,'PROVEEDOR 3'),(7,'2020-01-30 22:28:38','2020-01-30 22:28:38',0,NULL,NULL,NULL,NULL,NULL,1,'7','PRODUCTO 7','PRODUCTO 7','49878','5585','1585465','454','PIEZA',NULL,NULL,'PRODUCTO',1,0,10,5,16,100,0,200,0,0,0,0,1,'PROVEEDOR 1',3,'PROVEEDOR 3');
 
 /*Table structure for table `proveedor` */
 
@@ -206,11 +229,11 @@ CREATE TABLE `proveedor` (
   `banco_3` varchar(100) DEFAULT NULL,
   `sucursal_3` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 /*Data for the table `proveedor` */
 
-insert  into `proveedor`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`no_paper`,`activo`,`clasificacion_proveedor`,`tipo_proveedor`,`dias_credito`,`clave_proveedor`,`razon_social`,`rfc`,`domicilio`,`ciudad`,`estado`,`pais`,`cp`,`contacto_compra_telefono`,`contacto_compra_nombre`,`contacto_compra_email`,`contacto_contabilidad_telefono`,`contacto_contabilidad_nombre`,`contacto_contabilidad_email`,`no_cuenta_1`,`clave_interbancaria_1`,`banco_1`,`sucursal_1`,`no_cuenta_2`,`clave_interbancaria_2`,`banco_2`,`sucursal_2`,`no_cuenta_3`,`clave_interbancaria_3`,`banco_3`,`sucursal_3`) values (1,NULL,'2020-01-12 22:07:22',1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',1,1,'PROVEEDOR','CONTADO',0,'1','PABLO BENAVIDES MOLINA','BEMP8905273G1','LOMA BONITA 206-4 COL. JESUS ELIAS PIÑA III','TAMPICO','TAMAULIPAS','MEXICO','89365','8331243823','Fulanito de tal','pblo.benavides@gmail.com','','','','','','','','','','','','','','','');
+insert  into `proveedor`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`no_paper`,`activo`,`clasificacion_proveedor`,`tipo_proveedor`,`dias_credito`,`clave_proveedor`,`razon_social`,`rfc`,`domicilio`,`ciudad`,`estado`,`pais`,`cp`,`contacto_compra_telefono`,`contacto_compra_nombre`,`contacto_compra_email`,`contacto_contabilidad_telefono`,`contacto_contabilidad_nombre`,`contacto_contabilidad_email`,`no_cuenta_1`,`clave_interbancaria_1`,`banco_1`,`sucursal_1`,`no_cuenta_2`,`clave_interbancaria_2`,`banco_2`,`sucursal_2`,`no_cuenta_3`,`clave_interbancaria_3`,`banco_3`,`sucursal_3`) values (1,'2020-01-12 22:07:22','2020-01-12 22:07:22',1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',1,1,'PROVEEDOR','CONTADO',0,'1','PABLO BENAVIDES MOLINA','BEMP8905273G1','LOMA BONITA 206-4 COL. JESUS ELIAS PIÑA III','TAMPICO','TAMAULIPAS','MEXICO','89365','8331243823','Fulanito de tal','pblo.benavides@gmail.com','','','','','','','','','','','','','','',''),(2,'2020-01-12 22:07:22','2020-01-12 22:07:22',1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',1,1,'PROVEEDOR','CREDITO',15,'2','PROVEEDOR 2','ASDASDASDASDA','SDASDASDAS','DASDAS','DASDASD','MEXICO','23232','asdasd','aasdasdasd','asdasda','asdasd','asdasdas','dasdasd','asdasda','sdasd','asdasdas','dasdasd','asdasda','sdasdasdas','dasd','','','','',''),(3,'2020-01-30 22:27:03','2020-01-30 22:27:03',0,'',0,'',0,'',1,1,'PROVEEDOR','CONTADO',0,'3','PROVEEDOR 3','PROV323423244','2424','24E','RTYYRTYU','MEXICO','y6666','tyrty','fghrtrty','rtyr','rtyrty','rtyrt','yrty','jkljkl','jkljk','ljklj','kl','','','','','','','','');
 
 /*Table structure for table `remision` */
 
@@ -260,9 +283,44 @@ CREATE TABLE `remision` (
   `solicita` varchar(100) DEFAULT NULL,
   `firma_solicita` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `remision` */
+
+insert  into `remision`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`estado_doc`,`estado`,`folio`,`serie`,`observaciones`,`tipo_documento`,`tipo_archivo`,`razon_cancelar`,`cliente_id`,`cliente`,`cliente_rfc`,`metodo_pago`,`moneda`,`tipo_cambio`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`porc_iva`,`importe_letra`,`activo`,`prioridad`,`fecha_requerida`,`direccion_entrega`,`fecha_orden_compra`,`folio_orden_compra`,`autoriza_id`,`autoriza`,`fecha_autorizo`,`firma_autorizo`,`solicita`,`firma_solicita`) values (1,'2020-02-03 22:50:26','2020-02-03 22:50:26',0,'',0,'',0,'','','','','','ASDASDASD','','','',0,'','','',NULL,NULL,0,0,0,0,0,0,'',0,'MEDIA',NULL,'ASDASDASDASD',NULL,NULL,NULL,NULL,NULL,NULL,'PABLO BENAVIDES MOLINA',NULL);
+
+/*Table structure for table `remision_det` */
+
+DROP TABLE IF EXISTS `remision_det`;
+
+CREATE TABLE `remision_det` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `folio` varchar(100) DEFAULT NULL,
+  `documento_id` int(10) DEFAULT NULL,
+  `empresa_id` int(10) DEFAULT NULL,
+  `empresa` varchar(100) DEFAULT NULL,
+  `unidad_id` int(10) DEFAULT NULL,
+  `unidad` varchar(100) DEFAULT NULL,
+  `usuario_id` int(10) DEFAULT NULL,
+  `usuario` varchar(100) DEFAULT NULL,
+  `no_partida` int(10) DEFAULT NULL,
+  `fecha_alta` datetime DEFAULT NULL,
+  `cantidad` int(10) DEFAULT NULL,
+  `producto_id` int(10) DEFAULT NULL,
+  `descripcion` varchar(100) DEFAULT NULL,
+  `unidad_medida` varchar(100) DEFAULT NULL,
+  `precio_unitario` double DEFAULT NULL,
+  `importe` double DEFAULT NULL,
+  `descuento` double DEFAULT NULL,
+  `subtotal` double DEFAULT NULL,
+  `iva` double DEFAULT NULL,
+  `total` double DEFAULT NULL,
+  `servicio` tinyint(1) DEFAULT '1',
+  `folio_requisicion` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `remision_det` */
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
