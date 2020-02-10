@@ -59,6 +59,7 @@ public class WindowRemisionDet extends Window {
     public WindowRemisionDet(Remision rem) {
         remision = rem;
         VaadinSession.getCurrent().getSession().setAttribute("REMISION_DET",null);
+        VaadinSession.getCurrent().getSession().setAttribute("PARTIDA_OK",false);
         initComponents();
         partida = new RemisionDet();
     }
@@ -68,6 +69,7 @@ public class WindowRemisionDet extends Window {
         remision = rem;
         this.partida = partida;
         VaadinSession.getCurrent().getSession().setAttribute("REMISION_DET",null);
+        VaadinSession.getCurrent().getSession().setAttribute("PARTIDA_OK",false);
         initComponents();
     }
 
@@ -99,6 +101,7 @@ public class WindowRemisionDet extends Window {
         }
 
         btnCancelar.addClickListener((event) -> {
+            VaadinSession.getCurrent().getSession().setAttribute("PARTIDA_OK",false);
             close();
         });
         
@@ -107,7 +110,7 @@ public class WindowRemisionDet extends Window {
             window.addCloseListener(ev -> {
                 
                 Producto p = (Producto) VaadinSession.getCurrent().getSession().getAttribute("PRODUCTO_SELECCIONADO");
-                
+                System.out.println("PRODUCTO SELECCIONADO " + p);
                 if(p != null){
                     partida = new RemisionDet();
                     partida.setDescripcion(p.getDescripcion());
@@ -161,7 +164,8 @@ public class WindowRemisionDet extends Window {
                     }else{
                         VaadinSession.getCurrent().getSession().setAttribute("REMISION_DET",partida);
                     }
-
+                    
+                    VaadinSession.getCurrent().getSession().setAttribute("PARTIDA_OK",true);
                     close();
                 } catch (Exception e) {
                     e.printStackTrace();

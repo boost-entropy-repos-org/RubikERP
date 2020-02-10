@@ -5,6 +5,8 @@
  */
 package com.rubik.erp.modulo.compras;
 
+import com.rubik.erp.config._DocumentoEstados;
+import com.rubik.erp.config._DocumentoTipos;
 import com.rubik.erp.config._Folios;
 import com.rubik.erp.domain.ConfiguracionDomain;
 import com.rubik.erp.domain.EmpleadoDomain;
@@ -14,6 +16,7 @@ import com.rubik.erp.model.Configuracion;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.Remision;
 import com.rubik.erp.model.RemisionDet;
+import com.rubik.manage.ManageDates;
 import com.rubik.manage.ManageString;
 import com.vaadin.data.Binder;
 import com.vaadin.server.VaadinSession;
@@ -30,6 +33,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import de.steinwedel.messagebox.MessageBox;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,7 +53,7 @@ public class WindowRemision extends Window {
     Remision remision;
     Boolean isEdit = false;
 
-    DateField txtFechaRequerida = new DateField("Fecha Requerida:");
+    DateField txtFechaRequerida = new DateField("Fecha Requerida:", LocalDate.now());
     TextField txtSolicita = new TextField("Solicitante:");
     TextArea txtObservaciones = new TextArea("Observaciones:");
     TextArea txtDireccionEntrega = new TextArea("Descripcion Entrega:");
@@ -68,6 +72,7 @@ public class WindowRemision extends Window {
     List<Empleado> listAutorizadoresCompras = new ArrayList<>();
     
     Label lblFolio;
+    String folio = "";
 
     public WindowRemision() {
         lblFolio = new Label("REMISION " + getFolio()) {
@@ -91,10 +96,6 @@ public class WindowRemision extends Window {
     }
 
     public void initComponents() {
-        setContent(cont);
-        setModal(true);
-        setResizable(false);
-        
         String strWidth = "300";
         
         setWidth("80%");
@@ -113,32 +114,82 @@ public class WindowRemision extends Window {
         gridRemisionDet.addColumn(RemisionDet::getDescripcion).setCaption("DESCRIPCION");
         gridRemisionDet.addColumn(RemisionDet::getPrecio_unitario).setCaption("P.U.").setWidth(100);
         gridRemisionDet.addColumn(RemisionDet::getTotal).setCaption("TOTAL").setWidth(100);
-        
-        if (isEdit) {
-            binder.readBean(remision);
-            
-//            for (Proveedor prov : proveedorList1) {
-//                if (remision.getProveedor_id_1().equals(prov.getId())) {
-//                    cboProveedor1.setValue(prov);
-//                }
-//            }
-        }
 
         btnAgregarPartida.addClickListener((event) -> {
             WindowRemisionDet windows = new WindowRemisionDet(remision);
             windows.center();
             windows.setModal(true);
             windows.addCloseListener((e) -> {
-                if(isEdit){
-                    gridRemisionDet.setItems(getPartidas());
-                }else{
-                    
-                    RemisionDet partida = (RemisionDet) VaadinSession.getCurrent().getSession().getAttribute("REMISION_DET");
-                    listRemisionDet.add(partida);
-                    gridRemisionDet.setItems(listRemisionDet);
+                Boolean ok = (Boolean) VaadinSession.getCurrent().getSession().getAttribute("PARTIDA_OK");
+                if (ok) {
+                    if (isEdit) {
+                        gridRemisionDet.setItems(getPartidas());
+                    } else {
+                        RemisionDet partida = (RemisionDet) VaadinSession.getCurrent().getSession().getAttribute("REMISION_DET");
+                        listRemisionDet.add(partida);
+                        gridRemisionDet.setItems(listRemisionDet);
+                    }
                 }
             });
             getUI().addWindow(windows);
+        });
+        
+        btnModificarPartida.addClickListener((event) -> {
+            if(gridRemisionDet.getSelectedItems().size() == 1){
+                WindowRemisionDet windows = new WindowRemisionDet(remision,gridRemisionDet.getSelectedItems().iterator().next());
+                windows.center();
+                windows.setModal(true);
+                windows.addCloseListener((e) -> {
+                    Boolean ok = (Boolean) VaadinSession.getCurrent().getSession().getAttribute("PARTIDA_OK");
+                    if (ok) {
+                        if (isEdit) {
+                            gridRemisionDet.setItems(getPartidas());
+                        } else {
+                            RemisionDet partida = (RemisionDet) VaadinSession.getCurrent().getSession().getAttribute("REMISION_DET");
+                            listRemisionDet.add(partida);
+                            gridRemisionDet.setItems(listRemisionDet);
+                        }
+                    }
+                });
+                getUI().addWindow(windows);
+            } else {
+                MessageBox.createError()
+                        .withCaption("Error!")
+                        .withMessage("Debe tener una partida seleccionada para poder modificarla.")
+                        .withRetryButton()
+                        .open();
+            }
+        });
+        
+        btnEliminarPartida.addClickListener((event) -> {
+            if (gridRemisionDet.getSelectedItems().size() == 1) {
+                MessageBox.createQuestion()
+                        .withCaption("Atencion!")
+                        .withMessage("Desea eliminar la partida seleccionada?.")
+                        .withOkButton(() -> {
+
+                            RemisionDet partida = gridRemisionDet.getSelectedItems().iterator().next();
+
+                            if (isEdit) {
+                                RemisionDetDomain dom = new RemisionDetDomain();
+                                dom.RemisionDetDelete(partida);
+                                gridRemisionDet.setItems(getPartidas());
+                            } else {
+                                listRemisionDet.remove(partida);
+                                gridRemisionDet.setItems(listRemisionDet);
+                            }
+
+                        })
+                        .withNoButton(()-> {
+                        })
+                        .open();
+            } else {
+                MessageBox.createError()
+                        .withCaption("Error!")
+                        .withMessage("Debe tener una partida seleccionada para poder eliminarla.")
+                        .withRetryButton()
+                        .open();
+            }
         });
         
         btnCancelar.addClickListener((event) -> {
@@ -147,6 +198,8 @@ public class WindowRemision extends Window {
 
         btnGuardar.addClickListener((event) -> {
             try {
+                Empleado autoriza = cboAutorizador.getValue();
+                Double total = 0.0;
                 
                 if(!isEdit){
                     remision = new Remision();
@@ -155,22 +208,44 @@ public class WindowRemision extends Window {
                 binder.writeBean(remision);
                 toUpperCase();
 
+                remision.setUsuario_id(empleado.getId());
+                remision.setUsuario(empleado.getNombre_completo());
+                remision.setEstado_doc(_DocumentoEstados.EN_PROCESO);
+                remision.setTipo_documento(_DocumentoTipos.REMISION_DE_COMPRA);
+                remision.setTipo_archivo("PDF");
+                remision.setFecha_requerida(ManageDates.getDateFromLocalDate(txtFechaRequerida.getValue()));
+                remision.setAutoriza(autoriza.getNombre_completo());
+                remision.setAutoriza_id(autoriza.getId());
+                remision.setActivo(true);
+                
                 RemisionDomain service = new RemisionDomain();
 
                 if (isEdit) {
                     remision.setFecha_modificacion(new Date());
+                    for (RemisionDet partidaTemp : listRemisionDet) {
+                        total += partidaTemp.getTotal();
+                    }
+                    remision.setTotal(total);
+                    
                     service.RemisionUpdate(remision);
+                    
                 } else {
-                    service.RemisionInsert(remision);
-                }
-                
-                if(isEdit){
+                    remision.setFolio(getFolio());
+                    remision.setSerie("");
+                    
                     RemisionDetDomain domainDet = new RemisionDetDomain();
                     
-                    for (RemisionDet partidaTemp : listRemisionDet) {
+                    for (RemisionDet partidaTemp : listRemisionDet) { // Obtiene el total
+                        total += partidaTemp.getTotal();
+                    }
+
+                    remision.setTotal(total);
+                    service.RemisionInsert(remision);
+                    updateFolio();
+                    
+                    for (RemisionDet partidaTemp : listRemisionDet) { //Guarda la partida con el ID de la remision
                         partidaTemp.setFolio(remision.getFolio());
-                        partidaTemp.setId(remision.getId());
-                        
+                        partidaTemp.setDocumento_id(remision.getId());
                         domainDet.RemisionDetInsert(partidaTemp);
                     }
                 }
@@ -217,6 +292,18 @@ public class WindowRemision extends Window {
         cboAutorizador.setSelectedItem(listAutorizadoresCompras.get(0));
         cboAutorizador.setEmptySelectionAllowed(false);
 
+        if (isEdit) {
+            binder.readBean(remision);
+            
+            gridRemisionDet.setItems(getPartidas());
+            
+            for (Empleado autorizador : listAutorizadoresCompras) {
+                if (remision.getAutoriza_id().equals(autorizador.getId())) {
+                    cboAutorizador.setValue(autorizador);
+                }
+            }
+        }
+        
         FormLayout fLay = new FormLayout();
         fLay.addComponents(txtFechaRequerida,txtSolicita, cboPrioridad, cboAutorizador, txtObservaciones, 
                 txtDireccionEntrega);
@@ -232,6 +319,11 @@ public class WindowRemision extends Window {
         cont.setComponentAlignment(cont.getComponent(0), Alignment.MIDDLE_CENTER);
         cont.setComponentAlignment(cont.getComponent(1), Alignment.MIDDLE_CENTER);
         cont.setComponentAlignment(cont.getComponent(2), Alignment.MIDDLE_CENTER);
+        
+        setContent(cont);
+        setModal(true);
+        setResizable(false);
+        setClosable(false);
     }
     
     public List getPartidas() {
@@ -270,9 +362,14 @@ public class WindowRemision extends Window {
         domain.getOneConfiguracion(_Folios.FOLIO_REMISION, _Folios.SERIE_REMISION);
         Configuracion conf = domain.getObject();
         
-        String folio = conf.getSerie() + ManageString.fillWithZero(conf.getFolio(), 5);
+        folio = conf.getSerie() + ManageString.fillWithZero(conf.getFolio(), 5);
         
         return folio;
+    }
+    
+    public void updateFolio() {
+        ConfiguracionDomain domain = new ConfiguracionDomain();
+        domain.ConfiguracionUpdate(_Folios.FOLIO_REMISION);
     }
     
 }

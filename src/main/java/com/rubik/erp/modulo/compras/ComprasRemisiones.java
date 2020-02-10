@@ -5,6 +5,7 @@
  */
 package com.rubik.erp.modulo.compras;
 
+import com.rubik.erp.config._DocumentoEstados;
 import com.rubik.erp.domain.RemisionDomain;
 import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.Empleado;
@@ -22,6 +23,7 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import de.steinwedel.messagebox.MessageBox;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
@@ -42,19 +44,27 @@ public class ComprasRemisiones extends Panel implements View {
     Grid<Remision> gridRemisiones = new Grid<>();
     DateField txtFechaIni = new DateField();
     DateField txtFechaFin = new DateField();
+    Button btnSearch = new Button(Fam3SilkIcon.MAGNIFIER);
+    
     Button btnAdd = new Button("Agregar", Fam3SilkIcon.ADD);
     Button btnModify = new Button("Modificar", Fam3SilkIcon.PENCIL);
     Button btnCancel = new Button("Cancelar", Fam3SilkIcon.CANCEL);
-    Button btnSearch = new Button(Fam3SilkIcon.MAGNIFIER);
+    Button btnTerminar = new Button("Terminar", Fam3SilkIcon.NOTE_GO);
+    Button btnPrint = new Button("Imprimit", Fam3SilkIcon.PRINTER);
+    
     List<Remision> listProducto = new ArrayList<>();
 
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    
     public ComprasRemisiones() {
         initComponents();
 
         HorizontalLayout hLayoutAux = new HorizontalLayout(
                 txtBusqueda,
-                new Label("Fecha: "),txtFechaIni,new Label("A: "),txtFechaFin,
-                btnSearch,btnAdd, btnModify);
+                new Label("Fecha: "),txtFechaIni,new Label("A: "),txtFechaFin,btnSearch);
+        
+        HorizontalLayout hLayoutAux2 = new HorizontalLayout(btnAdd, btnModify, btnPrint, btnTerminar);
+        
         hLayoutAux.setComponentAlignment(hLayoutAux.getComponent(1), Alignment.MIDDLE_CENTER);
         hLayoutAux.setComponentAlignment(hLayoutAux.getComponent(3), Alignment.MIDDLE_CENTER);
         
@@ -71,6 +81,7 @@ public class ComprasRemisiones extends Panel implements View {
         container.addComponents(new FragmentTop(),
                 lblTitulo,
                 hLayoutAux,
+                hLayoutAux2,
                 gridRemisiones);
         
         container.setComponentAlignment(container.getComponent(0), Alignment.MIDDLE_CENTER);
@@ -87,10 +98,13 @@ public class ComprasRemisiones extends Panel implements View {
         txtFechaIni.setWidth("115");
         txtFechaFin.setWidth("115");
         
-        txtBusqueda.setWidth("310");
-        txtBusqueda.setPlaceholder("Folio de Remision a buscar");      
+        txtBusqueda.setWidth("200");
+        txtBusqueda.setPlaceholder("Folio de Remision");      
 
-        gridRemisiones.addColumn(Remision::getFecha_requerida).setCaption("F. REQ").setId("F. REQ").setWidth(120);
+        Grid.Column<Remision, String> columnFecha = gridRemisiones.addColumn(det -> ((det.getFecha_requerida() != null) ? dateFormat.format(det.getFecha_requerida()) : ""));
+        columnFecha.setCaption("F. REQ");
+        columnFecha.setId("F. REQ");
+        columnFecha.setWidth(120);
         gridRemisiones.addColumn(Remision::getFolio).setCaption("FOLIO").setId("FOLIO").setWidth(120);
         gridRemisiones.addColumn(Remision::getPrioridad).setCaption("PRIORIDAD").setId("PRIORIDAD").setWidth(135);
         gridRemisiones.addColumn(Remision::getEstado_doc).setCaption("ESTADO").setId("ESTADO").setWidth(135);
@@ -115,17 +129,25 @@ public class ComprasRemisiones extends Panel implements View {
 
         btnModify.addClickListener((event) -> {
             if (gridRemisiones.getSelectedItems().size() == 1) {
-                WindowRemision windows = new WindowRemision(gridRemisiones.getSelectedItems().iterator().next());
-                windows.center();
-                windows.setModal(true);
-                windows.addCloseListener((e) -> {
-                    gridRemisiones.setItems(getRemisiones());
-                });
-                getUI().addWindow(windows);
+                if(gridRemisiones.getSelectedItems().iterator().next().getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)){
+                    WindowRemision windows = new WindowRemision(gridRemisiones.getSelectedItems().iterator().next());
+                    windows.center();
+                    windows.setModal(true);
+                    windows.addCloseListener((e) -> {
+                        gridRemisiones.setItems(getRemisiones());
+                    });
+                    getUI().addWindow(windows);
+                }else{
+                    MessageBox.createError()
+                            .withCaption("Error!")
+                            .withMessage("No puede modificar una Remision de Compra que esta en espera de su Autorizacion.")
+                            .withRetryButton()
+                            .open();
+                }
             } else {
                 MessageBox.createError()
                         .withCaption("Error!")
-                        .withMessage("Debe tener un Proveedor seleccionado para poder modificarlo.")
+                        .withMessage("Debe tener una Remision seleccionada para poder modificarla.")
                         .withRetryButton()
                         .open();
             }
@@ -134,7 +156,36 @@ public class ComprasRemisiones extends Panel implements View {
         btnSearch.addClickListener((event) -> {
             gridRemisiones.setItems(getRemisiones());
             txtBusqueda.setValue("");
-
+        });
+        
+        btnPrint.addClickListener((event) -> {
+        });
+        
+        btnTerminar.addClickListener((event) -> {
+            if (gridRemisiones.getSelectedItems().size() == 1) {
+                
+                Remision remision = gridRemisiones.getSelectedItems().iterator().next();
+                
+                if(remision.getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)){
+                    
+                    
+                    
+                    
+                }else{
+                MessageBox.createError()
+                        .withCaption("Error!")
+                        .withMessage("Con el estado " + remision.getEstado_doc() + " de la Remision " + remision.getFolio() + ""
+                                + " no es posible pasar a Autorizacion.")
+                        .withRetryButton()
+                        .open();
+                }
+            } else {
+                MessageBox.createError()
+                        .withCaption("Error!")
+                        .withMessage("Debe tener una Remision seleccionada para poder pasarla a Autorizacion.")
+                        .withRetryButton()
+                        .open();
+            }
         });
 
     }

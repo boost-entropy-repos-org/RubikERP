@@ -86,7 +86,7 @@ CREATE TABLE `configuracion` (
 
 /*Data for the table `configuracion` */
 
-insert  into `configuracion`(`id`,`serie_remision`,`folio_remision`,`serie_orden_compra`,`folio_orden_compra`,`serie_cotizacion`,`folio_cotizacion`,`serie_factura`,`folio_factura`) values (1,'RM',0,'OC',0,'CT',0,'FA',0);
+insert  into `configuracion`(`id`,`serie_remision`,`folio_remision`,`serie_orden_compra`,`folio_orden_compra`,`serie_cotizacion`,`folio_cotizacion`,`serie_factura`,`folio_factura`) values (1,'RM',1,'OC',0,'CT',0,'FA',0);
 
 /*Table structure for table `empleado` */
 
@@ -121,18 +121,17 @@ CREATE TABLE `empleado` (
   `email_personal` varchar(100) DEFAULT NULL,
   `fecha_ingreso` datetime DEFAULT NULL,
   `autorizador` tinyint(1) DEFAULT '1',
-  `nombre_completo` varchar(100) DEFAULT NULL,
   `departamento_id` int(10) DEFAULT NULL,
   `departamento` varchar(100) DEFAULT NULL,
   `puesto_id` int(10) DEFAULT NULL,
   `puesto` varchar(100) DEFAULT NULL,
   `clasificacion_puesto` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 /*Data for the table `empleado` */
 
-insert  into `empleado`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`password`,`activo`,`clave_empleado`,`nombre`,`apellido_paterno`,`apellido_materno`,`nss`,`domicilio`,`colonia`,`cp`,`ciudad`,`estado`,`pais`,`telefono_empresa`,`telefono_personal`,`email_empresa`,`email_personal`,`fecha_ingreso`,`autorizador`,`nombre_completo`,`departamento_id`,`departamento`,`puesto_id`,`puesto`,`clasificacion_puesto`) values (1,'2020-01-12 00:00:00','2020-01-12 00:00:00',1,' ',1,' ',1,'a','a',1,'100001','Pablo','Benavides','Molina',' ','Loma Bonita 206 - 4','Jesus Elias Piña III',89365,'Tampico','Tamaulipas','Mexico','8331243823','8331243823','pblo.benavides@gmail.com','pblo.benavides@gmail.com',NULL,1,'PABLO BENAVIDES MOLINA',0,'SUPER ADMIN',0,NULL,NULL);
+insert  into `empleado`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`password`,`activo`,`clave_empleado`,`nombre`,`apellido_paterno`,`apellido_materno`,`nss`,`domicilio`,`colonia`,`cp`,`ciudad`,`estado`,`pais`,`telefono_empresa`,`telefono_personal`,`email_empresa`,`email_personal`,`fecha_ingreso`,`autorizador`,`departamento_id`,`departamento`,`puesto_id`,`puesto`,`clasificacion_puesto`) values (1,'2020-01-12 00:00:00','2020-01-12 00:00:00',1,' ',1,' ',1,'a','a',1,'100001','Pablo','Benavides','Molina',' ','Loma Bonita 206 - 4','Jesus Elias Piña III',89365,'Tampico','Tamaulipas','Mexico','8331243823','8331243823','pblo.benavides@gmail.com','pblo.benavides@gmail.com',NULL,1,0,'SUPER ADMIN',0,NULL,NULL),(2,'2020-01-12 00:00:00','2020-01-12 00:00:00',1,'',1,'',1,'','',1,'','Claudia Ibeth','Osornio','Cruz','','Loma Bonita 206 - 4','Jesus Elias Piña III',89365,'Tampico','Tamaulipas','Mexico','8331243823','8331243823','pblo.benavides@gmail.com','pblo.benavides@gmail.com',NULL,1,0,'',0,NULL,NULL),(3,'2020-01-12 00:00:00','2020-01-12 00:00:00',1,'',1,'',1,'','',1,'','Kathia','Benavides ','Molina','','Loma Bonita 206 - 4','Jesus Elias Piña III',89365,'Tampico','Tamaulipas','Mexico','8331243823','8331243823','pblo.benavides@gmail.com','pblo.benavides@gmail.com',NULL,1,0,'',0,NULL,NULL),(4,'2020-01-12 00:00:00','2020-01-12 00:00:00',1,'',1,'',1,'','',1,'','Lorenzo','Osornio','Cruz','','Loma Bonita 206 - 4','Jesus Elias Piña III',89365,'Tampico','Tamaulipas','Mexico','8331243823','8331243823','pblo.benavides@gmail.com','pblo.benavides@gmail.com',NULL,0,0,'',0,NULL,NULL),(5,'2020-01-12 00:00:00','2020-01-12 00:00:00',1,'',1,'',1,'','',1,'','Juan  Antonio','Hernandez','Martinez','','Loma Bonita 206 - 4','Jesus Elias Piña III',89365,'Tampico','Tamaulipas','Mexico','8331243823','8331243823','pblo.benavides@gmail.com','pblo.benavides@gmail.com',NULL,0,0,'',0,NULL,NULL);
 
 /*Table structure for table `producto` */
 
@@ -287,7 +286,7 @@ CREATE TABLE `remision` (
 
 /*Data for the table `remision` */
 
-insert  into `remision`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`estado_doc`,`estado`,`folio`,`serie`,`observaciones`,`tipo_documento`,`tipo_archivo`,`razon_cancelar`,`cliente_id`,`cliente`,`cliente_rfc`,`metodo_pago`,`moneda`,`tipo_cambio`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`porc_iva`,`importe_letra`,`activo`,`prioridad`,`fecha_requerida`,`direccion_entrega`,`fecha_orden_compra`,`folio_orden_compra`,`autoriza_id`,`autoriza`,`fecha_autorizo`,`firma_autorizo`,`solicita`,`firma_solicita`) values (1,'2020-02-03 22:50:26','2020-02-03 22:50:26',0,'',0,'',0,'','','','','','ASDASDASD','','','',0,'','','',NULL,NULL,0,0,0,0,0,0,'',0,'MEDIA',NULL,'ASDASDASDASD',NULL,NULL,NULL,NULL,NULL,NULL,'PABLO BENAVIDES MOLINA',NULL);
+insert  into `remision`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`estado_doc`,`estado`,`folio`,`serie`,`observaciones`,`tipo_documento`,`tipo_archivo`,`razon_cancelar`,`cliente_id`,`cliente`,`cliente_rfc`,`metodo_pago`,`moneda`,`tipo_cambio`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`porc_iva`,`importe_letra`,`activo`,`prioridad`,`fecha_requerida`,`direccion_entrega`,`fecha_orden_compra`,`folio_orden_compra`,`autoriza_id`,`autoriza`,`fecha_autorizo`,`firma_autorizo`,`solicita`,`firma_solicita`) values (1,'2020-02-05 21:34:31','2020-02-09 16:18:05',0,'',0,'',1,'Pablo Benavides Molina','EN PROCESO','','RM00001','','ASDAS','REMISION DE COMPRA','PDF','',0,'','','',NULL,NULL,0,0,0,0,100,0,'',1,'MEDIA','2020-02-09 00:00:00','DASDAS',NULL,NULL,1,'Pablo Benavides Molina',NULL,NULL,'PABLO BENAVIDES MOLINA',NULL);
 
 /*Table structure for table `remision_det` */
 
@@ -316,11 +315,12 @@ CREATE TABLE `remision_det` (
   `iva` double DEFAULT NULL,
   `total` double DEFAULT NULL,
   `servicio` tinyint(1) DEFAULT '1',
-  `folio_requisicion` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 /*Data for the table `remision_det` */
+
+insert  into `remision_det`(`id`,`folio`,`documento_id`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`no_partida`,`fecha_alta`,`cantidad`,`producto_id`,`descripcion`,`unidad_medida`,`precio_unitario`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`servicio`) values (3,'RM00001',1,1,' ',1,' ',1,'Pablo Benavides Molina',0,'2020-02-09 09:58:27',1,6,'PRODUCTO 6','NO APLICA',100,NULL,NULL,NULL,NULL,100,0);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
