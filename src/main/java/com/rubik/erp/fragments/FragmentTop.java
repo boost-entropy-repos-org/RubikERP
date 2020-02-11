@@ -6,6 +6,7 @@
 package com.rubik.erp.fragments;
 
 import com.rubik.erp.model.Empleado;
+import com.rubik.erp.modulo.compras.ComprasOrdenes;
 import com.rubik.erp.modulo.compras.ComprasProductos;
 import com.rubik.erp.modulo.compras.ComprasProveedores;
 import com.rubik.erp.modulo.compras.ComprasRemisiones;
@@ -131,6 +132,8 @@ public class FragmentTop extends HorizontalLayout {
         subOrdenDeCompra = menuCompras.addItem("Ordenes de Compra", actionMenu);
         subOrdenDeCompra.setIcon(Fam3SilkIcon.PAGE_GO);
                 
+        menuCompras.addSeparator();
+        
         subMonitoreoRequi = menuCompras.addItem("Monitoreo Requisicion", actionMenu);
         subMonitoreoRequi.setIcon(Fam3SilkIcon.PAGE_WHITE_PAINTBRUSH);
         
@@ -217,9 +220,9 @@ public class FragmentTop extends HorizontalLayout {
                 case "Remisiones":
                     getUI().getNavigator().navigateTo(ComprasRemisiones.NAME);
                     break;                    
-//                case "Ordenes de Compra":
-//                    getUI().getNavigator().navigateTo(ViewComprasOrdenCompra.NAME);
-//                    break;
+                case "Ordenes de Compra":
+                    getUI().getNavigator().navigateTo(ComprasOrdenes.NAME);
+                    break;
 //                case "Monitoreo Requisicion":
 //                    getUI().getNavigator().navigateTo(ViewComprasMonitoreoRequisicion.NAME);
 //                    break;

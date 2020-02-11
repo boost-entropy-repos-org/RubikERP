@@ -50,9 +50,9 @@ public class ComprasRemisiones extends Panel implements View {
     Button btnModify = new Button("Modificar", Fam3SilkIcon.PENCIL);
     Button btnCancel = new Button("Cancelar", Fam3SilkIcon.CANCEL);
     Button btnTerminar = new Button("Terminar", Fam3SilkIcon.NOTE_GO);
-    Button btnPrint = new Button("Imprimit", Fam3SilkIcon.PRINTER);
+    Button btnPrint = new Button("Imprimir", Fam3SilkIcon.PRINTER);
     
-    List<Remision> listProducto = new ArrayList<>();
+    List<Remision> listRemisiones = new ArrayList<>();
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     
@@ -63,7 +63,7 @@ public class ComprasRemisiones extends Panel implements View {
                 txtBusqueda,
                 new Label("Fecha: "),txtFechaIni,new Label("A: "),txtFechaFin,btnSearch);
         
-        HorizontalLayout hLayoutAux2 = new HorizontalLayout(btnAdd, btnModify, btnPrint, btnTerminar);
+        HorizontalLayout hLayoutAux2 = new HorizontalLayout(btnAdd, btnModify, btnCancel, btnPrint, btnTerminar);
         
         hLayoutAux.setComponentAlignment(hLayoutAux.getComponent(1), Alignment.MIDDLE_CENTER);
         hLayoutAux.setComponentAlignment(hLayoutAux.getComponent(3), Alignment.MIDDLE_CENTER);
@@ -168,11 +168,27 @@ public class ComprasRemisiones extends Panel implements View {
                 
                 if(remision.getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)){
                     
-                    
-                    
+                    MessageBox.createQuestion()
+                        .withCaption("Atencion!")
+                        .withMessage("Desea que la Remision " + remision.getFolio() + ""
+                                + " sea terminada? Ya no podrá realizar modificaciones.")
+                        .withOkButton(() -> {
+                            RemisionDomain domain = new RemisionDomain();
+                            domain.RemisionTerminar(remision);
+                            
+                            gridRemisiones.setItems(getRemisiones());
+                            
+                            MessageBox.createInfo()
+                                    .withCaption("Error!")
+                                    .withMessage("Remision de Compra terminada correctamente. Aun esta pendiente de Autorizacion.")
+                                    .withRetryButton()
+                                    .open();
+                        })
+                        .withNoButton(() -> {})
+                        .open();
                     
                 }else{
-                MessageBox.createError()
+                    MessageBox.createError()
                         .withCaption("Error!")
                         .withMessage("Con el estado " + remision.getEstado_doc() + " de la Remision " + remision.getFolio() + ""
                                 + " no es posible pasar a Autorizacion.")
@@ -207,7 +223,7 @@ public class ComprasRemisiones extends Panel implements View {
 
         RemisionDomain service = new RemisionDomain();
         service.getRemision(strWhere, "", "fecha_requerida DESC");
-        listProducto = service.getObjects();
+        listRemisiones = service.getObjects();
 
         if (!service.getOk()) {
             MessageBox.createError()
@@ -216,7 +232,7 @@ public class ComprasRemisiones extends Panel implements View {
                     .withRetryButton()
                     .open();
         }
-        return listProducto;
+        return listRemisiones;
     }
     
 }

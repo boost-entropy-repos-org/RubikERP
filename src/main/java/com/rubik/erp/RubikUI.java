@@ -1,5 +1,6 @@
 package com.rubik.erp;
 
+import com.rubik.erp.modulo.compras.ComprasOrdenes;
 import com.rubik.erp.modulo.compras.ComprasProductos;
 import com.rubik.erp.modulo.compras.ComprasProveedores;
 import com.rubik.erp.modulo.compras.ComprasRemisiones;
@@ -46,6 +47,7 @@ public class RubikUI extends UI {
         navigator.addView(ComprasProveedores.NAME, ComprasProveedores.class);
         navigator.addView(ComprasProductos.NAME, ComprasProductos.class);
         navigator.addView(ComprasRemisiones.NAME, ComprasRemisiones.class);
+        navigator.addView(ComprasOrdenes.NAME, ComprasOrdenes.class);
         
         navigator.addView(VentasClientes.NAME, VentasClientes.class);
         

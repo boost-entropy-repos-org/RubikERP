@@ -1,5 +1,5 @@
 /*
-SQLyog Ultimate v11.13 (64 bit)
+SQLyog Ultimate v9.10 
 MySQL - 5.5.62 : Database - rubik_erp
 *********************************************************************
 */
@@ -132,6 +132,73 @@ CREATE TABLE `empleado` (
 /*Data for the table `empleado` */
 
 insert  into `empleado`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`password`,`activo`,`clave_empleado`,`nombre`,`apellido_paterno`,`apellido_materno`,`nss`,`domicilio`,`colonia`,`cp`,`ciudad`,`estado`,`pais`,`telefono_empresa`,`telefono_personal`,`email_empresa`,`email_personal`,`fecha_ingreso`,`autorizador`,`departamento_id`,`departamento`,`puesto_id`,`puesto`,`clasificacion_puesto`) values (1,'2020-01-12 00:00:00','2020-01-12 00:00:00',1,' ',1,' ',1,'a','a',1,'100001','Pablo','Benavides','Molina',' ','Loma Bonita 206 - 4','Jesus Elias Piña III',89365,'Tampico','Tamaulipas','Mexico','8331243823','8331243823','pblo.benavides@gmail.com','pblo.benavides@gmail.com',NULL,1,0,'SUPER ADMIN',0,NULL,NULL),(2,'2020-01-12 00:00:00','2020-01-12 00:00:00',1,'',1,'',1,'','',1,'','Claudia Ibeth','Osornio','Cruz','','Loma Bonita 206 - 4','Jesus Elias Piña III',89365,'Tampico','Tamaulipas','Mexico','8331243823','8331243823','pblo.benavides@gmail.com','pblo.benavides@gmail.com',NULL,1,0,'',0,NULL,NULL),(3,'2020-01-12 00:00:00','2020-01-12 00:00:00',1,'',1,'',1,'','',1,'','Kathia','Benavides ','Molina','','Loma Bonita 206 - 4','Jesus Elias Piña III',89365,'Tampico','Tamaulipas','Mexico','8331243823','8331243823','pblo.benavides@gmail.com','pblo.benavides@gmail.com',NULL,1,0,'',0,NULL,NULL),(4,'2020-01-12 00:00:00','2020-01-12 00:00:00',1,'',1,'',1,'','',1,'','Lorenzo','Osornio','Cruz','','Loma Bonita 206 - 4','Jesus Elias Piña III',89365,'Tampico','Tamaulipas','Mexico','8331243823','8331243823','pblo.benavides@gmail.com','pblo.benavides@gmail.com',NULL,0,0,'',0,NULL,NULL),(5,'2020-01-12 00:00:00','2020-01-12 00:00:00',1,'',1,'',1,'','',1,'','Juan  Antonio','Hernandez','Martinez','','Loma Bonita 206 - 4','Jesus Elias Piña III',89365,'Tampico','Tamaulipas','Mexico','8331243823','8331243823','pblo.benavides@gmail.com','pblo.benavides@gmail.com',NULL,0,0,'',0,NULL,NULL);
+
+/*Table structure for table `orden_compra` */
+
+DROP TABLE IF EXISTS `orden_compra`;
+
+CREATE TABLE `orden_compra` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `fecha_elaboracion` datetime DEFAULT NULL,
+  `fecha_modificacion` datetime DEFAULT NULL,
+  `empresa_id` int(10) DEFAULT NULL,
+  `empresa` varchar(100) DEFAULT NULL,
+  `unidad_id` int(10) DEFAULT NULL,
+  `unidad` varchar(100) DEFAULT NULL,
+  `usuario_id` int(10) DEFAULT NULL,
+  `usuario` varchar(100) DEFAULT NULL,
+  `estado_doc` varchar(100) DEFAULT NULL,
+  `estado` varchar(100) DEFAULT NULL,
+  `folio` varchar(100) DEFAULT NULL,
+  `serie` varchar(100) DEFAULT NULL,
+  `observaciones` varchar(100) DEFAULT NULL,
+  `tipo_documento` varchar(100) DEFAULT NULL,
+  `tipo_archivo` varchar(100) DEFAULT NULL,
+  `razon_cancelar` varchar(100) DEFAULT NULL,
+  `cliente_id` int(10) DEFAULT NULL,
+  `cliente` varchar(100) DEFAULT NULL,
+  `cliente_rfc` varchar(100) DEFAULT NULL,
+  `metodo_pago` varchar(100) DEFAULT NULL,
+  `moneda` varchar(100) DEFAULT NULL,
+  `tipo_cambio` double DEFAULT NULL,
+  `importe` double DEFAULT NULL,
+  `descuento` double DEFAULT NULL,
+  `subtotal` double DEFAULT NULL,
+  `iva` double DEFAULT NULL,
+  `total` double DEFAULT NULL,
+  `porc_iva` int(10) DEFAULT NULL,
+  `importe_letra` varchar(100) DEFAULT NULL,
+  `activo` tinyint(1) DEFAULT '1',
+  `proveedor_id` int(10) DEFAULT NULL,
+  `proveedor` varchar(100) DEFAULT NULL,
+  `cond_pago` varchar(100) DEFAULT NULL,
+  `remision_id` int(10) DEFAULT NULL,
+  `folio_remision` varchar(100) DEFAULT NULL,
+  `solicita_id` int(10) DEFAULT NULL,
+  `solicita` varchar(100) DEFAULT NULL,
+  `recibe_id` int(10) DEFAULT NULL,
+  `recibe` varchar(100) DEFAULT NULL,
+  `autoriza_id` int(10) DEFAULT NULL,
+  `autoriza` varchar(100) DEFAULT NULL,
+  `fecha_entrega` datetime DEFAULT NULL,
+  `fecha_requisicion` datetime DEFAULT NULL,
+  `factura_id` int(10) DEFAULT NULL,
+  `factura` varchar(100) DEFAULT NULL,
+  `folio_factura` varchar(100) DEFAULT NULL,
+  `no_cuenta` varchar(100) DEFAULT NULL,
+  `interbancaria` varchar(100) DEFAULT NULL,
+  `banco` varchar(100) DEFAULT NULL,
+  `sucursal` varchar(100) DEFAULT NULL,
+  `concepto_pago` varchar(100) DEFAULT NULL,
+  `fecha_autoriza` datetime DEFAULT NULL,
+  `firma_autoriza` varchar(100) DEFAULT NULL,
+  `forma_pago` varchar(100) DEFAULT NULL,
+  `fecha_solicita` datetime DEFAULT NULL,
+  `firma_solicita` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `orden_compra` */
 
 /*Table structure for table `producto` */
 
@@ -286,7 +353,7 @@ CREATE TABLE `remision` (
 
 /*Data for the table `remision` */
 
-insert  into `remision`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`estado_doc`,`estado`,`folio`,`serie`,`observaciones`,`tipo_documento`,`tipo_archivo`,`razon_cancelar`,`cliente_id`,`cliente`,`cliente_rfc`,`metodo_pago`,`moneda`,`tipo_cambio`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`porc_iva`,`importe_letra`,`activo`,`prioridad`,`fecha_requerida`,`direccion_entrega`,`fecha_orden_compra`,`folio_orden_compra`,`autoriza_id`,`autoriza`,`fecha_autorizo`,`firma_autorizo`,`solicita`,`firma_solicita`) values (1,'2020-02-05 21:34:31','2020-02-09 16:18:05',0,'',0,'',1,'Pablo Benavides Molina','EN PROCESO','','RM00001','','ASDAS','REMISION DE COMPRA','PDF','',0,'','','',NULL,NULL,0,0,0,0,100,0,'',1,'MEDIA','2020-02-09 00:00:00','DASDAS',NULL,NULL,1,'Pablo Benavides Molina',NULL,NULL,'PABLO BENAVIDES MOLINA',NULL);
+insert  into `remision`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`estado_doc`,`estado`,`folio`,`serie`,`observaciones`,`tipo_documento`,`tipo_archivo`,`razon_cancelar`,`cliente_id`,`cliente`,`cliente_rfc`,`metodo_pago`,`moneda`,`tipo_cambio`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`porc_iva`,`importe_letra`,`activo`,`prioridad`,`fecha_requerida`,`direccion_entrega`,`fecha_orden_compra`,`folio_orden_compra`,`autoriza_id`,`autoriza`,`fecha_autorizo`,`firma_autorizo`,`solicita`,`firma_solicita`) values (1,'2020-02-05 21:34:31','2020-02-10 22:34:19',0,'',0,'',1,'Pablo Benavides Molina','TERMINADO','','RM00001','','ASDAS','REMISION DE COMPRA','PDF','',0,'','','',NULL,NULL,0,0,0,0,100,0,'',1,'MEDIA','2020-02-09 00:00:00','DASDAS',NULL,NULL,1,'Pablo Benavides Molina',NULL,NULL,'PABLO BENAVIDES MOLINA','67849AD1527967B3D86D377561EA764C');
 
 /*Table structure for table `remision_det` */
 
