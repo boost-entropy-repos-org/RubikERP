@@ -181,6 +181,7 @@ CREATE TABLE `orden_compra` (
   `autoriza_id` int(10) DEFAULT NULL,
   `autoriza` varchar(100) DEFAULT NULL,
   `fecha_entrega` datetime DEFAULT NULL,
+  `direccion_entrega` varchar(100) DEFAULT NULL,
   `fecha_requisicion` datetime DEFAULT NULL,
   `factura_id` int(10) DEFAULT NULL,
   `factura` varchar(100) DEFAULT NULL,

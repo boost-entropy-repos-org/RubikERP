@@ -5,7 +5,6 @@
  */
 package com.rubik.erp.modulo.compras;
 
-import com.rubik.erp.config._DocumentoEstados;
 import com.rubik.erp.domain.OrdenDeCompraDomain;
 import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.Empleado;
@@ -113,17 +112,17 @@ public class ComprasOrdenes  extends Panel implements View {
         gridOC.addColumn(OrdenDeCompra::getIva).setCaption("IVA").setId("IVA").setWidth(120);
         gridOC.addColumn(OrdenDeCompra::getTotal).setCaption("TOTAL").setId("TOTAL").setWidth(120);
 
-        gridOC.setItems(getRemisiones());
+        gridOC.setItems(getOrdenes());
         gridOC.setSelectionMode(Grid.SelectionMode.SINGLE);
         gridOC.setSizeFull();
         gridOC.setHeight("500px");
 
         btnAdd.addClickListener((event) -> {
-            WindowRemision windows = new WindowRemision();
+            WindowOrdenDeCompra windows = new WindowOrdenDeCompra();
             windows.center();
             windows.setModal(true);
             windows.addCloseListener(ev -> {
-                gridOC.setItems(getRemisiones());
+                gridOC.setItems(getOrdenes());
             });
             getUI().addWindow(windows);
         });
@@ -135,7 +134,7 @@ public class ComprasOrdenes  extends Panel implements View {
 //                    windows.center();
 //                    windows.setModal(true);
 //                    windows.addCloseListener((e) -> {
-//                        gridOC.setItems(getRemisiones());
+//                        gridOC.setItems(getOrdenes());
 //                    });
 //                    getUI().addWindow(windows);
 //                }else{
@@ -155,7 +154,7 @@ public class ComprasOrdenes  extends Panel implements View {
         });
         
         btnSearch.addClickListener((event) -> {
-            gridOC.setItems(getRemisiones());
+            gridOC.setItems(getOrdenes());
             txtBusqueda.setValue("");
         });
         
@@ -177,7 +176,7 @@ public class ComprasOrdenes  extends Panel implements View {
 //                            OrdenDeCompraDomain domain = new OrdenDeCompraDomain();
 //                            domain.RemisionTerminar(remision);
 //                            
-//                            gridOC.setItems(getRemisiones());
+//                            gridOC.setItems(getOrdenes());
 //                            
 //                            MessageBox.createInfo()
 //                                    .withCaption("Error!")
@@ -211,7 +210,7 @@ public class ComprasOrdenes  extends Panel implements View {
     public void enter(ViewChangeListener.ViewChangeEvent event) {
     }
 
-    public List getRemisiones() {
+    public List getOrdenes() {
         String strWhere = " activo = 1 ";
 
         if (!"".equals(txtBusqueda.getValue())) {
