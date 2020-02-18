@@ -83,7 +83,7 @@ public class ComprasProductos extends Panel implements View {
         gridProducto.addColumn(Producto::getInventario_actual).setCaption("INVENTARIO").setId("INVENTARIO").setWidth(80);
         
 
-        gridProducto.setItems(getProveedor());
+        gridProducto.setItems(getProducto());
         gridProducto.setSelectionMode(Grid.SelectionMode.SINGLE);
         gridProducto.setSizeFull();
         gridProducto.setHeight("500px");
@@ -93,7 +93,7 @@ public class ComprasProductos extends Panel implements View {
             windows.center();
             windows.setModal(true);
             windows.addCloseListener(ev -> {
-                gridProducto.setItems(getProveedor());
+                gridProducto.setItems(getProducto());
             });
             getUI().addWindow(windows);
         });
@@ -104,7 +104,7 @@ public class ComprasProductos extends Panel implements View {
                 windows.center();
                 windows.setModal(true);
                 windows.addCloseListener((e) -> {
-                    gridProducto.setItems(getProveedor());
+                    gridProducto.setItems(getProducto());
                 });
                 getUI().addWindow(windows);
             } else {
@@ -117,7 +117,7 @@ public class ComprasProductos extends Panel implements View {
         });
         
         btnSearch.addClickListener((event) -> {
-            gridProducto.setItems(getProveedor());
+            gridProducto.setItems(getProducto());
             txtBusqueda.setValue("");
 
         });
@@ -128,7 +128,7 @@ public class ComprasProductos extends Panel implements View {
     public void enter(ViewChangeListener.ViewChangeEvent event) {
     }
 
-    public List getProveedor() {
+    public List getProducto() {
         String strWhere = " activo = 1 ";
 
         if (txtBusqueda.getValue() != "") {

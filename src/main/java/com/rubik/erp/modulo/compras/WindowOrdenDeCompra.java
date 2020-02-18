@@ -6,8 +6,10 @@
 package com.rubik.erp.modulo.compras;
 
 import com.rubik.erp.config._Folios;
+import com.rubik.erp.config._Pago_Documentos;
 import com.rubik.erp.domain.ConfiguracionDomain;
 import com.rubik.erp.domain.EmpleadoDomain;
+import com.rubik.erp.domain.ProveedorDomain;
 import com.rubik.erp.model.Configuracion;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.OrdenDeCompra;
@@ -17,6 +19,7 @@ import com.rubik.manage.ManageString;
 import com.vaadin.data.Binder;
 import com.vaadin.data.converter.LocalDateToDateConverter;
 import com.vaadin.data.converter.StringToDoubleConverter;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -30,6 +33,7 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.themes.ValoTheme;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -72,10 +76,11 @@ public class WindowOrdenDeCompra  extends Window {
     TextField txtIVA = new TextField("IVA:");
     TextField txtTotal = new TextField("Total:");
     
-    Button btnAgregarPartida = new Button("Agregar",Fam3SilkIcon.ADD);
-    Button btnModificarPartida = new Button("Modificar",Fam3SilkIcon.PENCIL);
-    Button btnEliminarPartida = new Button("Eliminar",Fam3SilkIcon.DELETE);
+    Button btnAgregarPartida = new Button("",Fam3SilkIcon.ADD);
+    Button btnModificarPartida = new Button("",Fam3SilkIcon.PENCIL);
+    Button btnEliminarPartida = new Button("",Fam3SilkIcon.DELETE);
     Button btnVisualizarDocs = new Button("Documentos",Fam3SilkIcon.FOLDER_EXPLORE);
+    Button btnBuscarRemision = new Button("",Fam3SilkIcon.MAGNIFIER);
     Button btnGuardar = new Button("Guardar", Fam3SilkIcon.DISK);
     Button btnCancelar = new Button("Cancelar", Fam3SilkIcon.CANCEL);
     
@@ -83,6 +88,7 @@ public class WindowOrdenDeCompra  extends Window {
     List<OrdenDeCompraDet> listRemisionDet = new ArrayList<>();
     
     List<Empleado> listAutorizadoresCompras = new ArrayList<>();
+    List<Proveedor> proveedorList = new ArrayList<>();
     
     Label lblFolio;
     String folio = "";
@@ -302,17 +308,54 @@ public class WindowOrdenDeCompra  extends Window {
         txtSolicita.setValue(empleado.getNombre_completo());
         txtObservaciones.setRows(2);
         txtDireccionEntrega.setRows(2);
-       
-        txtFechaRequerida.setWidth(strWidth);
+        
+        cboCondicionesPago.setItems(_Pago_Documentos.CONDICIONES_PAGO);
+        cboCondicionesPago.setValue(_Pago_Documentos.CONDICIONES_PAGO.get(0));
+        cboCondicionesPago.setEmptySelectionAllowed(false);
+
+        cboMetodoPago.setItems(_Pago_Documentos.METODOS_PAGO);
+        cboMetodoPago.setValue(_Pago_Documentos.METODOS_PAGO.get(0));
+        cboMetodoPago.setEmptySelectionAllowed(false);
+        
+        cboMoneda.setItems(_Pago_Documentos.MONEDAS);
+        cboMoneda.setValue(_Pago_Documentos.MONEDAS.get(0));
+        cboMoneda.setEmptySelectionAllowed(false);
+        
+        cboAlmacenRecibe.setItems("Almacen Matriz");
+        cboAlmacenRecibe.setValue("Almacen Matriz");
+        cboAlmacenRecibe.setEmptySelectionAllowed(false);
+
+        gridRemisionDet.setWidth("100%");
+        
         txtSolicita.setWidth(strWidth);
-        txtObservaciones.setWidth(strWidth);
-        cboAutorizador.setWidth(strWidth);
+        txtFechaRequerida.setWidth(strWidth);
         txtDireccionEntrega.setWidth(strWidth);
+        txtFechaEntrega.setWidth(strWidth);
+        cboProveedor.setWidth(strWidth);
+        
+        cboCondicionesPago.setWidth(strWidth);
+        cboMetodoPago.setWidth(strWidth);
+        cboMoneda.setWidth(strWidth);
+        txtTipoCambio.setWidth(strWidth);
+        txtObservaciones.setWidth(strWidth);
+        
+        cboAutorizador.setWidth(strWidth);
+        cboAlmacenRecibe.setWidth("150");
+        
+        txtImporte.setWidth("160");
+        txtDescuento.setWidth("160");
+        txtSubtotal.setWidth("160");
+        txtIVA.setWidth("160");
+        txtTotal.setWidth("160");
         
         cboAutorizador.setItems(getAutorizadorCompras());
         cboAutorizador.setSelectedItem(listAutorizadoresCompras.get(0));
         cboAutorizador.setEmptySelectionAllowed(false);
 
+        cboProveedor.setItems(getProveedor());
+        cboProveedor.setSelectedItem(proveedorList.get(0));
+        cboProveedor.setEmptySelectionAllowed(false);
+        
         if (isEdit) {
             binder.readBean(ordenDeCompra);
             
@@ -325,9 +368,7 @@ public class WindowOrdenDeCompra  extends Window {
             }
         }
         
-        
         // ACOMODO =============================================================
-        
         FormLayout fLay1 = new FormLayout();
         fLay1.addComponents(txtSolicita,txtFechaRequerida, txtDireccionEntrega, txtFechaEntrega, cboProveedor);
         fLay1.setSpacing(false);
@@ -338,32 +379,35 @@ public class WindowOrdenDeCompra  extends Window {
         
         FormLayout fLayTotales = new FormLayout();
         fLayTotales.addComponents(txtImporte,txtDescuento, txtSubtotal, txtIVA, txtTotal);
+        fLayTotales.setSpacing(false);
+//        fLayTotales.setWidth("100%");
+        
+        HorizontalLayout hLay1 = new HorizontalLayout(
+                new Label("Autorizador:"), cboAutorizador, new Label("Almacen:"), cboAlmacenRecibe,
+                btnAgregarPartida,btnModificarPartida,btnEliminarPartida);
+        hLay1.setSpacing(true);
+        hLay1.setComponentAlignment(hLay1.getComponent(0), Alignment.MIDDLE_CENTER);
+        hLay1.setComponentAlignment(hLay1.getComponent(2), Alignment.MIDDLE_CENTER);
 
         cont.setSpacing(false);
         cont.addComponents(lblFolio,
-                new HorizontalLayout(new Label("Folio Remision:"), txtFolioRemision) // 1
+                new HorizontalLayout(new Label("Folio Remision:"), txtFolioRemision, btnBuscarRemision) // 1
                     {{
                         setComponentAlignment(getComponent(0), Alignment.MIDDLE_CENTER);
                     }},
                 new HorizontalLayout(fLay1, fLay2), // 2
-                new HorizontalLayout(new Label("Autorizador:"), cboAutorizador, new Label("Se recibe en:"), cboAlmacenRecibe) // 3
-                    {{
-                        setComponentAlignment(getComponent(0), Alignment.MIDDLE_CENTER);
-                        setComponentAlignment(getComponent(2), Alignment.MIDDLE_CENTER);
-                    }}, 
-                new HorizontalLayout(btnAgregarPartida,btnModificarPartida,btnEliminarPartida), // 4
-                gridRemisionDet, // 5
-                fLayTotales, // 6
-                new HorizontalLayout(btnCancelar, btnGuardar)); // 7
+                hLay1, // 3
+                gridRemisionDet, // 4
+                fLayTotales, // 5
+                new HorizontalLayout(btnCancelar, btnGuardar)); // 6
         
-        cont.setComponentAlignment(cont.getComponent(0), Alignment.MIDDLE_CENTER);
+        cont.setComponentAlignment(lblFolio, Alignment.MIDDLE_CENTER);
         cont.setComponentAlignment(cont.getComponent(1), Alignment.MIDDLE_RIGHT);
         cont.setComponentAlignment(cont.getComponent(2), Alignment.MIDDLE_CENTER);
-        cont.setComponentAlignment(cont.getComponent(3), Alignment.MIDDLE_CENTER);
+        cont.setComponentAlignment(hLay1, Alignment.MIDDLE_RIGHT);
         cont.setComponentAlignment(cont.getComponent(4), Alignment.MIDDLE_CENTER);
-        cont.setComponentAlignment(cont.getComponent(5), Alignment.MIDDLE_CENTER);
-        cont.setComponentAlignment(cont.getComponent(6), Alignment.MIDDLE_RIGHT);
-        cont.setComponentAlignment(cont.getComponent(7), Alignment.MIDDLE_CENTER);
+        cont.setComponentAlignment(fLayTotales, Alignment.MIDDLE_RIGHT);
+        cont.setComponentAlignment(cont.getComponent(6), Alignment.MIDDLE_CENTER);
         
         setContent(cont);
         setModal(true);
@@ -415,6 +459,14 @@ public class WindowOrdenDeCompra  extends Window {
     public void updateFolio() {
         ConfiguracionDomain domain = new ConfiguracionDomain();
         domain.ConfiguracionUpdate(_Folios.FOLIO_ORDEN_COMPRA);
+    }
+    
+    public List<Proveedor> getProveedor() {
+        ProveedorDomain provService = new ProveedorDomain();
+        provService.getProveedor("", "", "razon_social ASC");
+
+        proveedorList = provService.getObjects();
+        return proveedorList;
     }
     
 }
