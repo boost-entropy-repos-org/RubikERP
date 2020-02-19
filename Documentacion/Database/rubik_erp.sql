@@ -201,6 +201,46 @@ CREATE TABLE `orden_compra` (
 
 /*Data for the table `orden_compra` */
 
+/*Table structure for table `orden_compra_det` */
+
+DROP TABLE IF EXISTS `orden_compra_det`;
+
+CREATE TABLE `orden_compra_det` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `folio` varchar(100) DEFAULT NULL,
+  `documento_id` int(10) DEFAULT NULL,
+  `empresa_id` int(10) DEFAULT NULL,
+  `empresa` varchar(100) DEFAULT NULL,
+  `unidad_id` int(10) DEFAULT NULL,
+  `unidad` varchar(100) DEFAULT NULL,
+  `usuario_id` int(10) DEFAULT NULL,
+  `usuario` varchar(100) DEFAULT NULL,
+  `no_partida` int(10) DEFAULT NULL,
+  `fecha_alta` datetime DEFAULT NULL,
+  `cantidad` int(10) DEFAULT NULL,
+  `producto_id` int(10) DEFAULT NULL,
+  `descripcion` varchar(100) DEFAULT NULL,
+  `unidad_medida` varchar(100) DEFAULT NULL,
+  `precio_unitario` double DEFAULT NULL,
+  `importe` double DEFAULT NULL,
+  `descuento` double DEFAULT NULL,
+  `subtotal` double DEFAULT NULL,
+  `iva` double DEFAULT NULL,
+  `total` double DEFAULT NULL,
+  `servicio` tinyint(1) DEFAULT '1',
+  `folio_remision` varchar(100) DEFAULT NULL,
+  `remision_id` int(10) DEFAULT NULL,
+  `no_parte` varchar(100) DEFAULT NULL,
+  `no_serie` varchar(100) DEFAULT NULL,
+  `modelo` varchar(100) DEFAULT NULL,
+  `marca` varchar(100) DEFAULT NULL,
+  `codigo_proveedor` varchar(100) DEFAULT NULL,
+  `codigo_interno` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `orden_compra_det` */
+
 /*Table structure for table `producto` */
 
 DROP TABLE IF EXISTS `producto`;
