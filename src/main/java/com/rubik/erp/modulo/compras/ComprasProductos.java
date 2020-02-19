@@ -119,7 +119,6 @@ public class ComprasProductos extends Panel implements View {
         btnSearch.addClickListener((event) -> {
             gridProducto.setItems(getProducto());
             txtBusqueda.setValue("");
-
         });
 
     }

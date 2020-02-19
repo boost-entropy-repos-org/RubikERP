@@ -15,11 +15,13 @@ import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.OrdenDeCompra;
 import com.rubik.erp.model.OrdenDeCompraDet;
 import com.rubik.erp.model.Proveedor;
+import com.rubik.erp.model.Remision;
+import com.rubik.erp.model.RemisionDet;
+import com.rubik.manage.ManageDates;
 import com.rubik.manage.ManageString;
 import com.vaadin.data.Binder;
 import com.vaadin.data.converter.LocalDateToDateConverter;
 import com.vaadin.data.converter.StringToDoubleConverter;
-import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -33,7 +35,6 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.themes.ValoTheme;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -52,6 +53,9 @@ public class WindowOrdenDeCompra  extends Window {
     String title_window = "Remisiones de Compra";
 
     OrdenDeCompra ordenDeCompra;
+    Remision remision;
+    List<RemisionDet> listOrdenDeCompraDet = new ArrayList<>();
+    
     Boolean isEdit = false;
     
     TextField txtFolioRemision = new TextField();
@@ -84,7 +88,7 @@ public class WindowOrdenDeCompra  extends Window {
     Button btnGuardar = new Button("Guardar", Fam3SilkIcon.DISK);
     Button btnCancelar = new Button("Cancelar", Fam3SilkIcon.CANCEL);
     
-    Grid<OrdenDeCompraDet> gridRemisionDet = new Grid<>();
+    Grid<OrdenDeCompraDet> gridOrdenDeCompraDet = new Grid<>();
     List<OrdenDeCompraDet> listRemisionDet = new ArrayList<>();
     
     List<Empleado> listAutorizadoresCompras = new ArrayList<>();
@@ -139,13 +143,13 @@ public class WindowOrdenDeCompra  extends Window {
         binder.forField(txtIVA).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(OrdenDeCompra::getIva, OrdenDeCompra::setIva);
         binder.forField(txtTotal).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(OrdenDeCompra::getTotal, OrdenDeCompra::setTotal);
         
-        gridRemisionDet.setHeight("272");
-        gridRemisionDet.setSelectionMode(Grid.SelectionMode.SINGLE);
+        gridOrdenDeCompraDet.setHeight("272");
+        gridOrdenDeCompraDet.setSelectionMode(Grid.SelectionMode.SINGLE);
 
-        gridRemisionDet.addColumn(OrdenDeCompraDet::getCantidad).setCaption("CTD").setWidth(75);
-        gridRemisionDet.addColumn(OrdenDeCompraDet::getDescripcion).setCaption("DESCRIPCION");
-        gridRemisionDet.addColumn(OrdenDeCompraDet::getPrecio_unitario).setCaption("P.U.").setWidth(100);
-        gridRemisionDet.addColumn(OrdenDeCompraDet::getTotal).setCaption("TOTAL").setWidth(100);
+        gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getCantidad).setCaption("CTD").setWidth(75);
+        gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getDescripcion).setCaption("DESCRIPCION");
+        gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getPrecio_unitario).setCaption("P.U.").setWidth(100);
+        gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getTotal).setCaption("TOTAL").setWidth(100);
 
         btnAgregarPartida.addClickListener((event) -> {
 //            WindowRemisionDet windows = new WindowRemisionDet(ordenDeCompra);
@@ -304,6 +308,34 @@ public class WindowOrdenDeCompra  extends Window {
 //            }
         });
         
+        btnBuscarRemision.addClickListener((event) -> {
+                WindowRemisionSeleccionar windows = new WindowRemisionSeleccionar();
+                windows.center();
+                windows.setModal(true);
+                windows.addCloseListener((e) -> {
+                    if(windows.seleccionado){
+                        remision = windows.remision;
+                        
+                        txtFolioRemision.setValue(remision.getFolio());
+                        txtFechaRequerida.setValue(ManageDates.getLocalDateFromDate(remision.getFecha_requerida()));
+                        txtObservaciones.setValue(remision.getObservaciones());
+                        cboMetodoPago.setValue(remision.getMetodo_pago());
+                        cboMoneda.setValue(remision.getMoneda());
+                        txtTipoCambio.setValue(remision.getTipo_cambio()+"");
+                        txtImporte.setValue(remision.getImporte()+"");
+                        txtDescuento.setValue(remision.getDescuento()+"");
+                        txtSubtotal.setValue(remision.getSubtotal()+"");
+                        txtIVA.setValue(remision.getIva()+"");
+                        txtTotal.setValue(remision.getTotal()+"");
+                        txtDireccionEntrega.setValue(remision.getDireccion_entrega());
+                        
+                    }else{
+                        
+                    }
+                });
+                getUI().addWindow(windows);
+        });
+        
         txtSolicita.setEnabled(false);
         txtSolicita.setValue(empleado.getNombre_completo());
         txtObservaciones.setRows(2);
@@ -325,7 +357,7 @@ public class WindowOrdenDeCompra  extends Window {
         cboAlmacenRecibe.setValue("Almacen Matriz");
         cboAlmacenRecibe.setEmptySelectionAllowed(false);
 
-        gridRemisionDet.setWidth("100%");
+        gridOrdenDeCompraDet.setWidth("100%");
         
         txtSolicita.setWidth(strWidth);
         txtFechaRequerida.setWidth(strWidth);
@@ -356,10 +388,16 @@ public class WindowOrdenDeCompra  extends Window {
         cboProveedor.setSelectedItem(proveedorList.get(0));
         cboProveedor.setEmptySelectionAllowed(false);
         
+        txtFolioRemision.setEnabled(false);
+        txtImporte.setEnabled(false);
+        txtSubtotal.setEnabled(false);
+        txtIVA.setEnabled(false);
+        txtTotal.setEnabled(false);
+        
         if (isEdit) {
             binder.readBean(ordenDeCompra);
             
-            gridRemisionDet.setItems(getPartidas());
+            gridOrdenDeCompraDet.setItems(getPartidas());
             
             for (Empleado autorizador : listAutorizadoresCompras) {
                 if (ordenDeCompra.getAutoriza_id().equals(autorizador.getId())) {
@@ -397,8 +435,8 @@ public class WindowOrdenDeCompra  extends Window {
                     }},
                 new HorizontalLayout(fLay1, fLay2), // 2
                 hLay1, // 3
-                gridRemisionDet, // 4
-                fLayTotales, // 5
+                gridOrdenDeCompraDet, // 4
+                new VerticalLayout(fLayTotales), // 5
                 new HorizontalLayout(btnCancelar, btnGuardar)); // 6
         
         cont.setComponentAlignment(lblFolio, Alignment.MIDDLE_CENTER);
@@ -406,7 +444,7 @@ public class WindowOrdenDeCompra  extends Window {
         cont.setComponentAlignment(cont.getComponent(2), Alignment.MIDDLE_CENTER);
         cont.setComponentAlignment(hLay1, Alignment.MIDDLE_RIGHT);
         cont.setComponentAlignment(cont.getComponent(4), Alignment.MIDDLE_CENTER);
-        cont.setComponentAlignment(fLayTotales, Alignment.MIDDLE_RIGHT);
+        cont.setComponentAlignment(cont.getComponent(5), Alignment.MIDDLE_RIGHT);
         cont.setComponentAlignment(cont.getComponent(6), Alignment.MIDDLE_CENTER);
         
         setContent(cont);
@@ -429,7 +467,7 @@ public class WindowOrdenDeCompra  extends Window {
 //                    .withRetryButton()
 //                    .open();
 //        }
-        return listRemisionDet;
+        return listOrdenDeCompraDet;
     }
     
     public void toUpperCase() {

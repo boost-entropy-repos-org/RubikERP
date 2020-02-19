@@ -32,9 +32,10 @@ public class WindowRemisionSeleccionar extends Window {
     VerticalLayout cont = new VerticalLayout();
     String title_window = "Remisiones de Compra";
 
-    Remision remision;
+    public Remision remision;
+    public Boolean seleccionado = false;
 
-    Button btnChecar = new Button("Guardar", Fam3SilkIcon.ACCEPT);
+    Button btnChecar = new Button("Seleccionar", Fam3SilkIcon.ACCEPT);
     Button btnCancelar = new Button("Cancelar", Fam3SilkIcon.CANCEL);
     
     Grid<Remision> gridRemision = new Grid<>();
@@ -51,25 +52,36 @@ public class WindowRemisionSeleccionar extends Window {
     }
 
     public void initComponents() {
-        String strWidth = "300";
+        setWidth("70%");
+        setHeight("60%");
         
-        setWidth("80%");
-        setHeight("80%");
-        
-        gridRemision.setHeight("272");
+        gridRemision.setSizeFull();
         gridRemision.setSelectionMode(Grid.SelectionMode.SINGLE);
 
-        gridRemision.addColumn(Remision::getFolio).setCaption("FOLIO").setWidth(75);
-        gridRemision.addColumn(Remision::getPrioridad).setCaption("PRIORIDAD");
-        gridRemision.addColumn(Remision::getSolicita).setCaption("SOLICITA").setWidth(100);
-        gridRemision.addColumn(Remision::getObservaciones).setCaption("OBSERVACIONES").setWidth(100);
+        gridRemision.addColumn(Remision::getFolio).setCaption("FOLIO").setWidth(140);
+        gridRemision.addColumn(Remision::getPrioridad).setCaption("PRIORIDAD").setWidth(130);
+        gridRemision.addColumn(Remision::getSolicita).setCaption("SOLICITA").setWidth(200);
+        gridRemision.addColumn(Remision::getObservaciones).setCaption("OBSERVACIONES");
+        gridRemision.setItems(getRemisiones());
         
         btnCancelar.addClickListener((event) -> {
             close();
         });
 
         btnChecar.addClickListener((event) -> {
-
+            if (gridRemision.getSelectedItems().size() == 1) {
+                
+                seleccionado = true;
+                remision = gridRemision.getSelectedItems().iterator().next();
+                close();
+                
+            } else {
+                MessageBox.createError()
+                        .withCaption("Error!")
+                        .withMessage("Debe tener un Proveedor seleccionado para poder modificarlo.")
+                        .withRetryButton()
+                        .open();
+            }
         });
 
         cont.setSpacing(false);
@@ -87,11 +99,9 @@ public class WindowRemisionSeleccionar extends Window {
         setClosable(false);
     }
     
-    public List getPartidas() {
-        String strWhere = " documento_id = " + remision.getId();
-
+    public List getRemisiones() {
         RemisionDomain service = new RemisionDomain();
-        service.getRemision(strWhere, "", " id DESC");
+        service.getRemision(" activo = 1 AND folio_orden_compra IS NULL and estado_doc = 'TERMINADO' ", "", " folio DESC");
         listRemision = service.getObjects();
 
         if (!service.getOk()) {
@@ -101,36 +111,8 @@ public class WindowRemisionSeleccionar extends Window {
                     .withRetryButton()
                     .open();
         }
+        
         return listRemision;
-    }
-    
-    public void toUpperCase() {
-        remision.setSolicita(txtSolicita.getValue().toUpperCase());
-        remision.setObservaciones(txtObservaciones.getValue().toUpperCase());
-        remision.setDireccion_entrega(txtDireccionEntrega.getValue().toUpperCase());
-    }
-    
-    public List<Empleado> getAutorizadorCompras() {
-        EmpleadoDomain provService = new EmpleadoDomain();
-        provService.getEmpleado(" autorizador = 1 ", "", " nombre ASC");
-        
-        listAutorizadoresCompras = provService.getObjects();
-        return listAutorizadoresCompras;
-    }
-    
-    public String getFolio() {
-        ConfiguracionDomain domain = new ConfiguracionDomain();
-        domain.getOneConfiguracion(_Folios.FOLIO_REMISION, _Folios.SERIE_REMISION);
-        Configuracion conf = domain.getObject();
-        
-        folio = conf.getSerie() + ManageString.fillWithZero(conf.getFolio(), 5);
-        
-        return folio;
-    }
-    
-    public void updateFolio() {
-        ConfiguracionDomain domain = new ConfiguracionDomain();
-        domain.ConfiguracionUpdate(_Folios.FOLIO_REMISION);
     }
     
 }
