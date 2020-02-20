@@ -150,8 +150,9 @@ public class WindowOrdenDeCompra  extends Window {
 
         gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getCantidad).setCaption("CTD").setWidth(75);
         gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getDescripcion).setCaption("DESCRIPCION");
-        gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getPrecio_unitario).setCaption("P.U.").setWidth(100);
-        gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getTotal).setCaption("TOTAL").setWidth(100);
+        gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getPrecio_unitario).setCaption("P.U.").setWidth(120);
+        gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getIva).setCaption("IVA").setWidth(120);
+        gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getTotal).setCaption("TOTAL").setWidth(120);
 
         btnAgregarPartida.addClickListener((event) -> {
 //            WindowRemisionDet windows = new WindowRemisionDet(ordenDeCompra);
@@ -532,6 +533,7 @@ public class WindowOrdenDeCompra  extends Window {
             partida.setProducto_id(partTemp.getProducto_id());
             partida.setDescripcion(partTemp.getDescripcion());
             partida.setUnidad_medida(partTemp.getUnidad_medida());
+            partida.setPorc_iva(partTemp.getPorc_iva());
             partida.setPrecio_unitario(partTemp.getPrecio_unitario());
             partida.setImporte(partTemp.getImporte());
             partida.setDescuento(partTemp.getDescuento());
@@ -541,17 +543,41 @@ public class WindowOrdenDeCompra  extends Window {
             partida.setServicio(partTemp.getServicio());
             partida.setFolio_remision(remision.getFolio());
             partida.setRemision_id(remision.getId());
-            partida.setNo_parte(partTemp.get);
-            partida.setNo_serie(partTemp.ge);
-            partida.setModelo(partTemp.getmo);
-            partida.setMarca(partTemp.getma);
-            partida.setCodigo_interno(codigo_interno);
-            partida.setCodigo_proveedor(codigo_proveedor);
+            partida.setNo_parte(partTemp.getNo_parte());
+            partida.setNo_serie(partTemp.getNo_serie());
+            partida.setModelo(partTemp.getModelo());
+            partida.setMarca(partTemp.getMarca());
+            partida.setCodigo_interno(partTemp.getCodigo_interno());
+            partida.setCodigo_proveedor(partTemp.getCodigo_proveedor());
             
+            listOrdenDeCompraDet.add(partida);
         }
         
+        gridOrdenDeCompraDet.setItems(listOrdenDeCompraDet);
         
+        calcularTotales();
+    }
+    
+    public void calcularTotales(){
+        Double importe = 0.0;
+        Double descuento = 0.0;
+        Double subtotal = 0.0;
+        Double IVA = 0.0;
+        Double total = 0.0;
         
+        for (OrdenDeCompraDet ordenDeCompraDet : listOrdenDeCompraDet) {
+            importe += ordenDeCompraDet.getImporte();
+            descuento += ordenDeCompraDet.getDescuento();
+            subtotal += ordenDeCompraDet.getSubtotal();
+            IVA += ordenDeCompraDet.getIva();
+            total += ordenDeCompraDet.getTotal();
+        }
+
+        txtImporte.setValue(importe+"");
+        txtDescuento.setValue(descuento+"");
+        txtSubtotal.setValue(subtotal+"");
+        txtIVA.setValue(IVA+"");
+        txtTotal.setValue(total+"");
     }
     
 }

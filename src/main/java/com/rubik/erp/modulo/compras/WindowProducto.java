@@ -27,6 +27,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import de.steinwedel.messagebox.MessageBox;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -61,9 +62,11 @@ public class WindowProducto extends Window {
     TextField txtInventarioMaximo = new TextField("Inv. Maximo:");
     TextField txtInventarioMinimo = new TextField("Inv. Minimo:");
     
-    NativeSelect<Double> cboIVA = new NativeSelect("% IVA:");
+    NativeSelect<Integer> cboIVA = new NativeSelect("% IVA:");
     TextField txtPrecioCompra = new TextField("Precio Compra:");
+    TextField txtIVACompra = new TextField("IVA Compra:");
     TextField txtPrecioVenta = new TextField("Precio Venta:");
+    TextField txtIVAVenta = new TextField("IVA Venta:");
     TextField txtUtilidad = new TextField("Utilidad: % ");
     
     NativeSelect<Proveedor> cboProveedor1 = new NativeSelect("Proveedor 1:");
@@ -117,7 +120,9 @@ public class WindowProducto extends Window {
         binder.forField(txtInventarioMinimo).withConverter(new StringToIntegerConverter(0, "El valor debe ser numerico")).bind(Producto::getInventario_minimo, Producto::setInventario_minimo);
         binder.forField(cboIVA).bind(Producto::getPorc_iva, Producto::setPorc_iva);
         binder.forField(txtPrecioCompra).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(Producto::getPrecio_compra, Producto::setPrecio_compra);
+        binder.forField(txtIVACompra).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(Producto::getIva_compra, Producto::setIva_compra);
         binder.forField(txtPrecioVenta).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(Producto::getPrecio_venta, Producto::setPrecio_venta);
+        binder.forField(txtIVAVenta).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(Producto::getIva_venta, Producto::setIva_venta);
         binder.forField(txtUtilidad).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(Producto::getPorc_utilidad, Producto::setPorc_utilidad);
         binder.forField(chkActivo).bind(Producto::getActivo, Producto::setActivo);
         
@@ -128,22 +133,6 @@ public class WindowProducto extends Window {
         cboProveedor2.setItems(getProveedor(2));
         cboProveedor2.setSelectedItem(proveedorList2.get(0));
         cboProveedor2.setEmptySelectionAllowed(false);
-        
-        if (isEdit) {
-            binder.readBean(producto);
-            
-            for (Proveedor prov : proveedorList1) {
-                if (producto.getProveedor_id_1().equals(prov.getId())) {
-                    cboProveedor1.setValue(prov);
-                }
-            }
-            
-            for (Proveedor prov : proveedorList2) {
-                if (producto.getProveedor_id_2().equals(prov.getId())) {
-                    cboProveedor2.setValue(prov);
-                }
-            }
-        }
 
         btnCancelar.addClickListener((event) -> {
             close();
@@ -228,8 +217,8 @@ public class WindowProducto extends Window {
         txtInventarioMinimo.setMaxLength(4);
         
         cboIVA.setEmptySelectionAllowed(false);
-        cboIVA.setItems(0.0, 16.0);
-        cboIVA.setValue(0.0);
+        cboIVA.setItems(0, 16);
+        cboIVA.setValue(0);
         
         txtPrecioCompra.setMaxLength(12);
         txtPrecioVenta.setMaxLength(12);
@@ -249,10 +238,63 @@ public class WindowProducto extends Window {
         txtInventarioMinimo.setWidth(strWidth);
         cboIVA.setWidth(strWidth);
         txtPrecioCompra.setWidth(strWidth);
+        txtIVACompra.setWidth(strWidth);
+        txtIVAVenta.setWidth(strWidth);
         txtPrecioVenta.setWidth(strWidth);
         txtUtilidad.setWidth(strWidth);
         cboProveedor1.setWidth(strWidth);
         cboProveedor2.setWidth(strWidth);
+
+        txtPrecioCompra.addBlurListener((event) -> {
+            DecimalFormat df = new DecimalFormat("#.##");
+            Double iva_porc = Double.parseDouble(txtPrecioCompra.getValue());
+            Double iva = 0.0;
+            
+            if(iva_porc > 0){
+                Double precio = Double.parseDouble(txtPrecioCompra.getValue());
+                Double precioTemp = precio / 1.16;
+                iva = precio - precioTemp;
+                txtIVACompra.setValue(df.format(iva));
+            }else{
+                txtIVACompra.setValue("0.0");
+            }
+        });
+
+        txtPrecioVenta.addBlurListener((event) -> {
+            DecimalFormat df = new DecimalFormat("#.##");
+            Double iva_porc = Double.parseDouble(txtPrecioVenta.getValue());
+            Double iva = 0.0;
+            
+            if(iva_porc > 0){
+                Double precio = Double.parseDouble(txtPrecioVenta.getValue());
+                Double precioTemp = precio / 1.16;
+                iva = precio - precioTemp;
+                txtIVAVenta.setValue(df.format(iva));
+            }else{
+                txtIVAVenta.setValue("0.0");
+            }
+            
+            
+        });
+        
+        txtIVACompra.setEnabled(false);
+        txtIVAVenta.setEnabled(false);
+        
+        if (isEdit) {
+            binder.readBean(producto);
+            
+            for (Proveedor prov : proveedorList1) {
+                if (producto.getProveedor_id_1().equals(prov.getId())) {
+                    cboProveedor1.setValue(prov);
+                }
+            }
+            
+            for (Proveedor prov : proveedorList2) {
+                if (producto.getProveedor_id_2().equals(prov.getId())) {
+                    cboProveedor2.setValue(prov);
+                }
+            }
+        }
         
         FormLayout fLay = new FormLayout();
         
@@ -262,7 +304,7 @@ public class WindowProducto extends Window {
         fLay.addComponents(new Label("Inventario"){{setStyleName("h3");}});
         fLay.addComponents(chkInventariable, txtInventarioActual, txtInventarioMaximo,txtInventarioMinimo);
         fLay.addComponents(new Label("Precios & Costos"){{setStyleName("h3");}});
-        fLay.addComponents(cboIVA, txtPrecioCompra, txtPrecioVenta,txtUtilidad);
+        fLay.addComponents(cboIVA, txtPrecioCompra, txtIVACompra, txtPrecioVenta, txtIVAVenta, txtUtilidad);
         fLay.addComponents(new Label("Proveedores"){{setStyleName("h3");}});
         fLay.addComponents(cboProveedor1, cboProveedor2);
      

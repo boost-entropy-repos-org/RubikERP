@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v9.10 
-MySQL - 5.5.62 : Database - rubik_erp
+MySQL - 8.0.18 : Database - rubik_erp
 *********************************************************************
 */
 
@@ -12,7 +12,7 @@ MySQL - 5.5.62 : Database - rubik_erp
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`rubik_erp` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`rubik_erp` /*!40100 DEFAULT CHARACTER SET utf8 */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
 USE `rubik_erp`;
 
@@ -221,6 +221,7 @@ CREATE TABLE `orden_compra_det` (
   `producto_id` int(10) DEFAULT NULL,
   `descripcion` varchar(100) DEFAULT NULL,
   `unidad_medida` varchar(100) DEFAULT NULL,
+  `porc_iva` int(2) DEFAULT NULL,
   `precio_unitario` double DEFAULT NULL,
   `importe` double DEFAULT NULL,
   `descuento` double DEFAULT NULL,
@@ -271,7 +272,7 @@ CREATE TABLE `producto` (
   `inventario_actual` int(10) DEFAULT NULL,
   `inventario_maximo` int(10) DEFAULT NULL,
   `inventario_minimo` int(10) DEFAULT NULL,
-  `porc_iva` double DEFAULT NULL,
+  `porc_iva` int(11) DEFAULT NULL,
   `precio_compra` double DEFAULT NULL,
   `iva_compra` double DEFAULT NULL,
   `precio_venta` double DEFAULT NULL,
@@ -288,7 +289,7 @@ CREATE TABLE `producto` (
 
 /*Data for the table `producto` */
 
-insert  into `producto`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`activo`,`codigo_interno`,`descripcion_corta`,`descripcion`,`modelo`,`no_parte`,`no_serie`,`marca`,`unidad_medida`,`tipo_producto`,`sub_tipo_producto`,`clasificacion`,`inventariable`,`inventario_actual`,`inventario_maximo`,`inventario_minimo`,`porc_iva`,`precio_compra`,`iva_compra`,`precio_venta`,`iva_venta`,`porc_descuento`,`descuento_venta`,`porc_utilidad`,`proveedor_id_1`,`proveedor_1`,`proveedor_id_2`,`proveedor_2`) values (1,'2020-01-30 22:28:38','2020-01-30 22:28:38',0,'',0,'',0,'',1,'1','PRODUCTO 1','PRODUCTO 1','345SDFQEQ2','23423df','5467UFGYE4','MARCA 1','SERVICIO','','','SERVICIO',1,0,10,2,16,100,0,200,0,0,0,0,3,'PROVEEDOR 3',0,''),(2,'2020-01-30 22:28:38','2020-01-30 22:28:38',0,'',0,'',0,'',1,'2','PRODUCTO 2','PRODUCTO 2','242AW','23','A2','4R32','NO APLICA','','','PRODUCTO',1,2,20,10,16,10,0,20,0,0,0,0,2,'PROVEEDOR 2',3,'PROVEEDOR 3'),(3,'2020-01-30 22:28:38','2020-01-30 22:28:38',0,NULL,NULL,NULL,NULL,NULL,1,'3','PRODUCTO 3','PRODUCTO 3','215454','55687','6568','4','PIEZA',NULL,NULL,'PRODUCTO',1,0,10,5,16,10,0,20,0,0,0,0,1,'PROVEEDOR 1',3,'PROVEEDOR 3'),(4,'2020-01-30 22:28:38','2020-01-30 22:28:38',0,NULL,NULL,NULL,NULL,NULL,1,'4','PRODUCTO 4','PRODUCTO 4','212889','5658','85','4','PIEZA',NULL,NULL,'PRODUCTO',1,0,10,5,16,1000,0,2000,0,0,0,0,2,'PROVEEDOR 2',3,'PROVEEDOR 3'),(5,'2020-01-30 22:28:38','2020-01-30 22:28:38',0,NULL,NULL,NULL,NULL,NULL,1,'5','PRODUCTO 5','PRODUCTO 5','6659657','526858','4','65','PIEZA',NULL,NULL,'PRODUCTO',1,0,10,5,16,10,0,20,0,0,0,0,1,'PROVEEDOR 1',3,'PROVEEDOR 3'),(6,'2020-01-30 22:28:38','2020-01-30 22:28:38',0,NULL,NULL,NULL,NULL,NULL,1,'6','PRODUCTO 6','PRODUCTO 6','88748','2558','654','458','NO APLICA',NULL,NULL,'PRODUCTO',1,0,10,5,16,100,0,200,0,0,0,0,1,'PROVEEDOR 1',3,'PROVEEDOR 3'),(7,'2020-01-30 22:28:38','2020-01-30 22:28:38',0,NULL,NULL,NULL,NULL,NULL,1,'7','PRODUCTO 7','PRODUCTO 7','49878','5585','1585465','454','PIEZA',NULL,NULL,'PRODUCTO',1,0,10,5,16,100,0,200,0,0,0,0,1,'PROVEEDOR 1',3,'PROVEEDOR 3');
+insert  into `producto`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`activo`,`codigo_interno`,`descripcion_corta`,`descripcion`,`modelo`,`no_parte`,`no_serie`,`marca`,`unidad_medida`,`tipo_producto`,`sub_tipo_producto`,`clasificacion`,`inventariable`,`inventario_actual`,`inventario_maximo`,`inventario_minimo`,`porc_iva`,`precio_compra`,`iva_compra`,`precio_venta`,`iva_venta`,`porc_descuento`,`descuento_venta`,`porc_utilidad`,`proveedor_id_1`,`proveedor_1`,`proveedor_id_2`,`proveedor_2`) values (1,'2020-01-30 22:28:38','2020-02-19 17:31:33',0,'',0,'',0,'',1,'1','PRODUCTO 1','PRODUCTO 1','345SDFQEQ2','23423df','5467UFGYE4','MARCA 1','SERVICIO','','','PRODUCTO',1,0,10,2,16,116,16,200,27.59,0,0,0,3,'PROVEEDOR 3',1,'PABLO BENAVIDES MOLINA'),(2,'2020-01-30 22:28:38','2020-01-30 22:28:38',0,'',0,'',0,'',1,'2','PRODUCTO 2','PRODUCTO 2','242AW','23','A2','4R32','NO APLICA','','','PRODUCTO',1,2,20,10,16,10,0,20,0,0,0,0,2,'PROVEEDOR 2',3,'PROVEEDOR 3'),(3,'2020-01-30 22:28:38','2020-01-30 22:28:38',0,NULL,NULL,NULL,NULL,NULL,1,'3','PRODUCTO 3','PRODUCTO 3','215454','55687','6568','4','PIEZA',NULL,NULL,'PRODUCTO',1,0,10,5,16,10,0,20,0,0,0,0,1,'PROVEEDOR 1',3,'PROVEEDOR 3'),(4,'2020-01-30 22:28:38','2020-01-30 22:28:38',0,NULL,NULL,NULL,NULL,NULL,1,'4','PRODUCTO 4','PRODUCTO 4','212889','5658','85','4','PIEZA',NULL,NULL,'PRODUCTO',1,0,10,5,16,1000,0,2000,0,0,0,0,2,'PROVEEDOR 2',3,'PROVEEDOR 3'),(5,'2020-01-30 22:28:38','2020-01-30 22:28:38',0,NULL,NULL,NULL,NULL,NULL,1,'5','PRODUCTO 5','PRODUCTO 5','6659657','526858','4','65','PIEZA',NULL,NULL,'PRODUCTO',1,0,10,5,16,10,0,20,0,0,0,0,1,'PROVEEDOR 1',3,'PROVEEDOR 3'),(6,'2020-01-30 22:28:38','2020-01-30 22:28:38',0,NULL,NULL,NULL,NULL,NULL,1,'6','PRODUCTO 6','PRODUCTO 6','88748','2558','654','458','NO APLICA',NULL,NULL,'PRODUCTO',1,0,10,5,16,100,0,200,0,0,0,0,1,'PROVEEDOR 1',3,'PROVEEDOR 3'),(7,'2020-01-30 22:28:38','2020-01-30 22:28:38',0,NULL,NULL,NULL,NULL,NULL,1,'7','PRODUCTO 7','PRODUCTO 7','49878','5585','1585465','454','PIEZA',NULL,NULL,'PRODUCTO',1,0,10,5,16,100,0,200,0,0,0,0,1,'PROVEEDOR 1',3,'PROVEEDOR 3');
 
 /*Table structure for table `proveedor` */
 
@@ -423,12 +424,18 @@ CREATE TABLE `remision_det` (
   `iva` double DEFAULT NULL,
   `total` double DEFAULT NULL,
   `servicio` tinyint(1) DEFAULT '1',
+  `no_parte` varchar(20) DEFAULT NULL,
+  `no_serie` varchar(20) DEFAULT NULL,
+  `modelo` varchar(20) DEFAULT NULL,
+  `marca` varchar(50) DEFAULT NULL,
+  `codigo_interno` varchar(10) DEFAULT NULL,
+  `codigo_proveedor` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 /*Data for the table `remision_det` */
 
-insert  into `remision_det`(`id`,`folio`,`documento_id`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`no_partida`,`fecha_alta`,`cantidad`,`producto_id`,`descripcion`,`unidad_medida`,`precio_unitario`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`servicio`) values (3,'RM00001',1,1,' ',1,' ',1,'Pablo Benavides Molina',0,'2020-02-09 09:58:27',1,6,'PRODUCTO 6','NO APLICA',100,NULL,NULL,NULL,NULL,100,0);
+insert  into `remision_det`(`id`,`folio`,`documento_id`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`no_partida`,`fecha_alta`,`cantidad`,`producto_id`,`descripcion`,`unidad_medida`,`precio_unitario`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`servicio`,`no_parte`,`no_serie`,`modelo`,`marca`,`codigo_interno`,`codigo_proveedor`) values (3,'RM00001',1,1,' ',1,' ',1,'Pablo Benavides Molina',0,'2020-02-09 09:58:27',1,6,'PRODUCTO 6','NO APLICA',100,NULL,NULL,NULL,NULL,100,0,'84654','654654','6546','654654','654654',NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

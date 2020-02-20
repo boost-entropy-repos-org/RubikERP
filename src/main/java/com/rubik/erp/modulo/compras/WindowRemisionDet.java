@@ -118,6 +118,12 @@ public class WindowRemisionDet extends Window {
                     partida.setUnidad_medida(p.getUnidad_medida());
                     partida.setPrecio_unitario(p.getPrecio_compra());
                     
+                    partida.setNo_parte(p.getNo_parte());
+                    partida.setNo_serie(p.getNo_serie());
+                    partida.setModelo(p.getModelo());
+                    partida.setMarca(p.getMarca());
+                    partida.setCodigo_interno(p.getCodigo_interno());
+
                     txtDescripcion.setValue(p.getDescripcion());
                     txtTotal.setValue(p.getPrecio_compra().toString());
                 }

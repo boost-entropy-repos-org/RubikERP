@@ -9,6 +9,6 @@ package com.rubik.erp.modulo.compras;
  *
  * @author Dev
  */
-public class WindowRemisionDetSeleccionar {
+public class WindowOrdenDeCompraDet {
     
 }
