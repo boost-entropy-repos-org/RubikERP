@@ -37,7 +37,8 @@ public class WindowRemisionDetInfo extends Window {
     Label lblFolio;
 
     public WindowRemisionDetInfo(Remision remision) {
-        lblFolio = new Label("REMISION " + remision.getFolio()) {
+        this.remision = remision;
+        lblFolio = new Label("REMISION " + this.remision.getFolio()) {
             {
                 setStyleName("h2");
             }
@@ -52,15 +53,14 @@ public class WindowRemisionDetInfo extends Window {
         gridRemisionDet.setSizeFull();
         gridRemisionDet.setSelectionMode(Grid.SelectionMode.SINGLE);
 
-        gridRemisionDet.addColumn(RemisionDet::getCantidad).setCaption("CTD").setWidth(140);
-        gridRemisionDet.addColumn(RemisionDet::getMarca).setCaption("MARCA").setWidth(200);
-        gridRemisionDet.addColumn(RemisionDet::getModelo).setCaption("MODELO");
-        gridRemisionDet.addColumn(RemisionDet::getDescripcion).setCaption("DESCRIPCION").setWidth(130);
+        gridRemisionDet.addColumn(RemisionDet::getCantidad).setCaption("CTD").setWidth(70);
+        gridRemisionDet.addColumn(RemisionDet::getMarca).setCaption("MARCA").setWidth(160);
+        gridRemisionDet.addColumn(RemisionDet::getModelo).setCaption("MODELO").setWidth(160);
+        gridRemisionDet.addColumn(RemisionDet::getDescripcion).setCaption("DESCRIPCION");
         gridRemisionDet.setItems(getRemisiones());
 
         cont.setSpacing(false);
-        cont.addComponents(lblFolio,
-                gridRemisionDet);
+        cont.addComponents(lblFolio,gridRemisionDet);
 
         cont.setComponentAlignment(cont.getComponent(0), Alignment.MIDDLE_CENTER);
         cont.setComponentAlignment(cont.getComponent(1), Alignment.MIDDLE_CENTER);
@@ -68,12 +68,12 @@ public class WindowRemisionDetInfo extends Window {
         setContent(cont);
         setModal(true);
         setResizable(false);
-        setClosable(false);
+        setClosable(true);
     }
     
     public List getRemisiones() {
         RemisionDetDomain service = new RemisionDetDomain();
-        service.getRemisionDet(" documento_id = " + remision.getId(), "", " no_partida DESC");
+        service.getRemisionDet(" documento_id = " + remision.getId(), "", " id DESC");
         listRemision = service.getObjects();
 
         if (!service.getOk()) {

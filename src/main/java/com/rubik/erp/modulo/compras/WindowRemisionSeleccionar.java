@@ -101,7 +101,7 @@ public class WindowRemisionSeleccionar extends Window {
     
     public List getRemisiones() {
         RemisionDomain service = new RemisionDomain();
-        service.getRemision(" activo = 1 AND folio_orden_compra IS NULL and estado_doc = 'TERMINADO' ", "", " folio DESC");
+        service.getRemision(" activo = 1 AND estado_doc = 'AUTORIZADO' ", "", " folio DESC");
         listRemision = service.getObjects();
 
         if (!service.getOk()) {
