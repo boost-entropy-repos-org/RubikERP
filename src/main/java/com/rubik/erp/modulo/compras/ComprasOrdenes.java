@@ -31,7 +31,7 @@ import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
  *
  * @author Dev
  */
-public class ComprasOrdenes  extends Panel implements View {
+public class ComprasOrdenes extends Panel implements View {
 
     public static final String NAME = "ORDENES_COMPRA";
     VerticalLayout container = new VerticalLayout();

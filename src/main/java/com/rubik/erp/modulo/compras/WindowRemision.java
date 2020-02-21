@@ -112,8 +112,8 @@ public class WindowRemision extends Window {
 
         gridRemisionDet.addColumn(RemisionDet::getCantidad).setCaption("CTD").setWidth(75);
         gridRemisionDet.addColumn(RemisionDet::getDescripcion).setCaption("DESCRIPCION");
-        gridRemisionDet.addColumn(RemisionDet::getPrecio_unitario).setCaption("P.U.").setWidth(100);
-        gridRemisionDet.addColumn(RemisionDet::getTotal).setCaption("TOTAL").setWidth(100);
+//        gridRemisionDet.addColumn(RemisionDet::getPrecio_unitario).setCaption("P.U.").setWidth(100);
+//        gridRemisionDet.addColumn(RemisionDet::getTotal).setCaption("TOTAL").setWidth(100);
 
         btnAgregarPartida.addClickListener((event) -> {
             WindowRemisionDet windows = new WindowRemisionDet(remision);

@@ -250,7 +250,7 @@ public class WindowProducto extends Window {
             Double iva_porc = Double.parseDouble(txtPrecioCompra.getValue());
             Double iva = 0.0;
             
-            if(iva_porc > 0){
+            if(iva_porc > 0 && txtPrecioCompra.getValue().length() > 0){
                 Double precio = Double.parseDouble(txtPrecioCompra.getValue());
                 Double precioTemp = precio / 1.16;
                 iva = precio - precioTemp;
@@ -265,7 +265,7 @@ public class WindowProducto extends Window {
             Double iva_porc = Double.parseDouble(txtPrecioVenta.getValue());
             Double iva = 0.0;
             
-            if(iva_porc > 0){
+            if(iva_porc > 0 && txtPrecioVenta.getValue().length() > 0){
                 Double precio = Double.parseDouble(txtPrecioVenta.getValue());
                 Double precioTemp = precio / 1.16;
                 iva = precio - precioTemp;

@@ -191,7 +191,7 @@ public class WindowRemisionDet extends Window {
         });
         
         FormLayout fLay = new FormLayout();
-        fLay.addComponents(btnProducto,txtCantidad, txtDescripcion, txtTotal);
+        fLay.addComponents(btnProducto,txtCantidad, txtDescripcion);
         
         cont.addComponents(fLay, new HorizontalLayout(btnCancelar, btnGuardar));
         

@@ -179,7 +179,7 @@ public class ComprasRemisiones extends Panel implements View {
                             gridRemisiones.setItems(getRemisiones());
                             
                             MessageBox.createInfo()
-                                    .withCaption("Error!")
+                                    .withCaption("Atencion!")
                                     .withMessage("Remision de Compra terminada correctamente. Aun esta pendiente de Autorizacion.")
                                     .withRetryButton()
                                     .open();

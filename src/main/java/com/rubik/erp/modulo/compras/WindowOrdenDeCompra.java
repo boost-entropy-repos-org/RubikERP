@@ -555,7 +555,7 @@ public class WindowOrdenDeCompra  extends Window {
         
         gridOrdenDeCompraDet.setItems(listOrdenDeCompraDet);
         
-        calcularTotales();
+//        calcularTotales();
     }
     
     public void calcularTotales(){

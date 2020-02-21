@@ -6,6 +6,7 @@
 package com.rubik.erp.fragments;
 
 import com.rubik.erp.model.Empleado;
+import com.rubik.erp.modulo.compras.ComprasMonitorRemisiones;
 import com.rubik.erp.modulo.compras.ComprasOrdenes;
 import com.rubik.erp.modulo.compras.ComprasProductos;
 import com.rubik.erp.modulo.compras.ComprasProveedores;
@@ -41,7 +42,7 @@ public class FragmentTop extends HorizontalLayout {
     MenuBar.MenuItem subProducto;
     MenuBar.MenuItem subRemisiones;
     MenuBar.MenuItem subOrdenDeCompra;
-    MenuBar.MenuItem subMonitoreoRequi;
+    MenuBar.MenuItem subMonitoreoRemisiones;
     MenuBar.MenuItem subMonitoreoOC;
     MenuBar.MenuItem submReportesCompras;
     MenuBar.MenuItem subReporteRequisicion;
@@ -134,8 +135,8 @@ public class FragmentTop extends HorizontalLayout {
                 
         menuCompras.addSeparator();
         
-        subMonitoreoRequi = menuCompras.addItem("Monitoreo Requisicion", actionMenu);
-        subMonitoreoRequi.setIcon(Fam3SilkIcon.PAGE_WHITE_PAINTBRUSH);
+        subMonitoreoRemisiones = menuCompras.addItem("Monitoreo de Remisiones", actionMenu);
+        subMonitoreoRemisiones.setIcon(Fam3SilkIcon.PAGE_WHITE_PAINTBRUSH);
         
         subMonitoreoOC = menuCompras.addItem("Monitoreo OC", actionMenu);
         subMonitoreoOC.setIcon(Fam3SilkIcon.BOOK_GO);
@@ -223,9 +224,9 @@ public class FragmentTop extends HorizontalLayout {
                 case "Ordenes de Compra":
                     getUI().getNavigator().navigateTo(ComprasOrdenes.NAME);
                     break;
-//                case "Monitoreo Requisicion":
-//                    getUI().getNavigator().navigateTo(ViewComprasMonitoreoRequisicion.NAME);
-//                    break;
+                case "Monitoreo de Remisiones":
+                    getUI().getNavigator().navigateTo(ComprasMonitorRemisiones.NAME);
+                    break;
 //                case "Monitoreo OC":
 //                    getUI().getNavigator().navigateTo(ViewComprasMonitoreoOC.NAME);
 //                    break;
@@ -290,7 +291,7 @@ public class FragmentTop extends HorizontalLayout {
         menuCompras.setVisible(false);
         subReporteRequisicion.setVisible(false);
         subOrdenDeCompra.setVisible(false);
-        subMonitoreoRequi.setVisible(false);
+        subMonitoreoRemisiones.setVisible(false);
         subMonitoreoOC.setVisible(false);
         subReporteRequisicion.setVisible(false);
         subReporteOrdenDeCompra.setVisible(false);

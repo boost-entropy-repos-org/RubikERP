@@ -80,7 +80,7 @@ public class ComprasProductos extends Panel implements View {
         gridProducto.addColumn(Producto::getNo_serie).setCaption("NS").setId("NS").setWidth(97);
         gridProducto.addColumn(Producto::getMarca).setCaption("MARCA").setId("MARCA").setWidth(135);
         gridProducto.addColumn(Producto::getDescripcion_corta).setCaption("DESCRIPCION").setId("DESCRIPCION");
-        gridProducto.addColumn(Producto::getInventario_actual).setCaption("INVENTARIO").setId("INVENTARIO").setWidth(80);
+        gridProducto.addColumn(Producto::getInventario_actual).setCaption("INVENTARIO").setId("INVENTARIO").setWidth(120);
         
 
         gridProducto.setItems(getProducto());
