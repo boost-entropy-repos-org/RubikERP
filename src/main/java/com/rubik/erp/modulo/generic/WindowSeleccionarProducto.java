@@ -8,6 +8,7 @@ package com.rubik.erp.modulo.generic;
 import com.rubik.erp.domain.ProductoDomain;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.Producto;
+import com.rubik.erp.modulo.compras.WindowProducto;
 import com.vaadin.data.HasValue;
 import com.vaadin.data.ValueProvider;
 import com.vaadin.data.provider.ListDataProvider;
@@ -16,6 +17,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -38,6 +40,7 @@ public class WindowSeleccionarProducto extends Window {
     VerticalLayout cont = new VerticalLayout();
     
     Button btnSeleccionar = new Button("Seleccionar",Fam3SilkIcon.ACCEPT);
+    Button btnAdd = new Button("Agregar",Fam3SilkIcon.ADD);
     
     Grid<Producto> gridSelecProd = new Grid<>();
     List<Producto> listProducto = new ArrayList<>();
@@ -59,7 +62,7 @@ public class WindowSeleccionarProducto extends Window {
         gridSelecProd.addColumn(Producto::getModelo).setCaption("MODELO").setId("MODELO");
         gridSelecProd.addColumn(Producto::getMarca).setCaption("MARCA").setId("MARCA");
 
-        cont.addComponents(btnSeleccionar, gridSelecProd);
+        cont.addComponents(new HorizontalLayout(btnSeleccionar,btnAdd), gridSelecProd);
         cont.setComponentAlignment(cont.getComponent(0), Alignment.MIDDLE_CENTER);
         cont.setComponentAlignment(cont.getComponent(1), Alignment.MIDDLE_CENTER);
 
@@ -84,6 +87,16 @@ public class WindowSeleccionarProducto extends Window {
             }
         });
 
+        btnAdd.addClickListener((event) -> {
+            WindowProducto windows = new WindowProducto();
+            windows.center();
+            windows.setModal(true);
+            windows.addCloseListener(ev -> {
+                gridSelecProd.setItems(getProducto());
+            });
+            getUI().addWindow(windows);
+        });
+        
         gridSelecProd.setItems(getProducto());
         
         listDataProviderProducto = new ListDataProvider<>(getProducto());

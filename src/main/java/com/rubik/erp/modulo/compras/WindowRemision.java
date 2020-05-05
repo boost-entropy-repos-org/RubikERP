@@ -63,6 +63,7 @@ public class WindowRemision extends Window {
     Button btnAgregarPartida = new Button("Agregar",Fam3SilkIcon.ADD);
     Button btnModificarPartida = new Button("Modificar",Fam3SilkIcon.PENCIL);
     Button btnEliminarPartida = new Button("Eliminar",Fam3SilkIcon.DELETE);
+    Button btnExpediente = new Button("", Fam3SilkIcon.FOLDER);
     Button btnGuardar = new Button("Guardar", Fam3SilkIcon.DISK);
     Button btnCancelar = new Button("Cancelar", Fam3SilkIcon.CANCEL);
     
@@ -82,6 +83,7 @@ public class WindowRemision extends Window {
         };
         initComponents();
         btnModificarPartida.setEnabled(false);
+        btnExpediente.setEnabled(false);
     }
 
     public WindowRemision(Remision remisionTemp) {
@@ -312,7 +314,7 @@ public class WindowRemision extends Window {
         cont.addComponents(lblFolio,
                 new HorizontalLayout(fLay, 
                         new VerticalLayout(
-                                new HorizontalLayout(
+                                new HorizontalLayout(btnExpediente,
                                         btnAgregarPartida,btnModificarPartida,btnEliminarPartida),
                                 gridRemisionDet){{setComponentAlignment(getComponent(0), Alignment.MIDDLE_CENTER);}}
                 ){{setSpacing(false);}}, new HorizontalLayout(btnCancelar, btnGuardar));
@@ -359,7 +361,7 @@ public class WindowRemision extends Window {
     
     public String getFolio() {
         ConfiguracionDomain domain = new ConfiguracionDomain();
-        domain.getOneConfiguracion(_Folios.FOLIO_REMISION, _Folios.SERIE_REMISION);
+        domain.getOneFolioConfiguracion(_Folios.FOLIO_REMISION, _Folios.SERIE_REMISION);
         Configuracion conf = domain.getObject();
         
         folio = conf.getSerie() + ManageString.fillWithZero(conf.getFolio(), 5);
@@ -369,7 +371,7 @@ public class WindowRemision extends Window {
     
     public void updateFolio() {
         ConfiguracionDomain domain = new ConfiguracionDomain();
-        domain.ConfiguracionUpdate(_Folios.FOLIO_REMISION);
+        domain.ConfiguracionFolioUpdate(_Folios.FOLIO_REMISION);
     }
     
 }

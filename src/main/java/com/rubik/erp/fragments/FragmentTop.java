@@ -13,6 +13,7 @@ import com.rubik.erp.modulo.compras.ComprasProveedores;
 import com.rubik.erp.modulo.compras.ComprasRemisiones;
 import com.rubik.erp.modulo.generic.Login;
 import com.rubik.erp.modulo.ventas.VentasClientes;
+import com.rubik.modulo.configuracion.ViewConfiguracion;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
@@ -59,6 +60,7 @@ public class FragmentTop extends HorizontalLayout {
     MenuBar.MenuItem subUsuarios;
 
     MenuBar.MenuItem menuConfiguracion;
+    MenuBar.MenuItem subConfiguracion;
     
     MenuBar.MenuItem menuSalir;
     
@@ -192,6 +194,9 @@ public class FragmentTop extends HorizontalLayout {
         menuConfiguracion = menubar.addItem("Conf", null);
         menuConfiguracion.setIcon(Fam3SilkIcon.COG);
         
+        subConfiguracion = menuConfiguracion.addItem("Configuracion", actionMenu);
+        subConfiguracion.setIcon(Fam3SilkIcon.COG_GO);
+        
 // ----------------------------------------------------------------
 // ---------------------------------------------------------------- 
 // ---------------------------------------------------------------- SALIR
@@ -269,7 +274,11 @@ public class FragmentTop extends HorizontalLayout {
 //                case "Cliente":
 //                    getUI().getNavigator().navigateTo(ViewCliente.NAME);
 //                    break; 
-
+                    
+// ------------- CONFIGURACION
+                case "Configuracion":
+                    getUI().getNavigator().navigateTo(ViewConfiguracion.NAME);
+                    break;
 
 // ------------- CONFIGURACION & EXIT
                 case "Salir":

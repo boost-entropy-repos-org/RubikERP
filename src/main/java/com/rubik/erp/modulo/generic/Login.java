@@ -5,6 +5,7 @@
  */
 package com.rubik.erp.modulo.generic;
 
+import com.rubik.erp.domain.ConfiguracionDomain;
 import com.rubik.erp.domain.EmpleadoDomain;
 import com.rubik.erp.model.Empleado;
 import com.vaadin.event.ShortcutAction;
@@ -115,9 +116,13 @@ public class Login  extends VerticalLayout implements View {
                     
                     if (usuario != null) {
                         
-                            VaadinSession.getCurrent().getSession().setAttribute("USUARIO_ACTIVO", usuario);
-                            VaadinService.getCurrentRequest().getWrappedSession().setAttribute("userName", service.getObject().getNombre_completo());
-                            getUI().getNavigator().navigateTo(MainPage.NAME);
+                        ConfiguracionDomain configService = new ConfiguracionDomain();
+                        configService.getConfiguracion();
+                        
+                        VaadinSession.getCurrent().getSession().setAttribute("CONFIGURACION", configService.getObject());
+                        VaadinSession.getCurrent().getSession().setAttribute("USUARIO_ACTIVO", usuario);
+                        VaadinService.getCurrentRequest().getWrappedSession().setAttribute("userName", service.getObject().getNombre_completo());
+                        getUI().getNavigator().navigateTo(MainPage.NAME);
                     } else {
                         MessageBox.createError()
                                 .withCaption("Error: ")

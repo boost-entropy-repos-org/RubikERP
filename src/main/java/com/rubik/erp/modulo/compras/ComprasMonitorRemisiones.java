@@ -170,6 +170,7 @@ public class ComprasMonitorRemisiones extends Panel implements View {
                     .withYesButton(() -> {
                         remision.setAutoriza(empleado.getNombre_completo());
                         remision.setAutoriza_id(empleado.getId());
+                        
                         RemisionDomain service = new RemisionDomain();
                         service.RemisionAutorizar(remision);
 

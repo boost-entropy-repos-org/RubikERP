@@ -74,8 +74,6 @@ public class ComprasOrdenes extends Panel implements View {
         };
         lblTitulo.setSizeUndefined();
 
-        setContent(container);
-
         container.setMargin(false);
         container.addComponents(new FragmentTop(),
                 lblTitulo,

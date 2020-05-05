@@ -19,6 +19,7 @@ import com.rubik.erp.model.Proveedor;
 import com.rubik.erp.model.Remision;
 import com.rubik.erp.model.RemisionDet;
 import com.rubik.manage.ManageDates;
+import com.rubik.manage.ManageNumbers;
 import com.rubik.manage.ManageString;
 import com.vaadin.data.Binder;
 import com.vaadin.data.converter.LocalDateToDateConverter;
@@ -36,6 +37,7 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.themes.ValoTheme;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -150,8 +152,7 @@ public class WindowOrdenDeCompra  extends Window {
 
         gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getCantidad).setCaption("CTD").setWidth(75);
         gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getDescripcion).setCaption("DESCRIPCION");
-        gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getPrecio_unitario).setCaption("P.U.").setWidth(120);
-        gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getIva).setCaption("IVA").setWidth(120);
+        gridOrdenDeCompraDet.addComponentColumn(this::getTextField).setCaption("P.U.").setWidth(120);
         gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getTotal).setCaption("TOTAL").setWidth(120);
 
         btnAgregarPartida.addClickListener((event) -> {
@@ -319,6 +320,7 @@ public class WindowOrdenDeCompra  extends Window {
                     if(windows.seleccionado){
                         remision = windows.remision;
                         
+                        txtSolicita.setValue(remision.getSolicita());
                         txtFolioRemision.setValue(remision.getFolio());
                         txtFechaRequerida.setValue(ManageDates.getLocalDateFromDate(remision.getFecha_requerida()));
                         txtObservaciones.setValue(remision.getObservaciones());
@@ -489,7 +491,7 @@ public class WindowOrdenDeCompra  extends Window {
     
     public String getFolio() {
         ConfiguracionDomain domain = new ConfiguracionDomain();
-        domain.getOneConfiguracion(_Folios.FOLIO_ORDEN_COMPRA, _Folios.SERIE_ORDEN_COMPRA);
+        domain.getOneFolioConfiguracion(_Folios.FOLIO_ORDEN_COMPRA, _Folios.SERIE_ORDEN_COMPRA);
         Configuracion conf = domain.getObject();
         
         folio = conf.getSerie() + ManageString.fillWithZero(conf.getFolio(), 5);
@@ -499,7 +501,7 @@ public class WindowOrdenDeCompra  extends Window {
     
     public void updateFolio() {
         ConfiguracionDomain domain = new ConfiguracionDomain();
-        domain.ConfiguracionUpdate(_Folios.FOLIO_ORDEN_COMPRA);
+        domain.ConfiguracionFolioUpdate(_Folios.FOLIO_ORDEN_COMPRA);
     }
     
     public List<Proveedor> getProveedor() {
@@ -578,6 +580,60 @@ public class WindowOrdenDeCompra  extends Window {
         txtSubtotal.setValue(subtotal+"");
         txtIVA.setValue(IVA+"");
         txtTotal.setValue(total+"");
+    }
+    
+    public TextField getTextField(OrdenDeCompraDet part){
+        
+        TextField txtTotal = new TextField();
+        txtTotal.setStyleName(ValoTheme.TEXTFIELD_ALIGN_RIGHT);
+        
+        if(part.getPrecio_unitario()!=null){
+            txtTotal.setValue(part.getPrecio_unitario().toString());
+        }else{
+            txtTotal.setValue("0.00");
+        }
+
+        txtTotal.setWidth("100");
+        txtTotal.setMaxLength(15);
+        
+        txtTotal.addFocusListener((event) -> {
+            if(txtTotal.getValue().length() == 0){
+                txtTotal.setValue("0.0");
+            }else{
+                txtTotal.setValue(txtTotal.getValue());
+            }
+            txtTotal.setSelection(0, txtTotal.getValue().length());
+        });
+        
+        txtTotal.addValueChangeListener((event) -> {
+            txtTotal.setValue(txtTotal.getValue().trim());
+
+            if(txtTotal.getValue().length() >= 0){
+                if(!ManageNumbers.isStringToDouble(txtTotal.getValue())){
+                    txtTotal.setValue("0.0");
+                }else{
+//                    part.setPrecio_unitario(Double.parseDouble(txtTotal.getValue()));
+                }
+            }else{
+                txtTotal.setValue("0.0");
+            }
+            
+            part.setPrecio_unitario(Double.parseDouble(txtTotal.getValue()));
+            calcularPartida(part);
+            System.out.println("CALCULAR TOTALES --- ");
+            
+//            gridOrdenDeCompraDet.
+        });
+       
+        return txtTotal;
+    }
+    
+    public void calcularPartida(OrdenDeCompraDet part){
+        part.setImporte( part.getPrecio_unitario() * part.getCantidad() );
+        part.setDescuento(0.0);
+        part.setSubtotal(part.getImporte() - part.getDescuento());
+        part.setIva(part.getSubtotal() * .16);
+        part.setTotal(part.getSubtotal() + part.getIva());
     }
     
 }
