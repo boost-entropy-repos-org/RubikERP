@@ -5,39 +5,17 @@
  */
 package com.rubik.erp.modulo.compras;
 
-import com.rubik.erp.domain.ProductoDomain;
-import com.rubik.erp.domain.ProveedorDomain;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.Producto;
-import com.rubik.erp.model.Proveedor;
-import com.rubik.variables.UnidadesDeMedida;
-import com.vaadin.data.Binder;
-import com.vaadin.data.converter.StringToDoubleConverter;
-import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.CheckBox;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.NativeSelect;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import de.steinwedel.messagebox.MessageBox;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
 
 /**
  *
- * @author Dev
+ * @author GRUCAS
  */
-public class WindowProducto extends Window {
+public class WindowProductoSimple  extends Window {
     
     Empleado empleado = (Empleado) VaadinSession.getCurrent().getSession().getAttribute("USUARIO_ACTIVO");
     
