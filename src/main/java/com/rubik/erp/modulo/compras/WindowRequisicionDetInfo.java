@@ -5,10 +5,10 @@
  */
 package com.rubik.erp.modulo.compras;
 
-import com.rubik.erp.domain.RemisionDetDomain;
+import com.rubik.erp.domain.RequisicionDetDomain;
 import com.rubik.erp.model.Empleado;
-import com.rubik.erp.model.Remision;
-import com.rubik.erp.model.RemisionDet;
+import com.rubik.erp.model.Requisicion;
+import com.rubik.erp.model.RequisicionDet;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Grid;
@@ -23,22 +23,22 @@ import java.util.List;
  *
  * @author GRUCAS
  */
-public class WindowRemisionDetInfo extends Window {
+public class WindowRequisicionDetInfo extends Window {
     
     Empleado empleado = (Empleado) VaadinSession.getCurrent().getSession().getAttribute("USUARIO_ACTIVO");
     
     VerticalLayout cont = new VerticalLayout();
-    String title_window = "Remisiones de Compra";
+    String title_window = "Requisiciones de Compra";
 
-    Remision remision;
+    Requisicion requisicion;
     
-    Grid<RemisionDet> gridRemisionDet = new Grid<>();
-    List<RemisionDet> listRemision = new ArrayList<>();
+    Grid<RequisicionDet> gridRequisicionDet = new Grid<>();
+    List<RequisicionDet> listRequisicion = new ArrayList<>();
     Label lblFolio;
 
-    public WindowRemisionDetInfo(Remision remision) {
-        this.remision = remision;
-        lblFolio = new Label("REMISION " + this.remision.getFolio()) {
+    public WindowRequisicionDetInfo(Requisicion requisicion) {
+        this.requisicion = requisicion;
+        lblFolio = new Label("REQUISICION " + this.requisicion.getFolio()) {
             {
                 setStyleName("h2");
             }
@@ -50,17 +50,17 @@ public class WindowRemisionDetInfo extends Window {
         setWidth("70%");
         setHeight("60%");
         
-        gridRemisionDet.setSizeFull();
-        gridRemisionDet.setSelectionMode(Grid.SelectionMode.SINGLE);
+        gridRequisicionDet.setSizeFull();
+        gridRequisicionDet.setSelectionMode(Grid.SelectionMode.SINGLE);
 
-        gridRemisionDet.addColumn(RemisionDet::getCantidad).setCaption("CTD").setWidth(70);
-        gridRemisionDet.addColumn(RemisionDet::getMarca).setCaption("MARCA").setWidth(160);
-        gridRemisionDet.addColumn(RemisionDet::getModelo).setCaption("MODELO").setWidth(160);
-        gridRemisionDet.addColumn(RemisionDet::getDescripcion).setCaption("DESCRIPCION");
-        gridRemisionDet.setItems(getRemisiones());
+        gridRequisicionDet.addColumn(RequisicionDet::getCantidad).setCaption("CTD").setWidth(70);
+        gridRequisicionDet.addColumn(RequisicionDet::getMarca).setCaption("MARCA").setWidth(160);
+        gridRequisicionDet.addColumn(RequisicionDet::getModelo).setCaption("MODELO").setWidth(160);
+        gridRequisicionDet.addColumn(RequisicionDet::getDescripcion).setCaption("DESCRIPCION");
+        gridRequisicionDet.setItems(getRequisiciones());
 
         cont.setSpacing(false);
-        cont.addComponents(lblFolio,gridRemisionDet);
+        cont.addComponents(lblFolio,gridRequisicionDet);
 
         cont.setComponentAlignment(cont.getComponent(0), Alignment.MIDDLE_CENTER);
         cont.setComponentAlignment(cont.getComponent(1), Alignment.MIDDLE_CENTER);
@@ -71,10 +71,10 @@ public class WindowRemisionDetInfo extends Window {
         setClosable(true);
     }
     
-    public List getRemisiones() {
-        RemisionDetDomain service = new RemisionDetDomain();
-        service.getRemisionDet(" documento_id = " + remision.getId(), "", " id DESC");
-        listRemision = service.getObjects();
+    public List getRequisiciones() {
+        RequisicionDetDomain service = new RequisicionDetDomain();
+        service.getRequisicionDet(" documento_id = " + requisicion.getId(), "", " id DESC");
+        listRequisicion = service.getObjects();
 
         if (!service.getOk()) {
             MessageBox.createError()
@@ -84,7 +84,7 @@ public class WindowRemisionDetInfo extends Window {
                     .open();
         }
         
-        return listRemision;
+        return listRequisicion;
     }
     
 }

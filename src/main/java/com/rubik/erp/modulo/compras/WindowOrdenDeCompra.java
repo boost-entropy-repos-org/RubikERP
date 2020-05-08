@@ -10,14 +10,14 @@ import com.rubik.erp.config._Pago_Documentos;
 import com.rubik.erp.domain.ConfiguracionDomain;
 import com.rubik.erp.domain.EmpleadoDomain;
 import com.rubik.erp.domain.ProveedorDomain;
-import com.rubik.erp.domain.RemisionDetDomain;
+import com.rubik.erp.domain.RequisicionDetDomain;
 import com.rubik.erp.model.Configuracion;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.OrdenDeCompra;
 import com.rubik.erp.model.OrdenDeCompraDet;
 import com.rubik.erp.model.Proveedor;
-import com.rubik.erp.model.Remision;
-import com.rubik.erp.model.RemisionDet;
+import com.rubik.erp.model.Requisicion;
+import com.rubik.erp.model.RequisicionDet;
 import com.rubik.manage.ManageDates;
 import com.rubik.manage.ManageNumbers;
 import com.rubik.manage.ManageString;
@@ -54,15 +54,15 @@ public class WindowOrdenDeCompra  extends Window {
     Empleado empleado = (Empleado) VaadinSession.getCurrent().getSession().getAttribute("USUARIO_ACTIVO");
     
     VerticalLayout cont = new VerticalLayout();
-    String title_window = "Remisiones de Compra";
+    String title_window = "Requisiciones de Compra";
 
     OrdenDeCompra ordenDeCompra;
-    Remision remision;
-    List<RemisionDet> listRemisionDet = new ArrayList<>();
+    Requisicion requisicion;
+    List<RequisicionDet> listRequisicionDet = new ArrayList<>();
     
     Boolean isEdit = false;
     
-    TextField txtFolioRemision = new TextField();
+    TextField txtFolioRequisicion = new TextField();
     NativeSelect<Proveedor> cboProveedor = new NativeSelect("Proveedor:");
     NativeSelect<String> cboCondicionesPago = new NativeSelect("Condiciones Pago:");
     NativeSelect<String> cboMetodoPago = new NativeSelect("Metodo Pago:");
@@ -88,7 +88,7 @@ public class WindowOrdenDeCompra  extends Window {
     Button btnModificarPartida = new Button("",Fam3SilkIcon.PENCIL);
     Button btnEliminarPartida = new Button("",Fam3SilkIcon.DELETE);
     Button btnVisualizarDocs = new Button("Documentos",Fam3SilkIcon.FOLDER_EXPLORE);
-    Button btnBuscarRemision = new Button("",Fam3SilkIcon.MAGNIFIER);
+    Button btnBuscarRequisicion = new Button("",Fam3SilkIcon.MAGNIFIER);
     Button btnGuardar = new Button("Guardar", Fam3SilkIcon.DISK);
     Button btnCancelar = new Button("Cancelar", Fam3SilkIcon.CANCEL);
     
@@ -130,7 +130,7 @@ public class WindowOrdenDeCompra  extends Window {
         
         Binder<OrdenDeCompra> binder = new Binder<>();
         
-        binder.forField(txtFolioRemision).bind(OrdenDeCompra::getFolio_remision, OrdenDeCompra::setFolio_remision);
+        binder.forField(txtFolioRequisicion).bind(OrdenDeCompra::getFolio_requisicion, OrdenDeCompra::setFolio_requisicion);
         binder.forField(cboCondicionesPago).bind(OrdenDeCompra::getCond_pago, OrdenDeCompra::setCond_pago);
         binder.forField(cboMetodoPago).bind(OrdenDeCompra::getMetodo_pago, OrdenDeCompra::setMetodo_pago);
         binder.forField(cboMoneda).bind(OrdenDeCompra::getMoneda, OrdenDeCompra::setMoneda);
@@ -156,18 +156,18 @@ public class WindowOrdenDeCompra  extends Window {
         gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getTotal).setCaption("TOTAL").setWidth(120);
 
         btnAgregarPartida.addClickListener((event) -> {
-//            WindowRemisionDet windows = new WindowRemisionDet(ordenDeCompra);
+//            WindowRequisicionDet windows = new WindowRequisicionDet(ordenDeCompra);
 //            windows.center();
 //            windows.setModal(true);
 //            windows.addCloseListener((e) -> {
 //                Boolean ok = (Boolean) VaadinSession.getCurrent().getSession().getAttribute("PARTIDA_OK");
 //                if (ok) {
 //                    if (isEdit) {
-//                        gridRemisionDet.setItems(getPartidas());
+//                        gridRequisicionDet.setItems(getPartidas());
 //                    } else {
-//                        RemisionDet partida = (RemisionDet) VaadinSession.getCurrent().getSession().getAttribute("REMISION_DET");
+//                        RequisicionDet partida = (RequisicionDet) VaadinSession.getCurrent().getSession().getAttribute("REMISION_DET");
 //                        listOrdenDeCompraDet.add(partida);
-//                        gridRemisionDet.setItems(listOrdenDeCompraDet);
+//                        gridRequisicionDet.setItems(listOrdenDeCompraDet);
 //                    }
 //                }
 //            });
@@ -175,19 +175,19 @@ public class WindowOrdenDeCompra  extends Window {
         });
         
         btnModificarPartida.addClickListener((event) -> {
-//            if(gridRemisionDet.getSelectedItems().size() == 1){
-//                WindowRemisionDet windows = new WindowRemisionDet(ordenDeCompra,gridRemisionDet.getSelectedItems().iterator().next());
+//            if(gridRequisicionDet.getSelectedItems().size() == 1){
+//                WindowRequisicionDet windows = new WindowRequisicionDet(ordenDeCompra,gridRequisicionDet.getSelectedItems().iterator().next());
 //                windows.center();
 //                windows.setModal(true);
 //                windows.addCloseListener((e) -> {
 //                    Boolean ok = (Boolean) VaadinSession.getCurrent().getSession().getAttribute("PARTIDA_OK");
 //                    if (ok) {
 //                        if (isEdit) {
-//                            gridRemisionDet.setItems(getPartidas());
+//                            gridRequisicionDet.setItems(getPartidas());
 //                        } else {
-//                            RemisionDet partida = (RemisionDet) VaadinSession.getCurrent().getSession().getAttribute("REMISION_DET");
+//                            RequisicionDet partida = (RequisicionDet) VaadinSession.getCurrent().getSession().getAttribute("REMISION_DET");
 //                            listOrdenDeCompraDet.add(partida);
-//                            gridRemisionDet.setItems(listOrdenDeCompraDet);
+//                            gridRequisicionDet.setItems(listOrdenDeCompraDet);
 //                        }
 //                    }
 //                });
@@ -202,21 +202,21 @@ public class WindowOrdenDeCompra  extends Window {
         });
         
         btnEliminarPartida.addClickListener((event) -> {
-//            if (gridRemisionDet.getSelectedItems().size() == 1) {
+//            if (gridRequisicionDet.getSelectedItems().size() == 1) {
 //                MessageBox.createQuestion()
 //                        .withCaption("Atencion!")
 //                        .withMessage("Desea eliminar la partida seleccionada?.")
 //                        .withOkButton(() -> {
 //
-//                            RemisionDet partida = gridRemisionDet.getSelectedItems().iterator().next();
+//                            RequisicionDet partida = gridRequisicionDet.getSelectedItems().iterator().next();
 //
 //                            if (isEdit) {
-//                                RemisionDetDomain dom = new RemisionDetDomain();
-//                                dom.RemisionDetDelete(partida);
-//                                gridRemisionDet.setItems(getPartidas());
+//                                RequisicionDetDomain dom = new RequisicionDetDomain();
+//                                dom.RequisicionDetDelete(partida);
+//                                gridRequisicionDet.setItems(getPartidas());
 //                            } else {
 //                                listOrdenDeCompraDet.remove(partida);
-//                                gridRemisionDet.setItems(listOrdenDeCompraDet);
+//                                gridRequisicionDet.setItems(listOrdenDeCompraDet);
 //                            }
 //
 //                        })
@@ -242,7 +242,7 @@ public class WindowOrdenDeCompra  extends Window {
 //                Double total = 0.0;
 //                
 //                if(!isEdit){
-//                    ordenDeCompra = new Remision();
+//                    ordenDeCompra = new Requisicion();
 //                }
 //
 //                binder.writeBean(ordenDeCompra);
@@ -258,35 +258,35 @@ public class WindowOrdenDeCompra  extends Window {
 //                ordenDeCompra.setAutoriza_id(autoriza.getId());
 //                ordenDeCompra.setActivo(true);
 //                
-//                RemisionDomain service = new RemisionDomain();
+//                RequisicionDomain service = new RequisicionDomain();
 //
 //                if (isEdit) {
 //                    ordenDeCompra.setFecha_modificacion(new Date());
-//                    for (RemisionDet partidaTemp : listOrdenDeCompraDet) {
+//                    for (RequisicionDet partidaTemp : listOrdenDeCompraDet) {
 //                        total += partidaTemp.getTotal();
 //                    }
 //                    ordenDeCompra.setTotal(total);
 //                    
-//                    service.RemisionUpdate(ordenDeCompra);
+//                    service.RequisicionUpdate(ordenDeCompra);
 //                    
 //                } else {
 //                    ordenDeCompra.setFolio(getFolio());
 //                    ordenDeCompra.setSerie("");
 //                    
-//                    RemisionDetDomain domainDet = new RemisionDetDomain();
+//                    RequisicionDetDomain domainDet = new RequisicionDetDomain();
 //                    
-//                    for (RemisionDet partidaTemp : listOrdenDeCompraDet) { // Obtiene el total
+//                    for (RequisicionDet partidaTemp : listOrdenDeCompraDet) { // Obtiene el total
 //                        total += partidaTemp.getTotal();
 //                    }
 //
 //                    ordenDeCompra.setTotal(total);
-//                    service.RemisionInsert(ordenDeCompra);
+//                    service.RequisicionInsert(ordenDeCompra);
 //                    updateFolio();
 //                    
-//                    for (RemisionDet partidaTemp : listOrdenDeCompraDet) { //Guarda la partida con el ID de la ordenDeCompra
+//                    for (RequisicionDet partidaTemp : listOrdenDeCompraDet) { //Guarda la partida con el ID de la ordenDeCompra
 //                        partidaTemp.setFolio(ordenDeCompra.getFolio());
 //                        partidaTemp.setDocumento_id(ordenDeCompra.getId());
-//                        domainDet.RemisionDetInsert(partidaTemp);
+//                        domainDet.RequisicionDetInsert(partidaTemp);
 //                    }
 //                }
 //
@@ -312,27 +312,27 @@ public class WindowOrdenDeCompra  extends Window {
 //            }
         });
         
-        btnBuscarRemision.addClickListener((event) -> {
-                WindowRemisionSeleccionar windows = new WindowRemisionSeleccionar();
+        btnBuscarRequisicion.addClickListener((event) -> {
+                WindowRequisicionSeleccionar windows = new WindowRequisicionSeleccionar();
                 windows.center();
                 windows.setModal(true);
                 windows.addCloseListener((e) -> {
                     if(windows.seleccionado){
-                        remision = windows.remision;
+                        requisicion = windows.requisicion;
                         
-                        txtSolicita.setValue(remision.getSolicita());
-                        txtFolioRemision.setValue(remision.getFolio());
-                        txtFechaRequerida.setValue(ManageDates.getLocalDateFromDate(remision.getFecha_requerida()));
-                        txtObservaciones.setValue(remision.getObservaciones());
-                        cboMetodoPago.setValue(remision.getMetodo_pago());
-//                        cboMoneda.setValue(remision.getMoneda());
-//                        txtTipoCambio.setValue(remision.getTipo_cambio()+"");
-                        txtImporte.setValue(remision.getImporte()+"");
-                        txtDescuento.setValue(remision.getDescuento()+"");
-                        txtSubtotal.setValue(remision.getSubtotal()+"");
-                        txtIVA.setValue(remision.getIva()+"");
-                        txtTotal.setValue(remision.getTotal()+"");
-                        txtDireccionEntrega.setValue(remision.getDireccion_entrega());
+                        txtSolicita.setValue(requisicion.getSolicita());
+                        txtFolioRequisicion.setValue(requisicion.getFolio());
+                        txtFechaRequerida.setValue(ManageDates.getLocalDateFromDate(requisicion.getFecha_requerida()));
+                        txtObservaciones.setValue(requisicion.getObservaciones());
+                        cboMetodoPago.setValue(requisicion.getMetodo_pago());
+//                        cboMoneda.setValue(requisicion.getMoneda());
+//                        txtTipoCambio.setValue(requisicion.getTipo_cambio()+"");
+                        txtImporte.setValue(requisicion.getImporte()+"");
+                        txtDescuento.setValue(requisicion.getDescuento()+"");
+                        txtSubtotal.setValue(requisicion.getSubtotal()+"");
+                        txtIVA.setValue(requisicion.getIva()+"");
+                        txtTotal.setValue(requisicion.getTotal()+"");
+                        txtDireccionEntrega.setValue(requisicion.getDireccion_entrega());
                         
                         llenarPartidas();
                         
@@ -393,7 +393,7 @@ public class WindowOrdenDeCompra  extends Window {
         cboProveedor.setSelectedItem(proveedorList.get(0));
         cboProveedor.setEmptySelectionAllowed(false);
         
-        txtFolioRemision.setEnabled(false);
+        txtFolioRequisicion.setEnabled(false);
         txtImporte.setEnabled(false);
         txtSubtotal.setEnabled(false);
         txtIVA.setEnabled(false);
@@ -434,7 +434,7 @@ public class WindowOrdenDeCompra  extends Window {
 
         cont.setSpacing(false);
         cont.addComponents(lblFolio,
-                new HorizontalLayout(new Label("Folio Remision:"), txtFolioRemision, btnBuscarRemision) // 1
+                new HorizontalLayout(new Label("Folio Requisicion:"), txtFolioRequisicion, btnBuscarRequisicion) // 1
                     {{
                         setComponentAlignment(getComponent(0), Alignment.MIDDLE_CENTER);
                     }},
@@ -461,8 +461,8 @@ public class WindowOrdenDeCompra  extends Window {
     public List getPartidas() {
         String strWhere = " documento_id = " + ordenDeCompra.getId();
 
-//        RemisionDetDomain service = new RemisionDetDomain();
-//        service.getRemisionDet(strWhere, "", " id DESC");
+//        RequisicionDetDomain service = new RequisicionDetDomain();
+//        service.getRequisicionDet(strWhere, "", " id DESC");
 //        listOrdenDeCompraDet = service.getObjects();
 //
 //        if (!service.getOk()) {
@@ -472,7 +472,7 @@ public class WindowOrdenDeCompra  extends Window {
 //                    .withRetryButton()
 //                    .open();
 //        }
-        return listRemisionDet;
+        return listRequisicionDet;
     }
     
     public void toUpperCase() {
@@ -513,11 +513,11 @@ public class WindowOrdenDeCompra  extends Window {
     }
     
     public void llenarPartidas(){
-        RemisionDetDomain remisionDetService = new RemisionDetDomain();
-        remisionDetService.getRemisionDet(" documento_id = " + remision.getId(), "", "");
-        listRemisionDet = remisionDetService.getObjects();
+        RequisicionDetDomain requisicionDetService = new RequisicionDetDomain();
+        requisicionDetService.getRequisicionDet(" documento_id = " + requisicion.getId(), "", "");
+        listRequisicionDet = requisicionDetService.getObjects();
         
-        for (RemisionDet partTemp : listRemisionDet) {
+        for (RequisicionDet partTemp : listRequisicionDet) {
             int i = 0;
             
             OrdenDeCompraDet partida = new OrdenDeCompraDet();
@@ -543,8 +543,8 @@ public class WindowOrdenDeCompra  extends Window {
             partida.setIva(partTemp.getIva());
             partida.setTotal(partTemp.getTotal());
             partida.setServicio(partTemp.getServicio());
-            partida.setFolio_remision(remision.getFolio());
-            partida.setRemision_id(remision.getId());
+            partida.setFolio_requisicion(requisicion.getFolio());
+            partida.setRequisicion_id(requisicion.getId());
             partida.setNo_parte(partTemp.getNo_parte());
             partida.setNo_serie(partTemp.getNo_serie());
             partida.setModelo(partTemp.getModelo());

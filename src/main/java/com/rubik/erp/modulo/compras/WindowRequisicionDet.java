@@ -5,12 +5,12 @@
  */
 package com.rubik.erp.modulo.compras;
 
-import com.rubik.erp.domain.RemisionDetDomain;
+import com.rubik.erp.domain.RequisicionDetDomain;
 import com.rubik.erp.modulo.generic.WindowSeleccionarProducto;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.Producto;
-import com.rubik.erp.model.Remision;
-import com.rubik.erp.model.RemisionDet;
+import com.rubik.erp.model.Requisicion;
+import com.rubik.erp.model.RequisicionDet;
 import com.rubik.manage.ManageNumbers;
 import com.vaadin.data.Binder;
 import com.vaadin.data.converter.StringToDoubleConverter;
@@ -34,11 +34,11 @@ import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
  *
  * @author Dev
  */
-public class WindowRemisionDet extends Window {
+public class WindowRequisicionDet extends Window {
 
     Empleado empleado = (Empleado) VaadinSession.getCurrent().getSession().getAttribute("USUARIO_ACTIVO");
 
-    RemisionDet partida = null;
+    RequisicionDet partida = null;
     Boolean isEdit = false;
 
     VerticalLayout cont = new VerticalLayout();
@@ -51,22 +51,22 @@ public class WindowRemisionDet extends Window {
     Button btnGuardar = new Button("Guardar", Fam3SilkIcon.DISK);
     Button btnProducto = new Button("Seleccionar Producto", Fam3SilkIcon.MAGNIFIER);
     
-    Binder<RemisionDet> binder = new Binder<>();
-    List<RemisionDet> listRequiDet = new ArrayList<>();
+    Binder<RequisicionDet> binder = new Binder<>();
+    List<RequisicionDet> listRequiDet = new ArrayList<>();
     
-    Remision remision = new Remision();
+    Requisicion requisicion = new Requisicion();
     
-    public WindowRemisionDet(Remision rem) {
-        remision = rem;
+    public WindowRequisicionDet(Requisicion rem) {
+        requisicion = rem;
         VaadinSession.getCurrent().getSession().setAttribute("REMISION_DET",null);
         VaadinSession.getCurrent().getSession().setAttribute("PARTIDA_OK",false);
         initComponents();
-        partida = new RemisionDet();
+        partida = new RequisicionDet();
     }
     
-    public WindowRemisionDet(Remision rem, RemisionDet partida) {
+    public WindowRequisicionDet(Requisicion rem, RequisicionDet partida) {
         isEdit = true;
-        remision = rem;
+        requisicion = rem;
         this.partida = partida;
         VaadinSession.getCurrent().getSession().setAttribute("REMISION_DET",null);
         VaadinSession.getCurrent().getSession().setAttribute("PARTIDA_OK",false);
@@ -74,7 +74,7 @@ public class WindowRemisionDet extends Window {
     }
 
     public void initComponents() {
-        setCaption("PARTIDAS DE LA REMISION");
+        setCaption("PARTIDAS DE LA REQUISICION");
         setWidth("490");
         setHeight("455");
         
@@ -92,9 +92,9 @@ public class WindowRemisionDet extends Window {
             txtCantidad.setSelection(0, txtCantidad.getValue().length());
         });
 
-        binder.forField(txtCantidad).withValidator(cantidad -> cantidad.length() >= 1 && ManageNumbers.ToInteger(cantidad) >= 1, "Verifique que la cantidad este correcta").withConverter(new StringToIntegerConverter(0, "El valor debe ser numerico.")).bind(RemisionDet::getCantidad, RemisionDet::setCantidad);
-        binder.forField(txtDescripcion).withValidator(val -> val.length() >= 1 , "Verifique que este un Producto seleccionado").bind(RemisionDet::getDescripcion, RemisionDet::setDescripcion);
-        binder.forField(txtTotal).withValidator(val -> val.length() >= 1 , "Verifique que el valor sea correcto.").withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico.")).bind(RemisionDet::getTotal, RemisionDet::setTotal);
+        binder.forField(txtCantidad).withValidator(cantidad -> cantidad.length() >= 1 && ManageNumbers.ToInteger(cantidad) >= 1, "Verifique que la cantidad este correcta").withConverter(new StringToIntegerConverter(0, "El valor debe ser numerico.")).bind(RequisicionDet::getCantidad, RequisicionDet::setCantidad);
+        binder.forField(txtDescripcion).withValidator(val -> val.length() >= 1 , "Verifique que este un Producto seleccionado").bind(RequisicionDet::getDescripcion, RequisicionDet::setDescripcion);
+        binder.forField(txtTotal).withValidator(val -> val.length() >= 1 , "Verifique que el valor sea correcto.").withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico.")).bind(RequisicionDet::getTotal, RequisicionDet::setTotal);
 
         if (isEdit) {
             binder.readBean(partida);
@@ -112,7 +112,7 @@ public class WindowRemisionDet extends Window {
                 Producto p = (Producto) VaadinSession.getCurrent().getSession().getAttribute("PRODUCTO_SELECCIONADO");
                 System.out.println("PRODUCTO SELECCIONADO " + p);
                 if(p != null){
-                    partida = new RemisionDet();
+                    partida = new RequisicionDet();
                     partida.setDescripcion(p.getDescripcion());
                     partida.setProducto_id(p.getId());
                     partida.setUnidad_medida(p.getUnidad_medida());
@@ -157,15 +157,15 @@ public class WindowRemisionDet extends Window {
                     partida.setCantidad(ManageNumbers.ToInteger(txtCantidad.getValue()));
                     partida.setTotal(ManageNumbers.stringToDouble(txtTotal.getValue()));
                     
-                    RemisionDetDomain domain = new RemisionDetDomain();
+                    RequisicionDetDomain domain = new RequisicionDetDomain();
                     
-                    if(remision != null){
+                    if(requisicion != null){
                         if(isEdit){
-                            domain.RemisionDetUpdate(partida);
+                            domain.RequisicionDetUpdate(partida);
                         }else{
-                            partida.setFolio(remision.getFolio());
-                            partida.setDocumento_id(remision.getId());
-                            domain.RemisionDetInsert(partida);
+                            partida.setFolio(requisicion.getFolio());
+                            partida.setDocumento_id(requisicion.getId());
+                            domain.RequisicionDetInsert(partida);
                         }
                     }else{
                         VaadinSession.getCurrent().getSession().setAttribute("REMISION_DET",partida);

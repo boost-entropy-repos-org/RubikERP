@@ -5,9 +5,9 @@
  */
 package com.rubik.erp.modulo.compras;
 
-import com.rubik.erp.domain.RemisionDomain;
+import com.rubik.erp.domain.RequisicionDomain;
 import com.rubik.erp.model.Empleado;
-import com.rubik.erp.model.Remision;
+import com.rubik.erp.model.Requisicion;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -25,25 +25,25 @@ import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
  *
  * @author Dev
  */
-public class WindowRemisionSeleccionar extends Window {
+public class WindowRequisicionSeleccionar extends Window {
     
     Empleado empleado = (Empleado) VaadinSession.getCurrent().getSession().getAttribute("USUARIO_ACTIVO");
     
     VerticalLayout cont = new VerticalLayout();
-    String title_window = "Remisiones de Compra";
+    String title_window = "Requisicion de Compra";
 
-    public Remision remision;
+    public Requisicion requisicion;
     public Boolean seleccionado = false;
 
     Button btnChecar = new Button("Seleccionar", Fam3SilkIcon.ACCEPT);
     Button btnCancelar = new Button("Cancelar", Fam3SilkIcon.CANCEL);
     
-    Grid<Remision> gridRemision = new Grid<>();
-    List<Remision> listRemision = new ArrayList<>();
+    Grid<Requisicion> gridRequisicion = new Grid<>();
+    List<Requisicion> listRequisicion = new ArrayList<>();
     Label lblFolio;
 
-    public WindowRemisionSeleccionar() {
-        lblFolio = new Label("SELECCIONAR REMISION") {
+    public WindowRequisicionSeleccionar() {
+        lblFolio = new Label("SELECCIONAR REQUISICION") {
             {
                 setStyleName("h2");
             }
@@ -55,24 +55,24 @@ public class WindowRemisionSeleccionar extends Window {
         setWidth("70%");
         setHeight("60%");
         
-        gridRemision.setSizeFull();
-        gridRemision.setSelectionMode(Grid.SelectionMode.SINGLE);
+        gridRequisicion.setSizeFull();
+        gridRequisicion.setSelectionMode(Grid.SelectionMode.SINGLE);
 
-        gridRemision.addColumn(Remision::getFolio).setCaption("FOLIO").setWidth(140);
-        gridRemision.addColumn(Remision::getPrioridad).setCaption("PRIORIDAD").setWidth(130);
-        gridRemision.addColumn(Remision::getSolicita).setCaption("SOLICITA").setWidth(200);
-        gridRemision.addColumn(Remision::getObservaciones).setCaption("OBSERVACIONES");
-        gridRemision.setItems(getRemisiones());
+        gridRequisicion.addColumn(Requisicion::getFolio).setCaption("FOLIO").setWidth(140);
+        gridRequisicion.addColumn(Requisicion::getPrioridad).setCaption("PRIORIDAD").setWidth(130);
+        gridRequisicion.addColumn(Requisicion::getSolicita).setCaption("SOLICITA").setWidth(200);
+        gridRequisicion.addColumn(Requisicion::getObservaciones).setCaption("OBSERVACIONES");
+        gridRequisicion.setItems(getRequisiciones());
         
         btnCancelar.addClickListener((event) -> {
             close();
         });
 
         btnChecar.addClickListener((event) -> {
-            if (gridRemision.getSelectedItems().size() == 1) {
+            if (gridRequisicion.getSelectedItems().size() == 1) {
                 
                 seleccionado = true;
-                remision = gridRemision.getSelectedItems().iterator().next();
+                requisicion = gridRequisicion.getSelectedItems().iterator().next();
                 close();
                 
             } else {
@@ -87,7 +87,7 @@ public class WindowRemisionSeleccionar extends Window {
         cont.setSpacing(false);
         cont.addComponents(lblFolio,
                 new HorizontalLayout(btnCancelar, btnChecar),
-                gridRemision);
+                gridRequisicion);
 
         cont.setComponentAlignment(cont.getComponent(0), Alignment.MIDDLE_CENTER);
         cont.setComponentAlignment(cont.getComponent(1), Alignment.MIDDLE_CENTER);
@@ -99,10 +99,10 @@ public class WindowRemisionSeleccionar extends Window {
         setClosable(false);
     }
     
-    public List getRemisiones() {
-        RemisionDomain service = new RemisionDomain();
-        service.getRemision(" activo = 1 AND estado_doc = 'AUTORIZADO' ", "", " folio DESC");
-        listRemision = service.getObjects();
+    public List getRequisiciones() {
+        RequisicionDomain service = new RequisicionDomain();
+        service.getRequisicion(" activo = 1 AND estado_doc = 'AUTORIZADO' ", "", " folio DESC");
+        listRequisicion = service.getObjects();
 
         if (!service.getOk()) {
             MessageBox.createError()
@@ -112,7 +112,7 @@ public class WindowRemisionSeleccionar extends Window {
                     .open();
         }
         
-        return listRemision;
+        return listRequisicion;
     }
     
 }

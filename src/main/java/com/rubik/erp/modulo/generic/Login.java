@@ -95,9 +95,6 @@ public class Login  extends VerticalLayout implements View {
 
         fields.addComponents(username, password, signin);
         fields.setComponentAlignment(signin, Alignment.BOTTOM_LEFT);
-    
-        username.setValue("a");
-        password.setValue("a");
         
         signin.addClickListener(new ClickListener() {
             @Override

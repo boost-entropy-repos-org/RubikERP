@@ -10,12 +10,12 @@ import com.rubik.erp.config._DocumentoTipos;
 import com.rubik.erp.config._Folios;
 import com.rubik.erp.domain.ConfiguracionDomain;
 import com.rubik.erp.domain.EmpleadoDomain;
-import com.rubik.erp.domain.RemisionDetDomain;
-import com.rubik.erp.domain.RemisionDomain;
+import com.rubik.erp.domain.RequisicionDetDomain;
+import com.rubik.erp.domain.RequisicionDomain;
 import com.rubik.erp.model.Configuracion;
 import com.rubik.erp.model.Empleado;
-import com.rubik.erp.model.Remision;
-import com.rubik.erp.model.RemisionDet;
+import com.rubik.erp.model.Requisicion;
+import com.rubik.erp.model.RequisicionDet;
 import com.rubik.manage.ManageDates;
 import com.rubik.manage.ManageString;
 import com.vaadin.data.Binder;
@@ -43,14 +43,14 @@ import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
  *
  * @author Dev
  */
-public class WindowRemision extends Window {
+public class WindowRequisicion extends Window {
     
     Empleado empleado = (Empleado) VaadinSession.getCurrent().getSession().getAttribute("USUARIO_ACTIVO");
     
     VerticalLayout cont = new VerticalLayout();
-    String title_window = "Remisiones de Compra";
+    String title_window = "Requisicion de Compra";
 
-    Remision remision;
+    Requisicion requisicion;
     Boolean isEdit = false;
 
     DateField txtFechaRequerida = new DateField("Fecha Requerida:", LocalDate.now());
@@ -67,16 +67,16 @@ public class WindowRemision extends Window {
     Button btnGuardar = new Button("Guardar", Fam3SilkIcon.DISK);
     Button btnCancelar = new Button("Cancelar", Fam3SilkIcon.CANCEL);
     
-    Grid<RemisionDet> gridRemisionDet = new Grid<>();
-    List<RemisionDet> listRemisionDet = new ArrayList<>();
+    Grid<RequisicionDet> gridRequisicionDet = new Grid<>();
+    List<RequisicionDet> listRequisicionDet = new ArrayList<>();
     
     List<Empleado> listAutorizadoresCompras = new ArrayList<>();
     
     Label lblFolio;
     String folio = "";
 
-    public WindowRemision() {
-        lblFolio = new Label("REMISION " + getFolio()) {
+    public WindowRequisicion() {
+        lblFolio = new Label("REQUISICION " + getFolio()) {
             {
                 setStyleName("h2");
             }
@@ -86,10 +86,10 @@ public class WindowRemision extends Window {
         btnExpediente.setEnabled(false);
     }
 
-    public WindowRemision(Remision remisionTemp) {
+    public WindowRequisicion(Requisicion requisicionTemp) {
         isEdit = true;
-        remision = remisionTemp;
-        lblFolio = new Label("REMISION " + remisionTemp.getFolio()) {
+        requisicion = requisicionTemp;
+        lblFolio = new Label("REQUISICION " + requisicionTemp.getFolio()) {
             {
                 setStyleName("h2");
             }
@@ -103,33 +103,33 @@ public class WindowRemision extends Window {
         setWidth("80%");
         setHeight("80%");
 
-        Binder<Remision> binder = new Binder<>();
-        binder.forField(txtSolicita).bind(Remision::getSolicita, Remision::setSolicita);
-        binder.forField(txtObservaciones).bind(Remision::getObservaciones, Remision::setObservaciones);
-        binder.forField(txtDireccionEntrega).bind(Remision::getDireccion_entrega, Remision::setDireccion_entrega);
-        binder.forField(cboPrioridad).bind(Remision::getPrioridad, Remision::setPrioridad);
+        Binder<Requisicion> binder = new Binder<>();
+        binder.forField(txtSolicita).bind(Requisicion::getSolicita, Requisicion::setSolicita);
+        binder.forField(txtObservaciones).bind(Requisicion::getObservaciones, Requisicion::setObservaciones);
+        binder.forField(txtDireccionEntrega).bind(Requisicion::getDireccion_entrega, Requisicion::setDireccion_entrega);
+        binder.forField(cboPrioridad).bind(Requisicion::getPrioridad, Requisicion::setPrioridad);
         
-        gridRemisionDet.setHeight("272");
-        gridRemisionDet.setSelectionMode(Grid.SelectionMode.SINGLE);
+        gridRequisicionDet.setHeight("272");
+        gridRequisicionDet.setSelectionMode(Grid.SelectionMode.SINGLE);
 
-        gridRemisionDet.addColumn(RemisionDet::getCantidad).setCaption("CTD").setWidth(75);
-        gridRemisionDet.addColumn(RemisionDet::getDescripcion).setCaption("DESCRIPCION");
-//        gridRemisionDet.addColumn(RemisionDet::getPrecio_unitario).setCaption("P.U.").setWidth(100);
-//        gridRemisionDet.addColumn(RemisionDet::getTotal).setCaption("TOTAL").setWidth(100);
+        gridRequisicionDet.addColumn(RequisicionDet::getCantidad).setCaption("CTD").setWidth(75);
+        gridRequisicionDet.addColumn(RequisicionDet::getDescripcion).setCaption("DESCRIPCION");
+//        gridRequisicionDet.addColumn(RequisicionDet::getPrecio_unitario).setCaption("P.U.").setWidth(100);
+//        gridRequisicionDet.addColumn(RequisicionDet::getTotal).setCaption("TOTAL").setWidth(100);
 
         btnAgregarPartida.addClickListener((event) -> {
-            WindowRemisionDet windows = new WindowRemisionDet(remision);
+            WindowRequisicionDet windows = new WindowRequisicionDet(requisicion);
             windows.center();
             windows.setModal(true);
             windows.addCloseListener((e) -> {
                 Boolean ok = (Boolean) VaadinSession.getCurrent().getSession().getAttribute("PARTIDA_OK");
                 if (ok) {
                     if (isEdit) {
-                        gridRemisionDet.setItems(getPartidas());
+                        gridRequisicionDet.setItems(getPartidas());
                     } else {
-                        RemisionDet partida = (RemisionDet) VaadinSession.getCurrent().getSession().getAttribute("REMISION_DET");
-                        listRemisionDet.add(partida);
-                        gridRemisionDet.setItems(listRemisionDet);
+                        RequisicionDet partida = (RequisicionDet) VaadinSession.getCurrent().getSession().getAttribute("REMISION_DET");
+                        listRequisicionDet.add(partida);
+                        gridRequisicionDet.setItems(listRequisicionDet);
                     }
                 }
             });
@@ -137,19 +137,19 @@ public class WindowRemision extends Window {
         });
         
         btnModificarPartida.addClickListener((event) -> {
-            if(gridRemisionDet.getSelectedItems().size() == 1){
-                WindowRemisionDet windows = new WindowRemisionDet(remision,gridRemisionDet.getSelectedItems().iterator().next());
+            if(gridRequisicionDet.getSelectedItems().size() == 1){
+                WindowRequisicionDet windows = new WindowRequisicionDet(requisicion,gridRequisicionDet.getSelectedItems().iterator().next());
                 windows.center();
                 windows.setModal(true);
                 windows.addCloseListener((e) -> {
                     Boolean ok = (Boolean) VaadinSession.getCurrent().getSession().getAttribute("PARTIDA_OK");
                     if (ok) {
                         if (isEdit) {
-                            gridRemisionDet.setItems(getPartidas());
+                            gridRequisicionDet.setItems(getPartidas());
                         } else {
-                            RemisionDet partida = (RemisionDet) VaadinSession.getCurrent().getSession().getAttribute("REMISION_DET");
-                            listRemisionDet.add(partida);
-                            gridRemisionDet.setItems(listRemisionDet);
+                            RequisicionDet partida = (RequisicionDet) VaadinSession.getCurrent().getSession().getAttribute("REMISION_DET");
+                            listRequisicionDet.add(partida);
+                            gridRequisicionDet.setItems(listRequisicionDet);
                         }
                     }
                 });
@@ -164,21 +164,21 @@ public class WindowRemision extends Window {
         });
         
         btnEliminarPartida.addClickListener((event) -> {
-            if (gridRemisionDet.getSelectedItems().size() == 1) {
+            if (gridRequisicionDet.getSelectedItems().size() == 1) {
                 MessageBox.createQuestion()
                         .withCaption("Atencion!")
                         .withMessage("Desea eliminar la partida seleccionada?.")
                         .withOkButton(() -> {
 
-                            RemisionDet partida = gridRemisionDet.getSelectedItems().iterator().next();
+                            RequisicionDet partida = gridRequisicionDet.getSelectedItems().iterator().next();
 
                             if (isEdit) {
-                                RemisionDetDomain dom = new RemisionDetDomain();
-                                dom.RemisionDetDelete(partida);
-                                gridRemisionDet.setItems(getPartidas());
+                                RequisicionDetDomain dom = new RequisicionDetDomain();
+                                dom.RequisicionDetDelete(partida);
+                                gridRequisicionDet.setItems(getPartidas());
                             } else {
-                                listRemisionDet.remove(partida);
-                                gridRemisionDet.setItems(listRemisionDet);
+                                listRequisicionDet.remove(partida);
+                                gridRequisicionDet.setItems(listRequisicionDet);
                             }
 
                         })
@@ -204,51 +204,51 @@ public class WindowRemision extends Window {
                 Double total = 0.0;
                 
                 if(!isEdit){
-                    remision = new Remision();
+                    requisicion = new Requisicion();
                 }
 
-                binder.writeBean(remision);
+                binder.writeBean(requisicion);
                 toUpperCase();
 
-                remision.setUsuario_id(empleado.getId());
-                remision.setUsuario(empleado.getNombre_completo());
-                remision.setEstado_doc(_DocumentoEstados.EN_PROCESO);
-                remision.setTipo_documento(_DocumentoTipos.REMISION_DE_COMPRA);
-                remision.setTipo_archivo("PDF");
-                remision.setFecha_requerida(ManageDates.getDateFromLocalDate(txtFechaRequerida.getValue()));
-                remision.setAutoriza(autoriza.getNombre_completo());
-                remision.setAutoriza_id(autoriza.getId());
-                remision.setActivo(true);
+                requisicion.setUsuario_id(empleado.getId());
+                requisicion.setUsuario(empleado.getNombre_completo());
+                requisicion.setEstado_doc(_DocumentoEstados.EN_PROCESO);
+                requisicion.setTipo_documento(_DocumentoTipos.REMISION_DE_COMPRA);
+                requisicion.setTipo_archivo("PDF");
+                requisicion.setFecha_requerida(ManageDates.getDateFromLocalDate(txtFechaRequerida.getValue()));
+                requisicion.setAutoriza(autoriza.getNombre_completo());
+                requisicion.setAutoriza_id(autoriza.getId());
+                requisicion.setActivo(true);
                 
-                RemisionDomain service = new RemisionDomain();
+                RequisicionDomain service = new RequisicionDomain();
 
                 if (isEdit) {
-                    remision.setFecha_modificacion(new Date());
-                    for (RemisionDet partidaTemp : listRemisionDet) {
+                    requisicion.setFecha_modificacion(new Date());
+                    for (RequisicionDet partidaTemp : listRequisicionDet) {
                         total += partidaTemp.getTotal();
                     }
-                    remision.setTotal(total);
+                    requisicion.setTotal(total);
                     
-                    service.RemisionUpdate(remision);
+                    service.RequisicionUpdate(requisicion);
                     
                 } else {
-                    remision.setFolio(getFolio());
-                    remision.setSerie("");
+                    requisicion.setFolio(getFolio());
+                    requisicion.setSerie("");
                     
-                    RemisionDetDomain domainDet = new RemisionDetDomain();
+                    RequisicionDetDomain domainDet = new RequisicionDetDomain();
                     
-                    for (RemisionDet partidaTemp : listRemisionDet) { // Obtiene el total
+                    for (RequisicionDet partidaTemp : listRequisicionDet) { // Obtiene el total
                         total += partidaTemp.getTotal();
                     }
 
-                    remision.setTotal(total);
-                    service.RemisionInsert(remision);
+                    requisicion.setTotal(total);
+                    service.RequisicionInsert(requisicion);
                     updateFolio();
                     
-                    for (RemisionDet partidaTemp : listRemisionDet) { //Guarda la partida con el ID de la remision
-                        partidaTemp.setFolio(remision.getFolio());
-                        partidaTemp.setDocumento_id(remision.getId());
-                        domainDet.RemisionDetInsert(partidaTemp);
+                    for (RequisicionDet partidaTemp : listRequisicionDet) { //Guarda la partida con el ID de la requisicion
+                        partidaTemp.setFolio(requisicion.getFolio());
+                        partidaTemp.setDocumento_id(requisicion.getId());
+                        domainDet.RequisicionDetInsert(partidaTemp);
                     }
                 }
 
@@ -295,12 +295,12 @@ public class WindowRemision extends Window {
         cboAutorizador.setEmptySelectionAllowed(false);
 
         if (isEdit) {
-            binder.readBean(remision);
+            binder.readBean(requisicion);
             
-            gridRemisionDet.setItems(getPartidas());
+            gridRequisicionDet.setItems(getPartidas());
             
             for (Empleado autorizador : listAutorizadoresCompras) {
-                if (remision.getAutoriza_id().equals(autorizador.getId())) {
+                if (requisicion.getAutoriza_id().equals(autorizador.getId())) {
                     cboAutorizador.setValue(autorizador);
                 }
             }
@@ -316,7 +316,7 @@ public class WindowRemision extends Window {
                         new VerticalLayout(
                                 new HorizontalLayout(btnExpediente,
                                         btnAgregarPartida,btnModificarPartida,btnEliminarPartida),
-                                gridRemisionDet){{setComponentAlignment(getComponent(0), Alignment.MIDDLE_CENTER);}}
+                                gridRequisicionDet){{setComponentAlignment(getComponent(0), Alignment.MIDDLE_CENTER);}}
                 ){{setSpacing(false);}}, new HorizontalLayout(btnCancelar, btnGuardar));
         cont.setComponentAlignment(cont.getComponent(0), Alignment.MIDDLE_CENTER);
         cont.setComponentAlignment(cont.getComponent(1), Alignment.MIDDLE_CENTER);
@@ -329,11 +329,11 @@ public class WindowRemision extends Window {
     }
     
     public List getPartidas() {
-        String strWhere = " documento_id = " + remision.getId();
+        String strWhere = " documento_id = " + requisicion.getId();
 
-        RemisionDetDomain service = new RemisionDetDomain();
-        service.getRemisionDet(strWhere, "", " id DESC");
-        listRemisionDet = service.getObjects();
+        RequisicionDetDomain service = new RequisicionDetDomain();
+        service.getRequisicionDet(strWhere, "", " id DESC");
+        listRequisicionDet = service.getObjects();
 
         if (!service.getOk()) {
             MessageBox.createError()
@@ -342,13 +342,13 @@ public class WindowRemision extends Window {
                     .withRetryButton()
                     .open();
         }
-        return listRemisionDet;
+        return listRequisicionDet;
     }
     
     public void toUpperCase() {
-        remision.setSolicita(txtSolicita.getValue().toUpperCase());
-        remision.setObservaciones(txtObservaciones.getValue().toUpperCase());
-        remision.setDireccion_entrega(txtDireccionEntrega.getValue().toUpperCase());
+        requisicion.setSolicita(txtSolicita.getValue().toUpperCase());
+        requisicion.setObservaciones(txtObservaciones.getValue().toUpperCase());
+        requisicion.setDireccion_entrega(txtDireccionEntrega.getValue().toUpperCase());
     }
     
     public List<Empleado> getAutorizadorCompras() {

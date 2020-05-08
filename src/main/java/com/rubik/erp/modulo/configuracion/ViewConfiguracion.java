@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.rubik.modulo.configuracion;
+package com.rubik.erp.modulo.configuracion;
 
 import com.rubik.erp.domain.ConfiguracionDomain;
 import com.rubik.erp.fragments.FragmentTop;
@@ -39,8 +39,8 @@ public class ViewConfiguracion extends Panel implements View {
 
     Configuracion configuracion = new Configuracion();
 
-    TextField txtSerieRemision = new TextField("Serie Remision:");
-    TextField txtFolioRemision = new TextField("Folio Remision:");
+    TextField txtSerieRequisicion = new TextField("Serie Requisicion:");
+    TextField txtFolioRequisicion = new TextField("Folio Requisicion:");
     
     TextField txtSerieOrdenCompra = new TextField("Serie Orden de Compra:");
     TextField txtFolioOrdenCompra = new TextField("Folio Orden de Compra:");
@@ -75,8 +75,8 @@ public class ViewConfiguracion extends Panel implements View {
         configuracion = service.getObject();
     
         Binder<Configuracion> binder = new Binder<>();
-        binder.forField(txtSerieRemision).bind(Configuracion::getSerie_remision, Configuracion::setSerie_remision);
-        binder.forField(txtFolioRemision).withConverter(new StringToIntegerConverter(0, "El valor debe ser numerico")).bind(Configuracion::getFolio_remision, Configuracion::setFolio_remision);
+        binder.forField(txtSerieRequisicion).bind(Configuracion::getSerie_requisicion, Configuracion::setSerie_requisicion);
+        binder.forField(txtFolioRequisicion).withConverter(new StringToIntegerConverter(0, "El valor debe ser numerico")).bind(Configuracion::getFolio_requisicion, Configuracion::setFolio_requisicion);
         binder.forField(txtSerieOrdenCompra).bind(Configuracion::getSerie_orden_compra, Configuracion::setSerie_orden_compra);
         binder.forField(txtFolioOrdenCompra).withConverter(new StringToIntegerConverter(0, "El valor debe ser numerico")).bind(Configuracion::getFolio_orden_compra, Configuracion::setFolio_orden_compra);
         binder.forField(txtSerieCotizacion).bind(Configuracion::getSerie_cotizacion, Configuracion::setSerie_cotizacion);
@@ -116,21 +116,21 @@ public class ViewConfiguracion extends Panel implements View {
             }
         });
         
-        txtSerieRemision.setMaxLength(4);
+        txtSerieRequisicion.setMaxLength(4);
         txtSerieOrdenCompra.setMaxLength(4);
         txtSerieCotizacion.setMaxLength(4);
         txtSerieFactura.setMaxLength(4);
         
-        txtFolioRemision.setMaxLength(4);
+        txtFolioRequisicion.setMaxLength(4);
         txtFolioOrdenCompra.setMaxLength(4);
         txtFolioCotizacion.setMaxLength(4);
         txtFolioFactura.setMaxLength(4);
         
-        txtSerieRemision.setWidth(strWidth);
+        txtSerieRequisicion.setWidth(strWidth);
         txtSerieOrdenCompra.setWidth(strWidth);
         txtSerieCotizacion.setWidth(strWidth);
         txtSerieFactura.setWidth(strWidth);
-        txtFolioRemision.setWidth(strWidth);
+        txtFolioRequisicion.setWidth(strWidth);
         txtFolioOrdenCompra.setWidth(strWidth);
         txtFolioCotizacion.setWidth(strWidth);
         txtFolioFactura.setWidth(strWidth);
@@ -139,8 +139,8 @@ public class ViewConfiguracion extends Panel implements View {
         fLay.setSizeUndefined();
         
         fLay.addComponents(new Label("Folios & Series"){{setStyleName("h3");}});
-        fLay.addComponents(txtSerieRemision, txtSerieOrdenCompra, txtSerieCotizacion, txtSerieFactura, 
-                txtFolioRemision, txtFolioOrdenCompra, txtFolioCotizacion, txtFolioFactura);
+        fLay.addComponents(txtSerieRequisicion, txtSerieOrdenCompra, txtSerieCotizacion, txtSerieFactura, 
+                txtFolioRequisicion, txtFolioOrdenCompra, txtFolioCotizacion, txtFolioFactura);
         fLay.addComponents(new Label("Autocompletar"){{setStyleName("h3");}});
         fLay.addComponents(chkAutoCompletarTotales);
      
@@ -158,7 +158,7 @@ public class ViewConfiguracion extends Panel implements View {
     }
     
     public void toUpperCase() {
-        txtSerieRemision.setValue(txtSerieRemision.getValue().toUpperCase());
+        txtSerieRequisicion.setValue(txtSerieRequisicion.getValue().toUpperCase());
         txtSerieOrdenCompra.setValue(txtSerieOrdenCompra.getValue().toUpperCase());
         txtSerieCotizacion.setValue(txtSerieCotizacion.getValue().toUpperCase());
         txtSerieFactura.setValue(txtSerieFactura.getValue().toUpperCase());

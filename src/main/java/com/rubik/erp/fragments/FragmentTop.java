@@ -6,15 +6,15 @@
 package com.rubik.erp.fragments;
 
 import com.rubik.erp.model.Empleado;
-import com.rubik.erp.modulo.compras.ComprasMonitorRemisiones;
+import com.rubik.erp.modulo.compras.ComprasMonitorRequisiciones;
 import com.rubik.erp.modulo.compras.ComprasOrdenes;
 import com.rubik.erp.modulo.compras.ComprasProductos;
 import com.rubik.erp.modulo.compras.ComprasProveedores;
-import com.rubik.erp.modulo.compras.ComprasRemisiones;
+import com.rubik.erp.modulo.compras.ComprasRequisiciones;
+import com.rubik.erp.modulo.configuracion.ViewConfiguracion;
 import com.rubik.erp.modulo.generic.Login;
 import com.rubik.erp.modulo.rh.Empleados;
 import com.rubik.erp.modulo.ventas.VentasClientes;
-import com.rubik.modulo.configuracion.ViewConfiguracion;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
@@ -42,9 +42,9 @@ public class FragmentTop extends HorizontalLayout {
     MenuBar.MenuItem menuCompras;
     MenuBar.MenuItem subProveedor;
     MenuBar.MenuItem subProducto;
-    MenuBar.MenuItem subRemisiones;
+    MenuBar.MenuItem subRequisiciones;
     MenuBar.MenuItem subOrdenDeCompra;
-    MenuBar.MenuItem subMonitoreoRemisiones;
+    MenuBar.MenuItem subMonitoreoRequisiciones;
     MenuBar.MenuItem subMonitoreoOC;
     MenuBar.MenuItem submReportesCompras;
     MenuBar.MenuItem subReporteRequisicion;
@@ -126,16 +126,16 @@ public class FragmentTop extends HorizontalLayout {
         
         menuCompras.addSeparator();
 
-        subRemisiones = menuCompras.addItem("Remisiones", actionMenu);
-        subRemisiones.setIcon(Fam3SilkIcon.PAGE);
+        subRequisiciones = menuCompras.addItem("Requisiciones", actionMenu);
+        subRequisiciones.setIcon(Fam3SilkIcon.PAGE);
 
         subOrdenDeCompra = menuCompras.addItem("Ordenes de Compra", actionMenu);
         subOrdenDeCompra.setIcon(Fam3SilkIcon.PAGE_GO);
                 
         menuCompras.addSeparator();
         
-        subMonitoreoRemisiones = menuCompras.addItem("Monitoreo de Remisiones", actionMenu);
-        subMonitoreoRemisiones.setIcon(Fam3SilkIcon.PAGE_WHITE_PAINTBRUSH);
+        subMonitoreoRequisiciones = menuCompras.addItem("Monitoreo de Requisiciones", actionMenu);
+        subMonitoreoRequisiciones.setIcon(Fam3SilkIcon.PAGE_WHITE_PAINTBRUSH);
         
         subMonitoreoOC = menuCompras.addItem("Monitoreo OC", actionMenu);
         subMonitoreoOC.setIcon(Fam3SilkIcon.BOOK_GO);
@@ -209,16 +209,18 @@ public class FragmentTop extends HorizontalLayout {
                 case "Productos":
                     getUI().getNavigator().navigateTo(ComprasProductos.NAME);
                     break;
-                case "Remisiones":
-                    getUI().getNavigator().navigateTo(ComprasRemisiones.NAME);
+                case "Requisiciones":
+                    getUI().getNavigator().navigateTo(ComprasRequisiciones.NAME);
                     break;                    
                 case "Ordenes de Compra":
                     getUI().getNavigator().navigateTo(ComprasOrdenes.NAME);
                     break;
-                case "Monitoreo de Remisiones":
-                    getUI().getNavigator().navigateTo(ComprasMonitorRemisiones.NAME);
+                case "Monitoreo de Requisiciones":
+                    getUI().getNavigator().navigateTo(ComprasMonitorRequisiciones.NAME);
                     break;
 //                case "Monitoreo OC":
+//                    getUI().getNavigator().navigateTo(ViewComprasMonitoreoOC.NAME);
+//                    break;//                case "Monitoreo OC":
 //                    getUI().getNavigator().navigateTo(ViewComprasMonitoreoOC.NAME);
 //                    break;
                     

@@ -6,10 +6,10 @@
 package com.rubik.erp.modulo.compras;
 
 import com.rubik.erp.config._DocumentoEstados;
-import com.rubik.erp.domain.RemisionDomain;
+import com.rubik.erp.domain.RequisicionDomain;
 import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.Empleado;
-import com.rubik.erp.model.Remision;
+import com.rubik.erp.model.Requisicion;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinSession;
@@ -32,16 +32,16 @@ import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
  *
  * @author Dev
  */
-public class ComprasRemisiones extends Panel implements View {
+public class ComprasRequisiciones extends Panel implements View {
 
-    public static final String NAME = "REMISIONES";
+    public static final String NAME = "REQUISICIONES";
     VerticalLayout container = new VerticalLayout();
 
     Empleado empleado = (Empleado) VaadinSession.getCurrent().getSession().getAttribute("USUARIO_ACTIVO");
 
     TextField txtBusqueda = new TextField();
     
-    Grid<Remision> gridRemisiones = new Grid<>();
+    Grid<Requisicion> gridRequisiciones = new Grid<>();
     DateField txtFechaIni = new DateField();
     DateField txtFechaFin = new DateField();
     Button btnSearch = new Button(Fam3SilkIcon.MAGNIFIER);
@@ -52,11 +52,11 @@ public class ComprasRemisiones extends Panel implements View {
     Button btnTerminar = new Button("Terminar", Fam3SilkIcon.NOTE_GO);
     Button btnPrint = new Button("Imprimir", Fam3SilkIcon.PRINTER);
     
-    List<Remision> listRemisiones = new ArrayList<>();
+    List<Requisicion> listRequisiciones = new ArrayList<>();
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     
-    public ComprasRemisiones() {
+    public ComprasRequisiciones() {
         initComponents();
 
         HorizontalLayout hLayoutAux = new HorizontalLayout(
@@ -68,7 +68,7 @@ public class ComprasRemisiones extends Panel implements View {
         hLayoutAux.setComponentAlignment(hLayoutAux.getComponent(1), Alignment.MIDDLE_CENTER);
         hLayoutAux.setComponentAlignment(hLayoutAux.getComponent(3), Alignment.MIDDLE_CENTER);
         
-        Label lblTitulo = new Label("REMISIONES") {
+        Label lblTitulo = new Label("REQUISICIONES") {
             {
                 setStyleName("h1");
             }
@@ -82,7 +82,7 @@ public class ComprasRemisiones extends Panel implements View {
                 lblTitulo,
                 hLayoutAux,
                 hLayoutAux2,
-                gridRemisiones);
+                gridRequisiciones);
         
         container.setComponentAlignment(container.getComponent(0), Alignment.MIDDLE_CENTER);
         container.setComponentAlignment(container.getComponent(1), Alignment.MIDDLE_CENTER);
@@ -99,62 +99,62 @@ public class ComprasRemisiones extends Panel implements View {
         txtFechaFin.setWidth("115");
         
         txtBusqueda.setWidth("200");
-        txtBusqueda.setPlaceholder("Folio de Remision");      
+        txtBusqueda.setPlaceholder("Folio de Requisicion");      
 
-        Grid.Column<Remision, String> columnFecha = gridRemisiones.addColumn(det -> ((det.getFecha_requerida() != null) ? dateFormat.format(det.getFecha_requerida()) : ""));
+        Grid.Column<Requisicion, String> columnFecha = gridRequisiciones.addColumn(det -> ((det.getFecha_requerida() != null) ? dateFormat.format(det.getFecha_requerida()) : ""));
         columnFecha.setCaption("F. REQ");
         columnFecha.setId("F. REQ");
         columnFecha.setWidth(120);
-        gridRemisiones.addColumn(Remision::getFolio).setCaption("FOLIO").setId("FOLIO").setWidth(120);
-        gridRemisiones.addColumn(Remision::getPrioridad).setCaption("PRIORIDAD").setId("PRIORIDAD").setWidth(135);
-        gridRemisiones.addColumn(Remision::getEstado_doc).setCaption("ESTADO").setId("ESTADO").setWidth(135);
-        gridRemisiones.addColumn(Remision::getFecha_orden_compra).setCaption("FECHA OC").setId("FECHA OC").setWidth(120);
-        gridRemisiones.addColumn(Remision::getFolio_orden_compra).setCaption("FOLIO OC").setId("FOLIO OC").setWidth(120);
-        gridRemisiones.addColumn(Remision::getRazon_cancelar).setCaption("CANCELACION").setId("CANCELACION");
+        gridRequisiciones.addColumn(Requisicion::getFolio).setCaption("FOLIO").setId("FOLIO").setWidth(120);
+        gridRequisiciones.addColumn(Requisicion::getPrioridad).setCaption("PRIORIDAD").setId("PRIORIDAD").setWidth(135);
+        gridRequisiciones.addColumn(Requisicion::getEstado_doc).setCaption("ESTADO").setId("ESTADO").setWidth(135);
+        gridRequisiciones.addColumn(Requisicion::getFecha_orden_compra).setCaption("FECHA OC").setId("FECHA OC").setWidth(120);
+        gridRequisiciones.addColumn(Requisicion::getFolio_orden_compra).setCaption("FOLIO OC").setId("FOLIO OC").setWidth(120);
+        gridRequisiciones.addColumn(Requisicion::getRazon_cancelar).setCaption("CANCELACION").setId("CANCELACION");
 
-        gridRemisiones.setItems(getRemisiones());
-        gridRemisiones.setSelectionMode(Grid.SelectionMode.SINGLE);
-        gridRemisiones.setSizeFull();
-        gridRemisiones.setHeight("500px");
+        gridRequisiciones.setItems(getRequisiciones());
+        gridRequisiciones.setSelectionMode(Grid.SelectionMode.SINGLE);
+        gridRequisiciones.setSizeFull();
+        gridRequisiciones.setHeight("500px");
 
         btnAdd.addClickListener((event) -> {
-            WindowRemision windows = new WindowRemision();
+            WindowRequisicion windows = new WindowRequisicion();
             windows.center();
             windows.setModal(true);
             windows.addCloseListener(ev -> {
-                gridRemisiones.setItems(getRemisiones());
+                gridRequisiciones.setItems(getRequisiciones());
             });
             getUI().addWindow(windows);
         });
 
         btnModify.addClickListener((event) -> {
-            if (gridRemisiones.getSelectedItems().size() == 1) {
-                if(gridRemisiones.getSelectedItems().iterator().next().getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)){
-                    WindowRemision windows = new WindowRemision(gridRemisiones.getSelectedItems().iterator().next());
+            if (gridRequisiciones.getSelectedItems().size() == 1) {
+                if(gridRequisiciones.getSelectedItems().iterator().next().getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)){
+                    WindowRequisicion windows = new WindowRequisicion(gridRequisiciones.getSelectedItems().iterator().next());
                     windows.center();
                     windows.setModal(true);
                     windows.addCloseListener((e) -> {
-                        gridRemisiones.setItems(getRemisiones());
+                        gridRequisiciones.setItems(getRequisiciones());
                     });
                     getUI().addWindow(windows);
                 }else{
                     MessageBox.createError()
                             .withCaption("Error!")
-                            .withMessage("No puede modificar una Remision de Compra que esta en espera de su Autorizacion.")
+                            .withMessage("No puede modificar una Requisicion de Compra que esta en espera de su Autorizacion.")
                             .withRetryButton()
                             .open();
                 }
             } else {
                 MessageBox.createError()
                         .withCaption("Error!")
-                        .withMessage("Debe tener una Remision seleccionada para poder modificarla.")
+                        .withMessage("Debe tener una Requisicion seleccionada para poder modificarla.")
                         .withRetryButton()
                         .open();
             }
         });
         
         btnSearch.addClickListener((event) -> {
-            gridRemisiones.setItems(getRemisiones());
+            gridRequisiciones.setItems(getRequisiciones());
             txtBusqueda.setValue("");
         });
         
@@ -162,25 +162,25 @@ public class ComprasRemisiones extends Panel implements View {
         });
         
         btnTerminar.addClickListener((event) -> {
-            if (gridRemisiones.getSelectedItems().size() == 1) {
+            if (gridRequisiciones.getSelectedItems().size() == 1) {
                 
-                Remision remision = gridRemisiones.getSelectedItems().iterator().next();
+                Requisicion requisicion = gridRequisiciones.getSelectedItems().iterator().next();
                 
-                if(remision.getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)){
+                if(requisicion.getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)){
                     
                     MessageBox.createQuestion()
                         .withCaption("Atencion!")
-                        .withMessage("Desea que la Remision " + remision.getFolio() + ""
+                        .withMessage("Desea que la Requisicion " + requisicion.getFolio() + ""
                                 + " sea terminada? Ya no podrá realizar modificaciones.")
                         .withOkButton(() -> {
-                            RemisionDomain domain = new RemisionDomain();
-                            domain.RemisionTerminar(remision);
+                            RequisicionDomain domain = new RequisicionDomain();
+                            domain.RequisicionTerminar(requisicion);
                             
-                            gridRemisiones.setItems(getRemisiones());
+                            gridRequisiciones.setItems(getRequisiciones());
                             
                             MessageBox.createInfo()
                                     .withCaption("Atencion!")
-                                    .withMessage("Remision de Compra terminada correctamente. Aun esta pendiente de Autorizacion.")
+                                    .withMessage("Requisicion de Compra terminada correctamente. Aun esta pendiente de Autorizacion.")
                                     .withRetryButton()
                                     .open();
                         })
@@ -190,7 +190,7 @@ public class ComprasRemisiones extends Panel implements View {
                 }else{
                     MessageBox.createError()
                         .withCaption("Error!")
-                        .withMessage("Con el estado " + remision.getEstado_doc() + " de la Remision " + remision.getFolio() + ""
+                        .withMessage("Con el estado " + requisicion.getEstado_doc() + " de la Requisicion " + requisicion.getFolio() + ""
                                 + " no es posible pasar a Autorizacion.")
                         .withRetryButton()
                         .open();
@@ -198,7 +198,7 @@ public class ComprasRemisiones extends Panel implements View {
             } else {
                 MessageBox.createError()
                         .withCaption("Error!")
-                        .withMessage("Debe tener una Remision seleccionada para poder pasarla a Autorizacion.")
+                        .withMessage("Debe tener una Requisicion seleccionada para poder pasarla a Autorizacion.")
                         .withRetryButton()
                         .open();
             }
@@ -210,7 +210,7 @@ public class ComprasRemisiones extends Panel implements View {
     public void enter(ViewChangeListener.ViewChangeEvent event) {
     }
 
-    public List getRemisiones() {
+    public List getRequisiciones() {
         String strWhere = " activo = 1 ";
 
         if (!"".equals(txtBusqueda.getValue())) {
@@ -221,9 +221,9 @@ public class ComprasRemisiones extends Panel implements View {
             strWhere += "";
         }
 
-        RemisionDomain service = new RemisionDomain();
-        service.getRemision(strWhere, "", "fecha_requerida DESC");
-        listRemisiones = service.getObjects();
+        RequisicionDomain service = new RequisicionDomain();
+        service.getRequisicion(strWhere, "", "fecha_requerida DESC");
+        listRequisiciones = service.getObjects();
 
         if (!service.getOk()) {
             MessageBox.createError()
@@ -232,7 +232,7 @@ public class ComprasRemisiones extends Panel implements View {
                     .withRetryButton()
                     .open();
         }
-        return listRemisiones;
+        return listRequisiciones;
     }
     
 }

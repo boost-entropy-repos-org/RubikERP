@@ -73,8 +73,8 @@ DROP TABLE IF EXISTS `configuracion`;
 
 CREATE TABLE `configuracion` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `serie_remision` varchar(5) DEFAULT NULL,
-  `folio_remision` int(10) DEFAULT '0',
+  `serie_requisicion` varchar(5) DEFAULT NULL,
+  `folio_requisicion` int(10) DEFAULT '0',
   `serie_orden_compra` varchar(5) DEFAULT NULL,
   `folio_orden_compra` int(10) DEFAULT '0',
   `serie_cotizacion` varchar(5) DEFAULT NULL,
@@ -87,7 +87,7 @@ CREATE TABLE `configuracion` (
 
 /*Data for the table `configuracion` */
 
-insert  into `configuracion`(`id`,`serie_remision`,`folio_remision`,`serie_orden_compra`,`folio_orden_compra`,`serie_cotizacion`,`folio_cotizacion`,`serie_factura`,`folio_factura`,`autocompletar_totales`) values (1,'RM',3,'OC',0,'CT',0,'FA',0,0);
+insert  into `configuracion`(`id`,`serie_requisicion`,`folio_requisicion`,`serie_orden_compra`,`folio_orden_compra`,`serie_cotizacion`,`folio_cotizacion`,`serie_factura`,`folio_factura`,`autocompletar_totales`) values (1,'RM',3,'OC',0,'CT',0,'FA',0,0);
 
 /*Table structure for table `empleado` */
 
@@ -174,8 +174,8 @@ CREATE TABLE `orden_compra` (
   `proveedor_id` int(10) DEFAULT NULL,
   `proveedor` varchar(100) DEFAULT NULL,
   `cond_pago` varchar(100) DEFAULT NULL,
-  `remision_id` int(10) DEFAULT NULL,
-  `folio_remision` varchar(100) DEFAULT NULL,
+  `requisicion_id` int(10) DEFAULT NULL,
+  `folio_requisicion` varchar(100) DEFAULT NULL,
   `solicita_id` int(10) DEFAULT NULL,
   `solicita` varchar(100) DEFAULT NULL,
   `recibe_id` int(10) DEFAULT NULL,
@@ -231,8 +231,8 @@ CREATE TABLE `orden_compra_det` (
   `iva` double DEFAULT NULL,
   `total` double DEFAULT NULL,
   `servicio` tinyint(1) DEFAULT '1',
-  `folio_remision` varchar(100) DEFAULT NULL,
-  `remision_id` int(10) DEFAULT NULL,
+  `folio_requisicion` varchar(100) DEFAULT NULL,
+  `requisicion_id` int(10) DEFAULT NULL,
   `no_parte` varchar(100) DEFAULT NULL,
   `no_serie` varchar(100) DEFAULT NULL,
   `modelo` varchar(100) DEFAULT NULL,
@@ -345,11 +345,11 @@ CREATE TABLE `proveedor` (
 
 insert  into `proveedor`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`no_paper`,`activo`,`clasificacion_proveedor`,`tipo_proveedor`,`dias_credito`,`clave_proveedor`,`razon_social`,`rfc`,`domicilio`,`ciudad`,`estado`,`pais`,`cp`,`contacto_compra_telefono`,`contacto_compra_nombre`,`contacto_compra_email`,`contacto_contabilidad_telefono`,`contacto_contabilidad_nombre`,`contacto_contabilidad_email`,`no_cuenta_1`,`clave_interbancaria_1`,`banco_1`,`sucursal_1`,`no_cuenta_2`,`clave_interbancaria_2`,`banco_2`,`sucursal_2`,`no_cuenta_3`,`clave_interbancaria_3`,`banco_3`,`sucursal_3`) values (1,'2020-01-12 22:07:22','2020-01-12 22:07:22',1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',1,1,'PROVEEDOR','CONTADO',0,'1','PABLO BENAVIDES MOLINA','BEMP8905273G1','LOMA BONITA 206-4 COL. JESUS ELIAS PIÑA III','TAMPICO','TAMAULIPAS','MEXICO','89365','8331243823','Fulanito de tal','pblo.benavides@gmail.com','','','','','','','','','','','','','','',''),(2,'2020-01-12 22:07:22','2020-01-12 22:07:22',1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',1,1,'PROVEEDOR','CREDITO',15,'2','PROVEEDOR 2','ASDASDASDASDA','SDASDASDAS','DASDAS','DASDASD','MEXICO','23232','asdasd','aasdasdasd','asdasda','asdasd','asdasdas','dasdasd','asdasda','sdasd','asdasdas','dasdasd','asdasda','sdasdasdas','dasd','','','','',''),(3,'2020-01-30 22:27:03','2020-01-30 22:27:03',0,'',0,'',0,'',1,1,'PROVEEDOR','CONTADO',0,'3','PROVEEDOR 3','PROV323423244','2424','24E','RTYYRTYU','MEXICO','y6666','tyrty','fghrtrty','rtyr','rtyrty','rtyrt','yrty','jkljkl','jkljk','ljklj','kl','','','','','','','','');
 
-/*Table structure for table `remision` */
+/*Table structure for table `requisicion` */
 
-DROP TABLE IF EXISTS `remision`;
+DROP TABLE IF EXISTS `requisicion`;
 
-CREATE TABLE `remision` (
+CREATE TABLE `requisicion` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `fecha_elaboracion` datetime DEFAULT NULL,
   `fecha_modificacion` datetime DEFAULT NULL,
@@ -395,15 +395,15 @@ CREATE TABLE `remision` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
-/*Data for the table `remision` */
+/*Data for the table `requisicion` */
 
-insert  into `remision`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`estado_doc`,`estado`,`folio`,`serie`,`observaciones`,`tipo_documento`,`tipo_archivo`,`razon_cancelar`,`cliente_id`,`cliente`,`cliente_rfc`,`metodo_pago`,`moneda`,`tipo_cambio`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`porc_iva`,`importe_letra`,`activo`,`prioridad`,`fecha_requerida`,`direccion_entrega`,`fecha_orden_compra`,`folio_orden_compra`,`autoriza_id`,`autoriza`,`fecha_autorizo`,`firma_autorizo`,`solicita`,`firma_solicita`) values (1,'2020-02-20 11:38:46','2020-03-01 10:51:04',0,'',0,'',1,'PABLO BENAVIDES MOLINA','AUTORIZADO','','RM00002','','ENTREGAR EN UN SOLO PAQUETE','REMISION DE COMPRA','PDF','',0,'','','',NULL,NULL,0,0,0,0,11411.6,0,'',1,'MEDIA','2020-02-24 00:00:00','',NULL,NULL,1,'PABLO BENAVIDES MOLINA','2020-03-01 10:51:04','7D5AAB48CD890BD54F1721EAEA115775','PABLO BENAVIDES MOLINA','7D5AAB48CD890BD54F1721EAEA115775'),(2,'2020-02-20 11:58:26','2020-02-20 12:08:47',0,'',0,'',1,'PABLO BENAVIDES MOLINA','EN PROCESO','','RM00003','','SERVICIO EN PLANTA','REMISION DE COMPRA','PDF','',0,'','','',NULL,NULL,0,0,0,0,80,0,'',1,'ALTA','2020-02-20 00:00:00','',NULL,NULL,1,'PABLO BENAVIDES MOLINA',NULL,NULL,'PABLO BENAVIDES MOLINA',NULL);
+insert  into `requisicion`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`estado_doc`,`estado`,`folio`,`serie`,`observaciones`,`tipo_documento`,`tipo_archivo`,`razon_cancelar`,`cliente_id`,`cliente`,`cliente_rfc`,`metodo_pago`,`moneda`,`tipo_cambio`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`porc_iva`,`importe_letra`,`activo`,`prioridad`,`fecha_requerida`,`direccion_entrega`,`fecha_orden_compra`,`folio_orden_compra`,`autoriza_id`,`autoriza`,`fecha_autorizo`,`firma_autorizo`,`solicita`,`firma_solicita`) values (1,'2020-02-20 11:38:46','2020-03-01 10:51:04',0,'',0,'',1,'PABLO BENAVIDES MOLINA','AUTORIZADO','','RM00002','','ENTREGAR EN UN SOLO PAQUETE','REMISION DE COMPRA','PDF','',0,'','','',NULL,NULL,0,0,0,0,11411.6,0,'',1,'MEDIA','2020-02-24 00:00:00','',NULL,NULL,1,'PABLO BENAVIDES MOLINA','2020-03-01 10:51:04','7D5AAB48CD890BD54F1721EAEA115775','PABLO BENAVIDES MOLINA','7D5AAB48CD890BD54F1721EAEA115775'),(2,'2020-02-20 11:58:26','2020-02-20 12:08:47',0,'',0,'',1,'PABLO BENAVIDES MOLINA','EN PROCESO','','RM00003','','SERVICIO EN PLANTA','REMISION DE COMPRA','PDF','',0,'','','',NULL,NULL,0,0,0,0,80,0,'',1,'ALTA','2020-02-20 00:00:00','',NULL,NULL,1,'PABLO BENAVIDES MOLINA',NULL,NULL,'PABLO BENAVIDES MOLINA',NULL);
 
-/*Table structure for table `remision_det` */
+/*Table structure for table `requisicion_det` */
 
-DROP TABLE IF EXISTS `remision_det`;
+DROP TABLE IF EXISTS `requisicion_det`;
 
-CREATE TABLE `remision_det` (
+CREATE TABLE `requisicion_det` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `folio` varchar(100) DEFAULT NULL,
   `documento_id` int(10) DEFAULT NULL,
@@ -435,9 +435,9 @@ CREATE TABLE `remision_det` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
-/*Data for the table `remision_det` */
+/*Data for the table `requisicion_det` */
 
-insert  into `remision_det`(`id`,`folio`,`documento_id`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`no_partida`,`fecha_alta`,`cantidad`,`producto_id`,`descripcion`,`unidad_medida`,`precio_unitario`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`servicio`,`no_parte`,`no_serie`,`modelo`,`marca`,`codigo_interno`,`codigo_proveedor`) values (1,'RM00002',1,1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',0,'2020-02-20 11:37:40',1,4,'PRODUCTO 4','PIEZA',11.6,NULL,NULL,NULL,NULL,11.6,0,'201806','545-454sr25','22698','MARCA TRES','4',NULL),(2,'RM00002',1,1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',0,'2020-02-20 11:37:56',10,5,'PRODUCTO 5','PIEZA',500,NULL,NULL,NULL,NULL,5000,0,'8084895','554-a45485e-e','2248','MARCA TRES','5',NULL),(3,'RM00002',1,1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',0,'2020-02-20 11:38:13',8,7,'PRODUCTO 7','PIEZA',800,NULL,NULL,NULL,NULL,6400,0,'8484532','545e-454','24789','MARCA UNO','7',NULL),(4,'RM00003',2,1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',0,'2020-02-20 11:58:10',1,10,'MANTENIMIENTO PREVENTIVO DE MAQUINARIA, MOTOR Y ENGRANES','SERVICIO',80,NULL,NULL,NULL,NULL,80,0,'NA','NA','NA','NA','10',NULL);
+insert  into `requisicion_det`(`id`,`folio`,`documento_id`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`no_partida`,`fecha_alta`,`cantidad`,`producto_id`,`descripcion`,`unidad_medida`,`precio_unitario`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`servicio`,`no_parte`,`no_serie`,`modelo`,`marca`,`codigo_interno`,`codigo_proveedor`) values (1,'RM00002',1,1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',0,'2020-02-20 11:37:40',1,4,'PRODUCTO 4','PIEZA',11.6,NULL,NULL,NULL,NULL,11.6,0,'201806','545-454sr25','22698','MARCA TRES','4',NULL),(2,'RM00002',1,1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',0,'2020-02-20 11:37:56',10,5,'PRODUCTO 5','PIEZA',500,NULL,NULL,NULL,NULL,5000,0,'8084895','554-a45485e-e','2248','MARCA TRES','5',NULL),(3,'RM00002',1,1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',0,'2020-02-20 11:38:13',8,7,'PRODUCTO 7','PIEZA',800,NULL,NULL,NULL,NULL,6400,0,'8484532','545e-454','24789','MARCA UNO','7',NULL),(4,'RM00003',2,1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',0,'2020-02-20 11:58:10',1,10,'MANTENIMIENTO PREVENTIVO DE MAQUINARIA, MOTOR Y ENGRANES','SERVICIO',80,NULL,NULL,NULL,NULL,80,0,'NA','NA','NA','NA','10',NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

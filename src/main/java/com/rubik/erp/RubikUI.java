@@ -1,15 +1,15 @@
 package com.rubik.erp;
 
-import com.rubik.erp.modulo.compras.ComprasMonitorRemisiones;
+import com.rubik.erp.modulo.compras.ComprasMonitorRequisiciones;
 import com.rubik.erp.modulo.compras.ComprasOrdenes;
 import com.rubik.erp.modulo.compras.ComprasProductos;
 import com.rubik.erp.modulo.compras.ComprasProveedores;
-import com.rubik.erp.modulo.compras.ComprasRemisiones;
+import com.rubik.erp.modulo.compras.ComprasRequisiciones;
+import com.rubik.erp.modulo.configuracion.ViewConfiguracion;
 import com.rubik.erp.modulo.generic.Login;
 import com.rubik.erp.modulo.generic.MainPage;
 import com.rubik.erp.modulo.rh.Empleados;
 import com.rubik.erp.modulo.ventas.VentasClientes;
-import com.rubik.modulo.configuracion.ViewConfiguracion;
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
@@ -49,9 +49,9 @@ public class RubikUI extends UI {
         
         navigator.addView(ComprasProveedores.NAME, ComprasProveedores.class);
         navigator.addView(ComprasProductos.NAME, ComprasProductos.class);
-        navigator.addView(ComprasRemisiones.NAME, ComprasRemisiones.class);
+        navigator.addView(ComprasRequisiciones.NAME, ComprasRequisiciones.class);
         navigator.addView(ComprasOrdenes.NAME, ComprasOrdenes.class);
-        navigator.addView(ComprasMonitorRemisiones.NAME, ComprasMonitorRemisiones.class);
+        navigator.addView(ComprasMonitorRequisiciones.NAME, ComprasMonitorRequisiciones.class);
         navigator.addView(VentasClientes.NAME, VentasClientes.class);
         navigator.addView(Empleados.NAME, Empleados.class);
         navigator.addView(ViewConfiguracion.NAME, ViewConfiguracion.class);

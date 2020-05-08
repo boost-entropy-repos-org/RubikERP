@@ -103,7 +103,7 @@ public class ComprasOrdenes extends Panel implements View {
         columnFecha.setId("FECHA");
         columnFecha.setWidth(120);
         gridOC.addColumn(OrdenDeCompra::getFolio).setCaption("FOLIO").setId("FOLIO").setWidth(120);
-        gridOC.addColumn(OrdenDeCompra::getFolio_remision).setCaption("FOLIO REM").setId("FOLIO REM").setWidth(120);
+        gridOC.addColumn(OrdenDeCompra::getFolio_requisicion).setCaption("FOLIO REM").setId("FOLIO REM").setWidth(120);
         gridOC.addColumn(OrdenDeCompra::getEstado_doc).setCaption("ESTADO").setId("ESTADO").setWidth(130);
         gridOC.addColumn(OrdenDeCompra::getProveedor).setCaption("PROVEEDOR").setId("PROVEEDOR");
         gridOC.addColumn(OrdenDeCompra::getImporte).setCaption("IMPORTE").setId("IMPORTE").setWidth(120);
@@ -128,7 +128,7 @@ public class ComprasOrdenes extends Panel implements View {
         btnModify.addClickListener((event) -> {
 //            if (gridOC.getSelectedItems().size() == 1) {
 //                if(gridOC.getSelectedItems().iterator().next().getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)){
-//                    WindowRemision windows = new WindowRemision(gridOC.getSelectedItems().iterator().next());
+//                    WindowRequisicion windows = new WindowRequisicion(gridOC.getSelectedItems().iterator().next());
 //                    windows.center();
 //                    windows.setModal(true);
 //                    windows.addCloseListener((e) -> {
@@ -138,14 +138,14 @@ public class ComprasOrdenes extends Panel implements View {
 //                }else{
 //                    MessageBox.createError()
 //                            .withCaption("Error!")
-//                            .withMessage("No puede modificar una Remision de Compra que esta en espera de su Autorizacion.")
+//                            .withMessage("No puede modificar una Requisicion de Compra que esta en espera de su Autorizacion.")
 //                            .withRetryButton()
 //                            .open();
 //                }
 //            } else {
 //                MessageBox.createError()
 //                        .withCaption("Error!")
-//                        .withMessage("Debe tener una Remision seleccionada para poder modificarla.")
+//                        .withMessage("Debe tener una Requisicion seleccionada para poder modificarla.")
 //                        .withRetryButton()
 //                        .open();
 //            }
@@ -162,23 +162,23 @@ public class ComprasOrdenes extends Panel implements View {
         btnTerminar.addClickListener((event) -> {
 //            if (gridOC.getSelectedItems().size() == 1) {
 //                
-//                OrdenDeCompra remision = gridOC.getSelectedItems().iterator().next();
+//                OrdenDeCompra requisicion = gridOC.getSelectedItems().iterator().next();
 //                
-//                if(remision.getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)){
+//                if(requisicion.getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)){
 //                    
 //                    MessageBox.createQuestion()
 //                        .withCaption("Atencion!")
-//                        .withMessage("Desea que la Remision " + remision.getFolio() + ""
+//                        .withMessage("Desea que la Requisicion " + requisicion.getFolio() + ""
 //                                + " sea terminada? Ya no podrá realizar modificaciones.")
 //                        .withOkButton(() -> {
 //                            OrdenDeCompraDomain domain = new OrdenDeCompraDomain();
-//                            domain.RemisionTerminar(remision);
+//                            domain.RequisicionTerminar(requisicion);
 //                            
 //                            gridOC.setItems(getOrdenes());
 //                            
 //                            MessageBox.createInfo()
 //                                    .withCaption("Error!")
-//                                    .withMessage("Remision de Compra terminada correctamente. Aun esta pendiente de Autorizacion.")
+//                                    .withMessage("Requisicion de Compra terminada correctamente. Aun esta pendiente de Autorizacion.")
 //                                    .withRetryButton()
 //                                    .open();
 //                        })
@@ -188,7 +188,7 @@ public class ComprasOrdenes extends Panel implements View {
 //                }else{
 //                    MessageBox.createError()
 //                        .withCaption("Error!")
-//                        .withMessage("Con el estado " + remision.getEstado_doc() + " de la Remision " + remision.getFolio() + ""
+//                        .withMessage("Con el estado " + requisicion.getEstado_doc() + " de la Requisicion " + requisicion.getFolio() + ""
 //                                + " no es posible pasar a Autorizacion.")
 //                        .withRetryButton()
 //                        .open();
@@ -196,7 +196,7 @@ public class ComprasOrdenes extends Panel implements View {
 //            } else {
 //                MessageBox.createError()
 //                        .withCaption("Error!")
-//                        .withMessage("Debe tener una Remision seleccionada para poder pasarla a Autorizacion.")
+//                        .withMessage("Debe tener una Requisicion seleccionada para poder pasarla a Autorizacion.")
 //                        .withRetryButton()
 //                        .open();
 //            }
