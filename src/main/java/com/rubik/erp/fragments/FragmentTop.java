@@ -12,6 +12,7 @@ import com.rubik.erp.modulo.compras.ComprasProductos;
 import com.rubik.erp.modulo.compras.ComprasProveedores;
 import com.rubik.erp.modulo.compras.ComprasRemisiones;
 import com.rubik.erp.modulo.generic.Login;
+import com.rubik.erp.modulo.rh.Empleados;
 import com.rubik.erp.modulo.ventas.VentasClientes;
 import com.rubik.modulo.configuracion.ViewConfiguracion;
 import com.vaadin.server.ThemeResource;
@@ -54,10 +55,7 @@ public class FragmentTop extends HorizontalLayout {
     MenuBar.MenuItem subProspectoClientes;
     
     MenuBar.MenuItem menuRecursosHumanos;
-    MenuBar.MenuItem subDepartamentos;
-    MenuBar.MenuItem subPuesto;
     MenuBar.MenuItem subEmpleados;
-    MenuBar.MenuItem subUsuarios;
 
     MenuBar.MenuItem menuConfiguracion;
     MenuBar.MenuItem subConfiguracion;
@@ -74,7 +72,7 @@ public class FragmentTop extends HorizontalLayout {
         setHeight("37px");
         setWidth("100%");
 
-        Image logo = new Image(null, new ThemeResource("img/cubeLogo.png"));
+        Image logo = new Image(null, new ThemeResource("img/logoSimple.png"));
         logo.setHeight("37px");
         Image profilePic = new Image(null, new ThemeResource("img/user.png"));
         profilePic.setWidth("37px");
@@ -82,10 +80,9 @@ public class FragmentTop extends HorizontalLayout {
         btnPassword.setStyleName(ValoTheme.BUTTON_PRIMARY);
 
         profilePic.addClickListener(ev -> {
-            MessageBox.createQuestion()
+            MessageBox.createInfo()
                     .withCaption("Bienvenido!")
                     .withMessage("USUARIO: " + empleado.getNombre_completo()+ "\n"
-                            + "EMPRESA: " + empleado.getEmpresa_id() + " - " + empleado.getEmpresa() + "\n"
                             + "DEPARTAMENTO: " + empleado.getDepartamento() + "\n"
                             + "PUESTO: " + empleado.getPuesto() + "\n"
                     )
@@ -174,19 +171,8 @@ public class FragmentTop extends HorizontalLayout {
         menuRecursosHumanos = menubar.addItem("R. H.", null);
         menuRecursosHumanos.setIcon(Fam3SilkIcon.GROUP);
 
-        subDepartamentos = menuRecursosHumanos.addItem("Departamentos", actionMenu);
-        subDepartamentos.setIcon(Fam3SilkIcon.WORLD);
-        
-        subPuesto = menuRecursosHumanos.addItem("Puestos",actionMenu);
-        subPuesto.setIcon(Fam3SilkIcon.GROUP);
-        
-        menuRecursosHumanos.addSeparator();
-
         subEmpleados = menuRecursosHumanos.addItem("Empleados", actionMenu);
         subEmpleados.setIcon(Fam3SilkIcon.USER);
-        
-        subUsuarios = menuRecursosHumanos.addItem("Usuarios", actionMenu);
-        subUsuarios.setIcon(Fam3SilkIcon.USER_GRAY);
         
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
@@ -254,26 +240,9 @@ public class FragmentTop extends HorizontalLayout {
 //                    break;
                     
  // ------------- RECURSOS HUMANOS
-//                case "Departamentos":
-//                    getUI().getNavigator().navigateTo(ViewDepartamento.NAME);
-//                    break;
-//                case "Puestos":
-//                    getUI().getNavigator().navigateTo(ViewRHPuestos.NAME);
-//                    break;
-//                case "Empleados":
-//                    getUI().getNavigator().navigateTo(ViewEmpleado.NAME);
-//                    break;
-//                case "Usuarios":
-//                    getUI().getNavigator().navigateTo(ViewUsuario.NAME);
-//                    break;
-                    
-// ------------- EXPEDIENTE DIGITAL ---------- DOCUMENTOS
-//                case "Clientes":
-//                    getUI().getNavigator().navigateTo(ViewClienteDocument.NAME);
-//                    break;
-//                case "Cliente":
-//                    getUI().getNavigator().navigateTo(ViewCliente.NAME);
-//                    break; 
+                case "Empleados":
+                    getUI().getNavigator().navigateTo(Empleados.NAME);
+                    break;
                     
 // ------------- CONFIGURACION
                 case "Configuracion":
@@ -294,105 +263,36 @@ public class FragmentTop extends HorizontalLayout {
     
     public void security(){
         
-        subProducto.setVisible(false);
-        subProveedor.setVisible(false);
-        
-        menuCompras.setVisible(false);
-        subReporteRequisicion.setVisible(false);
-        subOrdenDeCompra.setVisible(false);
-        subMonitoreoRemisiones.setVisible(false);
-        subMonitoreoOC.setVisible(false);
-        subReporteRequisicion.setVisible(false);
-        subReporteOrdenDeCompra.setVisible(false);
+        for (MenuItem item : menubar.getItems()) {
+            
+            item.setVisible(false);
+            
+            if(item.getChildren()!=null){
+                
+                for (MenuItem item2 : item.getChildren()) {
+                    
+                    item2.setVisible(false);
+                    
+                    if(item2.getChildren()!=null){
+                        for (MenuItem item3 : item2.getChildren()) {
+                            item3.setVisible(false);
+                        }
+                    }else{
+                        item2.setVisible(false);
+                    }
+                }
+            }else{
+                item.setVisible(false);
+            }
+        }
 
-        menuRecursosHumanos.setVisible(false);
-        subDepartamentos.setVisible(false);
-        subPuesto.setVisible(false);
-        subEmpleados.setVisible(false);
-        subUsuarios.setVisible(false);
         
-        menuComercial.setVisible(false);
-        subProspectoClientes.setVisible(false);
         
-        menuConfiguracion.setVisible(false);
-        
-        menuSalir.setVisible(false);
 
-//        if (usuario.getDepartamento().equals(_Departamentos.RECURSOS_HUMANOS.getDepartamento())) {
-//
-//            menuRecursosHumanos.setVisible(true);
-//            subDepartamentos.setVisible(true);
-//            subPuesto.setVisible(true);
-//            subUsuarios.setVisible(true);
-//            subEmpleados.setVisible(true);
-//            
-//        } else if (usuario.getDepartamento().equals(_Departamentos.COMPRAS.getDepartamento())) {
-//            
-//            menuCatalogos.setVisible(true);
-//            menuCompras.setVisible(true);
-//            subReporteRequisicion.setVisible(true);
-//            subOrdenDeCompra.setVisible(true);
-//            subMonitoreoRequi.setVisible(true);
-//            subMonitoreoOC.setVisible(true);
-//            subReporteRequisicion.setVisible(true);
-//            subReporteOrdenDeCompra.setVisible(true);
-//            
-//            menuCatalogos.setVisible(true);
-//            subEmpresas.setVisible(true);
-//            subUnidadNegocio.setVisible(true);
-//            subProducto.setVisible(true);
-//            subProveedor.setVisible(true);
-//        
-//            menuExpedienteDigital.setVisible(true);
-//            
-//        } else if (usuario.getDepartamento().equals(_Departamentos.COMERCIAL.getDepartamento())) {
-//            
-//            menuComercial.setVisible(true);
-//            subProspectoClientes.setVisible(true);
-//            
-//        } else if (usuario.getDepartamento().equals(_Departamentos.OPERACIONES.getDepartamento())) {
-//
-//            menuOperacion.setVisible(true);
-//            menuExpedienteDigital.setVisible(true);
-//            subXMLToGlobal.setVisible(true);
-//            subSolicitudPrevios.setVisible(true);
-//            
-//        } else if (usuario.getDepartamento().equals(_Departamentos.TECNOLOGIAS_DE_LA_INFORMACION.getDepartamento())) {
-//            
-//            menuCatalogos.setVisible(true);
-//            subEmpresas.setVisible(true);
-//            subUnidadNegocio.setVisible(true);
-//            subProducto.setVisible(true);
-//            subProveedor.setVisible(true);
-//            
-//            menuRecursosHumanos.setVisible(true);
-//            subDepartamentos.setVisible(true);
-//            subPuesto.setVisible(true);
-//            subUsuarios.setVisible(true);
-//            subEmpleados.setVisible(true);
-//            
-//        } else if (usuario.getDepartamento().equals(_Departamentos.ADMINISTRATIVO.getDepartamento())) {
-//
-//        } else if (usuario.getDepartamento().equals(_Departamentos.LIMPIEZA.getDepartamento())) {
-//
-//        } else if (usuario.getDepartamento().equals(_Departamentos.COBRANZA.getDepartamento())) {
-//
-//        }
-//        
-//        // ROLES ESPECIFICOS
-//        if(usuario.getRol().equals(_RolesDeUsuario.ROL_REQUISITOR) 
-//                || usuario.getClasificacion_puesto().equals(_ClasificacionDePuestos.LIDER_DE_AREA)){
-//            
-//            menuCompras.setVisible(true);
-//            subRemisiones.setVisible(true);
-//            subMonitoreoRequi.setVisible(true);
-//        }
-//
-//        // VISIBLES PARA TODOS LOS USUARIOS
-//        // -------------- TI - SERVICE DESK
-//        menuConfiguracion.setVisible(true);
-//        subCambiarUnidad.setVisible(true);
-//        menuSalir.setVisible(true);
+
+
+
+
         
     }
 

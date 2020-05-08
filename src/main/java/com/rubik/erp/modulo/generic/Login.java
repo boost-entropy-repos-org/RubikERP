@@ -57,15 +57,15 @@ public class Login  extends VerticalLayout implements View {
         loginPanel.setSpacing(true);
         loginPanel.addStyleName("login-panel");
 
-        Image logoGrucas = new Image(null, new ThemeResource("img/cubeLogo.png"));
-        logoGrucas.setWidth("140px");
+        Image logoLogin = new Image(null, new ThemeResource("img/imagenLogin.png"));
+        logoLogin.setWidth("250px");
 
         btnRecuperarPas.setStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
 
         loginPanel.setSizeUndefined();
         loginPanel.setSpacing(true);
-        loginPanel.addComponents(logoGrucas, buildLabels(), buildFields(), btnRecuperarPas);
-        loginPanel.setComponentAlignment(logoGrucas, Alignment.MIDDLE_CENTER);
+        loginPanel.addComponents(logoLogin, buildLabels(), buildFields(), btnRecuperarPas);
+        loginPanel.setComponentAlignment(logoLogin, Alignment.MIDDLE_CENTER);
         loginPanel.setComponentAlignment(loginPanel.getComponent(1), Alignment.MIDDLE_CENTER);
         loginPanel.setComponentAlignment(loginPanel.getComponent(2), Alignment.MIDDLE_CENTER);
         loginPanel.setComponentAlignment(loginPanel.getComponent(3), Alignment.MIDDLE_RIGHT);
@@ -76,7 +76,7 @@ public class Login  extends VerticalLayout implements View {
     private Component buildFields() {
         HorizontalLayout fields = new HorizontalLayout();
 
-        username = new TextField("Usuario:");
+        username = new TextField("Email:");
         username.setIcon(Fam3SilkIcon.USER);
         username.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
         username.focus();
@@ -145,7 +145,7 @@ public class Login  extends VerticalLayout implements View {
         CssLayout labels = new CssLayout();
         labels.addStyleName("labels");
 
-        Label welcome = new Label("R U B I K ♦ S O F T");
+        Label welcome = new Label(" ♦ B I E N V E N I D O ♦ ");
         welcome.addStyleName(ValoTheme.LABEL_HUGE);
         labels.addComponents(welcome);
         return labels;
