@@ -44,7 +44,6 @@ public class WindowRequisicionDet extends Window {
     VerticalLayout cont = new VerticalLayout();
 
     TextField txtCantidad = new TextField("Cantidad:");
-    TextField txtTotal = new TextField("Total: $");
     TextArea txtDescripcion = new TextArea("Descripcion:");
 
     Button btnCancelar = new Button("Cancelar", Fam3SilkIcon.CANCEL);
@@ -82,11 +81,9 @@ public class WindowRequisicionDet extends Window {
 
         txtCantidad.setWidth(strWidth);
         txtDescripcion.setWidth(strWidth);
-        txtTotal.setWidth(strWidth);
         
         txtCantidad.setValue("1");
         txtDescripcion.setEnabled(false);
-        txtTotal.setEnabled(false);
         
         txtCantidad.addFocusListener((event) -> {            
             txtCantidad.setSelection(0, txtCantidad.getValue().length());
@@ -94,7 +91,6 @@ public class WindowRequisicionDet extends Window {
 
         binder.forField(txtCantidad).withValidator(cantidad -> cantidad.length() >= 1 && ManageNumbers.ToInteger(cantidad) >= 1, "Verifique que la cantidad este correcta").withConverter(new StringToIntegerConverter(0, "El valor debe ser numerico.")).bind(RequisicionDet::getCantidad, RequisicionDet::setCantidad);
         binder.forField(txtDescripcion).withValidator(val -> val.length() >= 1 , "Verifique que este un Producto seleccionado").bind(RequisicionDet::getDescripcion, RequisicionDet::setDescripcion);
-        binder.forField(txtTotal).withValidator(val -> val.length() >= 1 , "Verifique que el valor sea correcto.").withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico.")).bind(RequisicionDet::getTotal, RequisicionDet::setTotal);
 
         if (isEdit) {
             binder.readBean(partida);
@@ -113,7 +109,7 @@ public class WindowRequisicionDet extends Window {
                 System.out.println("PRODUCTO SELECCIONADO " + p);
                 if(p != null){
                     partida = new RequisicionDet();
-                    partida.setDescripcion(p.getDescripcion());
+                    partida.setDescripcion(p.getDescripcion_corta());
                     partida.setProducto_id(p.getId());
                     partida.setUnidad_medida(p.getUnidad_medida());
                     partida.setPrecio_unitario(p.getPrecio_compra());
@@ -124,8 +120,7 @@ public class WindowRequisicionDet extends Window {
                     partida.setMarca(p.getMarca());
                     partida.setCodigo_interno(p.getCodigo_interno());
 
-                    txtDescripcion.setValue(p.getDescripcion());
-                    txtTotal.setValue(p.getPrecio_compra().toString());
+                    txtDescripcion.setValue(p.getDescripcion_corta());
                 }
             });
             getUI().addWindow(window);
@@ -134,11 +129,7 @@ public class WindowRequisicionDet extends Window {
         txtCantidad.addValueChangeListener((event) -> {
             if(ManageNumbers.ToInteger(txtCantidad.getValue())==0){
                 txtCantidad.setValue("1");
-            }
-            
-            txtTotal.setValue(
-                    (ManageNumbers.ToInteger(txtCantidad.getValue()) * partida.getPrecio_unitario())+""
-            );
+            }            
         });
 
         btnGuardar.addClickListener((event) -> {
@@ -155,7 +146,6 @@ public class WindowRequisicionDet extends Window {
                     partida.setEmpresa_id(empleado.getEmpresa_id());
                     partida.setFecha_alta(new Date());
                     partida.setCantidad(ManageNumbers.ToInteger(txtCantidad.getValue()));
-                    partida.setTotal(ManageNumbers.stringToDouble(txtTotal.getValue()));
                     
                     RequisicionDetDomain domain = new RequisicionDetDomain();
                     

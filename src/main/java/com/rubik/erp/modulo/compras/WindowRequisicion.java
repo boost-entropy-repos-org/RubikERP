@@ -5,17 +5,21 @@
  */
 package com.rubik.erp.modulo.compras;
 
+import com.rubik.Base.DocumentObjectBase;
 import com.rubik.erp.config._DocumentoEstados;
 import com.rubik.erp.config._DocumentoTipos;
 import com.rubik.erp.config._Folios;
 import com.rubik.erp.domain.ConfiguracionDomain;
 import com.rubik.erp.domain.EmpleadoDomain;
+import com.rubik.erp.domain.ProveedorDomain;
 import com.rubik.erp.domain.RequisicionDetDomain;
 import com.rubik.erp.domain.RequisicionDomain;
 import com.rubik.erp.model.Configuracion;
 import com.rubik.erp.model.Empleado;
+import com.rubik.erp.model.Proveedor;
 import com.rubik.erp.model.Requisicion;
 import com.rubik.erp.model.RequisicionDet;
+import com.rubik.erp.modulo.generic.WindowVisorDocumentos;
 import com.rubik.manage.ManageDates;
 import com.rubik.manage.ManageString;
 import com.vaadin.data.Binder;
@@ -59,6 +63,7 @@ public class WindowRequisicion extends Window {
     TextArea txtDireccionEntrega = new TextArea("Descripcion Entrega:");
     NativeSelect<Empleado> cboAutorizador = new NativeSelect("Autorizador:");
     NativeSelect<String> cboPrioridad = new NativeSelect("Prioridad:");
+    NativeSelect<Proveedor> cboProveedor = new NativeSelect("Proveedor sugerido:");
 
     Button btnAgregarPartida = new Button("Agregar",Fam3SilkIcon.ADD);
     Button btnModificarPartida = new Button("Modificar",Fam3SilkIcon.PENCIL);
@@ -71,6 +76,7 @@ public class WindowRequisicion extends Window {
     List<RequisicionDet> listRequisicionDet = new ArrayList<>();
     
     List<Empleado> listAutorizadoresCompras = new ArrayList<>();
+    List<Proveedor> proveedorList = new ArrayList<>();
     
     Label lblFolio;
     String folio = "";
@@ -109,6 +115,18 @@ public class WindowRequisicion extends Window {
         binder.forField(txtDireccionEntrega).bind(Requisicion::getDireccion_entrega, Requisicion::setDireccion_entrega);
         binder.forField(cboPrioridad).bind(Requisicion::getPrioridad, Requisicion::setPrioridad);
         
+        cboProveedor.setItems(getProveedor());
+        cboProveedor.setEmptySelectionAllowed(false);
+        try {
+            cboProveedor.setSelectedItem(proveedorList.get(0));
+        } catch (Exception e) {
+            MessageBox.createError()
+                    .withCaption("Error!")
+                    .withMessage("No existen proveedores dados de alta. ")
+                    .withRetryButton()
+                    .open();
+        }
+        
         gridRequisicionDet.setHeight("272");
         gridRequisicionDet.setSelectionMode(Grid.SelectionMode.SINGLE);
 
@@ -133,6 +151,13 @@ public class WindowRequisicion extends Window {
                     }
                 }
             });
+            getUI().addWindow(windows);
+        });
+        
+        btnExpediente.addClickListener((event) -> {
+            WindowVisorDocumentos windows = new WindowVisorDocumentos(requisicion, _DocumentoTipos.COTIZACION_DE_COMPRA);
+            windows.center();
+            windows.setModal(true);
             getUI().addWindow(windows);
         });
         
@@ -209,11 +234,21 @@ public class WindowRequisicion extends Window {
 
                 binder.writeBean(requisicion);
                 toUpperCase();
-
+                
+                Proveedor prov1 = cboProveedor.getValue();
+                
+                if(prov1 != null){
+                    requisicion.setProveedor(prov1.getRazon_social());
+                    requisicion.setProveedor_id(prov1.getId());
+                }else{
+                    requisicion.setProveedor("");
+                    requisicion.setProveedor_id(0);
+                }
+                
                 requisicion.setUsuario_id(empleado.getId());
                 requisicion.setUsuario(empleado.getNombre_completo());
                 requisicion.setEstado_doc(_DocumentoEstados.EN_PROCESO);
-                requisicion.setTipo_documento(_DocumentoTipos.REMISION_DE_COMPRA);
+                requisicion.setTipo_documento(_DocumentoTipos.REMISION_DE_ENTREGA);
                 requisicion.setTipo_archivo("PDF");
                 requisicion.setFecha_requerida(ManageDates.getDateFromLocalDate(txtFechaRequerida.getValue()));
                 requisicion.setAutoriza(autoriza.getNombre_completo());
@@ -237,11 +272,10 @@ public class WindowRequisicion extends Window {
                     
                     RequisicionDetDomain domainDet = new RequisicionDetDomain();
                     
-                    for (RequisicionDet partidaTemp : listRequisicionDet) { // Obtiene el total
-                        total += partidaTemp.getTotal();
-                    }
-
-                    requisicion.setTotal(total);
+//                    for (RequisicionDet partidaTemp : listRequisicionDet) { // Obtiene el total
+//                        total += partidaTemp.getTotal();
+//                    }
+//                    requisicion.setTotal(total);
                     service.RequisicionInsert(requisicion);
                     updateFolio();
                     
@@ -266,6 +300,7 @@ public class WindowRequisicion extends Window {
                             .open();
                 }
             } catch (Exception ex) {
+                ex.printStackTrace();
                 MessageBox.createError()
                         .withCaption("Error!")
                         .withMessage("Verifique que la informacion este completa o sea correcta. ")
@@ -288,6 +323,7 @@ public class WindowRequisicion extends Window {
         txtObservaciones.setWidth(strWidth);
         cboPrioridad.setWidth(strWidth);
         cboAutorizador.setWidth(strWidth);
+        cboProveedor.setWidth(strWidth);
         txtDireccionEntrega.setWidth(strWidth);
         
         cboAutorizador.setItems(getAutorizadorCompras());
@@ -296,6 +332,12 @@ public class WindowRequisicion extends Window {
 
         if (isEdit) {
             binder.readBean(requisicion);
+            
+            for (Proveedor prov : proveedorList) {
+                if (requisicion.getProveedor_id().equals(prov.getId())) {
+                    cboProveedor.setValue(prov);
+                }
+            }
             
             gridRequisicionDet.setItems(getPartidas());
             
@@ -307,8 +349,9 @@ public class WindowRequisicion extends Window {
         }
         
         FormLayout fLay = new FormLayout();
+        fLay.setSpacing(false);
         fLay.addComponents(txtFechaRequerida,txtSolicita, cboPrioridad, cboAutorizador, txtObservaciones, 
-                txtDireccionEntrega);
+                txtDireccionEntrega,cboProveedor);
 
         cont.setSpacing(false);
         cont.addComponents(lblFolio,
@@ -372,6 +415,13 @@ public class WindowRequisicion extends Window {
     public void updateFolio() {
         ConfiguracionDomain domain = new ConfiguracionDomain();
         domain.ConfiguracionFolioUpdate(_Folios.FOLIO_REMISION);
+    }
+    
+    public List<Proveedor> getProveedor() {
+        ProveedorDomain provService = new ProveedorDomain();
+        provService.getProveedor("", "", "razon_social ASC");
+        proveedorList = provService.getObjects();
+        return proveedorList;
     }
     
 }

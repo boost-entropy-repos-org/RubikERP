@@ -79,6 +79,8 @@ CREATE TABLE `configuracion` (
   `folio_orden_compra` int(10) DEFAULT '0',
   `serie_cotizacion` varchar(5) DEFAULT NULL,
   `folio_cotizacion` int(10) DEFAULT '0',
+  `serie_remision` varchar(10) DEFAULT NULL,
+  `folio_remision` int(5) DEFAULT NULL,
   `serie_factura` varchar(5) DEFAULT NULL,
   `folio_factura` int(10) DEFAULT '0',
   `autocompletar_totales` tinyint(1) DEFAULT '0',
@@ -87,7 +89,7 @@ CREATE TABLE `configuracion` (
 
 /*Data for the table `configuracion` */
 
-insert  into `configuracion`(`id`,`serie_requisicion`,`folio_requisicion`,`serie_orden_compra`,`folio_orden_compra`,`serie_cotizacion`,`folio_cotizacion`,`serie_factura`,`folio_factura`,`autocompletar_totales`) values (1,'RM',3,'OC',0,'CT',0,'FA',0,0);
+insert  into `configuracion`(`id`,`serie_requisicion`,`folio_requisicion`,`serie_orden_compra`,`folio_orden_compra`,`serie_cotizacion`,`folio_cotizacion`,`serie_remision`,`folio_remision`,`serie_factura`,`folio_factura`,`autocompletar_totales`) values (1,'RM',1,'OC',0,'CT',0,NULL,NULL,'FA',0,0);
 
 /*Table structure for table `empleado` */
 
@@ -129,11 +131,30 @@ CREATE TABLE `empleado` (
   `clasificacion_puesto` varchar(100) DEFAULT NULL,
   `url_firma` varchar(120) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `empleado` */
 
-insert  into `empleado`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`password`,`activo`,`clave_empleado`,`nombre`,`apellido_paterno`,`apellido_materno`,`nss`,`domicilio`,`colonia`,`cp`,`ciudad`,`estado`,`pais`,`telefono_empresa`,`telefono_personal`,`email_empresa`,`email_personal`,`fecha_ingreso`,`autorizador`,`departamento_id`,`departamento`,`puesto_id`,`puesto`,`clasificacion_puesto`,`url_firma`) values (1,'2020-01-12 00:00:00','2020-01-12 00:00:00',1,' ',1,' ',1,'a','a',1,'100001','Pablo','Benavides','Molina',' ','Loma Bonita 206 - 4','Jesus Elias Piña III',89365,'Tampico','Tamaulipas','Mexico','8331243823','8331243823','pblo.benavides@gmail.com','pblo.benavides@gmail.com',NULL,1,0,'SUPER ADMIN',0,NULL,NULL,NULL),(2,'2020-01-12 00:00:00','2020-01-12 00:00:00',1,'',1,'',1,'','',1,'','Claudia Ibeth','Osornio','Cruz','','Loma Bonita 206 - 4','Jesus Elias Piña III',89365,'Tampico','Tamaulipas','Mexico','8331243823','8331243823','pblo.benavides@gmail.com','pblo.benavides@gmail.com',NULL,1,0,'',0,NULL,NULL,NULL),(3,'2020-01-12 00:00:00','2020-01-12 00:00:00',1,'',1,'',1,'','',1,'','Kathia','Benavides ','Molina','','Loma Bonita 206 - 4','Jesus Elias Piña III',89365,'Tampico','Tamaulipas','Mexico','8331243823','8331243823','pblo.benavides@gmail.com','pblo.benavides@gmail.com',NULL,1,0,'',0,NULL,NULL,NULL),(4,'2020-01-12 00:00:00','2020-01-12 00:00:00',1,'',1,'',1,'','',1,'','Lorenzo','Osornio','Cruz','','Loma Bonita 206 - 4','Jesus Elias Piña III',89365,'Tampico','Tamaulipas','Mexico','8331243823','8331243823','pblo.benavides@gmail.com','pblo.benavides@gmail.com',NULL,0,0,'',0,NULL,NULL,NULL),(5,'2020-01-12 00:00:00','2020-01-12 00:00:00',1,'',1,'',1,'','',1,'','Juan  Antonio','Hernandez','Martinez','','Loma Bonita 206 - 4','Jesus Elias Piña III',89365,'Tampico','Tamaulipas','Mexico','8331243823','8331243823','pblo.benavides@gmail.com','pblo.benavides@gmail.com',NULL,0,0,'',0,NULL,NULL,NULL);
+insert  into `empleado`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`password`,`activo`,`clave_empleado`,`nombre`,`apellido_paterno`,`apellido_materno`,`nss`,`domicilio`,`colonia`,`cp`,`ciudad`,`estado`,`pais`,`telefono_empresa`,`telefono_personal`,`email_empresa`,`email_personal`,`fecha_ingreso`,`autorizador`,`departamento_id`,`departamento`,`puesto_id`,`puesto`,`clasificacion_puesto`,`url_firma`) values (1,'2020-01-12 00:00:00','2020-01-12 00:00:00',1,' ',1,' ',1,'luis','luis',1,'100001','Pablo','Benavides','Molina',' ','Loma Bonita 206 - 4','Jesus Elias Piña III',89365,'Tampico','Tamaulipas','Mexico','8331243823','8331243823','pblo.benavides@gmail.com','pblo.benavides@gmail.com',NULL,1,0,'SUPER ADMIN',0,NULL,NULL,NULL);
+
+/*Table structure for table `node_file` */
+
+DROP TABLE IF EXISTS `node_file`;
+
+CREATE TABLE `node_file` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `parent_id` int(10) DEFAULT NULL,
+  `parent_folio` varchar(100) DEFAULT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  `folio` varchar(20) DEFAULT NULL,
+  `proveedor` varchar(100) DEFAULT NULL,
+  `tipo_documento` varchar(50) DEFAULT NULL,
+  `url` varchar(200) DEFAULT NULL,
+  `extension` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `node_file` */
 
 /*Table structure for table `orden_compra` */
 
@@ -174,7 +195,7 @@ CREATE TABLE `orden_compra` (
   `proveedor_id` int(10) DEFAULT NULL,
   `proveedor` varchar(100) DEFAULT NULL,
   `cond_pago` varchar(100) DEFAULT NULL,
-  `requisicion_id` int(10) DEFAULT NULL,
+  `remision_id` int(10) DEFAULT NULL,
   `folio_requisicion` varchar(100) DEFAULT NULL,
   `solicita_id` int(10) DEFAULT NULL,
   `solicita` varchar(100) DEFAULT NULL,
@@ -287,11 +308,11 @@ CREATE TABLE `producto` (
   `proveedor_id_2` int(10) DEFAULT NULL,
   `proveedor_2` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 /*Data for the table `producto` */
 
-insert  into `producto`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`activo`,`codigo_interno`,`descripcion_corta`,`descripcion`,`modelo`,`no_parte`,`no_serie`,`marca`,`unidad_medida`,`tipo_producto`,`sub_tipo_producto`,`clasificacion`,`inventariable`,`inventario_actual`,`inventario_maximo`,`inventario_minimo`,`porc_iva`,`precio_compra`,`iva_compra`,`precio_venta`,`iva_venta`,`porc_descuento`,`descuento_venta`,`porc_utilidad`,`proveedor_id_1`,`proveedor_1`,`proveedor_id_2`,`proveedor_2`) values (1,'2020-02-20 10:27:16','2020-02-20 10:27:16',0,'',0,'',0,'',1,'1','PRODUCTO 1','PRODUCTO 1','23234','s44sfww3','A34Q34Q3-Q33','MARCA UNO','PIEZA','','','PRODUCTO',1,0,10,2,16,116,16,200,27.59,0,0,0,2,'PROVEEDOR 2',3,'PROVEEDOR 3'),(2,'2020-02-20 10:27:16','2020-02-20 10:27:16',0,'',0,'',0,'',1,'2','PRODUCTO 2','PRODUCTO 2','235','280er65','144545-4545','MARCA DOS','PIEZA','','','PRODUCTO',1,3,10,2,16,232,32,300,41.38,0,0,0,1,'PROVEEDOR 1',2,'PROVEEDOR 2'),(3,'2020-02-20 10:27:16','2020-02-20 10:27:16',0,'',0,'',0,'',1,'3','PRODUCTO 3','PRODUCTO 3','2214','508498','erwe2rwe21r-4','MARCA UNO','PIEZA','','','PRODUCTO',1,5,20,5,16,1160,160,1500,206.9,0,0,0,2,'PROVEEDOR 2',3,'PROVEEDOR 3'),(4,'2020-02-20 10:27:16','2020-02-20 10:27:16',0,'',0,'',0,'',1,'4','PRODUCTO 4','PRODUCTO 4','22698','201806','545-454sr25','MARCA TRES','PIEZA','','','PRODUCTO',1,6,25,2,16,11.6,1.6,15,2.07,0,0,0,3,'PROVEEDOR 3',1,'PROVEEDOR 1'),(5,'2020-02-20 10:27:16','2020-02-20 10:27:16',0,'',0,'',0,'',1,'5','PRODUCTO 5','PRODUCTO 5','2248','8084895','554-a45485e-e','MARCA TRES','PIEZA','','','PRODUCTO',1,8,20,5,16,500,68.97,600,82.76,0,0,0,1,'PROVEEDOR 1',2,'PROVEEDOR 2'),(6,'2020-02-20 10:27:16','2020-02-20 10:27:16',0,'',0,'',0,'',1,'6','PRODUCTO 6','PRODUCTO 6','21585','925239','5454-e','MARCA DOS','PIEZA','','','PRODUCTO',1,2,30,3,16,600,82.76,800,110.34,0,0,0,2,'PROVEEDOR 2',3,'PROVEEDOR 3'),(7,'2020-02-20 10:27:16','2020-02-20 10:27:16',0,'',0,'',0,'',1,'7','PRODUCTO 7','PRODUCTO 7','24789','8484532','545e-454','MARCA UNO','PIEZA','','','PRODUCTO',1,0,10,5,16,800,110.34,1200,165.52,0,0,0,3,'PROVEEDOR 3',1,'PROVEEDOR 1'),(8,'2020-02-20 10:27:16','2020-02-20 10:27:16',0,'',0,'',0,'',1,'8','PRODUCTO 8','PRODUCTO 8','98556','54548','54592-er5','MARCA TRES','PIEZA','','','PRODUCTO',1,0,5,2,16,300,41.38,360,49.66,0,0,0,1,'PROVEEDOR 1',2,'PROVEEDOR 2'),(9,'2020-02-20 10:27:16','2020-02-20 10:27:16',0,'',0,'',0,'',1,'9','PRODUCTO 9','PRODUCTO 9','36579','545455','54er4-e','MARCA DOS','PIEZA','','','PRODUCTO',1,3,8,2,16,150,20.69,250,34.48,0,0,0,2,'PROVEEDOR 2',3,'PROVEEDOR 3'),(10,'2020-02-20 10:27:16','2020-02-20 10:27:16',0,'',0,'',0,'',1,'10','MANTENIMIENTO','MANTENIMIENTO PREVENTIVO DE MAQUINARIA, MOTOR Y ENGRANES','NA','NA','NA','NA','SERVICIO','','','PRODUCTO',1,9,12,5,16,80,11.03,110,15.17,0,0,0,3,'PROVEEDOR 3',1,'PROVEEDOR 1');
+insert  into `producto`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`activo`,`codigo_interno`,`descripcion_corta`,`descripcion`,`modelo`,`no_parte`,`no_serie`,`marca`,`unidad_medida`,`tipo_producto`,`sub_tipo_producto`,`clasificacion`,`inventariable`,`inventario_actual`,`inventario_maximo`,`inventario_minimo`,`porc_iva`,`precio_compra`,`iva_compra`,`precio_venta`,`iva_venta`,`porc_descuento`,`descuento_venta`,`porc_utilidad`,`proveedor_id_1`,`proveedor_1`,`proveedor_id_2`,`proveedor_2`) values (1,'2020-02-20 10:27:16','2020-02-20 10:27:16',0,'',0,'',0,'',1,'1','PRODUCTO 1','PRODUCTO 1','23234','s44sfww3','A34Q34Q3-Q33','MARCA UNO','PIEZA','','','PRODUCTO',1,0,10,2,16,116,16,200,27.59,0,0,0,2,'PROVEEDOR 2',3,'PROVEEDOR 3'),(2,'2020-02-20 10:27:16','2020-02-20 10:27:16',0,'',0,'',0,'',1,'2','PRODUCTO 2','PRODUCTO 2','235','280er65','144545-4545','MARCA DOS','PIEZA','','','PRODUCTO',1,3,10,2,16,232,32,300,41.38,0,0,0,1,'PROVEEDOR 1',2,'PROVEEDOR 2'),(3,'2020-02-20 10:27:16','2020-02-20 10:27:16',0,'',0,'',0,'',1,'3','PRODUCTO 3','PRODUCTO 3','2214','508498','erwe2rwe21r-4','MARCA UNO','PIEZA','','','PRODUCTO',1,5,20,5,16,1160,160,1500,206.9,0,0,0,2,'PROVEEDOR 2',3,'PROVEEDOR 3'),(4,'2020-02-20 10:27:16','2020-02-20 10:27:16',0,'',0,'',0,'',1,'4','PRODUCTO 4','PRODUCTO 4','22698','201806','545-454sr25','MARCA TRES','PIEZA','','','PRODUCTO',1,6,25,2,16,11.6,1.6,15,2.07,0,0,0,3,'PROVEEDOR 3',1,'PROVEEDOR 1'),(5,'2020-02-20 10:27:16','2020-02-20 10:27:16',0,'',0,'',0,'',1,'5','PRODUCTO 5','PRODUCTO 5','2248','8084895','554-a45485e-e','MARCA TRES','PIEZA','','','PRODUCTO',1,8,20,5,16,500,68.97,600,82.76,0,0,0,1,'PROVEEDOR 1',2,'PROVEEDOR 2'),(6,'2020-02-20 10:27:16','2020-02-20 10:27:16',0,'',0,'',0,'',1,'6','PRODUCTO 6','PRODUCTO 6','21585','925239','5454-e','MARCA DOS','PIEZA','','','PRODUCTO',1,2,30,3,16,600,82.76,800,110.34,0,0,0,2,'PROVEEDOR 2',3,'PROVEEDOR 3'),(7,'2020-02-20 10:27:16','2020-02-20 10:27:16',0,'',0,'',0,'',1,'7','PRODUCTO 7','PRODUCTO 7','24789','8484532','545e-454','MARCA UNO','PIEZA','','','PRODUCTO',1,0,10,5,16,800,110.34,1200,165.52,0,0,0,3,'PROVEEDOR 3',1,'PROVEEDOR 1'),(8,'2020-02-20 10:27:16','2020-02-20 10:27:16',0,'',0,'',0,'',1,'8','PRODUCTO 8','PRODUCTO 8','98556','54548','54592-er5','MARCA TRES','PIEZA','','','PRODUCTO',1,0,5,2,16,300,41.38,360,49.66,0,0,0,1,'PROVEEDOR 1',2,'PROVEEDOR 2'),(9,'2020-02-20 10:27:16','2020-02-20 10:27:16',0,'',0,'',0,'',1,'9','PRODUCTO 9','PRODUCTO 9','36579','545455','54er4-e','MARCA DOS','PIEZA','','','PRODUCTO',1,3,8,2,16,150,20.69,250,34.48,0,0,0,2,'PROVEEDOR 2',3,'PROVEEDOR 3'),(10,'2020-02-20 10:27:16','2020-02-20 10:27:16',0,'',0,'',0,'',1,'10','MANTENIMIENTO','MANTENIMIENTO PREVENTIVO DE MAQUINARIA, MOTOR Y ENGRANES','NA','NA','NA','NA','SERVICIO','','','PRODUCTO',1,9,12,5,16,80,11.03,110,15.17,0,0,0,3,'PROVEEDOR 3',1,'PROVEEDOR 1'),(11,'2020-05-09 16:45:14','2020-05-09 16:45:14',0,'',0,'',0,'',1,'11','QWEQWEQWEQW','','EQWEQ','weqwe','QWEQWE','QWEQWE','BULTO','','','',0,0,0,0,0,34343,0,0,0,0,0,0,0,'',0,''),(12,'2020-05-10 06:56:58','2020-05-10 06:56:58',0,'',0,'',0,'',1,'12','ASDASDAS','','DASDA','sdasd','','','PIEZA','','','',0,0,0,0,16,23232,0,0,0,0,0,0,0,'',0,''),(13,'2020-05-10 10:40:09','2020-05-10 10:40:09',0,'',0,'',0,'',1,'13','ASDASDA','','SDASD','','ASDASD','','KILO','','','',0,0,0,0,16,33443,0,0,0,0,0,0,0,'',0,''),(14,'2020-05-10 11:37:55','2020-05-10 11:37:55',0,'',0,'',0,'',1,'14','ASDASD','','ASDASDA','sdasd','ASDASD','ASD','NO APLICA','','','',0,0,0,0,16,2342323,0,0,0,0,0,0,0,'',0,'');
 
 /*Table structure for table `proveedor` */
 
@@ -392,12 +413,14 @@ CREATE TABLE `requisicion` (
   `firma_autorizo` varchar(100) DEFAULT NULL,
   `solicita` varchar(100) DEFAULT NULL,
   `firma_solicita` varchar(100) DEFAULT NULL,
+  `proveedor_id` int(10) DEFAULT NULL,
+  `proveedor` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `requisicion` */
 
-insert  into `requisicion`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`estado_doc`,`estado`,`folio`,`serie`,`observaciones`,`tipo_documento`,`tipo_archivo`,`razon_cancelar`,`cliente_id`,`cliente`,`cliente_rfc`,`metodo_pago`,`moneda`,`tipo_cambio`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`porc_iva`,`importe_letra`,`activo`,`prioridad`,`fecha_requerida`,`direccion_entrega`,`fecha_orden_compra`,`folio_orden_compra`,`autoriza_id`,`autoriza`,`fecha_autorizo`,`firma_autorizo`,`solicita`,`firma_solicita`) values (1,'2020-02-20 11:38:46','2020-03-01 10:51:04',0,'',0,'',1,'PABLO BENAVIDES MOLINA','AUTORIZADO','','RM00002','','ENTREGAR EN UN SOLO PAQUETE','REMISION DE COMPRA','PDF','',0,'','','',NULL,NULL,0,0,0,0,11411.6,0,'',1,'MEDIA','2020-02-24 00:00:00','',NULL,NULL,1,'PABLO BENAVIDES MOLINA','2020-03-01 10:51:04','7D5AAB48CD890BD54F1721EAEA115775','PABLO BENAVIDES MOLINA','7D5AAB48CD890BD54F1721EAEA115775'),(2,'2020-02-20 11:58:26','2020-02-20 12:08:47',0,'',0,'',1,'PABLO BENAVIDES MOLINA','EN PROCESO','','RM00003','','SERVICIO EN PLANTA','REMISION DE COMPRA','PDF','',0,'','','',NULL,NULL,0,0,0,0,80,0,'',1,'ALTA','2020-02-20 00:00:00','',NULL,NULL,1,'PABLO BENAVIDES MOLINA',NULL,NULL,'PABLO BENAVIDES MOLINA',NULL);
+insert  into `requisicion`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`estado_doc`,`estado`,`folio`,`serie`,`observaciones`,`tipo_documento`,`tipo_archivo`,`razon_cancelar`,`cliente_id`,`cliente`,`cliente_rfc`,`metodo_pago`,`moneda`,`tipo_cambio`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`porc_iva`,`importe_letra`,`activo`,`prioridad`,`fecha_requerida`,`direccion_entrega`,`fecha_orden_compra`,`folio_orden_compra`,`autoriza_id`,`autoriza`,`fecha_autorizo`,`firma_autorizo`,`solicita`,`firma_solicita`,`proveedor_id`,`proveedor`) values (1,'2020-05-11 13:26:17','2020-05-11 13:26:17',0,'',0,'',1,'PABLO BENAVIDES MOLINA','EN PROCESO','','RM00001','','KHKJH','REMISION DE COMPRA','PDF','',0,'','','',NULL,NULL,0,0,0,0,0,0,'',1,'ALTA','2020-05-11 00:00:00','HJKHKJKH',NULL,NULL,1,'PABLO BENAVIDES MOLINA',NULL,NULL,'PABLO BENAVIDES MOLINA',NULL,1,'PABLO BENAVIDES MOLINA');
 
 /*Table structure for table `requisicion_det` */
 
@@ -433,11 +456,11 @@ CREATE TABLE `requisicion_det` (
   `codigo_interno` varchar(10) DEFAULT NULL,
   `codigo_proveedor` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 /*Data for the table `requisicion_det` */
 
-insert  into `requisicion_det`(`id`,`folio`,`documento_id`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`no_partida`,`fecha_alta`,`cantidad`,`producto_id`,`descripcion`,`unidad_medida`,`precio_unitario`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`servicio`,`no_parte`,`no_serie`,`modelo`,`marca`,`codigo_interno`,`codigo_proveedor`) values (1,'RM00002',1,1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',0,'2020-02-20 11:37:40',1,4,'PRODUCTO 4','PIEZA',11.6,NULL,NULL,NULL,NULL,11.6,0,'201806','545-454sr25','22698','MARCA TRES','4',NULL),(2,'RM00002',1,1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',0,'2020-02-20 11:37:56',10,5,'PRODUCTO 5','PIEZA',500,NULL,NULL,NULL,NULL,5000,0,'8084895','554-a45485e-e','2248','MARCA TRES','5',NULL),(3,'RM00002',1,1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',0,'2020-02-20 11:38:13',8,7,'PRODUCTO 7','PIEZA',800,NULL,NULL,NULL,NULL,6400,0,'8484532','545e-454','24789','MARCA UNO','7',NULL),(4,'RM00003',2,1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',0,'2020-02-20 11:58:10',1,10,'MANTENIMIENTO PREVENTIVO DE MAQUINARIA, MOTOR Y ENGRANES','SERVICIO',80,NULL,NULL,NULL,NULL,80,0,'NA','NA','NA','NA','10',NULL);
+insert  into `requisicion_det`(`id`,`folio`,`documento_id`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`no_partida`,`fecha_alta`,`cantidad`,`producto_id`,`descripcion`,`unidad_medida`,`precio_unitario`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`servicio`,`no_parte`,`no_serie`,`modelo`,`marca`,`codigo_interno`,`codigo_proveedor`) values (1,'RM00001',1,1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',0,'2020-05-11 13:26:08',10,3,'PRODUCTO 3','PIEZA',1160,NULL,NULL,NULL,NULL,NULL,0,'508498','erwe2rwe21r-4','2214','MARCA UNO','3',NULL),(2,'RM00001',1,1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',0,'2020-05-11 13:26:16',3,7,'PRODUCTO 7','PIEZA',800,NULL,NULL,NULL,NULL,NULL,0,'8484532','545e-454','24789','MARCA UNO','7',NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

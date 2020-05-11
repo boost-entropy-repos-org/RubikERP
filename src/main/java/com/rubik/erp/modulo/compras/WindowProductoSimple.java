@@ -5,17 +5,31 @@
  */
 package com.rubik.erp.modulo.compras;
 
+import com.rubik.erp.domain.ProductoDomain;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.Producto;
+import com.rubik.variables.UnidadesDeMedida;
+import com.vaadin.data.Binder;
+import com.vaadin.data.converter.StringToDoubleConverter;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.NativeSelect;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import de.steinwedel.messagebox.MessageBox;
+import java.util.Date;
+import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
 
 /**
  *
  * @author GRUCAS
  */
-public class WindowProductoSimple  extends Window {
+public class WindowProductoSimple extends Window {
     
     Empleado empleado = (Empleado) VaadinSession.getCurrent().getSession().getAttribute("USUARIO_ACTIVO");
     
@@ -27,38 +41,19 @@ public class WindowProductoSimple  extends Window {
 
     TextField txtCodigoInterno = new TextField("Codigo Interno:");
     TextField txtDescripcionCorta = new TextField("Desc. Corta:");
-    TextArea txtDescripcion = new TextArea("Descripcion:");
-    NativeSelect<String> cboClasificacion = new NativeSelect("Clasificacion:");
     TextField txtModelo = new TextField("Modelo:");
     TextField txtNoParte = new TextField("No Parte:");
     TextField txtNoSerie = new TextField("No Serie:");
     TextField txtMarca = new TextField("Marca:");
     NativeSelect<String> cboUnidadMedida = new NativeSelect("Unidad:");
-    
-    CheckBox chkInventariable = new CheckBox("Inventariable", true);
-    TextField txtInventarioActual = new TextField("Inv. Actual:");
-    TextField txtInventarioMaximo = new TextField("Inv. Maximo:");
-    TextField txtInventarioMinimo = new TextField("Inv. Minimo:");
-    
     NativeSelect<Integer> cboIVA = new NativeSelect("% IVA:");
+    
     TextField txtPrecioCompra = new TextField("Precio Compra:");
-    TextField txtIVACompra = new TextField("IVA Compra:");
-    TextField txtPrecioVenta = new TextField("Precio Venta:");
-    TextField txtIVAVenta = new TextField("IVA Venta:");
-    TextField txtUtilidad = new TextField("Utilidad: % ");
-    
-    NativeSelect<Proveedor> cboProveedor1 = new NativeSelect("Proveedor 1:");
-    NativeSelect<Proveedor> cboProveedor2 = new NativeSelect("Proveedor 2:");
-    
-    List<Proveedor> proveedorList1 = new ArrayList<>();
-    List<Proveedor> proveedorList2 = new ArrayList<>();
-
-    CheckBox chkActivo = new CheckBox("Activo", true);
     
     Button btnGuardar = new Button("Guardar", Fam3SilkIcon.DISK);
     Button btnCancelar = new Button("Cancelar", Fam3SilkIcon.CANCEL);
 
-    public WindowProducto() {
+    public WindowProductoSimple() {
         setCaption("ALTA DEL PRODUCTO");
         initComponents();
         
@@ -66,7 +61,7 @@ public class WindowProductoSimple  extends Window {
         txtCodigoInterno.setValue(service.getMaxID().toString());
     }
 
-    public WindowProducto(Producto prod) {
+    public WindowProductoSimple(Producto prod) {
         setCaption("MODIFICACION DEL PRODUCTO");
         isEdit = true;
         this.producto = prod;
@@ -85,42 +80,14 @@ public class WindowProductoSimple  extends Window {
         Binder<Producto> binder = new Binder<>();
         binder.forField(txtCodigoInterno).bind(Producto::getCodigo_interno, Producto::setCodigo_interno);
         binder.forField(txtDescripcionCorta).bind(Producto::getDescripcion_corta, Producto::setDescripcion_corta);
-        binder.forField(txtDescripcion).bind(Producto::getDescripcion, Producto::setDescripcion);
-        binder.forField(cboClasificacion).bind(Producto::getClasificacion, Producto::setClasificacion);
         binder.forField(txtModelo).bind(Producto::getModelo, Producto::setModelo);
         binder.forField(txtNoParte).bind(Producto::getNo_parte, Producto::setNo_parte);
         binder.forField(txtNoSerie).bind(Producto::getNo_serie, Producto::setNo_serie);
         binder.forField(txtMarca).bind(Producto::getMarca, Producto::setMarca);
         binder.forField(cboUnidadMedida).bind(Producto::getUnidad_medida, Producto::setUnidad_medida);
-        binder.forField(chkInventariable).bind(Producto::getInventariable, Producto::setInventariable);
-        binder.forField(txtInventarioActual).withConverter(new StringToIntegerConverter(0, "El valor debe ser numerico")).bind(Producto::getInventario_actual, Producto::setInventario_actual);
-        binder.forField(txtInventarioMaximo).withConverter(new StringToIntegerConverter(0, "El valor debe ser numerico")).bind(Producto::getInventario_maximo, Producto::setInventario_maximo);
-        binder.forField(txtInventarioMinimo).withConverter(new StringToIntegerConverter(0, "El valor debe ser numerico")).bind(Producto::getInventario_minimo, Producto::setInventario_minimo);
-        binder.forField(cboIVA).bind(Producto::getPorc_iva, Producto::setPorc_iva);
         binder.forField(txtPrecioCompra).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(Producto::getPrecio_compra, Producto::setPrecio_compra);
-        binder.forField(txtIVACompra).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(Producto::getIva_compra, Producto::setIva_compra);
-        binder.forField(txtPrecioVenta).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(Producto::getPrecio_venta, Producto::setPrecio_venta);
-        binder.forField(txtIVAVenta).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(Producto::getIva_venta, Producto::setIva_venta);
-        binder.forField(txtUtilidad).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(Producto::getPorc_utilidad, Producto::setPorc_utilidad);
-        binder.forField(chkActivo).bind(Producto::getActivo, Producto::setActivo);
-        
-        cboProveedor1.setItems(getProveedor(1));
-        cboProveedor1.setEmptySelectionAllowed(false);
-        
-        cboProveedor2.setItems(getProveedor(2));
-        cboProveedor2.setEmptySelectionAllowed(false);
+        binder.forField(cboIVA).bind(Producto::getPorc_iva, Producto::setPorc_iva);
 
-        try {
-            cboProveedor1.setSelectedItem(proveedorList1.get(0));
-            cboProveedor2.setSelectedItem(proveedorList2.get(0));
-        } catch (Exception e) {
-            MessageBox.createError()
-                    .withCaption("Error!")
-                    .withMessage("No existen proveedores dados de alta. ")
-                    .withRetryButton()
-                    .open();
-        }
-        
         btnCancelar.addClickListener((event) -> {
             close();
         });
@@ -131,25 +98,8 @@ public class WindowProductoSimple  extends Window {
                 toUpperCase();
 
                 ProductoDomain service = new ProductoDomain();
-
-                Proveedor prov1 = cboProveedor1.getValue();
-                Proveedor prov2 = cboProveedor2.getValue();
                 
-                if(prov1 != null){
-                    producto.setProveedor_1(prov1.getRazon_social());
-                    producto.setProveedor_id_1(prov1.getId());
-                }else{
-                    producto.setProveedor_1("");
-                    producto.setProveedor_id_1(0);
-                }
-                
-                if(prov2 != null){
-                    producto.setProveedor_2(prov2.getRazon_social());
-                    producto.setProveedor_id_2(prov2.getId());                    
-                }else{
-                    producto.setProveedor_2("");
-                    producto.setProveedor_id_2(0);
-                }
+                producto.setActivo(true);
                 
                 if (isEdit) {
                     producto.setFecha_modificacion(new Date());
@@ -184,11 +134,6 @@ public class WindowProductoSimple  extends Window {
         
         txtCodigoInterno.setEnabled(false);
         txtDescripcionCorta.setMaxLength(100);
-        txtDescripcion.setRows(3);
-        
-        cboClasificacion.setEmptySelectionAllowed(false);
-        cboClasificacion.setItems("PRODUCTO", "SERVICIO");
-        cboClasificacion.setValue("PRODUCTO");
         
         txtModelo.setMaxLength(50);
         txtNoParte.setMaxLength(50);
@@ -198,102 +143,32 @@ public class WindowProductoSimple  extends Window {
         cboUnidadMedida.setEmptySelectionAllowed(false);
         cboUnidadMedida.setItems(UnidadesDeMedida.UNIDADES_LIST);
         cboUnidadMedida.setValue(UnidadesDeMedida.UNIDADES_LIST.get(0));
-        
-        txtInventarioActual.setMaxLength(4);
-        txtInventarioMaximo.setMaxLength(4);
-        txtInventarioMinimo.setMaxLength(4);
-        
+
         cboIVA.setEmptySelectionAllowed(false);
         cboIVA.setItems(0, 16);
         cboIVA.setValue(0);
         
         txtPrecioCompra.setMaxLength(12);
-        txtPrecioVenta.setMaxLength(12);
-        txtUtilidad.setMaxLength(4);
         
         txtCodigoInterno.setWidth(strWidth);
         txtDescripcionCorta.setWidth(strWidth);
-        txtDescripcion.setWidth(strWidth);
-        cboClasificacion.setWidth(strWidth);
         txtModelo.setWidth(strWidth);
         txtNoParte.setWidth(strWidth);
         txtNoSerie.setWidth(strWidth);
         txtMarca.setWidth(strWidth);
-        cboUnidadMedida.setWidth(strWidth);
-        txtInventarioActual.setWidth(strWidth);
-        txtInventarioMaximo.setWidth(strWidth);
-        txtInventarioMinimo.setWidth(strWidth);
         cboIVA.setWidth(strWidth);
+        cboUnidadMedida.setWidth(strWidth);
         txtPrecioCompra.setWidth(strWidth);
-        txtIVACompra.setWidth(strWidth);
-        txtIVAVenta.setWidth(strWidth);
-        txtPrecioVenta.setWidth(strWidth);
-        txtUtilidad.setWidth(strWidth);
-        cboProveedor1.setWidth(strWidth);
-        cboProveedor2.setWidth(strWidth);
-
-        txtPrecioCompra.addBlurListener((event) -> {
-            DecimalFormat df = new DecimalFormat("#.##");
-            Double iva_porc = Double.parseDouble(txtPrecioCompra.getValue());
-            Double iva = 0.0;
-            
-            if(iva_porc > 0 && txtPrecioCompra.getValue().length() > 0){
-                Double precio = Double.parseDouble(txtPrecioCompra.getValue());
-                Double precioTemp = precio / 1.16;
-                iva = precio - precioTemp;
-                txtIVACompra.setValue(df.format(iva));
-            }else{
-                txtIVACompra.setValue("0.0");
-            }
-        });
-
-        txtPrecioVenta.addBlurListener((event) -> {
-            DecimalFormat df = new DecimalFormat("#.##");
-            Double iva_porc = Double.parseDouble(txtPrecioVenta.getValue());
-            Double iva = 0.0;
-            
-            if(iva_porc > 0 && txtPrecioVenta.getValue().length() > 0){
-                Double precio = Double.parseDouble(txtPrecioVenta.getValue());
-                Double precioTemp = precio / 1.16;
-                iva = precio - precioTemp;
-                txtIVAVenta.setValue(df.format(iva));
-            }else{
-                txtIVAVenta.setValue("0.0");
-            }
-            
-            
-        });
-        
-        txtIVACompra.setEnabled(false);
-        txtIVAVenta.setEnabled(false);
         
         if (isEdit) {
             binder.readBean(producto);
-            
-            for (Proveedor prov : proveedorList1) {
-                if (producto.getProveedor_id_1().equals(prov.getId())) {
-                    cboProveedor1.setValue(prov);
-                }
-            }
-            
-            for (Proveedor prov : proveedorList2) {
-                if (producto.getProveedor_id_2().equals(prov.getId())) {
-                    cboProveedor2.setValue(prov);
-                }
-            }
         }
         
         FormLayout fLay = new FormLayout();
         
-        fLay.addComponents(new Label("Informacion del Producto"){{setStyleName("h3");}});
-        fLay.addComponents(txtCodigoInterno, chkActivo, txtDescripcionCorta, txtDescripcion, 
-                cboClasificacion, txtModelo, txtNoParte, txtNoSerie, txtMarca,cboUnidadMedida);
-        fLay.addComponents(new Label("Inventario"){{setStyleName("h3");}});
-        fLay.addComponents(chkInventariable, txtInventarioActual, txtInventarioMaximo,txtInventarioMinimo);
-        fLay.addComponents(new Label("Precios & Costos"){{setStyleName("h3");}});
-        fLay.addComponents(cboIVA, txtPrecioCompra, txtIVACompra, txtPrecioVenta, txtIVAVenta, txtUtilidad);
-        fLay.addComponents(new Label("Proveedores"){{setStyleName("h3");}});
-        fLay.addComponents(cboProveedor1, cboProveedor2);
+        fLay.addComponents(new Label("Informacion Basica del Producto"){{setStyleName("h3");}});
+        fLay.addComponents(txtCodigoInterno, txtDescripcionCorta, txtModelo, txtNoParte, txtNoSerie, 
+                txtMarca, cboUnidadMedida, cboIVA, txtPrecioCompra);
      
         cont.addComponents(fLay, new HorizontalLayout(btnCancelar, btnGuardar));
         cont.setComponentAlignment(cont.getComponent(1), Alignment.MIDDLE_CENTER);
@@ -301,23 +176,9 @@ public class WindowProductoSimple  extends Window {
     
     public void toUpperCase() {
         producto.setDescripcion_corta(txtDescripcionCorta.getValue().toUpperCase());
-        producto.setDescripcion(txtDescripcion.getValue().toUpperCase());
         producto.setModelo(txtModelo.getValue().toUpperCase());
         producto.setMarca(txtMarca.getValue().toUpperCase());
         producto.setNo_serie(txtNoSerie.getValue().toUpperCase());
-    }
-    
-    public List<Proveedor> getProveedor(int prov) {
-        ProveedorDomain provService = new ProveedorDomain();
-        provService.getProveedor("", "", "razon_social ASC");
-        
-        if(prov == 1){
-            proveedorList1 = provService.getObjects();
-            return proveedorList1;
-        }else{
-            proveedorList2 = provService.getObjects();
-            return proveedorList2;
-        }
     }
     
 }

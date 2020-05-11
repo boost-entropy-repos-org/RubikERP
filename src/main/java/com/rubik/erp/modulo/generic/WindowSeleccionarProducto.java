@@ -8,7 +8,7 @@ package com.rubik.erp.modulo.generic;
 import com.rubik.erp.domain.ProductoDomain;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.Producto;
-import com.rubik.erp.modulo.compras.WindowProducto;
+import com.rubik.erp.modulo.compras.WindowProductoSimple;
 import com.vaadin.data.HasValue;
 import com.vaadin.data.ValueProvider;
 import com.vaadin.data.provider.ListDataProvider;
@@ -88,11 +88,11 @@ public class WindowSeleccionarProducto extends Window {
         });
 
         btnAdd.addClickListener((event) -> {
-            WindowProducto windows = new WindowProducto();
+            WindowProductoSimple windows = new WindowProductoSimple();
             windows.center();
             windows.setModal(true);
             windows.addCloseListener(ev -> {
-                gridSelecProd.setItems(getProducto());
+                gridSelecProd.setItems(getProducto(windows.producto.getId()));
             });
             getUI().addWindow(windows);
         });
@@ -152,6 +152,21 @@ public class WindowSeleccionarProducto extends Window {
     public List getProducto() {
         ProductoDomain service = new ProductoDomain();
         service.getProducto("activo = 1", "", " id ASC");
+        listProducto = service.getObjects();
+
+        if (!service.getOk()) {
+            MessageBox.createError()
+                    .withCaption("Error al cargar la informacion!")
+                    .withMessage("Err: " + service.getNotification())
+                    .withRetryButton()
+                    .open();
+        }
+        return listProducto;
+    }
+    
+    public List getProducto(Integer id) {
+        ProductoDomain service = new ProductoDomain();
+        service.getProducto("id = " + id, "", " id ASC");
         listProducto = service.getObjects();
 
         if (!service.getOk()) {
