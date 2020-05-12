@@ -55,7 +55,7 @@ public class WindowFileNode extends Window {
         
         String strWidth = "400";
         setWidth("600");
-        setHeight("550");
+        setHeight("450");
         
         btnCancelar.addClickListener((event) -> {
             close();
