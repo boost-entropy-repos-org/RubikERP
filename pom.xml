@@ -46,6 +46,12 @@
     </dependencyManagement>
 
     <dependencies>
+        <dependency><!-- Miltifile Upload  -->
+            <groupId>com.wcs.wcslib</groupId>
+            <artifactId>wcslib-vaadin-widget-multifileupload</artifactId>
+            <version>4.0</version>
+            <type>jar</type> 
+        </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>

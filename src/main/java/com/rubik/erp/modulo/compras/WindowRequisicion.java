@@ -5,7 +5,6 @@
  */
 package com.rubik.erp.modulo.compras;
 
-import com.rubik.Base.DocumentObjectBase;
 import com.rubik.erp.config._DocumentoEstados;
 import com.rubik.erp.config._DocumentoTipos;
 import com.rubik.erp.config._Folios;
