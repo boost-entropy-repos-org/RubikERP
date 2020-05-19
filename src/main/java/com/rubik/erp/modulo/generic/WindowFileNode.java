@@ -25,7 +25,6 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 import com.wcs.wcslib.vaadin.widget.multifileupload.ui.MultiFileUpload;
 import com.wcs.wcslib.vaadin.widget.multifileupload.ui.UploadFinishedHandler;
-import com.wcs.wcslib.vaadin.widget.multifileupload.ui.UploadStartedHandler;
 import com.wcs.wcslib.vaadin.widget.multifileupload.ui.UploadStateWindow;
 import de.steinwedel.messagebox.MessageBox;
 import java.io.InputStream;
@@ -65,59 +64,56 @@ public class WindowFileNode extends Window {
         setWidth("600");
         setHeight("300");
         
-        UploadStartedHandler handlerStarted = () -> {
-            if(!txtFolio.getValue().isEmpty()){
+        UploadFinishedHandler handlerSuccess = (InputStream stream, String fileName, String mimeType, long length, int filesLeftInQueue) -> {
+            if (txtFolio.getValue().isEmpty()) {
                 MessageBox.createError()
                         .withCaption("Error!")
                         .withMessage("Debe colocar primero un folio valido y seleccionar un Proveedor para subir el archivo.. ")
                         .withRetryButton()
                         .open();
-            }
-        };
-        
-        UploadFinishedHandler handlerSuccess = (InputStream stream, String fileName, String mimeType, long length, int filesLeftInQueue) -> {
-            try {
+            } else {
+                try {
+                    NodeFileDomain service = new NodeFileDomain();
 
-                NodeFileDomain service = new NodeFileDomain();
-                
-                fileNode.setParent_id(documento.getId());
-                fileNode.setParent_folio(documento.getFolio());
-                fileNode.setNombre(fileName);
-                fileNode.setFolio(txtFolio.getValue().toUpperCase());
-                fileNode.setCliente_proveedor_id(cboProveedor.getValue().getId());
-                fileNode.setCliente_proveedor(cboProveedor.getValue().getRazon_social());
-                fileNode.setTipo_documento(documento.getTipo_documento());
-                fileNode.setExtension(mimeType);
-                
-                if(ExpedienteDigital.saveDocumentInEDFolder(stream, fileNode)){
-                    service.NodeFileInsert(fileNode);
+                    fileNode.setParent_id(documento.getId());
+                    fileNode.setParent_folio(documento.getFolio());
+                    fileNode.setNombre(txtFolio.getValue().toUpperCase() + ".pdf");
+                    fileNode.setFolio(txtFolio.getValue().toUpperCase());
+                    fileNode.setCliente_proveedor_id(cboProveedor.getValue().getId());
+                    fileNode.setCliente_proveedor(cboProveedor.getValue().getRazon_social());
+                    fileNode.setTipo_documento(documento.getTipo_documento());
+                    fileNode.setExtension(mimeType);
 
-                    if (service.getOk()) {
-                        MessageBox.createInfo()
-                                .withCaption("Atencion")
-                                .withMessage(service.getNotification())
-                                .open();
-                        close();
+                    if (ExpedienteDigital.saveDocumentInEDFolder(stream, fileNode)) {
+                        service.NodeFileInsert(fileNode);
+
+                        if (service.getOk()) {
+                            MessageBox.createInfo()
+                                    .withCaption("Atencion")
+                                    .withMessage(service.getNotification())
+                                    .open();
+                            close();
+                        } else {
+                            MessageBox.createError()
+                                    .withCaption("Error!")
+                                    .withMessage(service.getNotification())
+                                    .withRetryButton()
+                                    .open();
+                        }
                     } else {
                         MessageBox.createError()
                                 .withCaption("Error!")
-                                .withMessage(service.getNotification())
+                                .withMessage("Error al intentar guardar el archivo en el servidor.")
                                 .withRetryButton()
                                 .open();
                     }
-                }else{
+                } catch (Exception ex) {
                     MessageBox.createError()
                             .withCaption("Error!")
-                            .withMessage("Error al intentar guardar el archivo en el servidor.")
+                            .withMessage("Verifique que la informacion este completa o sea correcta. " + ex.getMessage())
                             .withRetryButton()
                             .open();
                 }
-            } catch (Exception ex) {
-                MessageBox.createError()
-                        .withCaption("Error!")
-                        .withMessage("Verifique que la informacion este completa o sea correcta. ")
-                        .withRetryButton()
-                        .open();
             }
         };
         
@@ -146,7 +142,7 @@ public class WindowFileNode extends Window {
         window.setModal(true);
         window.center();
         
-        btnSubir = new MultiFileUpload(handlerStarted,handlerSuccess, window, false);
+        btnSubir = new MultiFileUpload(handlerSuccess, window, false);
         
         btnSubir.setWidth("200");
         btnSubir.getSmartUpload().setUploadButtonCaptions("Subir y Guardar", "Subir y Guardar");

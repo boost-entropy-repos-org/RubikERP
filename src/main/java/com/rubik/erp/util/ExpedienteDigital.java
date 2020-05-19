@@ -6,6 +6,7 @@
 package com.rubik.erp.util;
 
 import com.rubik.erp.model.NodeFile;
+import de.steinwedel.messagebox.MessageBox;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -26,16 +27,19 @@ public class ExpedienteDigital {
         
         File archivoCopia = null;
         
-        createEDFolder(node.getTipo_documento() + SEPARADOR);
-        
         try {
-
+            createEDFolder(FOLDER_ED);
+            createEDFolder(FOLDER_ED + SEPARADOR + node.getTipo_documento());
+            createEDFolder(FOLDER_ED + SEPARADOR + node.getTipo_documento() + SEPARADOR + node.getParent_folio());
+        
             archivoCopia
                     = new File(
                             FOLDER_ED + SEPARADOR + 
                             node.getTipo_documento() + SEPARADOR + 
-                            node.getCliente_proveedor_id() + SEPARADOR + 
-                            node.getNombre() + ".pdf");
+                            node.getParent_folio() + SEPARADOR + 
+                            node.getNombre());
+            
+            node.setUrl(archivoCopia.getAbsolutePath());
             
             OutputStream output;
             output = new FileOutputStream(archivoCopia);
@@ -60,17 +64,29 @@ public class ExpedienteDigital {
                 return false;
             }
 
-        } catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
+
+            MessageBox.createError()
+                    .withCaption("Error 1!")
+                    .withMessage(e.getMessage())
+                    .withRetryButton()
+                    .open();
         } catch (Exception e) {
             e.printStackTrace();
+
+            MessageBox.createError()
+                    .withCaption("Error 2!")
+                    .withMessage(e.getMessage())
+                    .withRetryButton()
+                    .open();
         }
         
         return false;
     }
     
-    static void createEDFolder(String subfolder){
-        File f = new File(FOLDER_ED + subfolder);
+    static void createEDFolder(String folder){
+        File f = new File(folder);
         
         if(!f.exists()){
             f.mkdir();

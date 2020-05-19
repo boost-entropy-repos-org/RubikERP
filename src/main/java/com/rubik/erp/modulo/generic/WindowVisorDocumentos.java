@@ -6,6 +6,7 @@
 package com.rubik.erp.modulo.generic;
 
 import com.rubik.Base.DocumentObjectBase;
+import com.rubik.erp.domain.NodeFileDomain;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.NodeFile;
 import com.vaadin.server.VaadinSession;
@@ -16,6 +17,7 @@ import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import de.steinwedel.messagebox.MessageBox;
 import java.util.ArrayList;
 import java.util.List;
 import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
@@ -35,7 +37,7 @@ public class WindowVisorDocumentos extends Window {
     Button btnAdd = new Button("Agregar",Fam3SilkIcon.ADD);
     Button btnDelete = new Button("Eliminar",Fam3SilkIcon.ADD);
     
-    Grid<NodeFile> gridSelecProd = new Grid<>();
+    Grid<NodeFile> gridDocumentos = new Grid<>();
     List<NodeFile> listProducto = new ArrayList<>();
     
     public WindowVisorDocumentos(DocumentObjectBase document, String tipo_documento) {
@@ -46,13 +48,13 @@ public class WindowVisorDocumentos extends Window {
     }
 
     public void initComponents() { 
-        
-        gridSelecProd.setWidth("100%");
-        gridSelecProd.setSelectionMode(SelectionMode.SINGLE);
-        gridSelecProd.addColumn(NodeFile::getFolio).setCaption("FOLIO").setId("FOLIO");
-        gridSelecProd.addColumn(NodeFile::getCliente_proveedor).setCaption("CTE/PROVEEDOR").setId("CTE/PROVEEDOR");
+        gridDocumentos.setWidth("100%");
+        gridDocumentos.setSelectionMode(SelectionMode.SINGLE);
+        gridDocumentos.addColumn(NodeFile::getCliente_proveedor).setCaption("CTE/PROVEEDOR").setId("CTE/PROVEEDOR");
+        gridDocumentos.addColumn(NodeFile::getFolio).setCaption("FOLIO").setId("FOLIO");
+        gridDocumentos.addComponentColumn(this::getBtnVisor).setCaption("VISUALIZAR").setWidth(120);
 
-        cont.addComponents(new HorizontalLayout(btnAdd,btnDelete), gridSelecProd);
+        cont.addComponents(new HorizontalLayout(btnAdd,btnDelete), gridDocumentos);
         cont.setComponentAlignment(cont.getComponent(0), Alignment.MIDDLE_CENTER);
         cont.setComponentAlignment(cont.getComponent(1), Alignment.MIDDLE_CENTER);
 
@@ -60,13 +62,13 @@ public class WindowVisorDocumentos extends Window {
             WindowFileNode windows = new WindowFileNode(documento);
             windows.center();
             windows.setModal(true);
-//            windows.addCloseListener(ev -> {
-//                gridSelecProd.setItems(getProducto(windows.producto.getId()));
-//            });
+            windows.addCloseListener(ev -> {
+                gridDocumentos.setItems(getNodes());
+            });
             getUI().addWindow(windows);
         });
         
-//        gridSelecProd.setItems(getProducto());
+        gridDocumentos.setItems(getNodes());
         
         setResizable(false);
         setContent(cont);
@@ -75,36 +77,37 @@ public class WindowVisorDocumentos extends Window {
         setWidth("70%");
         setHeight("70%");
     }
-
     
-//    public List getProducto() {
-//        ProductoDomain service = new ProductoDomain();
-//        service.getProducto("activo = 1", "", " id ASC");
-//        listProducto = service.getObjects();
-//
-//        if (!service.getOk()) {
-//            MessageBox.createError()
-//                    .withCaption("Error al cargar la informacion!")
-//                    .withMessage("Err: " + service.getNotification())
-//                    .withRetryButton()
-//                    .open();
-//        }
-//        return listProducto;
-//    }
-//    
-//    public List getProducto(Integer id) {
-//        ProductoDomain service = new ProductoDomain();
-//        service.getProducto("id = " + id, "", " id ASC");
-//        listProducto = service.getObjects();
-//
-//        if (!service.getOk()) {
-//            MessageBox.createError()
-//                    .withCaption("Error al cargar la informacion!")
-//                    .withMessage("Err: " + service.getNotification())
-//                    .withRetryButton()
-//                    .open();
-//        }
-//        return listProducto;
-//    }
+    public List getNodes() {
+        NodeFileDomain service = new NodeFileDomain();
+        service.getNodeFile("parent_id = " + documento.getId() + " AND tipo_documento = '" + documento.getTipo_documento() + "'", "", " id ASC");
+        listProducto = service.getObjects();
+
+        if (!service.getOk()) {
+            MessageBox.createError()
+                    .withCaption("Error al cargar la informacion!")
+                    .withMessage("Err: " + service.getNotification())
+                    .withRetryButton()
+                    .open();
+        }
+        return listProducto;
+    }
+    
+    private Button getBtnVisor(NodeFile node) {
+        Button btnVisor = new Button("", Fam3SilkIcon.REPORT);
+        btnVisor.setDescription("Ver Documento");
+        btnVisor.addClickListener((event) -> {
+            
+            
+            final Window window = new Window("Cotizacion: " + node.getFolio());
+            window.setWidth("850");
+            window.center();
+            window.setModal(true);
+//            window.setContent();
+            getUI().addWindow(window);
+        });
+
+        return btnVisor;
+    }
     
 }
