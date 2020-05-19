@@ -145,12 +145,13 @@ CREATE TABLE `node_file` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `parent_id` int(10) DEFAULT NULL,
   `parent_folio` varchar(100) DEFAULT NULL,
-  `nombre` varchar(50) DEFAULT NULL,
-  `folio` varchar(20) DEFAULT NULL,
-  `proveedor` varchar(100) DEFAULT NULL,
-  `tipo_documento` varchar(50) DEFAULT NULL,
-  `url` varchar(200) DEFAULT NULL,
-  `extension` varchar(10) DEFAULT NULL,
+  `nombre` varchar(100) DEFAULT NULL,
+  `folio` varchar(100) DEFAULT NULL,
+  `cliente_proveedor_id` int(10) DEFAULT NULL,
+  `cliente_proveedor` varchar(100) DEFAULT NULL,
+  `tipo_documento` varchar(100) DEFAULT NULL,
+  `url` varchar(100) DEFAULT NULL,
+  `extension` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -456,11 +457,11 @@ CREATE TABLE `requisicion_det` (
   `codigo_interno` varchar(10) DEFAULT NULL,
   `codigo_proveedor` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 /*Data for the table `requisicion_det` */
 
-insert  into `requisicion_det`(`id`,`folio`,`documento_id`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`no_partida`,`fecha_alta`,`cantidad`,`producto_id`,`descripcion`,`unidad_medida`,`precio_unitario`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`servicio`,`no_parte`,`no_serie`,`modelo`,`marca`,`codigo_interno`,`codigo_proveedor`) values (1,'RM00001',1,1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',0,'2020-05-11 13:26:08',10,3,'PRODUCTO 3','PIEZA',1160,NULL,NULL,NULL,NULL,NULL,0,'508498','erwe2rwe21r-4','2214','MARCA UNO','3',NULL),(2,'RM00001',1,1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',0,'2020-05-11 13:26:16',3,7,'PRODUCTO 7','PIEZA',800,NULL,NULL,NULL,NULL,NULL,0,'8484532','545e-454','24789','MARCA UNO','7',NULL);
+insert  into `requisicion_det`(`id`,`folio`,`documento_id`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`no_partida`,`fecha_alta`,`cantidad`,`producto_id`,`descripcion`,`unidad_medida`,`precio_unitario`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`servicio`,`no_parte`,`no_serie`,`modelo`,`marca`,`codigo_interno`,`codigo_proveedor`) values (1,'RM00001',1,1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',0,'2020-05-11 13:26:08',10,3,'PRODUCTO 3','PIEZA',1160,NULL,NULL,NULL,NULL,NULL,0,'508498','erwe2rwe21r-4','2214','MARCA UNO','3',NULL),(2,'RM00001',1,1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',0,'2020-05-11 13:26:16',3,7,'PRODUCTO 7','PIEZA',800,NULL,NULL,NULL,NULL,NULL,0,'8484532','545e-454','24789','MARCA UNO','7',NULL),(3,'RM00001',1,1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',0,'2020-05-17 12:26:04',3,3,'PRODUCTO 3','PIEZA',1160,NULL,NULL,NULL,NULL,NULL,0,'508498','erwe2rwe21r-4','2214','MARCA UNO','3',NULL);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

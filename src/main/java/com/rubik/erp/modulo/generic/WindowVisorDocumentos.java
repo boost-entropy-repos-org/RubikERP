@@ -39,6 +39,7 @@ public class WindowVisorDocumentos extends Window {
     List<NodeFile> listProducto = new ArrayList<>();
     
     public WindowVisorDocumentos(DocumentObjectBase document, String tipo_documento) {
+        documento = document;
         setCaption(tipo_documento + " DE " + document.getTipo_documento() + " FOLIO " + document.getFolio());
         VaadinSession.getCurrent().getSession().setAttribute("PRODUCTO_SELECCIONADO",null);
         initComponents();
@@ -49,14 +50,14 @@ public class WindowVisorDocumentos extends Window {
         gridSelecProd.setWidth("100%");
         gridSelecProd.setSelectionMode(SelectionMode.SINGLE);
         gridSelecProd.addColumn(NodeFile::getFolio).setCaption("FOLIO").setId("FOLIO");
-        gridSelecProd.addColumn(NodeFile::getProveedor).setCaption("CTE/PROVEEDOR").setId("CTE/PROVEEDOR");
+        gridSelecProd.addColumn(NodeFile::getCliente_proveedor).setCaption("CTE/PROVEEDOR").setId("CTE/PROVEEDOR");
 
         cont.addComponents(new HorizontalLayout(btnAdd,btnDelete), gridSelecProd);
         cont.setComponentAlignment(cont.getComponent(0), Alignment.MIDDLE_CENTER);
         cont.setComponentAlignment(cont.getComponent(1), Alignment.MIDDLE_CENTER);
 
         btnAdd.addClickListener((event) -> {
-            WindowFileNode windows = new WindowFileNode();
+            WindowFileNode windows = new WindowFileNode(documento);
             windows.center();
             windows.setModal(true);
 //            windows.addCloseListener(ev -> {
