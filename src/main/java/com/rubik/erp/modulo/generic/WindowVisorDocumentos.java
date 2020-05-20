@@ -97,13 +97,10 @@ public class WindowVisorDocumentos extends Window {
         Button btnVisor = new Button("", Fam3SilkIcon.REPORT);
         btnVisor.setDescription("Ver Documento");
         btnVisor.addClickListener((event) -> {
-            
-            
-            final Window window = new Window("Cotizacion: " + node.getFolio());
-            window.setWidth("850");
-            window.center();
-            window.setModal(true);
-//            window.setContent();
+            ContentPDFViewer window = new ContentPDFViewer(
+                    node.getUrl(), 
+                    node.getNombre(),
+                    "Cotizacion: " + node.getFolio());
             getUI().addWindow(window);
         });
 
