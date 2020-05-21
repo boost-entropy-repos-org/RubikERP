@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.11.0.final using JasperReports Library version 6.11.0-0c4056ccaa4d25a5a8c45672d2f764ea3498bebb  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="HeadImpeller" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1a519a65-db4d-475f-9cf1-511c1ed05848">
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="REPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/reportes/"]]></defaultValueExpression>
+	</parameter>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -26,7 +30,7 @@ Tel. +52 (833) 3992231, www.impeller.com.mx]]></text>
 			</staticText>
 			<image>
 				<reportElement x="0" y="0" width="72" height="57" uuid="5c2f2090-0e56-4416-9f64-a7568e3c7071"/>
-				<imageExpression><![CDATA["D:\\Work\\Development\\Java\\SUITE_RUBIKERP\\RubikERP\\src\\main\\resources\\reportes\\logo.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[$P{REPORT_DIR} + "logo.jpg"]]></imageExpression>
 			</image>
 		</band>
 	</title>

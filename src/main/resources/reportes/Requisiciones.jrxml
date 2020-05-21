@@ -1,32 +1,226 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Requisiciones" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isTitleNewPage="true" uuid="e3751d5e-8725-4e8e-8903-40f4a45612e9">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["D:\\Work\\Development\\Java\\SUITE_RUBIKERP\\RubikERP\\src\\main\\resources\\reportes\\"]]></defaultValueExpression>
-	</parameter>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="100" splitType="Stretch">
-			<subreport>
-				<reportElement x="0" y="0" width="290" height="100" uuid="0d1fcdb4-49a1-4872-8dfd-e74d616eaaf0"/>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "HeadImpeller.jasper"]]></subreportExpression>
-			</subreport>
+		<band height="86" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="352" y="0" width="219" height="15" backcolor="#CCCCCC" uuid="43684596-497b-4100-b265-d1b3a50bbdcf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REQUISICION DE COMPRA]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Transparent" x="352" y="0" width="220" height="82" uuid="73ffb37b-33b5-4f51-8ff3-0fef52c8fcfd"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="358" y="31" width="70" height="16" uuid="17145cde-1d4d-46e1-9d48-0d4be290d675"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha Requerida:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="48" width="70" height="16" uuid="897e9193-8cd4-4642-88e8-d2a154944fda"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Solicitante:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="14" width="70" height="16" uuid="48a911a5-9732-46af-9aee-0e1611082fdc"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Folio:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="93" y="33" width="252" height="43" uuid="29e5b00c-2b1d-4058-8a62-993de22db6be"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[RFC: IWS140818UY0
+Emilio Castan No. 203, Col. 2 de Junio, 
+Tampico, Tamps. Mexico, Cp. 89327,
+Tel. +52 (833) 3992231, www.impeller.com.mx]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="93" y="10" width="252" height="20" uuid="97200645-0ab8-4c47-8ce6-a0d4c7104859"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IMPELLER WELL SERVICES, S.A. DE C.V.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="65" width="70" height="16" uuid="6ac10b26-0eda-4e1c-9be1-62b8bcadc2a0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Prioridad:]]></text>
+			</staticText>
 		</band>
 	</title>
 	<columnHeader>
-		<band height="61" splitType="Stretch"/>
+		<band height="67" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="572" height="15" backcolor="#CCCCCC" uuid="848dbf6a-b43e-4198-bd6f-1d475658884d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PROVEEDOR SUGERIDO]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="0" width="572" height="63" uuid="f42fac92-ba98-45b5-86c7-5c2476c1e21a"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="3" y="47" width="42" height="16" uuid="c4766892-309f-43bb-9cef-fcf4dfeae49a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Atencion a:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="352" y="31" width="42" height="16" uuid="b3b4cf21-1a3d-45d8-ac31-575dd13d8ce9"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Telefono:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="15" width="42" height="16" uuid="d2e28f77-aa32-4c70-a047-9c5b71bc79b5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Proveedor:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="352" y="15" width="42" height="16" uuid="0fb2e9e9-1684-4a67-b012-867760f4ca9d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[RFC:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="352" y="47" width="42" height="16" uuid="a926adcc-ad8d-45cb-a315-74869ca5f859"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Email:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="491" y="31" width="22" height="16" uuid="b52c5156-581d-41ac-8580-4f218c55b99f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Ext:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="31" width="42" height="16" uuid="b063af6e-d8f1-4e2c-9814-7b04ebb1035c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Localidad:]]></text>
+			</staticText>
+		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch"/>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="45" height="15" backcolor="#CCCCCC" uuid="810bee7b-8507-46dd-a20c-dbc82880fc32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[PARTIDA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="113" y="0" width="80" height="15" backcolor="#CCCCCC" uuid="c2a88cb0-7dee-4551-8b32-245f23e97ce5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[No. DE PARTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="242" y="0" width="330" height="15" backcolor="#CCCCCC" uuid="315bfaf1-0c9a-494f-b8ea-bba9ae0f3f2e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[DESCRIPCION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="193" y="0" width="49" height="15" backcolor="#CCCCCC" uuid="6a21c930-13c7-4842-90b9-37d125fe8108"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[CANTIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="45" y="0" width="68" height="15" backcolor="#CCCCCC" uuid="0a791bf1-df33-49ac-843a-c95459f48c8d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[UNIDAD]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="0" width="572" height="15" uuid="73bcffbf-c140-4b6e-be21-a3c26f10de5d"/>
+			</rectangle>
+		</band>
 	</detail>
-	<columnFooter>
-		<band height="45" splitType="Stretch"/>
-	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="222" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="572" height="15" backcolor="#CCCCCC" uuid="146a6abf-e731-4f45-8677-c2529c02be20"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OBSERVACIONES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="55" width="572" height="15" backcolor="#CCCCCC" uuid="75dfada5-fa81-41ad-be60-2a981a210a71"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INSTRUCCIONES DE ENTREGA]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="0" width="572" height="111" uuid="94889faf-ac01-4083-83d5-179991b09cc6"/>
+			</rectangle>
+			<line>
+				<reportElement x="45" y="184" width="100" height="1" uuid="a624e827-12ec-4d2e-93bc-e1317a3865a1"/>
+			</line>
+			<line>
+				<reportElement x="391" y="183" width="100" height="1" uuid="f45a5b6d-471b-4cec-a2b8-1543019e085b"/>
+			</line>
+			<staticText>
+				<reportElement x="45" y="185" width="100" height="15" uuid="1ab868d7-0d6d-4acb-9d97-9a6470115cba"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SOLICITANTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="391" y="183" width="100" height="15" uuid="6f2089f2-54d2-4de2-860a-743ba884d890"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AUTORIZADOR]]></text>
+			</staticText>
+		</band>
 	</pageFooter>
 </jasperReport>
