@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="HeadImpeller" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1a519a65-db4d-475f-9cf1-511c1ed05848">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="57" splitType="Stretch">
+			<staticText>
+				<reportElement x="72" y="0" width="213" height="20" uuid="97200645-0ab8-4c47-8ce6-a0d4c7104859"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IMPELLER WELL SERVICES, S.A. DE C.V.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="72" y="19" width="213" height="26" uuid="29e5b00c-2b1d-4058-8a62-993de22db6be"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[RFC: IWS140818UY0
+Emilio Castan No. 203, Col. 2 de Junio, Tampico, Tamps. Mexico, Cp. 89327,
+Tel. +52 (833) 3992231, www.impeller.com.mx]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="72" height="57" uuid="5c2f2090-0e56-4416-9f64-a7568e3c7071"/>
+				<imageExpression><![CDATA["D:\\Work\\Development\\Java\\SUITE_RUBIKERP\\RubikERP\\src\\main\\resources\\reportes\\logo.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+</jasperReport>
