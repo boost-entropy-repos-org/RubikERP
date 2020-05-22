@@ -135,7 +135,8 @@ public class WindowOrdenDeCompra  extends Window {
         setHeight("80%");
         
         Binder<OrdenDeCompra> binder = new Binder<>();
-        
+        // esto es una pruebaba
+        //a
         binder.forField(txtFolioRequisicion).bind(OrdenDeCompra::getFolio_requisicion, OrdenDeCompra::setFolio_requisicion);
         binder.forField(cboCondicionesPago).bind(OrdenDeCompra::getCond_pago, OrdenDeCompra::setCond_pago);
         binder.forField(cboMetodoPago).bind(OrdenDeCompra::getMetodo_pago, OrdenDeCompra::setMetodo_pago);
