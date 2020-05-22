@@ -90,6 +90,14 @@
             <version>4.0.21</version>
             <type>jar</type>
         </dependency>
+        
+<!--        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>6.4.0</version>
+            <type>jar</type>
+        </dependency>-->
+        
         <dependency>
             <groupId>com.rubik.erp.domain</groupId>
             <artifactId>RubikERPDomain</artifactId>

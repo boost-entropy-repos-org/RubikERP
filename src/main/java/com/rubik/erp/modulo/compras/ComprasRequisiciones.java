@@ -5,13 +5,17 @@
  */
 package com.rubik.erp.modulo.compras;
 
+import com.rubik.erp.config.DomainConfig;
+import com.rubik.erp.config.FactorySession;
 import com.rubik.erp.config._DocumentoEstados;
 import com.rubik.erp.domain.RequisicionDomain;
 import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.Requisicion;
+import com.rubik.erp.util.EmbedWindow;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.StreamResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -23,9 +27,14 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import de.steinwedel.messagebox.MessageBox;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+//import net.sf.jasperreports.engine.JRException;
+//import net.sf.jasperreports.engine.JasperRunManager;
 import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
 
 /**
@@ -159,6 +168,62 @@ public class ComprasRequisiciones extends Panel implements View {
         });
         
         btnPrint.addClickListener((event) -> {
+            if (gridRequisiciones.getSelectedItems().size() == 1) {
+                Requisicion requi = gridRequisiciones.getSelectedItems().iterator().next();
+                if (!requi.getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)) {
+
+                    try {
+                        final HashMap map = new HashMap();
+                        map.put("id", requi.getId());
+
+                        StreamResource.StreamSource source = new StreamResource.StreamSource() {
+                            @Override
+                            public InputStream getStream() {
+                                byte[] b = null;
+//                                try {
+                                    InputStream fileStream = getClass().getClassLoader().getResourceAsStream("/reportes/Requisiciones.jasper");
+//                                    b = JasperRunManager.runReportToPdf(fileStream, map, FactorySession.getRubikConnection(DomainConfig.getEnvironment()));
+//
+//                                } catch (JRException ex) {
+//                                    ex.printStackTrace();
+//                                }
+                                return new ByteArrayInputStream(b);
+                            }
+                        };
+
+                        StreamResource resource = new StreamResource(source, "Requisicion_" + requi.getFolio() + ".pdf");
+
+                        EmbedWindow windowPDF = new EmbedWindow(resource);
+                        windowPDF.setCaption("Requisicion de compra:");
+                        windowPDF.setHeight("100%");
+                        windowPDF.setWidth("80%");
+                        windowPDF.setMimeType("application/pdf");
+                        windowPDF.setDraggable(false);
+                        windowPDF.setResizable(false);
+                        windowPDF.setScrollLeft(15);
+                        windowPDF.center();
+                        windowPDF.setModal(true);
+                        windowPDF.insertEmbedded();
+                        getUI().addWindow(windowPDF);
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    MessageBox.createError()
+                            .withCaption("Error!")
+                            .withMessage("Debe Completar la Requisicion para Imprimir el documento")
+                            .withRetryButton()
+                            .open();
+                }
+
+            } else {
+                MessageBox.createError()
+                        .withCaption("Error!")
+                        .withMessage("Debe seleccionar una Requisicion para poder imprimirla.")
+                        .withRetryButton()
+                        .open();
+            }
         });
         
         btnTerminar.addClickListener((event) -> {

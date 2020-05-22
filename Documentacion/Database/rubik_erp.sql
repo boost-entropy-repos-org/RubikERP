@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v9.10 
-MySQL - 8.0.18 : Database - rubik_erp
+MySQL - 5.5.62 : Database - rubik_erp
 *********************************************************************
 */
 
@@ -12,7 +12,7 @@ MySQL - 8.0.18 : Database - rubik_erp
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`rubik_erp` /*!40100 DEFAULT CHARACTER SET utf8 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`rubik_erp` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
 USE `rubik_erp`;
 
@@ -157,7 +157,7 @@ CREATE TABLE `node_file` (
 
 /*Data for the table `node_file` */
 
-insert  into `node_file`(`id`,`parent_id`,`parent_folio`,`nombre`,`folio`,`cliente_proveedor_id`,`cliente_proveedor`,`tipo_documento`,`url`,`extension`) values (1,1,'RM00001','A45993.pdf','A45993',2,'PROVEEDOR 2','REMISION DE COMPRA','C:\\Program Files\\Apache Software Foundation\\Tomcat 9.0\\ED_Impeller\\REMISION DE COMPRA\\RM00001\\A45993.pdf','application/pdf');
+insert  into `node_file`(`id`,`parent_id`,`parent_folio`,`nombre`,`folio`,`cliente_proveedor_id`,`cliente_proveedor`,`tipo_documento`,`url`,`extension`) values (1,1,'RM00001','A4334.pdf','A4334',2,'PROVEEDOR 2','REMISION DE COMPRA','C:\\Program Files\\Apache Software Foundation\\Tomcat 9.0\\ED_Impeller\\REMISION DE COMPRA\\RM00001\\A4334.pdf','application/pdf');
 
 /*Table structure for table `orden_compra` */
 
@@ -345,6 +345,7 @@ CREATE TABLE `proveedor` (
   `pais` varchar(100) DEFAULT NULL,
   `cp` varchar(100) DEFAULT NULL,
   `contacto_compra_telefono` varchar(100) DEFAULT NULL,
+  `contacto_compra_ext` varchar(6) DEFAULT NULL,
   `contacto_compra_nombre` varchar(100) DEFAULT NULL,
   `contacto_compra_email` varchar(100) DEFAULT NULL,
   `contacto_contabilidad_telefono` varchar(100) DEFAULT NULL,
@@ -367,7 +368,7 @@ CREATE TABLE `proveedor` (
 
 /*Data for the table `proveedor` */
 
-insert  into `proveedor`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`no_paper`,`activo`,`clasificacion_proveedor`,`tipo_proveedor`,`dias_credito`,`clave_proveedor`,`razon_social`,`rfc`,`domicilio`,`ciudad`,`estado`,`pais`,`cp`,`contacto_compra_telefono`,`contacto_compra_nombre`,`contacto_compra_email`,`contacto_contabilidad_telefono`,`contacto_contabilidad_nombre`,`contacto_contabilidad_email`,`no_cuenta_1`,`clave_interbancaria_1`,`banco_1`,`sucursal_1`,`no_cuenta_2`,`clave_interbancaria_2`,`banco_2`,`sucursal_2`,`no_cuenta_3`,`clave_interbancaria_3`,`banco_3`,`sucursal_3`) values (1,'2020-01-12 22:07:22','2020-01-12 22:07:22',1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',1,1,'PROVEEDOR','CONTADO',0,'1','PABLO BENAVIDES MOLINA','BEMP8905273G1','LOMA BONITA 206-4 COL. JESUS ELIAS PIÑA III','TAMPICO','TAMAULIPAS','MEXICO','89365','8331243823','Fulanito de tal','pblo.benavides@gmail.com','','','','','','','','','','','','','','',''),(2,'2020-01-12 22:07:22','2020-01-12 22:07:22',1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',1,1,'PROVEEDOR','CREDITO',15,'2','PROVEEDOR 2','ASDASDASDASDA','SDASDASDAS','DASDAS','DASDASD','MEXICO','23232','asdasd','aasdasdasd','asdasda','asdasd','asdasdas','dasdasd','asdasda','sdasd','asdasdas','dasdasd','asdasda','sdasdasdas','dasd','','','','',''),(3,'2020-01-30 22:27:03','2020-01-30 22:27:03',0,'',0,'',0,'',1,1,'PROVEEDOR','CONTADO',0,'3','PROVEEDOR 3','PROV323423244','2424','24E','RTYYRTYU','MEXICO','y6666','tyrty','fghrtrty','rtyr','rtyrty','rtyrt','yrty','jkljkl','jkljk','ljklj','kl','','','','','','','','');
+insert  into `proveedor`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`no_paper`,`activo`,`clasificacion_proveedor`,`tipo_proveedor`,`dias_credito`,`clave_proveedor`,`razon_social`,`rfc`,`domicilio`,`ciudad`,`estado`,`pais`,`cp`,`contacto_compra_telefono`,`contacto_compra_ext`,`contacto_compra_nombre`,`contacto_compra_email`,`contacto_contabilidad_telefono`,`contacto_contabilidad_nombre`,`contacto_contabilidad_email`,`no_cuenta_1`,`clave_interbancaria_1`,`banco_1`,`sucursal_1`,`no_cuenta_2`,`clave_interbancaria_2`,`banco_2`,`sucursal_2`,`no_cuenta_3`,`clave_interbancaria_3`,`banco_3`,`sucursal_3`) values (1,'2020-01-12 22:07:22','2020-01-12 22:07:22',1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',1,1,'PROVEEDOR','CONTADO',0,'1','PABLO BENAVIDES MOLINA','BEMP8905273G1','LOMA BONITA 206-4 COL. JESUS ELIAS PIÑA III','TAMPICO','TAMAULIPAS','MEXICO','89365','8331243823',NULL,'Fulanito de tal','pblo.benavides@gmail.com','','','','','','','','','','','','','','',''),(2,'2020-01-12 22:07:22','2020-01-12 22:07:22',1,' ',1,' ',1,'PABLO BENAVIDES MOLINA',1,1,'PROVEEDOR','CREDITO',15,'2','PROVEEDOR 2','ASDASDASDASDA','SDASDASDAS','DASDAS','DASDASD','MEXICO','23232','asdasd',NULL,'aasdasdasd','asdasda','asdasd','asdasdas','dasdasd','asdasda','sdasd','asdasdas','dasdasd','asdasda','sdasdasdas','dasd','','','','',''),(3,'2020-01-30 22:27:03','2020-01-30 22:27:03',0,'',0,'',0,'',1,1,'PROVEEDOR','CONTADO',0,'3','PROVEEDOR 3','PROV323423244','2424','24E','RTYYRTYU','MEXICO','y6666','tyrty',NULL,'fghrtrty','rtyr','rtyrty','rtyrt','yrty','jkljkl','jkljk','ljklj','kl','','','','','','','','');
 
 /*Table structure for table `requisicion` */
 
@@ -407,7 +408,7 @@ CREATE TABLE `requisicion` (
   `activo` tinyint(1) DEFAULT '1',
   `prioridad` varchar(100) DEFAULT NULL,
   `fecha_requerida` datetime DEFAULT NULL,
-  `direccion_entrega` varchar(100) DEFAULT NULL,
+  `direccion_entrega` text,
   `fecha_orden_compra` datetime DEFAULT NULL,
   `folio_orden_compra` varchar(100) DEFAULT NULL,
   `autoriza_id` int(10) DEFAULT NULL,
