@@ -258,10 +258,10 @@ public class WindowRequisicion extends Window {
 
                 if (isEdit) {
                     requisicion.setFecha_modificacion(new Date());
-                    for (RequisicionDet partidaTemp : listRequisicionDet) {
-                        total += partidaTemp.getTotal();
-                    }
-                    requisicion.setTotal(total);
+//                    for (RequisicionDet partidaTemp : listRequisicionDet) {
+//                        total += partidaTemp.getTotal();
+//                    }
+//                    requisicion.setTotal(total);
                     
                     service.RequisicionUpdate(requisicion);
                     

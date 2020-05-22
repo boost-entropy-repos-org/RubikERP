@@ -33,8 +33,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-//import net.sf.jasperreports.engine.JRException;
-//import net.sf.jasperreports.engine.JasperRunManager;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperRunManager;
 import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
 
 /**
@@ -174,19 +174,19 @@ public class ComprasRequisiciones extends Panel implements View {
 
                     try {
                         final HashMap map = new HashMap();
-                        map.put("id", requi.getId());
+                        map.put("folio", requi.getFolio());
 
                         StreamResource.StreamSource source = new StreamResource.StreamSource() {
                             @Override
                             public InputStream getStream() {
                                 byte[] b = null;
-//                                try {
+                                try {
                                     InputStream fileStream = getClass().getClassLoader().getResourceAsStream("/reportes/Requisiciones.jasper");
-//                                    b = JasperRunManager.runReportToPdf(fileStream, map, FactorySession.getRubikConnection(DomainConfig.getEnvironment()));
-//
-//                                } catch (JRException ex) {
-//                                    ex.printStackTrace();
-//                                }
+                                    b = JasperRunManager.runReportToPdf(fileStream, map, FactorySession.getRubikConnection(DomainConfig.getEnvironment()));
+
+                                } catch (JRException ex) {
+                                    ex.printStackTrace();
+                                }
                                 return new ByteArrayInputStream(b);
                             }
                         };

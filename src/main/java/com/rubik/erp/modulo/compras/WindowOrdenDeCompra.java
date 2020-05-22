@@ -84,6 +84,12 @@ public class WindowOrdenDeCompra  extends Window {
     TextField txtIVA = new TextField("IVA:");
     TextField txtTotal = new TextField("Total:");
     
+    TextField txtPedido = new TextField("Pedido:");
+    TextField txtComprador = new TextField("Comprador:");
+    TextField txtTiempoEntrega = new TextField("Tiempo de Entrega:");
+    TextField txtMontoLetra = new TextField("Monto con Letra:");
+    TextField txtInstruccionesEntrega = new TextField("Condiciones de Embarque:");
+
     Button btnAgregarPartida = new Button("",Fam3SilkIcon.ADD);
     Button btnModificarPartida = new Button("",Fam3SilkIcon.PENCIL);
     Button btnEliminarPartida = new Button("",Fam3SilkIcon.DELETE);
@@ -140,6 +146,13 @@ public class WindowOrdenDeCompra  extends Window {
         binder.forField(txtObservaciones).bind(OrdenDeCompra::getObservaciones, OrdenDeCompra::setObservaciones);
         binder.forField(txtSolicita).bind(OrdenDeCompra::getSolicita, OrdenDeCompra::setSolicita);
         binder.forField(txtDireccionEntrega).bind(OrdenDeCompra::getDireccion_entrega, OrdenDeCompra::setDireccion_entrega);
+        
+        binder.forField(txtPedido).bind(OrdenDeCompra::getPedido, OrdenDeCompra::setPedido);
+        binder.forField(txtComprador).bind(OrdenDeCompra::getComprador, OrdenDeCompra::setComprador);
+        binder.forField(txtTiempoEntrega).bind(OrdenDeCompra::getTiempo_entrega, OrdenDeCompra::setTiempo_entrega);
+        binder.forField(txtMontoLetra).bind(OrdenDeCompra::getImporte_letra, OrdenDeCompra::setImporte_letra);
+        binder.forField(txtInstruccionesEntrega).bind(OrdenDeCompra::getInstrucciones_entrega, OrdenDeCompra::setInstrucciones_entrega);
+
         binder.forField(cboAlmacenRecibe).bind(OrdenDeCompra::getRecibe, OrdenDeCompra::setRecibe);
         binder.forField(txtImporte).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(OrdenDeCompra::getImporte, OrdenDeCompra::setImporte);
         binder.forField(txtDescuento).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(OrdenDeCompra::getDescuento, OrdenDeCompra::setDescuento);

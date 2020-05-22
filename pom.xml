@@ -91,12 +91,12 @@
             <type>jar</type>
         </dependency>
         
-<!--        <dependency>
+        <dependency>
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
             <version>6.4.0</version>
             <type>jar</type>
-        </dependency>-->
+        </dependency>
         
         <dependency>
             <groupId>com.rubik.erp.domain</groupId>
@@ -125,7 +125,7 @@
                     <execution>
                         <goals>
                             <goal>update-theme</goal>
-                            <goal>update-widgetset</goal>
+                            <!--<goal>update-widgetset</goal>-->
                             <goal>compile</goal>
                             <!-- Comment out compile-theme goal to use on-the-fly theme compilation -->
                             <goal>compile-theme</goal>

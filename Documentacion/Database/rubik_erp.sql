@@ -1,6 +1,6 @@
 /*
-SQLyog Ultimate v9.10 
-MySQL - 5.5.62 : Database - rubik_erp
+SQLyog Ultimate v11.13 (64 bit)
+MySQL - 8.0.18 : Database - rubik_erp
 *********************************************************************
 */
 
@@ -12,7 +12,7 @@ MySQL - 5.5.62 : Database - rubik_erp
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`rubik_erp` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`rubik_erp` /*!40100 DEFAULT CHARACTER SET utf8 */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
 USE `rubik_erp`;
 
@@ -89,7 +89,7 @@ CREATE TABLE `configuracion` (
 
 /*Data for the table `configuracion` */
 
-insert  into `configuracion`(`id`,`serie_requisicion`,`folio_requisicion`,`serie_orden_compra`,`folio_orden_compra`,`serie_cotizacion`,`folio_cotizacion`,`serie_remision`,`folio_remision`,`serie_factura`,`folio_factura`,`autocompletar_totales`) values (1,'RM',1,'OC',0,'CT',0,NULL,NULL,'FA',0,0);
+insert  into `configuracion`(`id`,`serie_requisicion`,`folio_requisicion`,`serie_orden_compra`,`folio_orden_compra`,`serie_cotizacion`,`folio_cotizacion`,`serie_remision`,`folio_remision`,`serie_factura`,`folio_factura`,`autocompletar_totales`) values (1,'RM',2,'OC',0,'CT',0,NULL,NULL,'FA',0,0);
 
 /*Table structure for table `empleado` */
 
@@ -157,7 +157,7 @@ CREATE TABLE `node_file` (
 
 /*Data for the table `node_file` */
 
-insert  into `node_file`(`id`,`parent_id`,`parent_folio`,`nombre`,`folio`,`cliente_proveedor_id`,`cliente_proveedor`,`tipo_documento`,`url`,`extension`) values (1,1,'RM00001','A4334.pdf','A4334',2,'PROVEEDOR 2','REMISION DE COMPRA','C:\\Program Files\\Apache Software Foundation\\Tomcat 9.0\\ED_Impeller\\REMISION DE COMPRA\\RM00001\\A4334.pdf','application/pdf');
+insert  into `node_file`(`id`,`parent_id`,`parent_folio`,`nombre`,`folio`,`cliente_proveedor_id`,`cliente_proveedor`,`tipo_documento`,`url`,`extension`) values (1,1,'RM00001','A45993.pdf','A45993',2,'PROVEEDOR 2','REMISION DE COMPRA','C:\\Program Files\\Apache Software Foundation\\Tomcat 9.0\\ED_Impeller\\REMISION DE COMPRA\\RM00001\\A45993.pdf','application/pdf');
 
 /*Table structure for table `orden_compra` */
 
@@ -193,7 +193,7 @@ CREATE TABLE `orden_compra` (
   `iva` double DEFAULT NULL,
   `total` double DEFAULT NULL,
   `porc_iva` int(10) DEFAULT NULL,
-  `importe_letra` varchar(100) DEFAULT NULL,
+  `importe_letra` text CHARACTER SET utf8 COLLATE utf8_general_ci,
   `activo` tinyint(1) DEFAULT '1',
   `proveedor_id` int(10) DEFAULT NULL,
   `proveedor` varchar(100) DEFAULT NULL,
@@ -222,6 +222,10 @@ CREATE TABLE `orden_compra` (
   `forma_pago` varchar(100) DEFAULT NULL,
   `fecha_solicita` datetime DEFAULT NULL,
   `firma_solicita` varchar(100) DEFAULT NULL,
+  `pedido` varchar(25) DEFAULT NULL,
+  `comprador` varchar(100) DEFAULT NULL,
+  `tiempo_entrega` varchar(100) DEFAULT NULL,
+  `instrucciones_entrega` text CHARACTER SET utf8 COLLATE utf8_general_ci,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -345,7 +349,7 @@ CREATE TABLE `proveedor` (
   `pais` varchar(100) DEFAULT NULL,
   `cp` varchar(100) DEFAULT NULL,
   `contacto_compra_telefono` varchar(100) DEFAULT NULL,
-  `contacto_compra_ext` varchar(6) DEFAULT NULL,
+  `contacto_compra_ext` varchar(7) DEFAULT NULL,
   `contacto_compra_nombre` varchar(100) DEFAULT NULL,
   `contacto_compra_email` varchar(100) DEFAULT NULL,
   `contacto_contabilidad_telefono` varchar(100) DEFAULT NULL,
@@ -408,7 +412,7 @@ CREATE TABLE `requisicion` (
   `activo` tinyint(1) DEFAULT '1',
   `prioridad` varchar(100) DEFAULT NULL,
   `fecha_requerida` datetime DEFAULT NULL,
-  `direccion_entrega` text,
+  `direccion_entrega` varchar(100) DEFAULT NULL,
   `fecha_orden_compra` datetime DEFAULT NULL,
   `folio_orden_compra` varchar(100) DEFAULT NULL,
   `autoriza_id` int(10) DEFAULT NULL,
@@ -420,11 +424,11 @@ CREATE TABLE `requisicion` (
   `proveedor_id` int(10) DEFAULT NULL,
   `proveedor` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 /*Data for the table `requisicion` */
 
-insert  into `requisicion`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`estado_doc`,`estado`,`folio`,`serie`,`observaciones`,`tipo_documento`,`tipo_archivo`,`razon_cancelar`,`cliente_id`,`cliente`,`cliente_rfc`,`metodo_pago`,`moneda`,`tipo_cambio`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`porc_iva`,`importe_letra`,`activo`,`prioridad`,`fecha_requerida`,`direccion_entrega`,`fecha_orden_compra`,`folio_orden_compra`,`autoriza_id`,`autoriza`,`fecha_autorizo`,`firma_autorizo`,`solicita`,`firma_solicita`,`proveedor_id`,`proveedor`) values (1,'2020-05-11 13:26:17','2020-05-11 13:26:17',0,'',0,'',1,'PABLO BENAVIDES MOLINA','EN PROCESO','','RM00001','','KHKJH','REMISION DE COMPRA','PDF','',0,'','','',NULL,NULL,0,0,0,0,0,0,'',1,'ALTA','2020-05-11 00:00:00','HJKHKJKH',NULL,NULL,1,'PABLO BENAVIDES MOLINA',NULL,NULL,'PABLO BENAVIDES MOLINA',NULL,1,'PABLO BENAVIDES MOLINA');
+insert  into `requisicion`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`estado_doc`,`estado`,`folio`,`serie`,`observaciones`,`tipo_documento`,`tipo_archivo`,`razon_cancelar`,`cliente_id`,`cliente`,`cliente_rfc`,`metodo_pago`,`moneda`,`tipo_cambio`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`porc_iva`,`importe_letra`,`activo`,`prioridad`,`fecha_requerida`,`direccion_entrega`,`fecha_orden_compra`,`folio_orden_compra`,`autoriza_id`,`autoriza`,`fecha_autorizo`,`firma_autorizo`,`solicita`,`firma_solicita`,`proveedor_id`,`proveedor`) values (1,'2020-05-11 13:26:17','2020-05-22 10:40:07',0,'',0,'',1,'PABLO BENAVIDES MOLINA','TERMINADO','','RM00001','','KHKJH','REMISION DE COMPRA','PDF','',0,'','','',NULL,NULL,0,0,0,0,0,0,'',1,'ALTA','2020-05-11 00:00:00','HJKHKJKH',NULL,NULL,1,'PABLO BENAVIDES MOLINA',NULL,NULL,'PABLO BENAVIDES MOLINA','67849AD1527967B3D86D377561EA764C',1,'PABLO BENAVIDES MOLINA'),(2,'2020-05-22 15:37:52','2020-05-22 15:37:52',0,'',0,'',1,'PABLO BENAVIDES MOLINA','EN PROCESO','','RM00002','','','REMISION DE ENTREGA','PDF','',0,'','','',NULL,NULL,0,0,0,0,0,0,'',1,'ALTA','2020-05-22 00:00:00','',NULL,NULL,1,'PABLO BENAVIDES MOLINA',NULL,NULL,'PABLO BENAVIDES MOLINA',NULL,1,'PABLO BENAVIDES MOLINA');
 
 /*Table structure for table `requisicion_det` */
 

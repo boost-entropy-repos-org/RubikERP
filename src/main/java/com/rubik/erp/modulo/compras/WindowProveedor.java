@@ -50,6 +50,7 @@ public class WindowProveedor extends Window {
     NativeSelect<String>cboTipo = new NativeSelect("Tipo:");
     NativeSelect<Integer> cboDiasCredito = new NativeSelect("Dias de Credito:");
     TextField txtContactoCompraTelefono = new TextField("Telefono:");
+    TextField txtContactoCompraExt = new TextField("Ext:");
     TextField txtContactoCompraNombre = new TextField("Nombre:");
     TextField txtContactoCompraEmail = new TextField("Email:");
     TextField txtContactoContaTelefono = new TextField("Telefono:");
@@ -109,6 +110,7 @@ public class WindowProveedor extends Window {
         binder.forField(cboTipo).bind(Proveedor::getTipo_proveedor, Proveedor::setTipo_proveedor);
         binder.forField(cboDiasCredito).bind(Proveedor::getDias_credito, Proveedor::setDias_credito);
         binder.forField(txtContactoCompraTelefono).bind(Proveedor::getContacto_compra_telefono, Proveedor::setContacto_compra_telefono);
+        binder.forField(txtContactoCompraExt).bind(Proveedor::getContacto_compra_ext, Proveedor::setContacto_compra_ext);
         binder.forField(txtContactoCompraNombre).bind(Proveedor::getContacto_compra_nombre, Proveedor::setContacto_compra_nombre);
         binder.forField(txtContactoCompraEmail).bind(Proveedor::getContacto_compra_email, Proveedor::setContacto_compra_email);
         binder.forField(txtContactoContaTelefono).bind(Proveedor::getContacto_contabilidad_telefono, Proveedor::setContacto_contabilidad_telefono);
@@ -202,6 +204,8 @@ public class WindowProveedor extends Window {
 
         txtContactoCompraNombre.setMaxLength(70);
         txtContactoCompraTelefono.setMaxLength(20);
+        txtContactoCompraExt.setMaxLength(70);
+        txtContactoCompraExt.setMaxLength(8);
         txtContactoCompraEmail.setMaxLength(50);
         txtContactoContaNombre.setMaxLength(70);
         txtContactoContaTelefono.setMaxLength(20);
@@ -232,6 +236,7 @@ public class WindowProveedor extends Window {
         cboTipo.setWidth(strWidth);
         cboDiasCredito.setWidth(strWidth);
         txtContactoCompraTelefono.setWidth(strWidth);
+        txtContactoCompraExt.setWidth(strWidth);
         txtContactoCompraNombre.setWidth(strWidth);
         txtContactoCompraEmail.setWidth(strWidth);
         txtContactoContaTelefono.setWidth(strWidth);
@@ -257,7 +262,7 @@ public class WindowProveedor extends Window {
         fLay.addComponents(new Label("Credito"){{setStyleName("h3");}});
         fLay.addComponents(cboClasificacion, cboTipo, cboDiasCredito);
         fLay.addComponents(new Label("Contactos Compra"){{setStyleName("h3");}});
-        fLay.addComponents(txtContactoCompraNombre, txtContactoCompraEmail, txtContactoCompraTelefono);
+        fLay.addComponents(txtContactoCompraNombre, txtContactoCompraEmail, txtContactoCompraTelefono, txtContactoCompraExt);
         fLay.addComponents(new Label("Contactos Contabilidad"){{setStyleName("h3");}});
         fLay.addComponents(txtContactoContaNombre, txtContactoContaEmail, txtContactoContaTelefono);
         fLay.addComponents(new Label("Cuenta Bancaria 1"){{setStyleName("h3");}});

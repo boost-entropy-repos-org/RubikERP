@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Requisiciones" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isTitleNewPage="true" uuid="e3751d5e-8725-4e8e-8903-40f4a45612e9">
-	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="525"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Requisiciones" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e3751d5e-8725-4e8e-8903-40f4a45612e9">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="folio" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -306,8 +306,8 @@ Tel. +52 (833) 3992231, www.impeller.com.mx]]></text>
 			</textField>
 		</band>
 	</title>
-	<columnHeader>
-		<band height="67" splitType="Stretch">
+	<pageHeader>
+		<band height="63">
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="0" width="572" height="15" backcolor="#CCCCCC" uuid="848dbf6a-b43e-4198-bd6f-1d475658884d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -417,9 +417,9 @@ Tel. +52 (833) 3992231, www.impeller.com.mx]]></text>
 				<textFieldExpression><![CDATA[$F{contacto_compra_ext}]]></textFieldExpression>
 			</textField>
 		</band>
-	</columnHeader>
-	<detail>
-		<band height="40" splitType="Stretch">
+	</pageHeader>
+	<columnHeader>
+		<band height="15" splitType="Stretch">
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="0" width="45" height="15" backcolor="#CCCCCC" uuid="810bee7b-8507-46dd-a20c-dbc82880fc32"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -458,36 +458,40 @@ Tel. +52 (833) 3992231, www.impeller.com.mx]]></text>
 			<rectangle>
 				<reportElement mode="Transparent" x="0" y="0" width="572" height="15" uuid="73bcffbf-c140-4b6e-be21-a3c26f10de5d"/>
 			</rectangle>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="15" width="45" height="25" uuid="d9be90db-ebe6-4e65-8cd0-2c8b75906843"/>
+				<reportElement x="0" y="0" width="45" height="25" uuid="d9be90db-ebe6-4e65-8cd0-2c8b75906843"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{partida}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="45" y="15" width="68" height="25" uuid="1fe811d2-2192-4357-a5f9-7e1d43f54a7b"/>
+				<reportElement x="45" y="0" width="68" height="25" uuid="1fe811d2-2192-4357-a5f9-7e1d43f54a7b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{unidad_medida}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="113" y="15" width="80" height="25" uuid="8c35c734-bde9-45c2-b96a-d52ba662c182"/>
+				<reportElement x="113" y="0" width="80" height="25" uuid="8c35c734-bde9-45c2-b96a-d52ba662c182"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{no_parte}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="193" y="15" width="49" height="25" uuid="cb463012-f276-471d-b24e-a447c602dae5"/>
+				<reportElement x="193" y="0" width="49" height="25" uuid="cb463012-f276-471d-b24e-a447c602dae5"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="242" y="15" width="330" height="25" uuid="2d60d779-26db-4214-95a7-1da8d1888ddb"/>
+				<reportElement x="242" y="0" width="330" height="25" uuid="2d60d779-26db-4214-95a7-1da8d1888ddb"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
@@ -547,11 +551,16 @@ Tel. +52 (833) 3992231, www.impeller.com.mx]]></text>
 				<text><![CDATA[AUTORIZADOR]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="282" y="86" width="100" height="20" uuid="53f8d824-8166-4e5f-8197-5cd1c27f0ce7"/>
+				<reportElement x="0" y="70" width="572" height="41" uuid="53f8d824-8166-4e5f-8197-5cd1c27f0ce7"/>
+				<box leftPadding="3"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{direccion_entrega}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="15" width="572" height="40" uuid="521e9bd3-fb3e-40dc-b947-0fa63f298382"/>
+				<box leftPadding="3"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
