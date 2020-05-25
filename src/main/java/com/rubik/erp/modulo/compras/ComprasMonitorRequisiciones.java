@@ -190,7 +190,7 @@ public class ComprasMonitorRequisiciones extends Panel implements View {
     public List getRequisiciones() {
         Empleado empleadoTemp = cboAutorizador.getValue();
         
-        String strWhere = " activo = 1 and estado_doc = 'TERMINADO' AND autoriza_id = " + empleadoTemp.getId();
+        String strWhere = " activo = 1 and estado_doc = '" + _DocumentoEstados.POR_AUTORIZAR + "' AND autoriza_id = " + empleadoTemp.getId();
 
         RequisicionDomain service = new RequisicionDomain();
         service.getRequisicion(strWhere, "", "fecha_requerida DESC");

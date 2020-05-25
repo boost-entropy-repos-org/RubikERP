@@ -5,10 +5,12 @@
  */
 package com.rubik.erp.modulo.compras;
 
+import com.rubik.erp.config._DocumentoTipos;
 import com.rubik.erp.config._Folios;
 import com.rubik.erp.config._Pago_Documentos;
 import com.rubik.erp.domain.ConfiguracionDomain;
 import com.rubik.erp.domain.EmpleadoDomain;
+import com.rubik.erp.domain.OrdenDeCompraDetDomain;
 import com.rubik.erp.domain.ProveedorDomain;
 import com.rubik.erp.domain.RequisicionDetDomain;
 import com.rubik.erp.model.Configuracion;
@@ -18,9 +20,11 @@ import com.rubik.erp.model.OrdenDeCompraDet;
 import com.rubik.erp.model.Proveedor;
 import com.rubik.erp.model.Requisicion;
 import com.rubik.erp.model.RequisicionDet;
+import com.rubik.erp.modulo.generic.WindowVisorDocumentos;
+import com.rubik.erp.util.NumberText;
 import com.rubik.manage.ManageDates;
-import com.rubik.manage.ManageNumbers;
 import com.rubik.manage.ManageString;
+import com.rubik.manage.Numero_Letras;
 import com.vaadin.data.Binder;
 import com.vaadin.data.converter.LocalDateToDateConverter;
 import com.vaadin.data.converter.StringToDoubleConverter;
@@ -38,6 +42,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
+import de.steinwedel.messagebox.MessageBox;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -71,11 +76,9 @@ public class WindowOrdenDeCompra  extends Window {
     
     DateField txtFechaRequerida = new DateField("Fecha Requerida:", LocalDate.now());
     DateField txtFechaEntrega = new DateField("Fecha Entrega:", LocalDate.now());
-    TextArea txtObservaciones = new TextArea("Observaciones:");
-    
+        
     TextField txtSolicita = new TextField("Solicitante:");
     NativeSelect<Empleado> cboAutorizador = new NativeSelect();
-    TextArea txtDireccionEntrega = new TextArea("Direccion Entrega:");
     
     NativeSelect<String> cboAlmacenRecibe = new NativeSelect();
     TextField txtImporte = new TextField("Importe:");
@@ -85,15 +88,16 @@ public class WindowOrdenDeCompra  extends Window {
     TextField txtTotal = new TextField("Total:");
     
     TextField txtPedido = new TextField("Pedido:");
-    TextField txtComprador = new TextField("Comprador:");
     TextField txtTiempoEntrega = new TextField("Tiempo de Entrega:");
-    TextField txtMontoLetra = new TextField("Monto con Letra:");
-    TextField txtInstruccionesEntrega = new TextField("Condiciones de Embarque:");
+    
+    TextArea txtDireccionEntrega = new TextArea("Direccion Entrega:");
+    TextArea txtMontoLetra = new TextArea("Monto con Letra:");
+    TextArea txtObservaciones = new TextArea("Observaciones:");
 
     Button btnAgregarPartida = new Button("",Fam3SilkIcon.ADD);
     Button btnModificarPartida = new Button("",Fam3SilkIcon.PENCIL);
     Button btnEliminarPartida = new Button("",Fam3SilkIcon.DELETE);
-    Button btnVisualizarDocs = new Button("Documentos",Fam3SilkIcon.FOLDER_EXPLORE);
+    Button btnCotizacionesProvedores = new Button("Cotizaciones",Fam3SilkIcon.FOLDER_EXPLORE);
     Button btnBuscarRequisicion = new Button("",Fam3SilkIcon.MAGNIFIER);
     Button btnGuardar = new Button("Guardar", Fam3SilkIcon.DISK);
     Button btnCancelar = new Button("Cancelar", Fam3SilkIcon.CANCEL);
@@ -115,6 +119,7 @@ public class WindowOrdenDeCompra  extends Window {
         };
         initComponents();
         btnModificarPartida.setEnabled(false);
+        btnCotizacionesProvedores.setEnabled(false);
     }
 
     public WindowOrdenDeCompra(OrdenDeCompra ordenTemp) {
@@ -149,101 +154,127 @@ public class WindowOrdenDeCompra  extends Window {
         binder.forField(txtDireccionEntrega).bind(OrdenDeCompra::getDireccion_entrega, OrdenDeCompra::setDireccion_entrega);
         
         binder.forField(txtPedido).bind(OrdenDeCompra::getPedido, OrdenDeCompra::setPedido);
-        binder.forField(txtComprador).bind(OrdenDeCompra::getComprador, OrdenDeCompra::setComprador);
         binder.forField(txtTiempoEntrega).bind(OrdenDeCompra::getTiempo_entrega, OrdenDeCompra::setTiempo_entrega);
         binder.forField(txtMontoLetra).bind(OrdenDeCompra::getImporte_letra, OrdenDeCompra::setImporte_letra);
-        binder.forField(txtInstruccionesEntrega).bind(OrdenDeCompra::getInstrucciones_entrega, OrdenDeCompra::setInstrucciones_entrega);
 
         binder.forField(cboAlmacenRecibe).bind(OrdenDeCompra::getRecibe, OrdenDeCompra::setRecibe);
         binder.forField(txtImporte).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(OrdenDeCompra::getImporte, OrdenDeCompra::setImporte);
         binder.forField(txtDescuento).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(OrdenDeCompra::getDescuento, OrdenDeCompra::setDescuento);
         binder.forField(txtSubtotal).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(OrdenDeCompra::getSubtotal, OrdenDeCompra::setSubtotal);
         binder.forField(txtIVA).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(OrdenDeCompra::getIva, OrdenDeCompra::setIva);
-        binder.forField(txtTotal).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(OrdenDeCompra::getTotal, OrdenDeCompra::setTotal);
+        binder.forField(txtTotal).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(OrdenDeCompra::getImporte, OrdenDeCompra::setImporte);
         
         gridOrdenDeCompraDet.setHeight("272");
         gridOrdenDeCompraDet.setSelectionMode(Grid.SelectionMode.SINGLE);
+        
+        gridOrdenDeCompraDet.addItemClickListener(event -> {
+            if (event.getMouseEventDetails().isDoubleClick()) {
+                if (gridOrdenDeCompraDet.getSelectedItems().size() == 1) {
+                    WindowOrdenDeCompraDet windows = new WindowOrdenDeCompraDet(ordenDeCompra, gridOrdenDeCompraDet.getSelectedItems().iterator().next());
+                    windows.center();
+                    windows.setModal(true);
+                    windows.addCloseListener((e) -> {
+                        Boolean ok = (Boolean) VaadinSession.getCurrent().getSession().getAttribute("PARTIDA_OK");
+                        if (ok) {
+                            if (isEdit) {
+                                gridOrdenDeCompraDet.setItems(getPartidas());
+                            } else {
+                                OrdenDeCompraDet partida = (OrdenDeCompraDet) VaadinSession.getCurrent().getSession().getAttribute("ORDEN_COMPRA_DET");
+                                listOrdenDeCompraDet.add(partida);
+                                gridOrdenDeCompraDet.setItems(listOrdenDeCompraDet);
+                            }
+                        }
+                    });
+                    getUI().addWindow(windows);
+                } else {
+                    MessageBox.createError()
+                            .withCaption("Error!")
+                            .withMessage("Debe tener una partida seleccionada para poder modificarla.")
+                            .withRetryButton()
+                            .open();
+                }
+            }
+        });
 
         gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getCantidad).setCaption("CTD").setWidth(75);
         gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getDescripcion).setCaption("DESCRIPCION");
-        gridOrdenDeCompraDet.addComponentColumn(this::getTextField).setCaption("P.U.").setWidth(120);
-        gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getTotal).setCaption("TOTAL").setWidth(120);
+        gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getPrecio_unitario).setCaption("P.U.").setWidth(120);
+        gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getImporte).setCaption("IMPORTE").setWidth(120);
 
         btnAgregarPartida.addClickListener((event) -> {
-//            WindowRequisicionDet windows = new WindowRequisicionDet(ordenDeCompra);
-//            windows.center();
-//            windows.setModal(true);
-//            windows.addCloseListener((e) -> {
-//                Boolean ok = (Boolean) VaadinSession.getCurrent().getSession().getAttribute("PARTIDA_OK");
-//                if (ok) {
-//                    if (isEdit) {
-//                        gridRequisicionDet.setItems(getPartidas());
-//                    } else {
-//                        RequisicionDet partida = (RequisicionDet) VaadinSession.getCurrent().getSession().getAttribute("REMISION_DET");
-//                        listOrdenDeCompraDet.add(partida);
-//                        gridRequisicionDet.setItems(listOrdenDeCompraDet);
-//                    }
-//                }
-//            });
-//            getUI().addWindow(windows);
+            WindowOrdenDeCompraDet windows = new WindowOrdenDeCompraDet(ordenDeCompra);
+            windows.center();
+            windows.setModal(true);
+            windows.addCloseListener((e) -> {
+                Boolean ok = (Boolean) VaadinSession.getCurrent().getSession().getAttribute("PARTIDA_COMPRA_OK");
+                if (ok) {
+                    if (isEdit) {
+                        gridOrdenDeCompraDet.setItems(getPartidas());
+                    } else {
+                        OrdenDeCompraDet partida = (OrdenDeCompraDet) VaadinSession.getCurrent().getSession().getAttribute("ORDEN_COMPRA_DET");
+                        listOrdenDeCompraDet.add(partida);
+                        gridOrdenDeCompraDet.setItems(listOrdenDeCompraDet);
+                    }
+                }
+            });
+            getUI().addWindow(windows);
         });
         
         btnModificarPartida.addClickListener((event) -> {
-//            if(gridRequisicionDet.getSelectedItems().size() == 1){
-//                WindowRequisicionDet windows = new WindowRequisicionDet(ordenDeCompra,gridRequisicionDet.getSelectedItems().iterator().next());
-//                windows.center();
-//                windows.setModal(true);
-//                windows.addCloseListener((e) -> {
-//                    Boolean ok = (Boolean) VaadinSession.getCurrent().getSession().getAttribute("PARTIDA_OK");
-//                    if (ok) {
-//                        if (isEdit) {
-//                            gridRequisicionDet.setItems(getPartidas());
-//                        } else {
-//                            RequisicionDet partida = (RequisicionDet) VaadinSession.getCurrent().getSession().getAttribute("REMISION_DET");
-//                            listOrdenDeCompraDet.add(partida);
-//                            gridRequisicionDet.setItems(listOrdenDeCompraDet);
-//                        }
-//                    }
-//                });
-//                getUI().addWindow(windows);
-//            } else {
-//                MessageBox.createError()
-//                        .withCaption("Error!")
-//                        .withMessage("Debe tener una partida seleccionada para poder modificarla.")
-//                        .withRetryButton()
-//                        .open();
-//            }
+            if (gridOrdenDeCompraDet.getSelectedItems().size() == 1) {
+                WindowOrdenDeCompraDet windows = new WindowOrdenDeCompraDet(ordenDeCompra,gridOrdenDeCompraDet.getSelectedItems().iterator().next());
+                windows.center();
+                windows.setModal(true);
+                windows.addCloseListener((e) -> {
+                    Boolean ok = (Boolean) VaadinSession.getCurrent().getSession().getAttribute("PARTIDA_OK");
+                    if (ok) {
+                        if (isEdit) {
+                            gridOrdenDeCompraDet.setItems(getPartidas());
+                        } else {
+                            OrdenDeCompraDet partida = (OrdenDeCompraDet) VaadinSession.getCurrent().getSession().getAttribute("ORDEN_COMPRA_DET");
+                            listOrdenDeCompraDet.add(partida);
+                            gridOrdenDeCompraDet.setItems(listOrdenDeCompraDet);
+                        }
+                    }
+                });
+                getUI().addWindow(windows);
+            } else {
+                MessageBox.createError()
+                        .withCaption("Error!")
+                        .withMessage("Debe tener una partida seleccionada para poder modificarla.")
+                        .withRetryButton()
+                        .open();
+            }
         });
         
         btnEliminarPartida.addClickListener((event) -> {
-//            if (gridRequisicionDet.getSelectedItems().size() == 1) {
-//                MessageBox.createQuestion()
-//                        .withCaption("Atencion!")
-//                        .withMessage("Desea eliminar la partida seleccionada?.")
-//                        .withOkButton(() -> {
-//
-//                            RequisicionDet partida = gridRequisicionDet.getSelectedItems().iterator().next();
-//
-//                            if (isEdit) {
-//                                RequisicionDetDomain dom = new RequisicionDetDomain();
-//                                dom.RequisicionDetDelete(partida);
-//                                gridRequisicionDet.setItems(getPartidas());
-//                            } else {
-//                                listOrdenDeCompraDet.remove(partida);
-//                                gridRequisicionDet.setItems(listOrdenDeCompraDet);
-//                            }
-//
-//                        })
-//                        .withNoButton(()-> {
-//                        })
-//                        .open();
-//            } else {
-//                MessageBox.createError()
-//                        .withCaption("Error!")
-//                        .withMessage("Debe tener una partida seleccionada para poder eliminarla.")
-//                        .withRetryButton()
-//                        .open();
-//            }
+            if (gridOrdenDeCompraDet.getSelectedItems().size() == 1) {
+                MessageBox.createQuestion()
+                        .withCaption("Atencion!")
+                        .withMessage("Desea eliminar la partida seleccionada?.")
+                        .withOkButton(() -> {
+
+                            OrdenDeCompraDet partida = gridOrdenDeCompraDet.getSelectedItems().iterator().next();
+
+                            if (isEdit) {
+                                OrdenDeCompraDetDomain dom = new OrdenDeCompraDetDomain();
+                                dom.OrdenDeCompraDetDelete(partida);
+                                gridOrdenDeCompraDet.setItems(getPartidas());
+                            } else {
+                                listOrdenDeCompraDet.remove(partida);
+                                gridOrdenDeCompraDet.setItems(listOrdenDeCompraDet);
+                            }
+                        })
+                        .withNoButton(()-> {
+                        })
+                        .open();
+            } else {
+                MessageBox.createError()
+                        .withCaption("Error!")
+                        .withMessage("Debe tener una partida seleccionada para poder eliminarla.")
+                        .withRetryButton()
+                        .open();
+            }
         });
         
         btnCancelar.addClickListener((event) -> {
@@ -339,8 +370,6 @@ public class WindowOrdenDeCompra  extends Window {
                         txtFechaRequerida.setValue(ManageDates.getLocalDateFromDate(requisicion.getFecha_requerida()));
                         txtObservaciones.setValue(requisicion.getObservaciones());
                         cboMetodoPago.setValue(requisicion.getMetodo_pago());
-//                        cboMoneda.setValue(requisicion.getMoneda());
-//                        txtTipoCambio.setValue(requisicion.getTipo_cambio()+"");
                         txtImporte.setValue(requisicion.getImporte()+"");
                         txtDescuento.setValue(requisicion.getDescuento()+"");
                         txtSubtotal.setValue(requisicion.getSubtotal()+"");
@@ -348,17 +377,29 @@ public class WindowOrdenDeCompra  extends Window {
                         txtTotal.setValue(requisicion.getTotal()+"");
                         txtDireccionEntrega.setValue(requisicion.getDireccion_entrega());
                         
-                        llenarPartidas();
+                        cargarPartidas();
+                        
+                        btnCotizacionesProvedores.setEnabled(true);
                         
                     }
                 });
                 getUI().addWindow(windows);
         });
         
+        btnCotizacionesProvedores.addClickListener((event) -> {
+            WindowVisorDocumentos windows = new WindowVisorDocumentos(
+                    requisicion, _DocumentoTipos.COTIZACION);
+            windows.center();
+            windows.setModal(true);
+            getUI().addWindow(windows);
+        });
+        
         txtSolicita.setEnabled(false);
         txtSolicita.setValue(empleado.getNombre_completo());
-        txtObservaciones.setRows(2);
-        txtDireccionEntrega.setRows(2);
+        
+        txtObservaciones.setRows(3);
+        txtDireccionEntrega.setRows(3);
+        txtMontoLetra.setRows(3);
         
         cboCondicionesPago.setItems(_Pago_Documentos.CONDICIONES_PAGO);
         cboCondicionesPago.setValue(_Pago_Documentos.CONDICIONES_PAGO.get(0));
@@ -378,17 +419,21 @@ public class WindowOrdenDeCompra  extends Window {
 
         gridOrdenDeCompraDet.setWidth("100%");
         
+        txtPedido.setWidth(strWidth);
         txtSolicita.setWidth(strWidth);
         txtFechaRequerida.setWidth(strWidth);
-        txtDireccionEntrega.setWidth(strWidth);
         txtFechaEntrega.setWidth(strWidth);
         cboProveedor.setWidth(strWidth);
         
+        txtTiempoEntrega.setWidth(strWidth);
         cboCondicionesPago.setWidth(strWidth);
         cboMetodoPago.setWidth(strWidth);
         cboMoneda.setWidth(strWidth);
         txtTipoCambio.setWidth(strWidth);
-        txtObservaciones.setWidth(strWidth);
+        
+        txtDireccionEntrega.setWidth("480");
+        txtObservaciones.setWidth("480");
+        txtMontoLetra.setWidth("480");
         
         cboAutorizador.setWidth(strWidth);
         cboAlmacenRecibe.setWidth("150");
@@ -427,11 +472,11 @@ public class WindowOrdenDeCompra  extends Window {
         
         // ACOMODO =============================================================
         FormLayout fLay1 = new FormLayout();
-        fLay1.addComponents(txtSolicita,txtFechaRequerida, txtDireccionEntrega, txtFechaEntrega, cboProveedor);
+        fLay1.addComponents(txtPedido, txtSolicita,txtFechaRequerida, txtFechaEntrega, cboProveedor);
         fLay1.setSpacing(false);
         
         FormLayout fLay2 = new FormLayout();
-        fLay2.addComponents(cboCondicionesPago, cboMetodoPago, cboMoneda, txtTipoCambio,txtObservaciones);
+        fLay2.addComponents(txtTiempoEntrega, cboCondicionesPago, cboMetodoPago, cboMoneda, txtTipoCambio);
         fLay2.setSpacing(false);
         
         FormLayout fLayTotales = new FormLayout();
@@ -439,12 +484,20 @@ public class WindowOrdenDeCompra  extends Window {
         fLayTotales.setSpacing(false);
         fLayTotales.setWidth("100%");
         
-        HorizontalLayout hLay1 = new HorizontalLayout(
+        HorizontalLayout hLay1 = new HorizontalLayout(btnCotizacionesProvedores,
                 new Label("Autorizador:"), cboAutorizador, new Label("Almacen:"), cboAlmacenRecibe,
                 btnAgregarPartida,btnModificarPartida,btnEliminarPartida);
         hLay1.setSpacing(true);
         hLay1.setComponentAlignment(hLay1.getComponent(0), Alignment.MIDDLE_CENTER);
         hLay1.setComponentAlignment(hLay1.getComponent(2), Alignment.MIDDLE_CENTER);
+        
+        FormLayout fLayNotas = new FormLayout(txtMontoLetra,txtDireccionEntrega,txtObservaciones);
+        fLayNotas.setSpacing(true);
+        fLayNotas.setMargin(false);
+        
+        HorizontalLayout hLayTotales = new HorizontalLayout(fLayNotas,fLayTotales);
+        hLayTotales.setMargin(false);
+        hLayTotales.setSpacing(true);
 
         cont.setSpacing(false);
         cont.addComponents(lblFolio,
@@ -452,18 +505,18 @@ public class WindowOrdenDeCompra  extends Window {
                     {{
                         setComponentAlignment(getComponent(0), Alignment.MIDDLE_CENTER);
                     }},
-                new HorizontalLayout(fLay1, fLay2), // 2
+                new HorizontalLayout(fLay1, fLay2), // 2|
                 hLay1, // 3
                 gridOrdenDeCompraDet, // 4
-                fLayTotales, // 5
-                new HorizontalLayout(btnCancelar, btnGuardar)); // 6
+                hLayTotales, // 5
+                new HorizontalLayout(btnCancelar, btnGuardar){{setMargin(true);}}); // 6
         
         cont.setComponentAlignment(lblFolio, Alignment.MIDDLE_CENTER);
         cont.setComponentAlignment(cont.getComponent(1), Alignment.MIDDLE_RIGHT);
         cont.setComponentAlignment(cont.getComponent(2), Alignment.MIDDLE_CENTER);
         cont.setComponentAlignment(hLay1, Alignment.MIDDLE_RIGHT);
         cont.setComponentAlignment(cont.getComponent(4), Alignment.MIDDLE_CENTER);
-        cont.setComponentAlignment(cont.getComponent(5), Alignment.MIDDLE_RIGHT);
+        cont.setComponentAlignment(hLayTotales, Alignment.MIDDLE_RIGHT);
         cont.setComponentAlignment(cont.getComponent(6), Alignment.MIDDLE_CENTER);
         
         setContent(cont);
@@ -491,6 +544,7 @@ public class WindowOrdenDeCompra  extends Window {
     
     public void toUpperCase() {
         ordenDeCompra.setSolicita(txtSolicita.getValue().toUpperCase());
+        ordenDeCompra.setPedido(txtPedido.getValue().toUpperCase());
         ordenDeCompra.setObservaciones(txtObservaciones.getValue().toUpperCase());
         ordenDeCompra.setDireccion_entrega(txtDireccionEntrega.getValue().toUpperCase());
     }
@@ -526,7 +580,7 @@ public class WindowOrdenDeCompra  extends Window {
         return proveedorList;
     }
     
-    public void llenarPartidas(){
+    public void cargarPartidas(){
         RequisicionDetDomain requisicionDetService = new RequisicionDetDomain();
         requisicionDetService.getRequisicionDet(" documento_id = " + requisicion.getId(), "", "");
         listRequisicionDet = requisicionDetService.getObjects();
@@ -573,6 +627,16 @@ public class WindowOrdenDeCompra  extends Window {
         
 //        calcularTotales();
     }
+
+//    gridOrdenDeCompraDet.getDataProvider().refreshAll();
+    public void calcularPartida(OrdenDeCompraDet part){
+        part.setImporte( part.getPrecio_unitario() * part.getCantidad() );
+        part.setDescuento(0.0);
+        part.setSubtotal(part.getImporte() - part.getDescuento());
+        part.setIva(part.getSubtotal() * .16);
+        part.setTotal(part.getSubtotal() + part.getIva());
+//        calcularTotales();
+    }
     
     public void calcularTotales(){
         Double importe = 0.0;
@@ -594,60 +658,10 @@ public class WindowOrdenDeCompra  extends Window {
         txtSubtotal.setValue(subtotal+"");
         txtIVA.setValue(IVA+"");
         txtTotal.setValue(total+"");
-    }
-    
-    public TextField getTextField(OrdenDeCompraDet part){
         
-        TextField txtTotal = new TextField();
-        txtTotal.setStyleName(ValoTheme.TEXTFIELD_ALIGN_RIGHT);
+        Numero_Letras importeLetra = new Numero_Letras();
+        txtMontoLetra.setValue(importeLetra.Convertir(total.toString(), true));
         
-        if(part.getPrecio_unitario()!=null){
-            txtTotal.setValue(part.getPrecio_unitario().toString());
-        }else{
-            txtTotal.setValue("0.00");
-        }
-
-        txtTotal.setWidth("100");
-        txtTotal.setMaxLength(15);
-        
-        txtTotal.addFocusListener((event) -> {
-            if(txtTotal.getValue().length() == 0){
-                txtTotal.setValue("0.0");
-            }else{
-                txtTotal.setValue(txtTotal.getValue());
-            }
-            txtTotal.setSelection(0, txtTotal.getValue().length());
-        });
-        
-        txtTotal.addValueChangeListener((event) -> {
-            txtTotal.setValue(txtTotal.getValue().trim());
-
-            if(txtTotal.getValue().length() >= 0){
-                if(!ManageNumbers.isStringToDouble(txtTotal.getValue())){
-                    txtTotal.setValue("0.0");
-                }else{
-//                    part.setPrecio_unitario(Double.parseDouble(txtTotal.getValue()));
-                }
-            }else{
-                txtTotal.setValue("0.0");
-            }
-            
-            part.setPrecio_unitario(Double.parseDouble(txtTotal.getValue()));
-            calcularPartida(part);
-            System.out.println("CALCULAR TOTALES --- ");
-            
-//            gridOrdenDeCompraDet.
-        });
-       
-        return txtTotal;
-    }
-    
-    public void calcularPartida(OrdenDeCompraDet part){
-        part.setImporte( part.getPrecio_unitario() * part.getCantidad() );
-        part.setDescuento(0.0);
-        part.setSubtotal(part.getImporte() - part.getDescuento());
-        part.setIva(part.getSubtotal() * .16);
-        part.setTotal(part.getSubtotal() + part.getIva());
     }
     
 }

@@ -13,7 +13,6 @@ import com.rubik.erp.model.Requisicion;
 import com.rubik.erp.model.RequisicionDet;
 import com.rubik.manage.ManageNumbers;
 import com.vaadin.data.Binder;
-import com.vaadin.data.converter.StringToDoubleConverter;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;

@@ -118,12 +118,12 @@ public class FragmentTop extends HorizontalLayout {
         menuCompras = menubar.addItem("Compras", null);
         menuCompras.setIcon(Fam3SilkIcon.MONEY_ADD);
         
-        subProducto = menuCompras.addItem("Productos", actionMenu);
-        subProducto.setIcon(Fam3SilkIcon.PACKAGE);
-
         subProveedor = menuCompras.addItem("Proveedores", actionMenu);
         subProveedor.setIcon(Fam3SilkIcon.USER_SUIT);
         
+        subProducto = menuCompras.addItem("Productos", actionMenu);
+        subProducto.setIcon(Fam3SilkIcon.PACKAGE);
+
         menuCompras.addSeparator();
 
         subRequisiciones = menuCompras.addItem("Requisiciones", actionMenu);

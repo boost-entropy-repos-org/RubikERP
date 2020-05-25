@@ -48,7 +48,7 @@ public class WindowVentasCliente extends Window {
     TextField txtEstado = new TextField("Estado:");
     NativeSelect<String> cboPais = new NativeSelect("Pais:");
     TextField txtCp = new TextField("CP:");
-    NativeSelect<String>cboTipo = new NativeSelect("Tipo:");
+    NativeSelect<String> cboTipo = new NativeSelect("Tipo:");
     NativeSelect<Integer> cboDiasCredito = new NativeSelect("Dias de Credito:");
     TextField txtLimiteCredito = new TextField("Limite de Credito:");
     TextField txtContactoGeneralNombre = new TextField("Nombre:");
@@ -185,7 +185,7 @@ public class WindowVentasCliente extends Window {
         txtCp.setMaxLength(5);
 
         cboTipo.setEmptySelectionAllowed(false);
-        cboTipo.setItems("CONTADO", "CREEDITO");
+        cboTipo.setItems("CONTADO", "CREDITO");
         cboTipo.setValue("CONTADO");
 
         cboDiasCredito.setEmptySelectionAllowed(false);

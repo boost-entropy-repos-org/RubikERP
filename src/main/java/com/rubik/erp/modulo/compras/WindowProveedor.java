@@ -47,7 +47,7 @@ public class WindowProveedor extends Window {
     NativeSelect<String> cboPais = new NativeSelect("Pais:");
     TextField txtCp = new TextField("CP:");
     NativeSelect<String> cboClasificacion = new NativeSelect("Clasificacion:");
-    NativeSelect<String>cboTipo = new NativeSelect("Tipo:");
+    NativeSelect<String> cboTipo = new NativeSelect("Tipo:");
     NativeSelect<Integer> cboDiasCredito = new NativeSelect("Dias de Credito:");
     TextField txtContactoCompraTelefono = new TextField("Telefono:");
     TextField txtContactoCompraExt = new TextField("Ext:");
@@ -195,7 +195,7 @@ public class WindowProveedor extends Window {
         cboClasificacion.setValue("PROVEEDOR");
 
         cboTipo.setEmptySelectionAllowed(false);
-        cboTipo.setItems("CONTADO", "CREEDITO");
+        cboTipo.setItems("CONTADO", "CREDITO");
         cboTipo.setValue("CONTADO");
 
         cboDiasCredito.setEmptySelectionAllowed(false);

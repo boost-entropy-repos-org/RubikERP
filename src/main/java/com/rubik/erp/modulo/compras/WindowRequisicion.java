@@ -154,7 +154,7 @@ public class WindowRequisicion extends Window {
         });
         
         btnExpediente.addClickListener((event) -> {
-            WindowVisorDocumentos windows = new WindowVisorDocumentos(requisicion, _DocumentoTipos.COTIZACION_DE_COMPRA);
+            WindowVisorDocumentos windows = new WindowVisorDocumentos(requisicion, _DocumentoTipos.COTIZACION);
             windows.center();
             windows.setModal(true);
             getUI().addWindow(windows);
@@ -247,7 +247,7 @@ public class WindowRequisicion extends Window {
                 requisicion.setUsuario_id(empleado.getId());
                 requisicion.setUsuario(empleado.getNombre_completo());
                 requisicion.setEstado_doc(_DocumentoEstados.EN_PROCESO);
-                requisicion.setTipo_documento(_DocumentoTipos.REMISION_DE_ENTREGA);
+                requisicion.setTipo_documento(_DocumentoTipos.REQUISICION_DE_COMPRA);
                 requisicion.setTipo_archivo("PDF");
                 requisicion.setFecha_requerida(ManageDates.getDateFromLocalDate(txtFechaRequerida.getValue()));
                 requisicion.setAutoriza(autoriza.getNombre_completo());
