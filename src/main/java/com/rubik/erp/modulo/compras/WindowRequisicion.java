@@ -144,7 +144,7 @@ public class WindowRequisicion extends Window {
                     if (isEdit) {
                         gridRequisicionDet.setItems(getPartidas());
                     } else {
-                        RequisicionDet partida = (RequisicionDet) VaadinSession.getCurrent().getSession().getAttribute("REMISION_DET");
+                        RequisicionDet partida = (RequisicionDet) VaadinSession.getCurrent().getSession().getAttribute("REQUISICION_DET");
                         listRequisicionDet.add(partida);
                         gridRequisicionDet.setItems(listRequisicionDet);
                     }
@@ -171,7 +171,7 @@ public class WindowRequisicion extends Window {
                         if (isEdit) {
                             gridRequisicionDet.setItems(getPartidas());
                         } else {
-                            RequisicionDet partida = (RequisicionDet) VaadinSession.getCurrent().getSession().getAttribute("REMISION_DET");
+                            RequisicionDet partida = (RequisicionDet) VaadinSession.getCurrent().getSession().getAttribute("REQUISICION_DET");
                             listRequisicionDet.add(partida);
                             gridRequisicionDet.setItems(listRequisicionDet);
                         }

@@ -56,7 +56,7 @@ public class WindowRequisicionDet extends Window {
     
     public WindowRequisicionDet(Requisicion rem) {
         requisicion = rem;
-        VaadinSession.getCurrent().getSession().setAttribute("REMISION_DET",null);
+        VaadinSession.getCurrent().getSession().setAttribute("REQUISICION_DET",null);
         VaadinSession.getCurrent().getSession().setAttribute("PARTIDA_OK",false);
         initComponents();
         partida = new RequisicionDet();
@@ -66,7 +66,7 @@ public class WindowRequisicionDet extends Window {
         isEdit = true;
         requisicion = rem;
         this.partida = partida;
-        VaadinSession.getCurrent().getSession().setAttribute("REMISION_DET",null);
+        VaadinSession.getCurrent().getSession().setAttribute("REQUISICION_DET",null);
         VaadinSession.getCurrent().getSession().setAttribute("PARTIDA_OK",false);
         initComponents();
     }
@@ -112,6 +112,7 @@ public class WindowRequisicionDet extends Window {
                     partida.setProducto_id(p.getId());
                     partida.setUnidad_medida(p.getUnidad_medida());
                     partida.setPrecio_unitario(p.getPrecio_compra());
+                    partida.setImporte(Integer.parseInt(txtCantidad.getValue()) * partida.getPrecio_unitario());
                     
                     partida.setNo_parte(p.getNo_parte());
                     partida.setNo_serie(p.getNo_serie());
@@ -145,6 +146,7 @@ public class WindowRequisicionDet extends Window {
                     partida.setEmpresa_id(empleado.getEmpresa_id());
                     partida.setFecha_alta(new Date());
                     partida.setCantidad(ManageNumbers.ToInteger(txtCantidad.getValue()));
+                    partida.setImporte(partida.getCantidad() * partida.getPrecio_unitario());
                     
                     RequisicionDetDomain domain = new RequisicionDetDomain();
                     
@@ -157,7 +159,7 @@ public class WindowRequisicionDet extends Window {
                             domain.RequisicionDetInsert(partida);
                         }
                     }else{
-                        VaadinSession.getCurrent().getSession().setAttribute("REMISION_DET",partida);
+                        VaadinSession.getCurrent().getSession().setAttribute("REQUISICION_DET",partida);
                     }
                     
                     VaadinSession.getCurrent().getSession().setAttribute("PARTIDA_OK",true);

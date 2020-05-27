@@ -1,0 +1,1003 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.11.0.final using JasperReports Library version 6.11.0-0c4056ccaa4d25a5a8c45672d2f764ea3498bebb  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Cotizaciones" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e3751d5e-8725-4e8e-8903-40f4a45612e9">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="RubikERP"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="REPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/reportes/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="folio" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT @i := @i + 1 AS partida, t1.*, t2.*,
+t3.razon_social,t3.rfc,t3.estado AS localidad,t3.contacto_compra_nombre,
+t3.contacto_compra_telefono,t3.contacto_compra_email,t3.contacto_compra_ext
+FROM (SELECT @i:=0) m, orden_compra t1 
+INNER JOIN orden_compra_det t2 ON t1.id = t2.documento_id
+INNER JOIN proveedor t3 ON t1.proveedor_id = t3.id
+WHERE t1.folio = $P{folio}]]>
+	</queryString>
+	<field name="partida" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="partida"/>
+	</field>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha_elaboracion" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_elaboracion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha_modificacion" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_modificacion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="empresa_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="empresa_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="empresa" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="empresa"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unidad_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="unidad_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unidad" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="unidad"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="usuario_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="usuario_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="usuario" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="usuario"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="estado_doc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="estado_doc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="estado" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="estado"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="folio" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="folio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="serie" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="serie"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="observaciones" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="observaciones"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipo_documento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tipo_documento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipo_archivo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tipo_archivo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="razon_cancelar" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="razon_cancelar"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cliente_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="cliente_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cliente" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cliente"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cliente_rfc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cliente_rfc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="metodo_pago" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="metodo_pago"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="moneda" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="moneda"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipo_cambio" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="tipo_cambio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="importe" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="importe"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="descuento" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="descuento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="subtotal" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="subtotal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="iva" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="iva"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="porc_iva" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="porc_iva"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="importe_letra" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="importe_letra"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="activo" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="activo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="proveedor_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="proveedor_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="proveedor" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="proveedor"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cond_pago" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cond_pago"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="remision_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="remision_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="folio_requisicion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="folio_requisicion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="solicita_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="solicita_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="solicita" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="solicita"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="recibe_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="recibe_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="recibe" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="recibe"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="autoriza_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="autoriza_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="autoriza" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="autoriza"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha_entrega" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_entrega"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="direccion_entrega" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="direccion_entrega"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha_requisicion" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_requisicion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="factura_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="factura_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="factura" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="factura"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="folio_factura" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="folio_factura"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="no_cuenta" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="no_cuenta"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="interbancaria" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="interbancaria"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="banco" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="banco"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sucursal" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="sucursal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="concepto_pago" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="concepto_pago"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha_autoriza" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_autoriza"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="firma_autoriza" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="firma_autoriza"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="forma_pago" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="forma_pago"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha_solicita" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_solicita"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="firma_solicita" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="firma_solicita"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pedido" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="pedido"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="comprador" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="comprador"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tiempo_entrega" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tiempo_entrega"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="instrucciones_entrega" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="instrucciones_entrega"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cotizacion_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="cotizacion_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cotizacion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cotizacion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cotizacion_proveedor" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cotizacion_proveedor"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="COLUMN_67" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+	</field>
+	<field name="COLUMN_68" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="folio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+	</field>
+	<field name="documento_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="documento_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="COLUMN_70" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="empresa_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+	</field>
+	<field name="COLUMN_71" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="empresa"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+	</field>
+	<field name="COLUMN_72" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="unidad_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+	</field>
+	<field name="COLUMN_73" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="unidad"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+	</field>
+	<field name="COLUMN_74" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="usuario_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+	</field>
+	<field name="COLUMN_75" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="usuario"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+	</field>
+	<field name="no_partida" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="no_partida"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha_alta" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_alta"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cantidad" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="cantidad"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="producto_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="producto_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="descripcion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unidad_medida" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="unidad_medida"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="COLUMN_82" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="porc_iva"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+	</field>
+	<field name="precio_unitario" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="precio_unitario"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="COLUMN_84" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="importe"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+	</field>
+	<field name="COLUMN_85" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="descuento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+	</field>
+	<field name="COLUMN_86" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="subtotal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+	</field>
+	<field name="COLUMN_87" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="iva"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+	</field>
+	<field name="COLUMN_88" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+	</field>
+	<field name="servicio" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="servicio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="COLUMN_90" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="folio_requisicion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+	</field>
+	<field name="requisicion_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="requisicion_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="no_parte" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="no_parte"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="no_serie" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="no_serie"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="modelo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="modelo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="marca" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="marca"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codigo_proveedor" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="codigo_proveedor"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codigo_interno" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="codigo_interno"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orden_compra_det"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="razon_social" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="razon_social"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proveedor"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="rfc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="rfc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proveedor"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="localidad" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="localidad"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proveedor"/>
+	</field>
+	<field name="contacto_compra_nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="contacto_compra_nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proveedor"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="contacto_compra_telefono" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="contacto_compra_telefono"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proveedor"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="contacto_compra_email" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="contacto_compra_email"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proveedor"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="contacto_compra_ext" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="contacto_compra_ext"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proveedor"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="186" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="393" y="152" width="179" height="15" backcolor="#CCCCCC" uuid="d5604859-ad0f-4846-9d6c-ef8e175e0d67"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TIEMPO DE ENTREGA]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Transparent" x="393" y="152" width="179" height="30" uuid="426d0844-8106-4702-9176-50e4a8ff3311"/>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Opaque" x="352" y="0" width="219" height="15" backcolor="#CCCCCC" uuid="43684596-497b-4100-b265-d1b3a50bbdcf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COTIZACION DE VENTA]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Transparent" x="352" y="0" width="220" height="65" uuid="73ffb37b-33b5-4f51-8ff3-0fef52c8fcfd"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="355" y="32" width="81" height="16" uuid="17145cde-1d4d-46e1-9d48-0d4be290d675"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="355" y="49" width="81" height="16" uuid="897e9193-8cd4-4642-88e8-d2a154944fda"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Vigencia:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="355" y="15" width="81" height="16" uuid="48a911a5-9732-46af-9aee-0e1611082fdc"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Folio:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="22" width="252" height="43" uuid="29e5b00c-2b1d-4058-8a62-993de22db6be"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[RFC: BEMP8905273G1
+Loma Bonita 206-4 Col Jesus Elias Piña III
+Tampico, Tamps. Mexico, Cp. 89365,
+Email: pblo.benavides@gmail.com]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="0" width="252" height="20" uuid="97200645-0ab8-4c47-8ce6-a0d4c7104859"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PABLO BENAVIDES MOLINA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="69" width="572" height="15" backcolor="#CCCCCC" uuid="848dbf6a-b43e-4198-bd6f-1d475658884d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="116" width="42" height="16" uuid="c4766892-309f-43bb-9cef-fcf4dfeae49a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Atencion a:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="291" y="116" width="42" height="16" uuid="b3b4cf21-1a3d-45d8-ac31-575dd13d8ce9"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Telefono:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="84" width="42" height="16" uuid="d2e28f77-aa32-4c70-a047-9c5b71bc79b5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="418" y="85" width="42" height="16" uuid="0fb2e9e9-1684-4a67-b012-867760f4ca9d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[RFC:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="133" width="42" height="16" uuid="a926adcc-ad8d-45cb-a315-74869ca5f859"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Email:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="436" y="116" width="24" height="16" uuid="b52c5156-581d-41ac-8580-4f218c55b99f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Ext:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="418" y="100" width="42" height="16" uuid="b063af6e-d8f1-4e2c-9814-7b04ebb1035c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Localidad:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="229" y="152" width="59" height="15" backcolor="#CCCCCC" uuid="054fcf9d-da4b-499d-821d-634ab30297f8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MONEDA]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Transparent" x="229" y="152" width="59" height="30" uuid="cb480bf2-6dd0-4ac3-8941-d8c9654400c7"/>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Opaque" x="291" y="152" width="99" height="15" backcolor="#CCCCCC" uuid="ac6587da-ec4e-483f-b392-3a295a32625c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COND. PAGO]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Transparent" x="291" y="152" width="99" height="30" uuid="63a5413e-1030-4ce7-9dc8-0d68abd75e6c"/>
+			</rectangle>
+			<textField>
+				<reportElement x="436" y="15" width="136" height="15" forecolor="#CC3300" uuid="e96523b8-1b43-4b69-bab1-74f2985048cb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{folio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="436" y="32" width="136" height="16" uuid="09ce3195-8689-476a-b963-f137d14d01d4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_elaboracion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="46" y="116" width="245" height="16" uuid="6eafc888-94c8-4e1e-b970-1e5056775756"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{contacto_compra_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="46" y="133" width="97" height="16" uuid="947a27c2-4aac-4f60-bb96-b358a0b73e8f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{contacto_compra_email}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="45" y="85" width="373" height="16" uuid="d07b67d5-8fcc-4564-826a-0b6335411302"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{razon_social}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="461" y="100" width="109" height="16" uuid="b5a6a17d-0526-4810-847a-48b04d4d1d3e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{localidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="461" y="85" width="109" height="15" uuid="24f27d22-7e3c-472f-8a52-067f80ed64ab"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rfc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="333" y="116" width="97" height="16" uuid="fa8b2b3f-1711-4550-89a3-e917ae1f4938"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{contacto_compra_telefono}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="461" y="116" width="109" height="16" uuid="54605c00-89e2-479a-b21f-ce64c4e1e0fe"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{contacto_compra_ext}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="229" y="167" width="59" height="15" uuid="49cec80d-4bb3-4ecc-b14c-af44beb2fb41"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{moneda}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="291" y="167" width="99" height="15" uuid="5e384cc6-6f4f-4896-ad65-bd1045c501fd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cond_pago}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="393" y="167" width="179" height="15" uuid="de9802ef-64f1-4bc6-b09f-61600636a37e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tiempo_entrega}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="101" width="42" height="16" uuid="425a35d1-b15c-448e-a711-e2c0cba92948"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Direccion:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="69" width="572" height="80" uuid="f42fac92-ba98-45b5-86c7-5c2476c1e21a"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="436" y="49" width="136" height="16" uuid="001cf258-4914-45e9-a260-065e2ac8c04e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[30 dias]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="123" y="167" width="102" height="15" uuid="9aa3f10e-0dc6-4762-8dfb-da796102ea3c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{metodo_pago}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="120" y="152" width="105" height="15" backcolor="#CCCCCC" uuid="6b9d40c9-1c8a-4640-baeb-edcdf3f7ee04"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[METODO DE PAGO]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Transparent" x="120" y="152" width="105" height="30" uuid="0254b0a5-b3d7-4f59-a90c-f8f0f7731a5f"/>
+			</rectangle>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="15" splitType="Stretch">
+			<rectangle>
+				<reportElement mode="Transparent" x="-1" y="0" width="572" height="15" uuid="73bcffbf-c140-4b6e-be21-a3c26f10de5d"/>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="40" height="15" backcolor="#CCCCCC" uuid="810bee7b-8507-46dd-a20c-dbc82880fc32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[PARTIDA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="123" y="0" width="391" height="15" backcolor="#CCCCCC" uuid="315bfaf1-0c9a-494f-b8ea-bba9ae0f3f2e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[DESCRIPCION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="514" y="0" width="58" height="15" backcolor="#CCCCCC" uuid="b5c3266f-72e8-4aeb-8257-7c7763112728"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[IMPORTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="40" y="0" width="37" height="15" backcolor="#CCCCCC" uuid="0a791bf1-df33-49ac-843a-c95459f48c8d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[UNIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="75" y="0" width="48" height="15" backcolor="#CCCCCC" uuid="c2a88cb0-7dee-4551-8b32-245f23e97ce5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[No. DE PARTE]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement x="40" y="0" width="37" height="22" uuid="794e238e-ed98-4612-8d1d-f49a00beca1d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{unidad_medida}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="77" y="0" width="45" height="22" uuid="de8a6529-5165-4f38-8fd4-0fd3dee7e254"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{no_parte}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="40" height="22" uuid="d378c40f-28bf-46e3-a3ba-50684a1a5635"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{partida}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="123" y="0" width="391" height="22" uuid="cdb2ac62-a3ad-401d-9047-bcd9c4746b60"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="514" y="0" width="58" height="22" uuid="c0388578-f5e5-4063-8b49-23000ea9591d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="136" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="3" width="571" height="15" backcolor="#CCCCCC" uuid="322ab8ec-ef7c-4ecc-9d58-092e2e6e5ae8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COMENTARIOS Y CONDICIONES DE COTIZACION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="60" width="436" height="15" backcolor="#CCCCCC" uuid="146a6abf-e731-4f45-8677-c2529c02be20"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOTAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="436" y="90" width="65" height="15" backcolor="#CCCCCC" uuid="ef7673e0-c494-4469-996c-e91c7f4e9665"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SUBTOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="436" y="75" width="65" height="15" backcolor="#CCCCCC" uuid="9cc146bc-a91b-4c7b-a21e-33d5b8528cbd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCUENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="436" y="105" width="65" height="15" backcolor="#CCCCCC" uuid="82c24ad9-316e-4b0d-8b06-81600c6990c0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="436" y="120" width="65" height="15" backcolor="#CCCCCC" uuid="5a4d34c8-c4aa-49a4-923d-34925e594b0f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="436" y="60" width="65" height="15" backcolor="#CCCCCC" uuid="7dc4b2ae-5032-40a9-b069-493fa53d118f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IMPORTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="105" width="436" height="15" backcolor="#CCCCCC" uuid="75dfada5-fa81-41ad-be60-2a981a210a71"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MONTO CON LETRA]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Transparent" x="436" y="60" width="136" height="75" uuid="f3d78b4f-828a-4fc2-9c31-5fc359495e34"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="60" width="436" height="75" uuid="94889faf-ac01-4083-83d5-179991b09cc6"/>
+			</rectangle>
+			<textField>
+				<reportElement x="3" y="75" width="432" height="30" uuid="5ab7bbb4-55d7-4229-ba93-c0032f12ca6e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{observaciones}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="120" width="432" height="15" uuid="10713ba3-0ddd-4342-8e46-9e996e57a5b7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importe_letra}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="501" y="60" width="71" height="15" uuid="51e575a8-71bf-424f-8839-da1e0c643310"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="501" y="75" width="70" height="15" uuid="a0055bfe-ab71-4936-aefe-b75a3f655894"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descuento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="501" y="90" width="71" height="15" uuid="d8ec55c2-15ed-4b63-bd63-5421bfd1e991"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="501" y="105" width="70" height="15" uuid="de256e53-0860-429d-90b0-21750c08b503"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{iva}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="501" y="120" width="70" height="15" uuid="4b0ee85f-667e-45e6-8e29-1e9fea8a2d5e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="3" width="572" height="57" uuid="eac5d2c0-9979-48c7-a51d-5f1df76a3610"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="4" y="18" width="566" height="42" uuid="9b2100e2-e107-488e-9d26-2d94805888bc"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Static text]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

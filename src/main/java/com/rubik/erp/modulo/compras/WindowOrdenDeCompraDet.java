@@ -161,10 +161,8 @@ public class WindowOrdenDeCompraDet extends Window {
                             partida.setDocumento_id(ordenDeCompra.getId());
                             domain.OrdenDeCompraDetInsert(partida);
                         }
-                    }else{
-                        VaadinSession.getCurrent().getSession().setAttribute("ORDEN_COMPRA_DET",partida);
                     }
-                    
+                    VaadinSession.getCurrent().getSession().setAttribute("ORDEN_COMPRA_DET",partida);
                     VaadinSession.getCurrent().getSession().setAttribute("PARTIDA_COMPRA_OK",true);
                     close();
                 } catch (Exception e) {
