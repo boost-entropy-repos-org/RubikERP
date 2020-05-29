@@ -223,8 +223,10 @@ public class WindowOrdenDeCompra  extends Window {
         });
         
         btnModificarPartida.addClickListener((event) -> {
-            if (gridOrdenDeCompraDet.getSelectedItems().size() == 1) {
-                WindowOrdenDeCompraDet windows = new WindowOrdenDeCompraDet(ordenDeCompra,gridOrdenDeCompraDet.getSelectedItems().iterator().next());
+            OrdenDeCompraDet partidaSeleccionada = gridOrdenDeCompraDet.getSelectedItems().iterator().next();
+            
+            if (partidaSeleccionada != null) {
+                WindowOrdenDeCompraDet windows = new WindowOrdenDeCompraDet(ordenDeCompra,partidaSeleccionada);
                 windows.center();
                 windows.setModal(true);
                 windows.addCloseListener((e) -> {
@@ -233,8 +235,8 @@ public class WindowOrdenDeCompra  extends Window {
                         if (isEdit) {
                             gridOrdenDeCompraDet.setItems(getPartidas());
                         } else {
-                            OrdenDeCompraDet partida = (OrdenDeCompraDet) VaadinSession.getCurrent().getSession().getAttribute("ORDEN_COMPRA_DET");
-                            listOrdenDeCompraDet.add(partida);
+//                            OrdenDeCompraDet partida = (OrdenDeCompraDet) VaadinSession.getCurrent().getSession().getAttribute("ORDEN_COMPRA_DET");
+//                            listOrdenDeCompraDet.add(partida);
                             gridOrdenDeCompraDet.setItems(listOrdenDeCompraDet);
                         }
                     }
@@ -519,6 +521,7 @@ public class WindowOrdenDeCompra  extends Window {
         
         setContent(cont);
         setModal(true);
+        setSizeFull();
         setResizable(true);
         setClosable(true);
     }

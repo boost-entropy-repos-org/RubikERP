@@ -40,7 +40,7 @@ public class WindowSeleccionarProducto extends Window {
     VerticalLayout cont = new VerticalLayout();
     
     Button btnSeleccionar = new Button("Seleccionar",Fam3SilkIcon.ACCEPT);
-    Button btnAdd = new Button("Agregar",Fam3SilkIcon.ADD);
+    Button btnAdd = new Button("Agregar",Fam3SilkIcon.PACKAGE);
     
     Grid<Producto> gridSelecProd = new Grid<>();
     List<Producto> listProducto = new ArrayList<>();
@@ -92,7 +92,9 @@ public class WindowSeleccionarProducto extends Window {
             windows.center();
             windows.setModal(true);
             windows.addCloseListener(ev -> {
-                gridSelecProd.setItems(getProducto(windows.producto.getId()));
+                if(windows.producto!=null){
+                    gridSelecProd.setItems(getProducto(windows.producto.getId()));
+                }
             });
             getUI().addWindow(windows);
         });
