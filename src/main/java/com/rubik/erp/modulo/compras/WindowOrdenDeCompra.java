@@ -181,8 +181,6 @@ public class WindowOrdenDeCompra  extends Window {
                             if (isEdit) {
                                 gridOrdenDeCompraDet.setItems(getPartidas());
                             } else {
-                                OrdenDeCompraDet partida = (OrdenDeCompraDet) VaadinSession.getCurrent().getSession().getAttribute("ORDEN_COMPRA_DET");
-                                listOrdenDeCompraDet.add(partida);
                                 gridOrdenDeCompraDet.setItems(listOrdenDeCompraDet);
                             }
                         }
@@ -235,8 +233,6 @@ public class WindowOrdenDeCompra  extends Window {
                         if (isEdit) {
                             gridOrdenDeCompraDet.setItems(getPartidas());
                         } else {
-//                            OrdenDeCompraDet partida = (OrdenDeCompraDet) VaadinSession.getCurrent().getSession().getAttribute("ORDEN_COMPRA_DET");
-//                            listOrdenDeCompraDet.add(partida);
                             gridOrdenDeCompraDet.setItems(listOrdenDeCompraDet);
                         }
                     }

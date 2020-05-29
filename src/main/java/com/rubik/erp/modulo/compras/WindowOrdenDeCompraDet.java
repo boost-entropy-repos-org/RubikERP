@@ -151,6 +151,8 @@ public class WindowOrdenDeCompraDet extends Window {
                     partida.setFecha_alta(new Date());
                     partida.setCantidad(ManageNumbers.ToInteger(txtCantidad.getValue()));
                     
+//                    partida.setImporte(Double.NaN); ............................................................. IMPORTE
+                    
                     OrdenDeCompraDetDomain domain = new OrdenDeCompraDetDomain();
                     
                     if(ordenDeCompra != null){
