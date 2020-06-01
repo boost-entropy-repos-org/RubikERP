@@ -90,6 +90,10 @@ public class WindowOrdenDeCompraDet extends Window {
         txtCantidad.addFocusListener((event) -> {            
             txtCantidad.setSelection(0, txtCantidad.getValue().length());
         });
+        
+        txtImporte.addFocusListener((event) -> {            
+            txtImporte.setSelection(0, txtImporte.getValue().length());
+        });
 
         binder.forField(txtCantidad).withConverter(new StringToIntegerConverter(0, "El valor debe ser numerico.")).bind(OrdenDeCompraDet::getCantidad, OrdenDeCompraDet::setCantidad);
         binder.forField(txtDescripcion).withValidator(val -> val.length() >= 1 , "Verifique que este un Producto seleccionado").bind(OrdenDeCompraDet::getDescripcion, OrdenDeCompraDet::setDescripcion);
@@ -150,8 +154,6 @@ public class WindowOrdenDeCompraDet extends Window {
                     partida.setEmpresa_id(empleado.getEmpresa_id());
                     partida.setFecha_alta(new Date());
                     partida.setCantidad(ManageNumbers.ToInteger(txtCantidad.getValue()));
-                    
-//                    partida.setImporte(Double.NaN); ............................................................. IMPORTE
                     
                     OrdenDeCompraDetDomain domain = new OrdenDeCompraDetDomain();
                     

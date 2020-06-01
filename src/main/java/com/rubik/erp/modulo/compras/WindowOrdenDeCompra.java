@@ -9,6 +9,7 @@ import com.rubik.erp.config._DocumentoEstados;
 import com.rubik.erp.config._DocumentoTipos;
 import com.rubik.erp.config._Folios;
 import com.rubik.erp.config._Pago_Documentos;
+import com.rubik.erp.config._Pais;
 import com.rubik.erp.domain.ConfiguracionDomain;
 import com.rubik.erp.domain.EmpleadoDomain;
 import com.rubik.erp.domain.OrdenDeCompraDetDomain;
@@ -141,8 +142,7 @@ public class WindowOrdenDeCompra  extends Window {
         setHeight("80%");
         
         Binder<OrdenDeCompra> binder = new Binder<>();
-        // esto es una pruebaba
-        //a
+        
         binder.forField(txtFolioRequisicion).bind(OrdenDeCompra::getFolio_requisicion, OrdenDeCompra::setFolio_requisicion);
         binder.forField(cboCondicionesPago).bind(OrdenDeCompra::getCond_pago, OrdenDeCompra::setCond_pago);
         binder.forField(cboMetodoPago).bind(OrdenDeCompra::getMetodo_pago, OrdenDeCompra::setMetodo_pago);
@@ -184,6 +184,7 @@ public class WindowOrdenDeCompra  extends Window {
                                 gridOrdenDeCompraDet.setItems(listOrdenDeCompraDet);
                             }
                         }
+                        calcularTotales();
                     });
                     getUI().addWindow(windows);
                 } else {
@@ -216,6 +217,7 @@ public class WindowOrdenDeCompra  extends Window {
                         gridOrdenDeCompraDet.setItems(listOrdenDeCompraDet);
                     }
                 }
+                calcularTotales();
             });
             getUI().addWindow(windows);
         });
@@ -236,6 +238,7 @@ public class WindowOrdenDeCompra  extends Window {
                             gridOrdenDeCompraDet.setItems(listOrdenDeCompraDet);
                         }
                     }
+                    calcularTotales();
                 });
                 getUI().addWindow(windows);
             } else {
@@ -264,6 +267,8 @@ public class WindowOrdenDeCompra  extends Window {
                                 listOrdenDeCompraDet.remove(partida);
                                 gridOrdenDeCompraDet.setItems(listOrdenDeCompraDet);
                             }
+                            
+                            calcularTotales();
                         })
                         .withNoButton(()-> {
                         })
@@ -381,6 +386,14 @@ public class WindowOrdenDeCompra  extends Window {
             windows.center();
             windows.setModal(true);
             getUI().addWindow(windows);
+        });
+
+        txtDescuento.addFocusListener((event) -> {
+            txtDescuento.setSelection(0, txtDescuento.getValue().length());
+        });
+                
+        txtDescuento.addBlurListener((event) -> {
+            calcularTotales();
         });
         
         txtSolicita.setEnabled(false);
@@ -625,29 +638,29 @@ public class WindowOrdenDeCompra  extends Window {
         calcularTotales();
     }
 
-//    gridOrdenDeCompraDet.getDataProvider().refreshAll();
-    public void calcularPartida(OrdenDeCompraDet part){
-        part.setImporte( part.getPrecio_unitario() * part.getCantidad() );
-        part.setDescuento(0.0);
-        part.setSubtotal(part.getImporte() - part.getDescuento());
-        part.setIva(part.getSubtotal() * .16);
-        part.setTotal(part.getSubtotal() + part.getIva());
-//        calcularTotales();
-    }
-    
     public void calcularTotales(){
+       
         Double importe = 0.0;
         Double descuento = ManageNumbers.stringToDouble(txtDescuento.getValue());
         Double subtotal = 0.0;
         Double IVA = 0.0;
         Double total = 0.0;
         
+        txtDescuento.setValue(descuento.toString());
+        
         for (OrdenDeCompraDet ordenDeCompraDet : listOrdenDeCompraDet) {
+            ordenDeCompraDet.setImporte(ordenDeCompraDet.getCantidad() * ordenDeCompraDet.getPrecio_unitario());
             importe += ordenDeCompraDet.getImporte();
         }
         
         subtotal = importe - descuento;
-        IVA = subtotal * .16;
+        
+        if(cboProveedor.getValue().getPais().equals(_Pais.NACIONAL)){
+            IVA = subtotal * .16;
+        }else{
+            IVA = 0.0;
+        }
+        
         total = subtotal + IVA;
 
         txtImporte.setValue(importe+"");
@@ -658,6 +671,8 @@ public class WindowOrdenDeCompra  extends Window {
         
         Numero_Letras importeLetra = new Numero_Letras();
         txtMontoLetra.setValue(importeLetra.Convertir(total.toString(), true));
+        
+        gridOrdenDeCompraDet.getDataProvider().refreshAll();
     }
     
 }
