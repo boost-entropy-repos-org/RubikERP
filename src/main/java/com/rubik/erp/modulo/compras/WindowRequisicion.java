@@ -19,6 +19,7 @@ import com.rubik.erp.model.Proveedor;
 import com.rubik.erp.model.Requisicion;
 import com.rubik.erp.model.RequisicionDet;
 import com.rubik.erp.modulo.generic.WindowVisorDocumentos;
+import com.rubik.erp.util.components.ComboBoxTiempoEntrega;
 import com.rubik.manage.ManageDates;
 import com.rubik.manage.ManageString;
 import com.vaadin.data.Binder;
@@ -63,6 +64,7 @@ public class WindowRequisicion extends Window {
     NativeSelect<Empleado> cboAutorizador = new NativeSelect("Autorizador:");
     NativeSelect<String> cboPrioridad = new NativeSelect("Prioridad:");
     NativeSelect<Proveedor> cboProveedor = new NativeSelect("Proveedor sugerido:");
+    ComboBoxTiempoEntrega cboTiempoEntrega = new ComboBoxTiempoEntrega();
 
     Button btnAgregarPartida = new Button("Agregar",Fam3SilkIcon.ADD);
     Button btnModificarPartida = new Button("Modificar",Fam3SilkIcon.PENCIL);
@@ -99,6 +101,8 @@ public class WindowRequisicion extends Window {
                 setStyleName("h2");
             }
         };
+        
+        cboTiempoEntrega = new ComboBoxTiempoEntrega(requisicionTemp.getTiempo_entrega()); 
         initComponents();
     }
 
@@ -131,8 +135,6 @@ public class WindowRequisicion extends Window {
 
         gridRequisicionDet.addColumn(RequisicionDet::getCantidad).setCaption("CTD").setWidth(75);
         gridRequisicionDet.addColumn(RequisicionDet::getDescripcion).setCaption("DESCRIPCION");
-//        gridRequisicionDet.addColumn(RequisicionDet::getPrecio_unitario).setCaption("P.U.").setWidth(100);
-//        gridRequisicionDet.addColumn(RequisicionDet::getTotal).setCaption("TOTAL").setWidth(100);
 
         btnAgregarPartida.addClickListener((event) -> {
             WindowRequisicionDet windows = new WindowRequisicionDet(requisicion);
@@ -253,16 +255,12 @@ public class WindowRequisicion extends Window {
                 requisicion.setAutoriza(autoriza.getNombre_completo());
                 requisicion.setAutoriza_id(autoriza.getId());
                 requisicion.setActivo(true);
+                requisicion.setTiempo_entrega(cboTiempoEntrega.getStrValue());
                 
                 RequisicionDomain service = new RequisicionDomain();
 
                 if (isEdit) {
                     requisicion.setFecha_modificacion(new Date());
-//                    for (RequisicionDet partidaTemp : listRequisicionDet) {
-//                        total += partidaTemp.getTotal();
-//                    }
-//                    requisicion.setTotal(total);
-                    
                     service.RequisicionUpdate(requisicion);
                     
                 } else {
@@ -270,11 +268,6 @@ public class WindowRequisicion extends Window {
                     requisicion.setSerie("");
                     
                     RequisicionDetDomain domainDet = new RequisicionDetDomain();
-                    
-//                    for (RequisicionDet partidaTemp : listRequisicionDet) { // Obtiene el total
-//                        total += partidaTemp.getTotal();
-//                    }
-//                    requisicion.setTotal(total);
                     service.RequisicionInsert(requisicion);
                     updateFolio();
                     
@@ -349,7 +342,7 @@ public class WindowRequisicion extends Window {
         
         FormLayout fLay = new FormLayout();
         fLay.setSpacing(false);
-        fLay.addComponents(txtFechaRequerida,txtSolicita, cboPrioridad, cboAutorizador, txtObservaciones, 
+        fLay.addComponents(txtFechaRequerida,cboTiempoEntrega,txtSolicita,cboPrioridad,cboAutorizador,txtObservaciones, 
                 txtDireccionEntrega,cboProveedor);
 
         cont.setSpacing(false);
