@@ -227,7 +227,7 @@ public class WindowProducto extends Window {
         
         cboIVA.setEmptySelectionAllowed(false);
         cboIVA.setItems(0, 16);
-        cboIVA.setValue(0);
+        cboIVA.setValue(16);
         
         txtPrecioCompra.setMaxLength(12);
         txtPrecioVenta.setMaxLength(12);

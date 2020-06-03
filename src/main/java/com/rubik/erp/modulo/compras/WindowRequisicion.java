@@ -22,6 +22,7 @@ import com.rubik.erp.modulo.generic.WindowVisorDocumentos;
 import com.rubik.erp.util.components.ComboBoxTiempoEntrega;
 import com.rubik.manage.ManageDates;
 import com.rubik.manage.ManageString;
+import com.rubik.model.FirmaElectronica;
 import com.vaadin.data.Binder;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
@@ -257,6 +258,12 @@ public class WindowRequisicion extends Window {
                 requisicion.setActivo(true);
                 requisicion.setTiempo_entrega(cboTiempoEntrega.getStrValue());
                 
+                FirmaElectronica firma = 
+                        new FirmaElectronica(requisicion.getSolicita(), _DocumentoTipos.REQUISICION_DE_COMPRA, 
+                                requisicion.getFolio(), 1);
+                
+                requisicion.setFirma_solicita(firma.getEfirma());
+                
                 RequisicionDomain service = new RequisicionDomain();
 
                 if (isEdit) {
@@ -274,6 +281,7 @@ public class WindowRequisicion extends Window {
                     for (RequisicionDet partidaTemp : listRequisicionDet) { //Guarda la partida con el ID de la requisicion
                         partidaTemp.setFolio(requisicion.getFolio());
                         partidaTemp.setDocumento_id(requisicion.getId());
+                        partidaTemp.setCodigo_proveedor(requisicion.getProveedor_id()+"");
                         domainDet.RequisicionDetInsert(partidaTemp);
                     }
                 }

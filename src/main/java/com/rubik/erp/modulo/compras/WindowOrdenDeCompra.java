@@ -329,6 +329,7 @@ public class WindowOrdenDeCompra  extends Window {
                     for (OrdenDeCompraDet partidaTemp : listOrdenDeCompraDet) { //Guarda la partida con el ID de la ordenDeCompra
                         partidaTemp.setFolio(ordenDeCompra.getFolio());
                         partidaTemp.setDocumento_id(ordenDeCompra.getId());
+                        partidaTemp.setCodigo_proveedor(ordenDeCompra.getProveedor_id()+"");
                         domainDet.OrdenDeCompraDetInsert(partidaTemp);
                     }
                 }
@@ -369,11 +370,6 @@ public class WindowOrdenDeCompra  extends Window {
                         txtTiempoEntrega.setValue(requisicion.getTiempo_entrega());
                         txtObservaciones.setValue(requisicion.getObservaciones());
                         cboMetodoPago.setValue(requisicion.getMetodo_pago());
-                        txtImporte.setValue(requisicion.getImporte()+"");
-                        txtDescuento.setValue(requisicion.getDescuento()+"");
-                        txtSubtotal.setValue(requisicion.getSubtotal()+"");
-                        txtIVA.setValue(requisicion.getIva()+"");
-                        txtTotal.setValue(requisicion.getTotal()+"");
                         txtDireccionEntrega.setValue(requisicion.getDireccion_entrega());
                         
                         cargarPartidas();
@@ -560,7 +556,7 @@ public class WindowOrdenDeCompra  extends Window {
                     .withRetryButton()
                     .open();
         }
-        return listRequisicionDet;
+        return listOrdenDeCompraDet;
     }
     
     public void toUpperCase() {

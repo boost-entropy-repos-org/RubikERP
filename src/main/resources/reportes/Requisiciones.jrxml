@@ -580,6 +580,37 @@ Tel. +52 (833) 3992231, www.impeller.com.mx]]></text>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{autoriza}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="20" y="168" width="150" height="16" uuid="174f697d-33a1-4331-8d69-b715fa6ea51b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{firma_solicita}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="365" y="167" width="150" height="16" uuid="bce7392b-4e4e-4efc-b29f-11cd5dd59a74"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{firma_autorizo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h.mm a" isBlankWhenNull="true">
+				<reportElement x="365" y="151" width="150" height="16" uuid="0af97b5a-9929-4ee7-9c14-255f79cd26b5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_autorizo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="15" width="531" height="207" forecolor="#FF0000" uuid="53c275c7-5f08-40aa-b045-e084856ebe4f">
+					<printWhenExpression><![CDATA[$F{activo}.equals( false )]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="76" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DOCUMENTO
+CANCELADO]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 </jasperReport>

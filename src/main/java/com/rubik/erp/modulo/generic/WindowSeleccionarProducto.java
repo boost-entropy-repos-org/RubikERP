@@ -62,7 +62,7 @@ public class WindowSeleccionarProducto extends Window {
         gridSelecProd.addColumn(Producto::getModelo).setCaption("MODELO").setId("MODELO");
         gridSelecProd.addColumn(Producto::getMarca).setCaption("MARCA").setId("MARCA");
 
-        cont.addComponents(new HorizontalLayout(btnSeleccionar,btnAdd), gridSelecProd);
+        cont.addComponents(new HorizontalLayout(btnAdd,btnSeleccionar), gridSelecProd);
         cont.setComponentAlignment(cont.getComponent(0), Alignment.MIDDLE_CENTER);
         cont.setComponentAlignment(cont.getComponent(1), Alignment.MIDDLE_CENTER);
 

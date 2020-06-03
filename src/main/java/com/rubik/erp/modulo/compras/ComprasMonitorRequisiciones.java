@@ -6,12 +6,14 @@
 package com.rubik.erp.modulo.compras;
 
 import com.rubik.erp.config._DocumentoEstados;
+import com.rubik.erp.config._DocumentoTipos;
 import com.rubik.erp.domain.EmpleadoDomain;
 import com.rubik.erp.domain.RequisicionDomain;
 import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.Requisicion;
 import com.rubik.erp.modulo.generic.WindowCancelarDocumento;
+import com.rubik.model.FirmaElectronica;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinSession;
@@ -168,8 +170,14 @@ public class ComprasMonitorRequisiciones extends Panel implements View {
                     .withCaption("Confirmar Accion")
                     .withMessage("Desea Autorizar y pasar al Departamento de Compras la Requisicion " + requisicion.getFolio() + "?")
                     .withYesButton(() -> {
+                        FirmaElectronica firma = 
+                            new FirmaElectronica(requisicion.getAutoriza(), _DocumentoTipos.REQUISICION_DE_COMPRA, 
+                                requisicion.getFolio(), 1);
+                        
                         requisicion.setAutoriza(empleado.getNombre_completo());
                         requisicion.setAutoriza_id(empleado.getId());
+                        requisicion.setFirma_autorizo(firma.getEfirma());
+                        requisicion.setFecha_autorizo(firma.getFecha_firma());
                         
                         RequisicionDomain service = new RequisicionDomain();
                         service.RequisicionAutorizar(requisicion);
