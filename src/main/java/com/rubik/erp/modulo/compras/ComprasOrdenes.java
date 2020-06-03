@@ -5,6 +5,7 @@
  */
 package com.rubik.erp.modulo.compras;
 
+import com.rubik.erp.config._DocumentoEstados;
 import com.rubik.erp.domain.OrdenDeCompraDomain;
 import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.Empleado;
@@ -103,7 +104,7 @@ public class ComprasOrdenes extends Panel implements View {
         columnFecha.setId("FECHA");
         columnFecha.setWidth(120);
         gridOC.addColumn(OrdenDeCompra::getFolio).setCaption("FOLIO").setId("FOLIO").setWidth(120);
-        gridOC.addColumn(OrdenDeCompra::getFolio_requisicion).setCaption("FOLIO REM").setId("FOLIO REM").setWidth(120);
+        gridOC.addColumn(OrdenDeCompra::getFolio_requisicion).setCaption("FOLIO REQ").setId("FOLIO REQ").setWidth(120);
         gridOC.addColumn(OrdenDeCompra::getEstado_doc).setCaption("ESTADO").setId("ESTADO").setWidth(130);
         gridOC.addColumn(OrdenDeCompra::getProveedor).setCaption("PROVEEDOR").setId("PROVEEDOR");
         gridOC.addColumn(OrdenDeCompra::getImporte).setCaption("IMPORTE").setId("IMPORTE").setWidth(120);
@@ -126,29 +127,29 @@ public class ComprasOrdenes extends Panel implements View {
         });
 
         btnModify.addClickListener((event) -> {
-//            if (gridOC.getSelectedItems().size() == 1) {
-//                if(gridOC.getSelectedItems().iterator().next().getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)){
-//                    WindowRequisicion windows = new WindowRequisicion(gridOC.getSelectedItems().iterator().next());
-//                    windows.center();
-//                    windows.setModal(true);
-//                    windows.addCloseListener((e) -> {
-//                        gridOC.setItems(getOrdenes());
-//                    });
-//                    getUI().addWindow(windows);
-//                }else{
-//                    MessageBox.createError()
-//                            .withCaption("Error!")
-//                            .withMessage("No puede modificar una Requisicion de Compra que esta en espera de su Autorizacion.")
-//                            .withRetryButton()
-//                            .open();
-//                }
-//            } else {
-//                MessageBox.createError()
-//                        .withCaption("Error!")
-//                        .withMessage("Debe tener una Requisicion seleccionada para poder modificarla.")
-//                        .withRetryButton()
-//                        .open();
-//            }
+            if (gridOC.getSelectedItems().size() == 1) {
+                if(!gridOC.getSelectedItems().iterator().next().getEstado_doc().equals(_DocumentoEstados.TERMINADO)){
+                    WindowOrdenDeCompra windows = new WindowOrdenDeCompra(gridOC.getSelectedItems().iterator().next());
+                    windows.center();
+                    windows.setModal(true);
+                    windows.addCloseListener((e) -> {
+                        gridOC.setItems(getOrdenes());
+                    });
+                    getUI().addWindow(windows);
+                }else{
+                    MessageBox.createError()
+                            .withCaption("Error!")
+                            .withMessage("No puede modificar una Requisicion de Compra que esta en espera de su Autorizacion.")
+                            .withRetryButton()
+                            .open();
+                }
+            } else {
+                MessageBox.createError()
+                        .withCaption("Error!")
+                        .withMessage("Debe tener una Requisicion seleccionada para poder modificarla.")
+                        .withRetryButton()
+                        .open();
+            }
         });
         
         btnSearch.addClickListener((event) -> {

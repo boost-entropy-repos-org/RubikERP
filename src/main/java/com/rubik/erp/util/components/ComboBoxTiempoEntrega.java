@@ -27,7 +27,6 @@ public class ComboBoxTiempoEntrega extends HorizontalLayout {
     
     public ComboBoxTiempoEntrega(String tiempoEntrega) {
         initComponents();
-        
         String[] arr = tiempoEntrega.split(" ");
         cboNumero.setValue(Integer.valueOf(arr[0]));
         cboTiempo.setValue(arr[1]);
@@ -65,6 +64,7 @@ public class ComboBoxTiempoEntrega extends HorizontalLayout {
     }
 
     public String getStrValue() {
+        strValue = cboNumero.getValue() + " " + cboTiempo.getValue();
         return strValue;
     }
 

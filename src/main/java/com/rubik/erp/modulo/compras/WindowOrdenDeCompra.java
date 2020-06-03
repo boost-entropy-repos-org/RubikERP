@@ -122,6 +122,7 @@ public class WindowOrdenDeCompra  extends Window {
         };
         initComponents();
         btnCotizacionesProvedores.setEnabled(false);
+        txtTipoCambio.setValue("1");
     }
 
     public WindowOrdenDeCompra(OrdenDeCompra ordenTemp) {
@@ -307,6 +308,9 @@ public class WindowOrdenDeCompra  extends Window {
                 ordenDeCompra.setAutoriza_id(autoriza.getId());
                 ordenDeCompra.setActivo(true);
                 
+                ordenDeCompra.setProveedor_id(cboProveedor.getValue().getId());
+                ordenDeCompra.setProveedor(cboProveedor.getValue().getRazon_social());
+                
                 OrdenDeCompraDomain service = new OrdenDeCompraDomain();
 
                 if (isEdit) {
@@ -362,6 +366,7 @@ public class WindowOrdenDeCompra  extends Window {
                         txtSolicita.setValue(requisicion.getSolicita());
                         txtFolioRequisicion.setValue(requisicion.getFolio());
                         txtFechaRequerida.setValue(ManageDates.getLocalDateFromDate(requisicion.getFecha_requerida()));
+                        txtTiempoEntrega.setValue(requisicion.getTiempo_entrega());
                         txtObservaciones.setValue(requisicion.getObservaciones());
                         cboMetodoPago.setValue(requisicion.getMetodo_pago());
                         txtImporte.setValue(requisicion.getImporte()+"");
@@ -378,6 +383,12 @@ public class WindowOrdenDeCompra  extends Window {
                     }
                 });
                 getUI().addWindow(windows);
+        });
+        
+        cboMoneda.addSelectionListener((event) -> {
+            if(cboMoneda.getValue().equals(_Pago_Documentos.MONEDA_PESOS)){
+                txtTipoCambio.setValue("1");
+            }
         });
         
         btnCotizacionesProvedores.addClickListener((event) -> {
