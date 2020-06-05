@@ -1,6 +1,6 @@
 /*
-SQLyog Ultimate v11.13 (64 bit)
-MySQL - 8.0.18 : Database - rubik_erp
+SQLyog Ultimate v9.10 
+MySQL - 5.5.62 : Database - rubik_erp
 *********************************************************************
 */
 
@@ -12,7 +12,7 @@ MySQL - 8.0.18 : Database - rubik_erp
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`rubik_erp` /*!40100 DEFAULT CHARACTER SET utf8 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`rubik_erp` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
 USE `rubik_erp`;
 
@@ -91,7 +91,7 @@ CREATE TABLE `configuracion` (
 
 /*Data for the table `configuracion` */
 
-insert  into `configuracion`(`id`,`serie_requisicion`,`folio_requisicion`,`serie_orden_compra`,`folio_orden_compra`,`serie_cotizacion`,`folio_cotizacion`,`serie_remision`,`folio_remision`,`serie_factura`,`folio_factura`,`autocompletar_totales`) values (1,'RQ',3,'OC',0,'CT',0,'RM',0,'FA',0,0);
+insert  into `configuracion`(`id`,`serie_requisicion`,`folio_requisicion`,`serie_orden_compra`,`folio_orden_compra`,`serie_cotizacion`,`folio_cotizacion`,`serie_remision`,`folio_remision`,`serie_factura`,`folio_factura`,`autocompletar_totales`) values (1,'RQ',6,'OC',3,'CT',0,'RM',0,'FA',0,0);
 
 /*Table structure for table `empleado` */
 
@@ -188,12 +188,12 @@ CREATE TABLE `orden_compra` (
   `cliente_rfc` varchar(100) DEFAULT NULL,
   `metodo_pago` varchar(100) DEFAULT NULL,
   `moneda` varchar(100) DEFAULT NULL,
-  `tipo_cambio` double DEFAULT NULL,
-  `importe` double DEFAULT NULL,
-  `descuento` double DEFAULT NULL,
-  `subtotal` double DEFAULT NULL,
-  `iva` double DEFAULT NULL,
-  `total` double DEFAULT NULL,
+  `tipo_cambio` double(8,2) DEFAULT NULL,
+  `importe` double(15,2) DEFAULT NULL,
+  `descuento` double(10,1) DEFAULT NULL,
+  `subtotal` double(15,2) DEFAULT NULL,
+  `iva` double(10,1) DEFAULT NULL,
+  `total` double(15,2) DEFAULT NULL,
   `porc_iva` int(10) DEFAULT NULL,
   `importe_letra` text,
   `activo` tinyint(1) DEFAULT '1',
@@ -232,9 +232,11 @@ CREATE TABLE `orden_compra` (
   `cotizacion` varchar(50) DEFAULT NULL,
   `cotizacion_proveedor` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `orden_compra` */
+
+insert  into `orden_compra`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`estado_doc`,`estado`,`folio`,`serie`,`observaciones`,`tipo_documento`,`tipo_archivo`,`razon_cancelar`,`cliente_id`,`cliente`,`cliente_rfc`,`metodo_pago`,`moneda`,`tipo_cambio`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`porc_iva`,`importe_letra`,`activo`,`proveedor_id`,`proveedor`,`cond_pago`,`requisicion_id`,`folio_requisicion`,`solicita_id`,`solicita`,`recibe_id`,`recibe`,`autoriza_id`,`autoriza`,`fecha_entrega`,`direccion_entrega`,`fecha_requisicion`,`factura_id`,`factura`,`folio_factura`,`no_cuenta`,`interbancaria`,`banco`,`sucursal`,`concepto_pago`,`fecha_autoriza`,`firma_autoriza`,`forma_pago`,`fecha_solicita`,`firma_solicita`,`pedido`,`comprador`,`tiempo_entrega`,`instrucciones_entrega`,`cotizacion_id`,`cotizacion`,`cotizacion_proveedor`) values (1,'2020-06-04 17:33:55','2020-06-04 23:11:34',0,'',0,'',2,'LUIS HUMBERTO GOMEZ TIBURCIO','POR AUTORIZAR','','OC00003','','AEDASDASDA','ORDEN DE COMPRA','PDF','',0,'','','EFCTIVO','PESOS',1.00,51150.00,0.0,51150.00,8184.0,59334.00,16,'CINCUENTA Y NUEVE MIL TRECIENTOS TREINTA Y CUATRO Y 0/100 PESOS MEXICANOS.',1,3,'IESSA INSTRUMENTACION ELECTRONICA Y SISTEMAS S.A. de C.V.','CONTADO',1,'RQ00006',NULL,'LUIS HUMBERTO GOMEZ TIBURCIO',NULL,'Almacen Matriz',3,'GABRIELA ALEJANDRA BARRIOS REYNA','2020-06-04 00:00:00','SDASDASDASDASD','2020-06-03 00:00:00',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'DDB54BFFABE0509D51DA50BE4424290E','34234',NULL,'3 DIAS',NULL,NULL,NULL,'234234');
 
 /*Table structure for table `orden_compra_det` */
 
@@ -257,13 +259,13 @@ CREATE TABLE `orden_compra_det` (
   `descripcion` varchar(100) DEFAULT NULL,
   `unidad_medida` varchar(100) DEFAULT NULL,
   `porc_iva` int(2) DEFAULT NULL,
-  `precio_unitario` double DEFAULT NULL,
-  `importe` double DEFAULT NULL,
-  `descuento` double DEFAULT NULL,
-  `subtotal` double DEFAULT NULL,
-  `iva` double DEFAULT NULL,
-  `total` double DEFAULT NULL,
-  `servicio` tinyint(1) DEFAULT '1',
+  `precio_unitario` double(15,2) DEFAULT NULL,
+  `importe` double(15,2) DEFAULT NULL,
+  `descuento` double(10,1) DEFAULT NULL,
+  `subtotal` double(15,2) DEFAULT NULL,
+  `iva` double(10,1) DEFAULT NULL,
+  `total` double(15,2) DEFAULT NULL,
+  `servicio` tinyint(1) DEFAULT '0',
   `folio_requisicion` varchar(100) DEFAULT NULL,
   `requisicion_id` int(10) DEFAULT NULL,
   `no_parte` varchar(100) DEFAULT NULL,
@@ -273,9 +275,11 @@ CREATE TABLE `orden_compra_det` (
   `codigo_proveedor` varchar(100) DEFAULT NULL,
   `codigo_interno` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `orden_compra_det` */
+
+insert  into `orden_compra_det`(`id`,`folio`,`documento_id`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`no_partida`,`fecha_alta`,`cantidad`,`producto_id`,`descripcion`,`unidad_medida`,`porc_iva`,`precio_unitario`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`servicio`,`folio_requisicion`,`requisicion_id`,`no_parte`,`no_serie`,`modelo`,`marca`,`codigo_proveedor`,`codigo_interno`) values (1,'OC00003',1,0,'',0,'',2,'LUIS HUMBERTO GOMEZ TIBURCIO',0,'2020-06-04 17:33:57',33,3,'PRODUCTO 3 TREES','PIEZA',16,1550.00,51150.00,0.0,51150.00,8184.0,59334.00,0,'RQ00006',1,'34343','434','ASDQ3234','343','3','3');
 
 /*Table structure for table `producto` */
 
@@ -406,12 +410,12 @@ CREATE TABLE `requisicion` (
   `cliente_rfc` varchar(100) DEFAULT NULL,
   `metodo_pago` varchar(100) DEFAULT NULL,
   `moneda` varchar(100) DEFAULT NULL,
-  `tipo_cambio` double DEFAULT NULL,
-  `importe` double DEFAULT NULL,
-  `descuento` double DEFAULT NULL,
-  `subtotal` double DEFAULT NULL,
-  `iva` double DEFAULT NULL,
-  `total` double DEFAULT NULL,
+  `tipo_cambio` double(8,2) DEFAULT NULL,
+  `importe` double(15,2) DEFAULT NULL,
+  `descuento` double(12,1) DEFAULT NULL,
+  `subtotal` double(15,2) DEFAULT NULL,
+  `iva` double(12,1) DEFAULT NULL,
+  `total` double(15,2) DEFAULT NULL,
   `porc_iva` int(10) DEFAULT NULL,
   `importe_letra` varchar(100) DEFAULT NULL,
   `activo` tinyint(1) DEFAULT '1',
@@ -430,11 +434,11 @@ CREATE TABLE `requisicion` (
   `proveedor_id` int(10) DEFAULT NULL,
   `proveedor` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `requisicion` */
 
-insert  into `requisicion`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`estado_doc`,`estado`,`folio`,`serie`,`observaciones`,`tipo_documento`,`tipo_archivo`,`razon_cancelar`,`cliente_id`,`cliente`,`cliente_rfc`,`metodo_pago`,`moneda`,`tipo_cambio`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`porc_iva`,`importe_letra`,`activo`,`prioridad`,`fecha_requerida`,`direccion_entrega`,`tiempo_entrega`,`fecha_orden_compra`,`folio_orden_compra`,`autoriza_id`,`autoriza`,`fecha_autorizo`,`firma_autorizo`,`solicita`,`firma_solicita`,`proveedor_id`,`proveedor`) values (1,'2020-06-03 16:34:21','2020-06-03 16:34:21',0,'',0,'',2,'LUIS HUMBERTO GOMEZ TIBURCIO','EN PROCESO','','RQ00001','','JYTDGEUTWG','REQUISICION DE COMPRA','PDF','',0,'','','',NULL,NULL,0,0,0,0,0,0,'',1,'MEDIA','2020-06-03 00:00:00','HFSJGSJGDFJGKH','4 SEMANAS',NULL,NULL,3,'GABRIELA ALEJANDRA BARRIOS REYNA',NULL,NULL,'LUIS HUMBERTO GOMEZ TIBURCIO','4AEFDC9FD14C4AE7214A867B0E092295',3,'IESSA INSTRUMENTACION ELECTRONICA Y SISTEMAS S.A. de C.V.'),(2,'2020-06-03 17:30:48','2020-06-03 17:34:22',0,'',0,'',2,'LUIS HUMBERTO GOMEZ TIBURCIO','EN PROCESO','','RQ00002','','ADASDASD','REQUISICION DE COMPRA','PDF','',0,'','','',NULL,NULL,0,0,0,0,0,0,'',1,'ALTA','2020-06-03 00:00:00','ASDASEASD','6 DIAS',NULL,NULL,3,'GABRIELA ALEJANDRA BARRIOS REYNA',NULL,NULL,'LUIS HUMBERTO GOMEZ TIBURCIO','934B88E294CC6B2819FEFD18F06E5D25',3,'IESSA INSTRUMENTACION ELECTRONICA Y SISTEMAS S.A. de C.V.'),(3,'2020-06-03 17:58:15','2020-06-03 17:58:15',0,'',0,'',2,'LUIS HUMBERTO GOMEZ TIBURCIO','EN PROCESO','','RQ00003','','DASDAS','REQUISICION DE COMPRA','PDF','',0,'','','',NULL,NULL,0,0,0,0,0,0,'',1,'ALTA','2020-06-03 00:00:00','ASDAS','1 DIAS',NULL,NULL,3,'GABRIELA ALEJANDRA BARRIOS REYNA',NULL,NULL,'LUIS HUMBERTO GOMEZ TIBURCIO','4AEFDC9FD14C4AE7214A867B0E092295',3,'IESSA INSTRUMENTACION ELECTRONICA Y SISTEMAS S.A. de C.V.');
+insert  into `requisicion`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`estado_doc`,`estado`,`folio`,`serie`,`observaciones`,`tipo_documento`,`tipo_archivo`,`razon_cancelar`,`cliente_id`,`cliente`,`cliente_rfc`,`metodo_pago`,`moneda`,`tipo_cambio`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`porc_iva`,`importe_letra`,`activo`,`prioridad`,`fecha_requerida`,`direccion_entrega`,`tiempo_entrega`,`fecha_orden_compra`,`folio_orden_compra`,`autoriza_id`,`autoriza`,`fecha_autorizo`,`firma_autorizo`,`solicita`,`firma_solicita`,`proveedor_id`,`proveedor`) values (1,'2020-06-03 23:22:36','2020-06-03 23:23:07',0,'',0,'',2,'LUIS HUMBERTO GOMEZ TIBURCIO','TERMINADO','','RQ00006','','AEDASDASDA','REQUISICION DE COMPRA','PDF','',0,'','','',NULL,NULL,0.00,0.0,0.00,0.0,0.00,0,'',1,'ALTA','2020-06-03 00:00:00','SDASDASDASDASD','3 DIAS','2020-06-04 17:34:07','OC00003',2,'LUIS HUMBERTO GOMEZ TIBURCIO','2020-06-03 23:23:07','267173C6E12A44957B61C855A58ADA13','LUIS HUMBERTO GOMEZ TIBURCIO','267173C6E12A44957B61C855A58ADA13',3,'IESSA INSTRUMENTACION ELECTRONICA Y SISTEMAS S.A. de C.V.');
 
 /*Table structure for table `requisicion_det` */
 
@@ -471,11 +475,11 @@ CREATE TABLE `requisicion_det` (
   `codigo_interno` varchar(10) DEFAULT NULL,
   `codigo_proveedor` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `requisicion_det` */
 
-insert  into `requisicion_det`(`id`,`folio`,`documento_id`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`no_partida`,`fecha_alta`,`producto_id`,`descripcion`,`unidad_medida`,`cantidad`,`precio_unitario`,`importe`,`descuento`,`subtotal`,`porc_iva`,`iva`,`total`,`servicio`,`no_parte`,`no_serie`,`modelo`,`marca`,`codigo_interno`,`codigo_proveedor`) values (1,'RQ00001',1,0,'',0,'',2,'LUIS HUMBERTO GOMEZ TIBURCIO',0,'2020-06-03 16:34:19',1,'PRODUCTO 1','PIEZA',5,5000.00,25000.00,0.0,25000.00,16,0.0,25000.00,0,'23232','23232','1ERW42','23WWWWW','1','3'),(2,'RQ00001',1,0,'',0,'',2,'LUIS HUMBERTO GOMEZ TIBURCIO',0,'2020-06-03 17:21:11',2,'PRODUCTO2','PIEZA',5,800.00,4000.00,0.0,4000.00,16,0.0,4000.00,0,'343','WR3R3','AW','34T4','2',NULL),(3,'RQ00002',2,0,'',0,'',2,'LUIS HUMBERTO GOMEZ TIBURCIO',0,'2020-06-03 17:45:26',2,'PRODUCTO2','PIEZA',3,800.00,2400.00,0.0,2400.00,16,0.0,2400.00,0,'343','WR3R3','AW','34T4','2','3'),(4,'RQ00002',2,0,'',0,'',2,'LUIS HUMBERTO GOMEZ TIBURCIO',0,'2020-06-03 17:36:49',1,'PRODUCTO 1','PIEZA',1,5000.00,5000.00,0.0,5000.00,16,0.0,5000.00,0,'23232','23232','1ERW42','23WWWWW','1',NULL),(5,'RQ00003',3,0,'',0,'',2,'LUIS HUMBERTO GOMEZ TIBURCIO',0,'2020-06-03 17:58:12',2,'PRODUCTO2','PIEZA',1,800.00,800.00,0.0,800.00,16,0.0,800.00,0,'343','WR3R3','AW','34T4','2','3'),(6,'RQ00003',3,0,'',0,'',2,'LUIS HUMBERTO GOMEZ TIBURCIO',0,'2020-06-03 18:02:03',3,'PRODUCTO 3 TREES','PIEZA',1,1550.00,1550.00,0.0,1550.00,16,0.0,1550.00,0,'34343','434','ASDQ3234','343','3',NULL),(7,'RQ00003',3,0,'',0,'',2,'LUIS HUMBERTO GOMEZ TIBURCIO',0,'2020-06-03 18:10:58',3,'PRODUCTO 3 TREES','PIEZA',13,1550.00,20150.00,0.0,20150.00,16,3224.0,23374.00,0,'34343','434','ASDQ3234','343','3',NULL);
+insert  into `requisicion_det`(`id`,`folio`,`documento_id`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`no_partida`,`fecha_alta`,`producto_id`,`descripcion`,`unidad_medida`,`cantidad`,`precio_unitario`,`importe`,`descuento`,`subtotal`,`porc_iva`,`iva`,`total`,`servicio`,`no_parte`,`no_serie`,`modelo`,`marca`,`codigo_interno`,`codigo_proveedor`) values (1,'RQ00006',1,0,'',0,'',2,'LUIS HUMBERTO GOMEZ TIBURCIO',0,'2020-06-03 23:22:35',3,'PRODUCTO 3 TREES','PIEZA',33,1550.00,51150.00,0.0,51150.00,16,8184.0,59334.00,0,'34343','434','ASDQ3234','343','3','3');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

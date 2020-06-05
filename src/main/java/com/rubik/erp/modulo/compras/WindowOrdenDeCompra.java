@@ -5,6 +5,7 @@
  */
 package com.rubik.erp.modulo.compras;
 
+import com.rubik.erp.config._CONTABILIDAD;
 import com.rubik.erp.config._DocumentoEstados;
 import com.rubik.erp.config._DocumentoTipos;
 import com.rubik.erp.config._Folios;
@@ -16,6 +17,7 @@ import com.rubik.erp.domain.OrdenDeCompraDetDomain;
 import com.rubik.erp.domain.OrdenDeCompraDomain;
 import com.rubik.erp.domain.ProveedorDomain;
 import com.rubik.erp.domain.RequisicionDetDomain;
+import com.rubik.erp.domain.RequisicionDomain;
 import com.rubik.erp.model.Configuracion;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.OrdenDeCompra;
@@ -120,6 +122,9 @@ public class WindowOrdenDeCompra  extends Window {
                 setStyleName("h2");
             }
         };
+        
+        ordenDeCompra = new OrdenDeCompra();
+        
         initComponents();
         btnCotizacionesProvedores.setEnabled(false);
         txtTipoCambio.setValue("1");
@@ -165,7 +170,7 @@ public class WindowOrdenDeCompra  extends Window {
         binder.forField(txtDescuento).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(OrdenDeCompra::getDescuento, OrdenDeCompra::setDescuento);
         binder.forField(txtSubtotal).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(OrdenDeCompra::getSubtotal, OrdenDeCompra::setSubtotal);
         binder.forField(txtIVA).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(OrdenDeCompra::getIva, OrdenDeCompra::setIva);
-        binder.forField(txtTotal).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(OrdenDeCompra::getImporte, OrdenDeCompra::setImporte);
+        binder.forField(txtTotal).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(OrdenDeCompra::getTotal, OrdenDeCompra::setTotal);
         
         gridOrdenDeCompraDet.setHeight("272");
         gridOrdenDeCompraDet.setSelectionMode(Grid.SelectionMode.SINGLE);
@@ -291,10 +296,6 @@ public class WindowOrdenDeCompra  extends Window {
             try {
                 Empleado autoriza = cboAutorizador.getValue();
                 Double total = 0.0;
-                
-                if(!isEdit){
-                    ordenDeCompra = new OrdenDeCompra();
-                }
 
                 binder.writeBean(ordenDeCompra);
                 toUpperCase();
@@ -323,7 +324,7 @@ public class WindowOrdenDeCompra  extends Window {
 
                     service.OrdenDeCompraInsert(ordenDeCompra);
                     updateFolio();
-                    
+
                     OrdenDeCompraDetDomain domainDet = new OrdenDeCompraDetDomain();
                     
                     for (OrdenDeCompraDet partidaTemp : listOrdenDeCompraDet) { //Guarda la partida con el ID de la ordenDeCompra
@@ -332,6 +333,13 @@ public class WindowOrdenDeCompra  extends Window {
                         partidaTemp.setCodigo_proveedor(ordenDeCompra.getProveedor_id()+"");
                         domainDet.OrdenDeCompraDetInsert(partidaTemp);
                     }
+                    
+                    requisicion.setFecha_orden_compra(new Date());
+                    requisicion.setFolio_orden_compra(ordenDeCompra.getFolio());
+                    requisicion.setEstado_doc(_DocumentoEstados.TERMINADO);
+                    
+                    RequisicionDomain reqDomain = new RequisicionDomain();
+                    reqDomain.RequisicionUpdate(requisicion);
                 }
 
                 if (service.getOk()) {
@@ -362,14 +370,17 @@ public class WindowOrdenDeCompra  extends Window {
                 windows.setModal(true);
                 windows.addCloseListener((e) -> {
                     if(windows.seleccionado){
-                        requisicion = windows.requisicion;
+                        requisicion = windows.requisicion_selected;
+                        
+                        ordenDeCompra.setRequisicion_id(requisicion.getId());
                         
                         txtSolicita.setValue(requisicion.getSolicita());
+                        ordenDeCompra.setComprador(requisicion.getSolicita());
                         txtFolioRequisicion.setValue(requisicion.getFolio());
                         txtFechaRequerida.setValue(ManageDates.getLocalDateFromDate(requisicion.getFecha_requerida()));
                         txtTiempoEntrega.setValue(requisicion.getTiempo_entrega());
                         txtObservaciones.setValue(requisicion.getObservaciones());
-                        cboMetodoPago.setValue(requisicion.getMetodo_pago());
+//                        cboMetodoPago.setValue(requisicion.getMetodo_pago());
                         txtDireccionEntrega.setValue(requisicion.getDireccion_entrega());
                         
                         cargarPartidas();
@@ -663,18 +674,20 @@ public class WindowOrdenDeCompra  extends Window {
         subtotal = importe - descuento;
         
         if(cboProveedor.getValue().getPais().equals(_Pais.NACIONAL)){
-            IVA = subtotal * .16;
+            IVA = subtotal * ((float)_CONTABILIDAD.IVA_NACIONAL/100);
+            ordenDeCompra.setPorc_iva(_CONTABILIDAD.IVA_NACIONAL);
         }else{
             IVA = 0.0;
         }
         
+        IVA = new Double(Math.round(IVA*100)/100+"");
         total = subtotal + IVA;
 
         txtImporte.setValue(importe+"");
         txtDescuento.setValue(descuento+"");
         txtSubtotal.setValue(subtotal+"");
         txtIVA.setValue(IVA+"");
-        txtTotal.setValue(total+"");
+        txtTotal.setValue(total+""); 
         
         Numero_Letras importeLetra = new Numero_Letras();
         txtMontoLetra.setValue(importeLetra.Convertir(total.toString(), true));

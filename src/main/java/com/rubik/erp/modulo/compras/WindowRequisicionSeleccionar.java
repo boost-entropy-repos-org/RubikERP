@@ -32,7 +32,7 @@ public class WindowRequisicionSeleccionar extends Window {
     VerticalLayout cont = new VerticalLayout();
     String title_window = "Requisicion de Compra";
 
-    public Requisicion requisicion;
+    public Requisicion requisicion_selected;
     public Boolean seleccionado = false;
 
     Button btnChecar = new Button("Seleccionar", Fam3SilkIcon.ACCEPT);
@@ -72,7 +72,7 @@ public class WindowRequisicionSeleccionar extends Window {
             if (gridRequisicion.getSelectedItems().size() == 1) {
                 
                 seleccionado = true;
-                requisicion = gridRequisicion.getSelectedItems().iterator().next();
+                requisicion_selected = gridRequisicion.getSelectedItems().iterator().next();
                 close();
                 
             } else {

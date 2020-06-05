@@ -5,13 +5,17 @@
  */
 package com.rubik.erp.modulo.compras;
 
+import com.rubik.erp.config.DomainConfig;
+import com.rubik.erp.config.FactorySession;
 import com.rubik.erp.config._DocumentoEstados;
 import com.rubik.erp.domain.OrdenDeCompraDomain;
 import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.OrdenDeCompra;
+import com.rubik.erp.util.EmbedWindow;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.StreamResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -23,9 +27,14 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import de.steinwedel.messagebox.MessageBox;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperRunManager;
 import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
 
 /**
@@ -158,49 +167,106 @@ public class ComprasOrdenes extends Panel implements View {
         });
         
         btnPrint.addClickListener((event) -> {
+            if (gridOC.getSelectedItems().size() == 1) {
+                OrdenDeCompra ocTemp = gridOC.getSelectedItems().iterator().next();
+                if (!ocTemp.getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)) {
+
+                    try {
+                        final HashMap map = new HashMap();
+                        map.put("folio", ocTemp.getFolio());
+
+                        StreamResource.StreamSource source = new StreamResource.StreamSource() {
+                            @Override
+                            public InputStream getStream() {
+                                byte[] b = null;
+                                try {
+                                    InputStream fileStream = getClass().getClassLoader().getResourceAsStream("/reportes/OrdenesDeCompra.jasper");
+                                    b = JasperRunManager.runReportToPdf(fileStream, map, FactorySession.getRubikConnection(DomainConfig.getEnvironment()));
+
+                                } catch (JRException ex) {
+                                    ex.printStackTrace();
+                                }
+                                return new ByteArrayInputStream(b);
+                            }
+                        };
+
+                        StreamResource resource = new StreamResource(source, "OC_" + ocTemp.getFolio() + ".pdf");
+
+                        EmbedWindow windowPDF = new EmbedWindow(resource);
+                        windowPDF.setCaption("Orden de compra:");
+                        windowPDF.setHeight("100%");
+                        windowPDF.setWidth("80%");
+                        windowPDF.setMimeType("application/pdf");
+                        windowPDF.setDraggable(false);
+                        windowPDF.setResizable(false);
+                        windowPDF.setScrollLeft(15);
+                        windowPDF.center();
+                        windowPDF.setModal(true);
+                        windowPDF.insertEmbedded();
+                        getUI().addWindow(windowPDF);
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    MessageBox.createError()
+                            .withCaption("Error!")
+                            .withMessage("Debe Terminar la Orden de Compra para Imprimir el documento")
+                            .withRetryButton()
+                            .open();
+                }
+
+            } else {
+                MessageBox.createError()
+                        .withCaption("Error!")
+                        .withMessage("Debe seleccionar una Orden de Compra para poder imprimirla.")
+                        .withRetryButton()
+                        .open();
+            }
         });
         
         btnTerminar.addClickListener((event) -> {
-//            if (gridOC.getSelectedItems().size() == 1) {
-//                
-//                OrdenDeCompra requisicion = gridOC.getSelectedItems().iterator().next();
-//                
-//                if(requisicion.getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)){
-//                    
-//                    MessageBox.createQuestion()
-//                        .withCaption("Atencion!")
-//                        .withMessage("Desea que la Requisicion " + requisicion.getFolio() + ""
-//                                + " sea terminada? Ya no podrá realizar modificaciones.")
-//                        .withOkButton(() -> {
-//                            OrdenDeCompraDomain domain = new OrdenDeCompraDomain();
-//                            domain.RequisicionTerminar(requisicion);
-//                            
-//                            gridOC.setItems(getOrdenes());
-//                            
-//                            MessageBox.createInfo()
-//                                    .withCaption("Error!")
-//                                    .withMessage("Requisicion de Compra terminada correctamente. Aun esta pendiente de Autorizacion.")
-//                                    .withRetryButton()
-//                                    .open();
-//                        })
-//                        .withNoButton(() -> {})
-//                        .open();
-//                    
-//                }else{
-//                    MessageBox.createError()
-//                        .withCaption("Error!")
-//                        .withMessage("Con el estado " + requisicion.getEstado_doc() + " de la Requisicion " + requisicion.getFolio() + ""
-//                                + " no es posible pasar a Autorizacion.")
-//                        .withRetryButton()
-//                        .open();
-//                }
-//            } else {
-//                MessageBox.createError()
-//                        .withCaption("Error!")
-//                        .withMessage("Debe tener una Requisicion seleccionada para poder pasarla a Autorizacion.")
-//                        .withRetryButton()
-//                        .open();
-//            }
+            if (gridOC.getSelectedItems().size() == 1) {
+                
+                OrdenDeCompra ocTemp = gridOC.getSelectedItems().iterator().next();
+                
+                if(ocTemp.getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)){
+                    
+                    MessageBox.createQuestion()
+                        .withCaption("Atencion!")
+                        .withMessage("Desea que la Orden de Compra " + ocTemp.getFolio() + ""
+                                + " sea terminada? Ya no podrá realizar modificaciones.")
+                        .withOkButton(() -> {
+                            
+                            OrdenDeCompraDomain domain = new OrdenDeCompraDomain();
+                            domain.OrdenDeCompraTerminar(ocTemp);
+                            
+                            gridOC.setItems(getOrdenes());
+                            
+                            MessageBox.createInfo()
+                                    .withCaption("Error!")
+                                    .withMessage("Orden de Compra terminada correctamente. Aun esta pendiente de Autorizacion.")
+                                    .withRetryButton()
+                                    .open();
+                        })
+                        .withNoButton(() -> {})
+                        .open();
+                    
+                }else{
+                    MessageBox.createError()
+                        .withCaption("Error!")
+                        .withMessage("Con el estado " + ocTemp.getEstado_doc() + " de la Requisicion " + ocTemp.getFolio() + ""
+                                + " no es posible pasar a Autorizacion.")
+                        .withRetryButton()
+                        .open();
+                }
+            } else {
+                MessageBox.createError()
+                        .withCaption("Error!")
+                        .withMessage("Debe tener una Requisicion seleccionada para poder pasarla a Autorizacion.")
+                        .withRetryButton()
+                        .open();
+            }
         });
 
     }

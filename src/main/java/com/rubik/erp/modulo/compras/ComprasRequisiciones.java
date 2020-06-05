@@ -117,7 +117,11 @@ public class ComprasRequisiciones extends Panel implements View {
         gridRequisiciones.addColumn(Requisicion::getFolio).setCaption("FOLIO").setId("FOLIO").setWidth(120);
         gridRequisiciones.addColumn(Requisicion::getPrioridad).setCaption("PRIORIDAD").setId("PRIORIDAD").setWidth(135);
         gridRequisiciones.addColumn(Requisicion::getEstado_doc).setCaption("ESTADO").setId("ESTADO").setWidth(135);
-        gridRequisiciones.addColumn(Requisicion::getFecha_orden_compra).setCaption("FECHA OC").setId("FECHA OC").setWidth(120);
+        
+        Grid.Column<Requisicion, String> columnFechaOC = gridRequisiciones.addColumn(det -> ((det.getFecha_orden_compra() != null) ? dateFormat.format(det.getFecha_orden_compra()) : ""));
+        columnFechaOC.setCaption("FECHA OC");
+        columnFechaOC.setId("FECHA OC");
+        columnFechaOC.setWidth(120);
         gridRequisiciones.addColumn(Requisicion::getFolio_orden_compra).setCaption("FOLIO OC").setId("FOLIO OC").setWidth(120);
         gridRequisiciones.addColumn(Requisicion::getRazon_cancelar).setCaption("CANCELACION").setId("CANCELACION");
 
