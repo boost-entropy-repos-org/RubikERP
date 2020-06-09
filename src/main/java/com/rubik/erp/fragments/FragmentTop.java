@@ -6,6 +6,7 @@
 package com.rubik.erp.fragments;
 
 import com.rubik.erp.model.Empleado;
+import com.rubik.erp.modulo.compras.ComprasMonitorOrdenes;
 import com.rubik.erp.modulo.compras.ComprasMonitorRequisiciones;
 import com.rubik.erp.modulo.compras.ComprasOrdenes;
 import com.rubik.erp.modulo.compras.ComprasProductos;
@@ -218,11 +219,9 @@ public class FragmentTop extends HorizontalLayout {
                 case "Monitoreo de Requisiciones":
                     getUI().getNavigator().navigateTo(ComprasMonitorRequisiciones.NAME);
                     break;
-//                case "Monitoreo OC":
-//                    getUI().getNavigator().navigateTo(ViewComprasMonitoreoOC.NAME);
-//                    break;//                case "Monitoreo OC":
-//                    getUI().getNavigator().navigateTo(ViewComprasMonitoreoOC.NAME);
-//                    break;
+                case "Monitoreo OC":
+                    getUI().getNavigator().navigateTo(ComprasMonitorOrdenes.NAME);
+                    break;
                     
 // ------------- COMPRAS ---------- REPORTES DE COMPRA
 //                case "Reporte de Requisiciones":

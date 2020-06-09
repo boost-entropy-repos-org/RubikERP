@@ -616,13 +616,6 @@ Tel. +52 (833) 3992231, www.impeller.com.mx]]></text>
 				<textFieldExpression><![CDATA[$F{pedido}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="3" y="223" width="102" height="15" uuid="d9723d2a-e56a-491f-8ea2-cd77c7a5163f"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="7"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{comprador}]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="110" y="223" width="45" height="15" uuid="49cec80d-4bb3-4ecc-b14c-af44beb2fb41"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -657,12 +650,19 @@ Tel. +52 (833) 3992231, www.impeller.com.mx]]></text>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cotizacion_proveedor}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="0" y="223" width="105" height="15" uuid="5cc81fa3-b204-4ecb-a16b-852732c01a1b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{solicita}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<columnHeader>
 		<band height="15" splitType="Stretch">
 			<rectangle>
-				<reportElement mode="Transparent" x="-1" y="0" width="572" height="15" uuid="73bcffbf-c140-4b6e-be21-a3c26f10de5d"/>
+				<reportElement mode="Transparent" x="0" y="0" width="571" height="15" uuid="73bcffbf-c140-4b6e-be21-a3c26f10de5d"/>
 			</rectangle>
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="0" width="40" height="15" backcolor="#CCCCCC" uuid="810bee7b-8507-46dd-a20c-dbc82880fc32"/>
