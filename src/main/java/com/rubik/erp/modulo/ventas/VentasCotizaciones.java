@@ -5,13 +5,17 @@
  */
 package com.rubik.erp.modulo.ventas;
 
+import com.rubik.erp.config.DomainConfig;
+import com.rubik.erp.config.FactorySession;
 import com.rubik.erp.config._DocumentoEstados;
 import com.rubik.erp.domain.CotizacionVentaDomain;
 import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.CotizacionVenta;
 import com.rubik.erp.model.Empleado;
+import com.rubik.erp.util.EmbedWindow;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.StreamResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -23,9 +27,14 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import de.steinwedel.messagebox.MessageBox;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperRunManager;
 import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
 
 /**
@@ -110,7 +119,7 @@ public class VentasCotizaciones  extends Panel implements View {
         gridCotizaciones.addColumn(CotizacionVenta::getIva).setCaption("IVA").setId("IVA").setWidth(120);
         gridCotizaciones.addColumn(CotizacionVenta::getTotal).setCaption("TOTAL").setId("TOTAL").setWidth(120);
 
-        gridCotizaciones.setItems(getOrdenes());
+        gridCotizaciones.setItems(getCotizacionesVentas());
         gridCotizaciones.setSelectionMode(Grid.SelectionMode.SINGLE);
         gridCotizaciones.setSizeFull();
         gridCotizaciones.setHeight("500px");
@@ -120,7 +129,7 @@ public class VentasCotizaciones  extends Panel implements View {
             windows.center();
             windows.setModal(true);
             windows.addCloseListener(ev -> {
-                gridCotizaciones.setItems(getOrdenes());
+                gridCotizaciones.setItems(getCotizacionesVentas());
             });
             getUI().addWindow(windows);
         });
@@ -132,7 +141,7 @@ public class VentasCotizaciones  extends Panel implements View {
                     windows.center();
                     windows.setModal(true);
                     windows.addCloseListener((e) -> {
-                        gridCotizaciones.setItems(getOrdenes());
+                        gridCotizaciones.setItems(getCotizacionesVentas());
                     });
                     getUI().addWindow(windows);
                 }else{
@@ -152,67 +161,67 @@ public class VentasCotizaciones  extends Panel implements View {
         });
         
         btnSearch.addClickListener((event) -> {
-            gridCotizaciones.setItems(getOrdenes());
+            gridCotizaciones.setItems(getCotizacionesVentas());
             txtBusqueda.setValue("");
         });
         
         btnPrint.addClickListener((event) -> {
-//            if (gridCotizaciones.getSelectedItems().size() == 1) {
-//                OrdenDeCompra ocTemp = gridCotizaciones.getSelectedItems().iterator().next();
-//                if (!ocTemp.getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)) {
-//
-//                    try {
-//                        final HashMap map = new HashMap();
-//                        map.put("folio", ocTemp.getFolio());
-//
-//                        StreamResource.StreamSource source = new StreamResource.StreamSource() {
-//                            @Override
-//                            public InputStream getStream() {
-//                                byte[] b = null;
-//                                try {
-//                                    InputStream fileStream = getClass().getClassLoader().getResourceAsStream("/reportes/OrdenesDeCompra.jasper");
-//                                    b = JasperRunManager.runReportToPdf(fileStream, map, FactorySession.getRubikConnection(DomainConfig.getEnvironment()));
-//
-//                                } catch (JRException ex) {
-//                                    ex.printStackTrace();
-//                                }
-//                                return new ByteArrayInputStream(b);
-//                            }
-//                        };
-//
-//                        StreamResource resource = new StreamResource(source, "OC_" + ocTemp.getFolio() + ".pdf");
-//
-//                        EmbedWindow windowPDF = new EmbedWindow(resource);
-//                        windowPDF.setCaption("Orden de compra:");
-//                        windowPDF.setHeight("100%");
-//                        windowPDF.setWidth("80%");
-//                        windowPDF.setMimeType("application/pdf");
-//                        windowPDF.setDraggable(false);
-//                        windowPDF.setResizable(false);
-//                        windowPDF.setScrollLeft(15);
-//                        windowPDF.center();
-//                        windowPDF.setModal(true);
-//                        windowPDF.insertEmbedded();
-//                        getUI().addWindow(windowPDF);
-//
-//                    } catch (Exception ex) {
-//                        ex.printStackTrace();
-//                    }
-//                } else {
-//                    MessageBox.createError()
-//                            .withCaption("Error!")
-//                            .withMessage("Debe Terminar la Orden de Compra para Imprimir el documento")
-//                            .withRetryButton()
-//                            .open();
-//                }
-//
-//            } else {
-//                MessageBox.createError()
-//                        .withCaption("Error!")
-//                        .withMessage("Debe seleccionar una Orden de Compra para poder imprimirla.")
-//                        .withRetryButton()
-//                        .open();
-//            }
+            if (gridCotizaciones.getSelectedItems().size() == 1) {
+                CotizacionVenta ocTemp = gridCotizaciones.getSelectedItems().iterator().next();
+                if (!ocTemp.getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)) {
+
+                    try {
+                        final HashMap map = new HashMap();
+                        map.put("folio", ocTemp.getFolio());
+
+                        StreamResource.StreamSource source = new StreamResource.StreamSource() {
+                            @Override
+                            public InputStream getStream() {
+                                byte[] b = null;
+                                try {
+                                    InputStream fileStream = getClass().getClassLoader().getResourceAsStream("/reportes/CotizacionDeVenta.jasper");
+                                    b = JasperRunManager.runReportToPdf(fileStream, map, FactorySession.getRubikConnection(DomainConfig.getEnvironment()));
+
+                                } catch (JRException ex) {
+                                    ex.printStackTrace();
+                                }
+                                return new ByteArrayInputStream(b);
+                            }
+                        };
+
+                        StreamResource resource = new StreamResource(source, "OC_" + ocTemp.getFolio() + ".pdf");
+
+                        EmbedWindow windowPDF = new EmbedWindow(resource);
+                        windowPDF.setCaption("Cotizacion de Venta:");
+                        windowPDF.setHeight("100%");
+                        windowPDF.setWidth("80%");
+                        windowPDF.setMimeType("application/pdf");
+                        windowPDF.setDraggable(false);
+                        windowPDF.setResizable(false);
+                        windowPDF.setScrollLeft(15);
+                        windowPDF.center();
+                        windowPDF.setModal(true);
+                        windowPDF.insertEmbedded();
+                        getUI().addWindow(windowPDF);
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    MessageBox.createError()
+                            .withCaption("Error!")
+                            .withMessage("Debe Terminar la Cotizacion de Venta para Imprimir el documento")
+                            .withRetryButton()
+                            .open();
+                }
+
+            } else {
+                MessageBox.createError()
+                        .withCaption("Error!")
+                        .withMessage("Debe seleccionar una Cotizacion de Venta para poder imprimirla.")
+                        .withRetryButton()
+                        .open();
+            }
         });
         
         btnTerminar.addClickListener((event) -> {
@@ -228,10 +237,12 @@ public class VentasCotizaciones  extends Panel implements View {
                                 + " sea terminada? Ya no podrá realizar modificaciones.")
                         .withOkButton(() -> {
                             
-                            CotizacionVentaDomain domain = new CotizacionVentaDomain();
-                            domain.OrdenDeCompraTerminar(cotVenta);
+                            cotVenta.setEstado_doc(_DocumentoEstados.TERMINADO);
                             
-                            gridCotizaciones.setItems(getOrdenes());
+                            CotizacionVentaDomain domain = new CotizacionVentaDomain();
+                            domain.CotizacionVentaUpdate(cotVenta);
+                            
+                            gridCotizaciones.setItems(getCotizacionesVentas());
                             
                             MessageBox.createInfo()
                                     .withCaption("Error!")
@@ -265,7 +276,7 @@ public class VentasCotizaciones  extends Panel implements View {
     public void enter(ViewChangeListener.ViewChangeEvent event) {
     }
 
-    public List getOrdenes() {
+    public List getCotizacionesVentas() {
         String strWhere = " activo = 1 ";
 
         if (!"".equals(txtBusqueda.getValue())) {

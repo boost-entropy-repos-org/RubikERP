@@ -5,6 +5,7 @@
  */
 package com.rubik.erp.modulo.ventas;
 
+import com.rubik.erp.config.DomainConfig;
 import com.rubik.erp.config._CONTABILIDAD;
 import com.rubik.erp.config._DocumentoEstados;
 import com.rubik.erp.config._DocumentoTipos;
@@ -273,6 +274,25 @@ public class WindowVentasCotizaciones extends Window {
                 cotizacionDeVenta.setTipo_documento(_DocumentoTipos.COTIZACION_DE_VENTA);
                 cotizacionDeVenta.setTipo_archivo("PDF");
                 cotizacionDeVenta.setActivo(true);
+                cotizacionDeVenta.setCliente_id(cboCliente.getValue().getId());
+                cotizacionDeVenta.setCliente(cboCliente.getValue().getRazon_social());
+                cotizacionDeVenta.setCliente_rfc(cboCliente.getValue().getRfc());
+                
+                cotizacionDeVenta.setEmisor_nombre(DomainConfig.EMPRESA.getRazon_social());
+                cotizacionDeVenta.setEmisor_rfc(DomainConfig.EMPRESA.getRfc());
+                cotizacionDeVenta.setEmisor_calle(DomainConfig.EMPRESA.getDireccion());
+                cotizacionDeVenta.setEmisor_municipio(DomainConfig.EMPRESA.getCiudad());
+                cotizacionDeVenta.setEmisor_estado(DomainConfig.EMPRESA.getEstado());
+                cotizacionDeVenta.setEmisor_pais(DomainConfig.EMPRESA.getPais());
+                cotizacionDeVenta.setEmisor_codigo_postal(DomainConfig.EMPRESA.getCp());
+                
+                cotizacionDeVenta.setReceptor_nombre(cboCliente.getValue().getRazon_social());
+                cotizacionDeVenta.setReceptor_rfc(cboCliente.getValue().getRfc());
+                cotizacionDeVenta.setReceptor_calle(cboCliente.getValue().getDomicilio());
+                cotizacionDeVenta.setReceptor_municipio(cboCliente.getValue().getCiudad());
+                cotizacionDeVenta.setReceptor_estado(cboCliente.getValue().getEstado());
+                cotizacionDeVenta.setReceptor_pais(cboCliente.getValue().getPais());
+                cotizacionDeVenta.setReceptor_codigo_postal(cboCliente.getValue().getCp());
                 
                 CotizacionVentaDomain service = new CotizacionVentaDomain();
 
