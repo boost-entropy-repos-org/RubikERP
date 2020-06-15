@@ -91,7 +91,118 @@ CREATE TABLE `configuracion` (
 
 /*Data for the table `configuracion` */
 
-insert  into `configuracion`(`id`,`serie_requisicion`,`folio_requisicion`,`serie_orden_compra`,`folio_orden_compra`,`serie_cotizacion`,`folio_cotizacion`,`serie_remision`,`folio_remision`,`serie_factura`,`folio_factura`,`autocompletar_totales`) values (1,'RQ',6,'OC',3,'CT',0,'RM',0,'FA',0,0);
+insert  into `configuracion`(`id`,`serie_requisicion`,`folio_requisicion`,`serie_orden_compra`,`folio_orden_compra`,`serie_cotizacion`,`folio_cotizacion`,`serie_remision`,`folio_remision`,`serie_factura`,`folio_factura`,`autocompletar_totales`) values (1,'RQ',6,'OC',3,'CT',1,'RM',0,'FA',0,0);
+
+/*Table structure for table `cotizacion_venta` */
+
+DROP TABLE IF EXISTS `cotizacion_venta`;
+
+CREATE TABLE `cotizacion_venta` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `fecha_elaboracion` datetime DEFAULT NULL,
+  `fecha_modificacion` datetime DEFAULT NULL,
+  `empresa_id` int(10) DEFAULT NULL,
+  `empresa` varchar(100) DEFAULT NULL,
+  `unidad_id` int(10) DEFAULT NULL,
+  `unidad` varchar(100) DEFAULT NULL,
+  `usuario_id` int(10) DEFAULT NULL,
+  `usuario` varchar(100) DEFAULT NULL,
+  `estado_doc` varchar(100) DEFAULT NULL,
+  `estado` varchar(100) DEFAULT NULL,
+  `folio` varchar(100) DEFAULT NULL,
+  `serie` varchar(100) DEFAULT NULL,
+  `observaciones` varchar(100) DEFAULT NULL,
+  `tipo_documento` varchar(100) DEFAULT NULL,
+  `tipo_archivo` varchar(100) DEFAULT NULL,
+  `razon_cancelar` varchar(100) DEFAULT NULL,
+  `cliente_id` int(10) DEFAULT NULL,
+  `cliente` varchar(100) DEFAULT NULL,
+  `cliente_rfc` varchar(100) DEFAULT NULL,
+  `metodo_pago` varchar(100) DEFAULT NULL,
+  `moneda` varchar(100) DEFAULT NULL,
+  `tipo_cambio` double(8,2) DEFAULT NULL,
+  `importe` double(15,2) DEFAULT NULL,
+  `descuento` double(10,1) DEFAULT NULL,
+  `subtotal` double(15,2) DEFAULT NULL,
+  `iva` double(10,1) DEFAULT NULL,
+  `total` double(15,2) DEFAULT NULL,
+  `porc_iva` int(10) DEFAULT NULL,
+  `importe_letra` varchar(100) DEFAULT NULL,
+  `activo` tinyint(1) DEFAULT '1',
+  `emisor_rfc` varchar(100) DEFAULT NULL,
+  `emisor_nombre` varchar(100) DEFAULT NULL,
+  `emisor_calle` varchar(100) DEFAULT NULL,
+  `emisor_numero_exterior` varchar(100) DEFAULT NULL,
+  `emisor_numero_interior` varchar(100) DEFAULT NULL,
+  `emisor_codigo_postal` varchar(100) DEFAULT NULL,
+  `emisor_colonia` varchar(100) DEFAULT NULL,
+  `emisor_municipio` varchar(100) DEFAULT NULL,
+  `emisor_estado` varchar(100) DEFAULT NULL,
+  `emisor_pais` varchar(100) DEFAULT NULL,
+  `receptor_nombre` varchar(100) DEFAULT NULL,
+  `receptor_calle` varchar(100) DEFAULT NULL,
+  `receptor_numero_exterior` varchar(100) DEFAULT NULL,
+  `receptor_numero_interior` varchar(100) DEFAULT NULL,
+  `receptor_codigo_postal` varchar(100) DEFAULT NULL,
+  `receptor_colonia` varchar(100) DEFAULT NULL,
+  `receptor_municipio` varchar(100) DEFAULT NULL,
+  `receptor_estado` varchar(100) DEFAULT NULL,
+  `receptor_pais` varchar(100) DEFAULT NULL,
+  `vendedor_id` int(10) DEFAULT NULL,
+  `vendedor` varchar(100) DEFAULT NULL,
+  `dias_caduca` int(10) DEFAULT NULL,
+  `condiciones_pago` varchar(100) DEFAULT NULL,
+  `condiciones_cotizacion` varchar(100) DEFAULT NULL,
+  `tiempo_tentrega` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+/*Data for the table `cotizacion_venta` */
+
+insert  into `cotizacion_venta`(`id`,`fecha_elaboracion`,`fecha_modificacion`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`estado_doc`,`estado`,`folio`,`serie`,`observaciones`,`tipo_documento`,`tipo_archivo`,`razon_cancelar`,`cliente_id`,`cliente`,`cliente_rfc`,`metodo_pago`,`moneda`,`tipo_cambio`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`porc_iva`,`importe_letra`,`activo`,`emisor_rfc`,`emisor_nombre`,`emisor_calle`,`emisor_numero_exterior`,`emisor_numero_interior`,`emisor_codigo_postal`,`emisor_colonia`,`emisor_municipio`,`emisor_estado`,`emisor_pais`,`receptor_nombre`,`receptor_calle`,`receptor_numero_exterior`,`receptor_numero_interior`,`receptor_codigo_postal`,`receptor_colonia`,`receptor_municipio`,`receptor_estado`,`receptor_pais`,`vendedor_id`,`vendedor`,`dias_caduca`,`condiciones_pago`,`condiciones_cotizacion`,`tiempo_tentrega`) values (1,'2020-06-15 01:35:08','2020-06-15 01:35:08',0,'',0,'',2,'LUIS HUMBERTO GOMEZ TIBURCIO','EN PROCESO','','CT00001','','','COTIZACION DE VENTA','PDF','',0,'','','EFECTIVO','PESOS',1.00,800.00,0.0,800.00,128.0,928.00,16,'NOVECIENTOS VEINTE Y OCHO Y 0/100 PESOS MEXICANOS.',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'LUIS HUMBERTO GOMEZ TIBURCIO',7,'CONTADO','','3232');
+
+/*Table structure for table `cotizacion_venta_det` */
+
+DROP TABLE IF EXISTS `cotizacion_venta_det`;
+
+CREATE TABLE `cotizacion_venta_det` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `folio` varchar(100) DEFAULT NULL,
+  `documento_id` int(10) DEFAULT NULL,
+  `empresa_id` int(10) DEFAULT NULL,
+  `empresa` varchar(100) DEFAULT NULL,
+  `unidad_id` int(10) DEFAULT NULL,
+  `unidad` varchar(100) DEFAULT NULL,
+  `usuario_id` int(10) DEFAULT NULL,
+  `usuario` varchar(100) DEFAULT NULL,
+  `no_partida` int(10) DEFAULT NULL,
+  `fecha_alta` datetime DEFAULT NULL,
+  `cantidad` int(10) DEFAULT NULL,
+  `producto_id` int(10) DEFAULT NULL,
+  `descripcion` varchar(100) DEFAULT NULL,
+  `unidad_medida` varchar(100) DEFAULT NULL,
+  `porc_iva` int(10) DEFAULT NULL,
+  `precio_unitario` double DEFAULT NULL,
+  `importe` double DEFAULT NULL,
+  `descuento` double DEFAULT NULL,
+  `subtotal` double DEFAULT NULL,
+  `iva` double DEFAULT NULL,
+  `total` double DEFAULT NULL,
+  `servicio` tinyint(1) DEFAULT '1',
+  `no_parte` varchar(100) DEFAULT NULL,
+  `no_serie` varchar(100) DEFAULT NULL,
+  `modelo` varchar(100) DEFAULT NULL,
+  `marca` varchar(100) DEFAULT NULL,
+  `codigo_proveedor` varchar(100) DEFAULT NULL,
+  `codigo_interno` varchar(100) DEFAULT NULL,
+  `facturada` tinyint(1) DEFAULT '1',
+  `entregada` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
+/*Data for the table `cotizacion_venta_det` */
+
+insert  into `cotizacion_venta_det`(`id`,`folio`,`documento_id`,`empresa_id`,`empresa`,`unidad_id`,`unidad`,`usuario_id`,`usuario`,`no_partida`,`fecha_alta`,`cantidad`,`producto_id`,`descripcion`,`unidad_medida`,`porc_iva`,`precio_unitario`,`importe`,`descuento`,`subtotal`,`iva`,`total`,`servicio`,`no_parte`,`no_serie`,`modelo`,`marca`,`codigo_proveedor`,`codigo_interno`,`facturada`,`entregada`) values (1,'',0,0,'',0,'',2,'LUIS HUMBERTO GOMEZ TIBURCIO',0,'2020-06-15 00:51:43',1,2,'PRODUCTO2','PIEZA',NULL,800,NULL,NULL,NULL,NULL,NULL,0,'343','WR3R3','AW','34T4',NULL,'2',0,0),(2,'',0,0,'',0,'',2,'LUIS HUMBERTO GOMEZ TIBURCIO',0,'2020-06-15 01:04:10',1,2,'PRODUCTO2','PIEZA',NULL,800,NULL,NULL,NULL,NULL,NULL,0,'343','WR3R3','AW','34T4',NULL,'2',0,0),(3,'',0,0,'',0,'',2,'LUIS HUMBERTO GOMEZ TIBURCIO',0,'2020-06-15 01:14:35',1,1,'PRODUCTO 1','PIEZA',NULL,5000,NULL,NULL,NULL,NULL,NULL,0,'23232','23232','1ERW42','23WWWWW',NULL,'1',0,0),(4,'',0,0,'',0,'',2,'LUIS HUMBERTO GOMEZ TIBURCIO',0,'2020-06-15 01:17:44',1,3,'PRODUCTO 3 TREES','PIEZA',NULL,1550,NULL,NULL,NULL,NULL,NULL,0,'34343','434','ASDQ3234','343',NULL,'3',0,0),(5,'',0,0,'',0,'',2,'LUIS HUMBERTO GOMEZ TIBURCIO',0,'2020-06-15 01:35:13',1,2,'PRODUCTO2','PIEZA',NULL,800,NULL,NULL,NULL,NULL,NULL,0,'343','WR3R3','AW','34T4',NULL,'2',0,0),(6,'CT00001',1,0,'',0,'',2,'LUIS HUMBERTO GOMEZ TIBURCIO',0,'2020-06-15 01:35:13',1,2,'PRODUCTO2','PIEZA',NULL,800,800,NULL,NULL,NULL,NULL,0,'343','WR3R3','AW','34T4',NULL,'2',0,0);
 
 /*Table structure for table `empleado` */
 

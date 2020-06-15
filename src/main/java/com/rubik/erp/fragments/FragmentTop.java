@@ -16,6 +16,7 @@ import com.rubik.erp.modulo.configuracion.ViewConfiguracion;
 import com.rubik.erp.modulo.generic.Login;
 import com.rubik.erp.modulo.rh.Empleados;
 import com.rubik.erp.modulo.ventas.VentasClientes;
+import com.rubik.erp.modulo.ventas.VentasCotizaciones;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
@@ -41,22 +42,22 @@ public class FragmentTop extends HorizontalLayout {
     Command actionMenu;
     
     MenuBar.MenuItem menuCompras;
-    MenuBar.MenuItem subProveedor;
-    MenuBar.MenuItem subProducto;
-    MenuBar.MenuItem subRequisiciones;
-    MenuBar.MenuItem subOrdenDeCompra;
-    MenuBar.MenuItem subMonitoreoRequisiciones;
-    MenuBar.MenuItem subMonitoreoOC;
-    MenuBar.MenuItem submReportesCompras;
-    MenuBar.MenuItem subReporteRequisicion;
-    MenuBar.MenuItem subReporteOrdenDeCompra;
+    MenuBar.MenuItem subComprasProveedor;
+    MenuBar.MenuItem subComprasProducto;
+    MenuBar.MenuItem subComprasRequisiciones;
+    MenuBar.MenuItem subComprasOrdenDeCompra;
+    MenuBar.MenuItem subComprasMonitoreoRequisiciones;
+    MenuBar.MenuItem subComprasMonitoreoOC;
+    MenuBar.MenuItem subComprasReportesCompras;
+    MenuBar.MenuItem subComprasReporteRequisicion;
+    MenuBar.MenuItem subComprasReporteOrdenDeCompra;
     
-    MenuBar.MenuItem menuComercial;
-    MenuBar.MenuItem subClientes;
-    MenuBar.MenuItem subProspectoClientes;
+    MenuBar.MenuItem menuVentas;
+    MenuBar.MenuItem subVentasClientes;
+    MenuBar.MenuItem subVentasCotizaciones;
     
     MenuBar.MenuItem menuRecursosHumanos;
-    MenuBar.MenuItem subEmpleados;
+    MenuBar.MenuItem subRHEmpleados;
 
     MenuBar.MenuItem menuConfiguracion;
     MenuBar.MenuItem subConfiguracion;
@@ -119,52 +120,52 @@ public class FragmentTop extends HorizontalLayout {
         menuCompras = menubar.addItem("Compras", null);
         menuCompras.setIcon(Fam3SilkIcon.MONEY_ADD);
         
-        subProveedor = menuCompras.addItem("Proveedores", actionMenu);
-        subProveedor.setIcon(Fam3SilkIcon.USER_SUIT);
+        subComprasProveedor = menuCompras.addItem("Proveedores", actionMenu);
+        subComprasProveedor.setIcon(Fam3SilkIcon.USER_SUIT);
         
-        subProducto = menuCompras.addItem("Productos", actionMenu);
-        subProducto.setIcon(Fam3SilkIcon.PACKAGE);
+        subComprasProducto = menuCompras.addItem("Productos", actionMenu);
+        subComprasProducto.setIcon(Fam3SilkIcon.PACKAGE);
 
         menuCompras.addSeparator();
 
-        subRequisiciones = menuCompras.addItem("Requisiciones", actionMenu);
-        subRequisiciones.setIcon(Fam3SilkIcon.PAGE);
+        subComprasRequisiciones = menuCompras.addItem("Requisiciones", actionMenu);
+        subComprasRequisiciones.setIcon(Fam3SilkIcon.PAGE);
 
-        subOrdenDeCompra = menuCompras.addItem("Ordenes de Compra", actionMenu);
-        subOrdenDeCompra.setIcon(Fam3SilkIcon.PAGE_GO);
+        subComprasOrdenDeCompra = menuCompras.addItem("Ordenes de Compra", actionMenu);
+        subComprasOrdenDeCompra.setIcon(Fam3SilkIcon.PAGE_GO);
                 
         menuCompras.addSeparator();
         
-        subMonitoreoRequisiciones = menuCompras.addItem("Monitoreo de Requisiciones", actionMenu);
-        subMonitoreoRequisiciones.setIcon(Fam3SilkIcon.PAGE_WHITE_PAINTBRUSH);
+        subComprasMonitoreoRequisiciones = menuCompras.addItem("Monitoreo de Requisiciones", actionMenu);
+        subComprasMonitoreoRequisiciones.setIcon(Fam3SilkIcon.PAGE_WHITE_PAINTBRUSH);
         
-        subMonitoreoOC = menuCompras.addItem("Monitoreo OC", actionMenu);
-        subMonitoreoOC.setIcon(Fam3SilkIcon.BOOK_GO);
+        subComprasMonitoreoOC = menuCompras.addItem("Monitoreo OC", actionMenu);
+        subComprasMonitoreoOC.setIcon(Fam3SilkIcon.BOOK_GO);
         
         menuCompras.addSeparator();
 
-        submReportesCompras = menuCompras.addItem("Reportes de Compras", actionMenu);
-        submReportesCompras.setIcon(Fam3SilkIcon.REPORT);
+        subComprasReportesCompras = menuCompras.addItem("Reportes de Compras", actionMenu);
+        subComprasReportesCompras.setIcon(Fam3SilkIcon.REPORT);
 
-        subReporteRequisicion = submReportesCompras.addItem("Reporte de Requisiciones", actionMenu);
-        subReporteRequisicion.setIcon(Fam3SilkIcon.LAYOUT_EDIT);
+        subComprasReporteRequisicion = subComprasReportesCompras.addItem("Reporte de Requisiciones", actionMenu);
+        subComprasReporteRequisicion.setIcon(Fam3SilkIcon.LAYOUT_EDIT);
 
-        subReporteOrdenDeCompra = submReportesCompras.addItem("Reporte de Ordenes de Compra", actionMenu);
-        subReporteOrdenDeCompra.setIcon(Fam3SilkIcon.LAYOUT_EDIT);
+        subComprasReporteOrdenDeCompra = subComprasReportesCompras.addItem("Reporte de Ordenes de Compra", actionMenu);
+        subComprasReporteOrdenDeCompra.setIcon(Fam3SilkIcon.LAYOUT_EDIT);
         
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
 //----------------------------------------------------------------- VENTAS
-        menuComercial = menubar.addItem("Ventas", null);
-        menuComercial.setIcon(Fam3SilkIcon.FOLDER_GO);
+        menuVentas = menubar.addItem("Ventas", null);
+        menuVentas.setIcon(Fam3SilkIcon.FOLDER_GO);
 
-        subClientes = menuComercial.addItem("Clientes", actionMenu);
-        subClientes.setIcon(Fam3SilkIcon.USER_SUIT);
+        subVentasClientes = menuVentas.addItem("Clientes", actionMenu);
+        subVentasClientes.setIcon(Fam3SilkIcon.USER_SUIT);
         
-        menuComercial.addSeparator();
+        menuVentas.addSeparator();
         
-        subProspectoClientes = menuComercial.addItem("Prospecto de Clientes", actionMenu);
-        subProspectoClientes.setIcon(Fam3SilkIcon.GROUP_LINK);
+        subVentasCotizaciones = menuVentas.addItem("Cotizaciones de Venta", actionMenu);
+        subVentasCotizaciones.setIcon(Fam3SilkIcon.PAGE_WHITE_TEXT);
         
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
@@ -172,8 +173,8 @@ public class FragmentTop extends HorizontalLayout {
         menuRecursosHumanos = menubar.addItem("R. H.", null);
         menuRecursosHumanos.setIcon(Fam3SilkIcon.GROUP);
 
-        subEmpleados = menuRecursosHumanos.addItem("Empleados", actionMenu);
-        subEmpleados.setIcon(Fam3SilkIcon.USER);
+        subRHEmpleados = menuRecursosHumanos.addItem("Empleados", actionMenu);
+        subRHEmpleados.setIcon(Fam3SilkIcon.USER);
         
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
@@ -235,10 +236,10 @@ public class FragmentTop extends HorizontalLayout {
                 case "Clientes":
                     getUI().getNavigator().navigateTo(VentasClientes.NAME);
                     break;
-//                    
-//                case "Prospecto de Clientes":
-//                    getUI().getNavigator().navigateTo(ViewComerciaClienteslProspecto.NAME);
-//                    break;
+                    
+                case "Cotizaciones de Venta":
+                    getUI().getNavigator().navigateTo(VentasCotizaciones.NAME);
+                    break;
                     
  // ------------- RECURSOS HUMANOS
                 case "Empleados":

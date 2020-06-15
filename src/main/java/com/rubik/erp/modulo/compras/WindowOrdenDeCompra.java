@@ -58,7 +58,7 @@ import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
  *
  * @author Dev
  */
-public class WindowOrdenDeCompra  extends Window {
+public class WindowOrdenDeCompra extends Window {
     
     Empleado empleado = (Empleado) VaadinSession.getCurrent().getSession().getAttribute("USUARIO_ACTIVO");
     
@@ -316,7 +316,7 @@ public class WindowOrdenDeCompra  extends Window {
 
                 if (isEdit) {
                     ordenDeCompra.setFecha_modificacion(new Date());
-                    service.OrdenDeCompraInsert(ordenDeCompra);
+                    service.OrdenDeCompraUpdate(ordenDeCompra);
                     
                 } else {
                     ordenDeCompra.setFolio(getFolio());

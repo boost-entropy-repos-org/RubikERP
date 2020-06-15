@@ -5,6 +5,8 @@
  */
 package com.rubik.erp.modulo.ventas;
 
+import com.rubik.erp.config._DocumentoEstados;
+import com.rubik.erp.domain.CotizacionVentaDomain;
 import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.CotizacionVenta;
 import com.rubik.erp.model.Empleado;
@@ -20,6 +22,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import de.steinwedel.messagebox.MessageBox;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +41,7 @@ public class VentasCotizaciones  extends Panel implements View {
 
     TextField txtBusqueda = new TextField();
     
-    Grid<CotizacionVenta> gridOC = new Grid<>();
+    Grid<CotizacionVenta> gridCotizaciones = new Grid<>();
     DateField txtFechaIni = new DateField();
     DateField txtFechaFin = new DateField();
     Button btnSearch = new Button(Fam3SilkIcon.MAGNIFIER);
@@ -65,7 +68,7 @@ public class VentasCotizaciones  extends Panel implements View {
         hLayoutAux.setComponentAlignment(hLayoutAux.getComponent(1), Alignment.MIDDLE_CENTER);
         hLayoutAux.setComponentAlignment(hLayoutAux.getComponent(3), Alignment.MIDDLE_CENTER);
         
-        Label lblTitulo = new Label("ORDENES DE COMPRA") {
+        Label lblTitulo = new Label("COTIZACIONES DE VENTA") {
             {
                 setStyleName("h1");
             }
@@ -77,7 +80,7 @@ public class VentasCotizaciones  extends Panel implements View {
                 lblTitulo,
                 hLayoutAux,
                 hLayoutAux2,
-                gridOC);
+                gridCotizaciones);
         
         container.setComponentAlignment(container.getComponent(0), Alignment.MIDDLE_CENTER);
         container.setComponentAlignment(container.getComponent(1), Alignment.MIDDLE_CENTER);
@@ -94,68 +97,68 @@ public class VentasCotizaciones  extends Panel implements View {
         txtFechaFin.setWidth("115");
         
         txtBusqueda.setWidth("200");
-        txtBusqueda.setPlaceholder("Folio de OC");      
+        txtBusqueda.setPlaceholder("Folio Cotizacion");      
 
-        Grid.Column<CotizacionVenta, String> columnFecha = gridOC.addColumn(det -> ((det.getFecha_elaboracion()!= null) ? dateFormat.format(det.getFecha_elaboracion()) : ""));
+        Grid.Column<CotizacionVenta, String> columnFecha = gridCotizaciones.addColumn(det -> ((det.getFecha_elaboracion()!= null) ? dateFormat.format(det.getFecha_elaboracion()) : ""));
         columnFecha.setCaption("FECHA");
         columnFecha.setId("FECHA");
         columnFecha.setWidth(120);
-        gridOC.addColumn(CotizacionVenta::getFolio).setCaption("FOLIO").setId("FOLIO").setWidth(120);
-        gridOC.addColumn(CotizacionVenta::getEstado_doc).setCaption("ESTADO").setId("ESTADO").setWidth(130);
-        gridOC.addColumn(CotizacionVenta::getCliente).setCaption("PROVEEDOR").setId("PROVEEDOR");
-        gridOC.addColumn(CotizacionVenta::getImporte).setCaption("IMPORTE").setId("IMPORTE").setWidth(120);
-        gridOC.addColumn(CotizacionVenta::getIva).setCaption("IVA").setId("IVA").setWidth(120);
-        gridOC.addColumn(CotizacionVenta::getTotal).setCaption("TOTAL").setId("TOTAL").setWidth(120);
+        gridCotizaciones.addColumn(CotizacionVenta::getFolio).setCaption("FOLIO").setId("FOLIO").setWidth(120);
+        gridCotizaciones.addColumn(CotizacionVenta::getEstado_doc).setCaption("ESTADO").setId("ESTADO").setWidth(130);
+        gridCotizaciones.addColumn(CotizacionVenta::getCliente).setCaption("CLIENTE").setId("CLIENTE");
+        gridCotizaciones.addColumn(CotizacionVenta::getImporte).setCaption("IMPORTE").setId("IMPORTE").setWidth(120);
+        gridCotizaciones.addColumn(CotizacionVenta::getIva).setCaption("IVA").setId("IVA").setWidth(120);
+        gridCotizaciones.addColumn(CotizacionVenta::getTotal).setCaption("TOTAL").setId("TOTAL").setWidth(120);
 
-        gridOC.setItems(getOrdenes());
-        gridOC.setSelectionMode(Grid.SelectionMode.SINGLE);
-        gridOC.setSizeFull();
-        gridOC.setHeight("500px");
+        gridCotizaciones.setItems(getOrdenes());
+        gridCotizaciones.setSelectionMode(Grid.SelectionMode.SINGLE);
+        gridCotizaciones.setSizeFull();
+        gridCotizaciones.setHeight("500px");
 
         btnAdd.addClickListener((event) -> {
-//            WindowOrdenDeCompra windows = new WindowOrdenDeCompra();
-//            windows.center();
-//            windows.setModal(true);
-//            windows.addCloseListener(ev -> {
-//                gridOC.setItems(getOrdenes());
-//            });
-//            getUI().addWindow(windows);
+            WindowVentasCotizaciones windows = new WindowVentasCotizaciones();
+            windows.center();
+            windows.setModal(true);
+            windows.addCloseListener(ev -> {
+                gridCotizaciones.setItems(getOrdenes());
+            });
+            getUI().addWindow(windows);
         });
 
         btnModify.addClickListener((event) -> {
-//            if (gridOC.getSelectedItems().size() == 1) {
-//                if(!gridOC.getSelectedItems().iterator().next().getEstado_doc().equals(_DocumentoEstados.TERMINADO)){
-//                    WindowOrdenDeCompra windows = new WindowOrdenDeCompra(gridOC.getSelectedItems().iterator().next());
-//                    windows.center();
-//                    windows.setModal(true);
-//                    windows.addCloseListener((e) -> {
-//                        gridOC.setItems(getOrdenes());
-//                    });
-//                    getUI().addWindow(windows);
-//                }else{
-//                    MessageBox.createError()
-//                            .withCaption("Error!")
-//                            .withMessage("No puede modificar una Requisicion de Compra que esta en espera de su Autorizacion.")
-//                            .withRetryButton()
-//                            .open();
-//                }
-//            } else {
-//                MessageBox.createError()
-//                        .withCaption("Error!")
-//                        .withMessage("Debe tener una Requisicion seleccionada para poder modificarla.")
-//                        .withRetryButton()
-//                        .open();
-//            }
+            if (gridCotizaciones.getSelectedItems().size() == 1) {
+                if(!gridCotizaciones.getSelectedItems().iterator().next().getEstado_doc().equals(_DocumentoEstados.TERMINADO)){
+                    WindowVentasCotizaciones windows = new WindowVentasCotizaciones(gridCotizaciones.getSelectedItems().iterator().next());
+                    windows.center();
+                    windows.setModal(true);
+                    windows.addCloseListener((e) -> {
+                        gridCotizaciones.setItems(getOrdenes());
+                    });
+                    getUI().addWindow(windows);
+                }else{
+                    MessageBox.createError()
+                            .withCaption("Error!")
+                            .withMessage("No puede modificar una Requisicion de Compra que esta en espera de su Autorizacion.")
+                            .withRetryButton()
+                            .open();
+                }
+            } else {
+                MessageBox.createError()
+                        .withCaption("Error!")
+                        .withMessage("Debe tener una Requisicion seleccionada para poder modificarla.")
+                        .withRetryButton()
+                        .open();
+            }
         });
         
         btnSearch.addClickListener((event) -> {
-            gridOC.setItems(getOrdenes());
+            gridCotizaciones.setItems(getOrdenes());
             txtBusqueda.setValue("");
         });
         
         btnPrint.addClickListener((event) -> {
-//            if (gridOC.getSelectedItems().size() == 1) {
-//                OrdenDeCompra ocTemp = gridOC.getSelectedItems().iterator().next();
+//            if (gridCotizaciones.getSelectedItems().size() == 1) {
+//                OrdenDeCompra ocTemp = gridCotizaciones.getSelectedItems().iterator().next();
 //                if (!ocTemp.getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)) {
 //
 //                    try {
@@ -213,47 +216,47 @@ public class VentasCotizaciones  extends Panel implements View {
         });
         
         btnTerminar.addClickListener((event) -> {
-//            if (gridOC.getSelectedItems().size() == 1) {
-//                
-//                OrdenDeCompra ocTemp = gridOC.getSelectedItems().iterator().next();
-//                
-//                if(ocTemp.getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)){
-//                    
-//                    MessageBox.createQuestion()
-//                        .withCaption("Atencion!")
-//                        .withMessage("Desea que la Orden de Compra " + ocTemp.getFolio() + ""
-//                                + " sea terminada? Ya no podrá realizar modificaciones.")
-//                        .withOkButton(() -> {
-//                            
-//                            OrdenDeCompraDomain domain = new OrdenDeCompraDomain();
-//                            domain.OrdenDeCompraTerminar(ocTemp);
-//                            
-//                            gridOC.setItems(getOrdenes());
-//                            
-//                            MessageBox.createInfo()
-//                                    .withCaption("Error!")
-//                                    .withMessage("Orden de Compra terminada correctamente. Aun esta pendiente de Autorizacion.")
-//                                    .withRetryButton()
-//                                    .open();
-//                        })
-//                        .withNoButton(() -> {})
-//                        .open();
-//                    
-//                }else{
-//                    MessageBox.createError()
-//                        .withCaption("Error!")
-//                        .withMessage("Con el estado " + ocTemp.getEstado_doc() + " de la Requisicion " + ocTemp.getFolio() + ""
-//                                + " no es posible pasar a Autorizacion.")
-//                        .withRetryButton()
-//                        .open();
-//                }
-//            } else {
-//                MessageBox.createError()
-//                        .withCaption("Error!")
-//                        .withMessage("Debe tener una Requisicion seleccionada para poder pasarla a Autorizacion.")
-//                        .withRetryButton()
-//                        .open();
-//            }
+            if (gridCotizaciones.getSelectedItems().size() == 1) {
+                
+                CotizacionVenta cotVenta = gridCotizaciones.getSelectedItems().iterator().next();
+                
+                if(cotVenta.getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)){
+                    
+                    MessageBox.createQuestion()
+                        .withCaption("Atencion!")
+                        .withMessage("Desea que la Cotizacion de Venta " + cotVenta.getFolio() + ""
+                                + " sea terminada? Ya no podrá realizar modificaciones.")
+                        .withOkButton(() -> {
+                            
+                            CotizacionVentaDomain domain = new CotizacionVentaDomain();
+                            domain.OrdenDeCompraTerminar(cotVenta);
+                            
+                            gridCotizaciones.setItems(getOrdenes());
+                            
+                            MessageBox.createInfo()
+                                    .withCaption("Error!")
+                                    .withMessage("Cotizacion de Venta terminada correctamente.")
+                                    .withRetryButton()
+                                    .open();
+                        })
+                        .withNoButton(() -> {})
+                        .open();
+                    
+                }else{
+                    MessageBox.createError()
+                        .withCaption("Error!")
+                        .withMessage("Con el estado " + cotVenta.getEstado_doc() + " de la Cotizacion " + cotVenta.getFolio() + ""
+                                + " no es posible pasar a Autorizacion.")
+                        .withRetryButton()
+                        .open();
+                }
+            } else {
+                MessageBox.createError()
+                        .withCaption("Error!")
+                        .withMessage("Debe tener una Cotizacion de Venta seleccionada para poder terminarlo.")
+                        .withRetryButton()
+                        .open();
+            }
         });
 
     }
@@ -273,17 +276,17 @@ public class VentasCotizaciones  extends Panel implements View {
             strWhere += "";
         }
 
-//        CotizacionesVentaDomain service = new CotizacionesVentaDomain();
-//        service.getOrdenDeCompra(strWhere, "", "fecha_elaboracion DESC");
-//        listOC = service.getObjects();
-//
-//        if (!service.getOk()) {
-//            MessageBox.createError()
-//                    .withCaption("Error al cargar la informacion!")
-//                    .withMessage("Err: " + service.getNotification())
-//                    .withRetryButton()
-//                    .open();
-//        }
+        CotizacionVentaDomain service = new CotizacionVentaDomain();
+        service.getCotizacionVenta(strWhere, "", "fecha_elaboracion DESC");
+        listOC = service.getObjects();
+
+        if (!service.getOk()) {
+            MessageBox.createError()
+                    .withCaption("Error al cargar la informacion!")
+                    .withMessage("Err: " + service.getNotification())
+                    .withRetryButton()
+                    .open();
+        }
         return listOC;
     }
     

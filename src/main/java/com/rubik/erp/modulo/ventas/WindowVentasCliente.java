@@ -10,7 +10,6 @@ import com.rubik.erp.model.Cliente;
 import com.rubik.erp.model.Empleado;
 import com.vaadin.data.Binder;
 import com.vaadin.data.converter.StringToDoubleConverter;
-import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
