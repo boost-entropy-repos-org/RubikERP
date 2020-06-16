@@ -365,33 +365,32 @@ public class WindowOrdenDeCompra extends Window {
         });
         
         btnBuscarRequisicion.addClickListener((event) -> {
-                WindowRequisicionSeleccionar windows = new WindowRequisicionSeleccionar();
-                windows.center();
-                windows.setModal(true);
-                windows.addCloseListener((e) -> {
-                    if(windows.seleccionado){
-                        requisicion = windows.requisicion_selected;
-                        
-                        ordenDeCompra.setRequisicion_id(requisicion.getId());
-                        
-                        txtSolicita.setValue(requisicion.getSolicita());
-                        ordenDeCompra.setComprador(requisicion.getSolicita());
-                        txtFolioRequisicion.setValue(requisicion.getFolio());
-                        txtFechaRequerida.setValue(ManageDates.getLocalDateFromDate(requisicion.getFecha_requerida()));
-                        txtTiempoEntrega.setValue(requisicion.getTiempo_entrega());
-                        txtObservaciones.setValue(requisicion.getObservaciones());
+            WindowRequisicionSeleccionar windows = new WindowRequisicionSeleccionar();
+            windows.center();
+            windows.setModal(true);
+            windows.addCloseListener((e) -> {
+                if (windows.seleccionado) {
+                    requisicion = windows.requisicion_selected;
+
+                    ordenDeCompra.setRequisicion_id(requisicion.getId());
+
+                    txtSolicita.setValue(requisicion.getSolicita());
+                    ordenDeCompra.setComprador(requisicion.getSolicita());
+                    txtFolioRequisicion.setValue(requisicion.getFolio());
+                    txtFechaRequerida.setValue(ManageDates.getLocalDateFromDate(requisicion.getFecha_requerida()));
+                    txtTiempoEntrega.setValue(requisicion.getTiempo_entrega());
+                    txtObservaciones.setValue(requisicion.getObservaciones());
 //                        cboMetodoPago.setValue(requisicion.getMetodo_pago());
-                        txtDireccionEntrega.setValue(requisicion.getDireccion_entrega());
-                        
-                        cargarPartidas();
-                        
-                        btnCotizacionesProvedores.setEnabled(true);
-                        
-                    }
-                });
-                getUI().addWindow(windows);
+                    txtDireccionEntrega.setValue(requisicion.getDireccion_entrega());
+
+                    cargarPartidas();
+
+                    btnCotizacionesProvedores.setEnabled(true);
+                }
+            });
+            getUI().addWindow(windows);
         });
-        
+
         cboMoneda.addSelectionListener((event) -> {
             if(cboMoneda.getValue().equals(_Pago_Documentos.MONEDA_PESOS)){
                 txtTipoCambio.setValue("1");

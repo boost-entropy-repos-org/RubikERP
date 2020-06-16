@@ -54,19 +54,19 @@ public class WindowVentasCotizacionesDet extends Window {
     Binder<CotizacionVentaDet> binder = new Binder<>();
     List<CotizacionVentaDet> listRequiDet = new ArrayList<>();
     
-    CotizacionVenta ordenDeCompra = new CotizacionVenta();
+    CotizacionVenta cotizacionVenta = new CotizacionVenta();
     
-    public WindowVentasCotizacionesDet(CotizacionVenta oc) {
-        ordenDeCompra = oc;
+    public WindowVentasCotizacionesDet(CotizacionVenta cot) {
+        cotizacionVenta = cot;
         VaadinSession.getCurrent().getSession().setAttribute("PARTIDA_COT_VENTA",null);
         VaadinSession.getCurrent().getSession().setAttribute("PARTIDA_COT_VENTA_OK",false);
         initComponents();
         partida = new CotizacionVentaDet();
     }
     
-    public WindowVentasCotizacionesDet(CotizacionVenta oc, CotizacionVentaDet partida) {
+    public WindowVentasCotizacionesDet(CotizacionVenta cot, CotizacionVentaDet partida) {
         isEdit = true;
-        ordenDeCompra = oc;
+        cotizacionVenta = cot;
         this.partida = partida;
         VaadinSession.getCurrent().getSession().setAttribute("PARTIDA_COT_VENTA",null);
         VaadinSession.getCurrent().getSession().setAttribute("PARTIDA_COT_VENTA_OK",false);
@@ -159,12 +159,12 @@ public class WindowVentasCotizacionesDet extends Window {
                     
                     CotizacionVentaDetDomain domain = new CotizacionVentaDetDomain();
                     
-                    if(ordenDeCompra != null){
+                    if(cotizacionVenta.getId()!= 0 && cotizacionVenta.getId()!= null){
                         if(isEdit){
                             domain.CotizacionVentaDetUpdate(partida);
                         }else{
-                            partida.setFolio(ordenDeCompra.getFolio());
-                            partida.setDocumento_id(ordenDeCompra.getId());
+                            partida.setFolio(cotizacionVenta.getFolio());
+                            partida.setDocumento_id(cotizacionVenta.getId());
                             domain.CotizacionVentaDetInsert(partida);
                         }
                     }
@@ -201,4 +201,5 @@ public class WindowVentasCotizacionesDet extends Window {
         setResizable(false);
         setContent(cont);
     }
+    
 }

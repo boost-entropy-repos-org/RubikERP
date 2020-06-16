@@ -54,17 +54,17 @@ public class WindowRequisicionDet extends Window {
     
     Requisicion requisicion = new Requisicion();
     
-    public WindowRequisicionDet(Requisicion rem) {
-        requisicion = rem;
+    public WindowRequisicionDet(Requisicion req) {
+        requisicion = req;
         VaadinSession.getCurrent().getSession().setAttribute("REQUISICION_DET",null);
         VaadinSession.getCurrent().getSession().setAttribute("PARTIDA_OK",false);
         initComponents();
         partida = new RequisicionDet();
     }
     
-    public WindowRequisicionDet(Requisicion rem, RequisicionDet partida) {
+    public WindowRequisicionDet(Requisicion req, RequisicionDet partida) {
         isEdit = true;
-        requisicion = rem;
+        requisicion = req;
         this.partida = partida;
         VaadinSession.getCurrent().getSession().setAttribute("REQUISICION_DET",null);
         VaadinSession.getCurrent().getSession().setAttribute("PARTIDA_OK",false);
@@ -154,7 +154,7 @@ public class WindowRequisicionDet extends Window {
                     
                     RequisicionDetDomain domain = new RequisicionDetDomain();
                     
-                    if(requisicion != null){
+                    if(requisicion.getId()!= 0 && requisicion.getId()!= null){
                         if(isEdit){
                             domain.RequisicionDetUpdate(partida);
                         }else{

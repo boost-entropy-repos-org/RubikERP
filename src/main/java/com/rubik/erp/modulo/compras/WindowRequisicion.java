@@ -9,16 +9,20 @@ import com.rubik.erp.config._DocumentoEstados;
 import com.rubik.erp.config._DocumentoTipos;
 import com.rubik.erp.config._Folios;
 import com.rubik.erp.domain.ConfiguracionDomain;
+import com.rubik.erp.domain.CotizacionVentaDetDomain;
 import com.rubik.erp.domain.EmpleadoDomain;
 import com.rubik.erp.domain.ProveedorDomain;
 import com.rubik.erp.domain.RequisicionDetDomain;
 import com.rubik.erp.domain.RequisicionDomain;
 import com.rubik.erp.model.Configuracion;
+import com.rubik.erp.model.CotizacionVenta;
+import com.rubik.erp.model.CotizacionVentaDet;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.Proveedor;
 import com.rubik.erp.model.Requisicion;
 import com.rubik.erp.model.RequisicionDet;
 import com.rubik.erp.modulo.generic.WindowVisorDocumentos;
+import com.rubik.erp.modulo.ventas.WindowCotizacionSeleccionar;
 import com.rubik.erp.util.components.ComboBoxTiempoEntrega;
 import com.rubik.manage.ManageDates;
 import com.rubik.manage.ManageString;
@@ -55,9 +59,12 @@ public class WindowRequisicion extends Window {
     VerticalLayout cont = new VerticalLayout();
     String title_window = "Requisicion de Compra";
 
+    CotizacionVenta cotizacionVenta;
     Requisicion requisicion;
     Boolean isEdit = false;
 
+    TextField txtFolioCotizacion = new TextField();
+    
     DateField txtFechaRequerida = new DateField("Fecha Requerida:", LocalDate.now());
     TextField txtSolicita = new TextField("Solicitante:");
     TextArea txtObservaciones = new TextArea("Observaciones:");
@@ -67,6 +74,7 @@ public class WindowRequisicion extends Window {
     NativeSelect<Proveedor> cboProveedor = new NativeSelect("Proveedor sugerido:");
     ComboBoxTiempoEntrega cboTiempoEntrega = new ComboBoxTiempoEntrega();
 
+    Button btnBuscarCotizacion = new Button("",Fam3SilkIcon.MAGNIFIER);
     Button btnAgregarPartida = new Button("Agregar",Fam3SilkIcon.ADD);
     Button btnModificarPartida = new Button("Modificar",Fam3SilkIcon.PENCIL);
     Button btnEliminarPartida = new Button("Eliminar",Fam3SilkIcon.DELETE);
@@ -84,11 +92,14 @@ public class WindowRequisicion extends Window {
     String folio = "";
 
     public WindowRequisicion() {
+        requisicion = new Requisicion();
+        
         lblFolio = new Label("REQUISICION " + getFolio()) {
             {
                 setStyleName("h2");
             }
         };
+        
         initComponents();
         btnModificarPartida.setEnabled(false);
         btnExpediente.setEnabled(false);
@@ -111,9 +122,10 @@ public class WindowRequisicion extends Window {
         String strWidth = "300";
         
         setWidth("80%");
-        setHeight("80%");
+        setHeight("95%");
 
         Binder<Requisicion> binder = new Binder<>();
+        binder.forField(txtFolioCotizacion).bind(Requisicion::getFolio_cotizacion, Requisicion::setFolio_cotizacion);
         binder.forField(txtSolicita).bind(Requisicion::getSolicita, Requisicion::setSolicita);
         binder.forField(txtObservaciones).bind(Requisicion::getObservaciones, Requisicion::setObservaciones);
         binder.forField(txtDireccionEntrega).bind(Requisicion::getDireccion_entrega, Requisicion::setDireccion_entrega);
@@ -221,6 +233,48 @@ public class WindowRequisicion extends Window {
             }
         });
         
+        btnBuscarCotizacion.addClickListener((event) -> {
+            WindowCotizacionSeleccionar windowCotSelected = new WindowCotizacionSeleccionar();
+            windowCotSelected.center();
+            windowCotSelected.setModal(true);
+            windowCotSelected.addCloseListener((e) -> {
+                if (windowCotSelected.seleccionado) {
+                    cotizacionVenta = windowCotSelected.cotizacion_selected;
+
+                    requisicion.setCotizacion_id(cotizacionVenta.getId());
+                    requisicion.setFolio_cotizacion(cotizacionVenta.getFolio());
+
+                    txtFolioCotizacion.setValue(cotizacionVenta.getFolio());
+                    
+                    List<CotizacionVentaDet> partidasCotizacion = windowCotSelected.listPartidasSeleccionadas;
+                    
+                    for (CotizacionVentaDet partSelected : partidasCotizacion) {
+                        RequisicionDet partida = new RequisicionDet();
+                        
+                        partida.setCotizacion_id(partSelected.getDocumento_id());
+                        partida.setFolio_cotizacion(partSelected.getFolio());
+                        partida.setPartida_cotizacion_id(partSelected.getId());
+                        partida.setCantidad(partSelected.getCantidad());
+                        partida.setDescripcion(partSelected.getDescripcion());
+                        partida.setProducto_id(partSelected.getProducto_id());
+                        partida.setUnidad_medida(partSelected.getUnidad_medida());
+                        partida.setPrecio_unitario(0.0);
+                        partida.setImporte(0.0);
+                        partida.setPorc_iva(partSelected.getPorc_iva());
+                        partida.setNo_parte(partSelected.getNo_parte());
+                        partida.setNo_serie(partSelected.getNo_serie());
+                        partida.setModelo(partSelected.getModelo());
+                        partida.setMarca(partSelected.getMarca());
+                        partida.setCodigo_interno(partSelected.getCodigo_interno());
+                        
+                        listRequisicionDet.add(partida);
+                    }
+                    gridRequisicionDet.setItems(listRequisicionDet);
+                }
+            });
+            getUI().addWindow(windowCotSelected);
+        });
+        
         btnCancelar.addClickListener((event) -> {
             close();
         });
@@ -283,6 +337,11 @@ public class WindowRequisicion extends Window {
                         partidaTemp.setDocumento_id(requisicion.getId());
                         partidaTemp.setCodigo_proveedor(requisicion.getProveedor_id()+"");
                         domainDet.RequisicionDetInsert(partidaTemp);
+                        
+                        if(partidaTemp.getPartida_cotizacion_id() != 0){ // actualiza la partida de la cotizacion
+                            CotizacionVentaDetDomain domainPartidaCotizacion = new CotizacionVentaDetDomain();
+                            domainPartidaCotizacion.MarcarPartidaComoFacturada(partidaTemp.getPartida_cotizacion_id());
+                        }
                     }
                 }
 
@@ -309,6 +368,7 @@ public class WindowRequisicion extends Window {
             }
         });
         
+        txtFolioCotizacion.setEnabled(false);
         txtSolicita.setEnabled(false);
         txtSolicita.setValue(empleado.getNombre_completo());
         txtObservaciones.setRows(2);
@@ -355,6 +415,11 @@ public class WindowRequisicion extends Window {
 
         cont.setSpacing(false);
         cont.addComponents(lblFolio,
+                new HorizontalLayout(new Label("Folio Cotizacion:"), txtFolioCotizacion, btnBuscarCotizacion) // 1
+                    {{
+                        setComponentAlignment(getComponent(0), Alignment.MIDDLE_CENTER);
+                    }},
+                
                 new HorizontalLayout(fLay, 
                         new VerticalLayout(
                                 new HorizontalLayout(btnExpediente,
@@ -362,8 +427,9 @@ public class WindowRequisicion extends Window {
                                 gridRequisicionDet){{setComponentAlignment(getComponent(0), Alignment.MIDDLE_CENTER);}}
                 ){{setSpacing(false);}}, new HorizontalLayout(btnCancelar, btnGuardar));
         cont.setComponentAlignment(cont.getComponent(0), Alignment.MIDDLE_CENTER);
-        cont.setComponentAlignment(cont.getComponent(1), Alignment.MIDDLE_CENTER);
+        cont.setComponentAlignment(cont.getComponent(1), Alignment.MIDDLE_RIGHT);
         cont.setComponentAlignment(cont.getComponent(2), Alignment.MIDDLE_CENTER);
+        cont.setComponentAlignment(cont.getComponent(3), Alignment.MIDDLE_CENTER);
         
         setContent(cont);
         setModal(true);
