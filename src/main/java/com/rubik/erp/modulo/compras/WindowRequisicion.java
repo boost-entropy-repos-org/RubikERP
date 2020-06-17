@@ -337,7 +337,7 @@ public class WindowRequisicion extends Window {
                         partidaTemp.setDocumento_id(requisicion.getId());
                         partidaTemp.setCodigo_proveedor(requisicion.getProveedor_id()+"");
                         domainDet.RequisicionDetInsert(partidaTemp);
-                        
+
                         if(partidaTemp.getPartida_cotizacion_id() != 0){ // actualiza la partida de la cotizacion
                             CotizacionVentaDetDomain domainPartidaCotizacion = new CotizacionVentaDetDomain();
                             domainPartidaCotizacion.MarcarPartidaComoFacturada(partidaTemp.getPartida_cotizacion_id());
