@@ -8,10 +8,10 @@ package com.rubik.erp.modulo.ventas;
 import com.rubik.erp.config.DomainConfig;
 import com.rubik.erp.config.FactorySession;
 import com.rubik.erp.config._DocumentoEstados;
-import com.rubik.erp.domain.CotizacionVentaDomain;
+import com.rubik.erp.domain.RemisionEntregaDomain;
 import com.rubik.erp.fragments.FragmentTop;
-import com.rubik.erp.model.CotizacionVenta;
 import com.rubik.erp.model.Empleado;
+import com.rubik.erp.model.RemisionEntrega;
 import com.rubik.erp.util.EmbedWindow;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -41,43 +41,41 @@ import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
  *
  * @author Dev
  */
-public class VentasCotizaciones extends Panel implements View {
+public class VentasRemisionesDeEntrega extends Panel implements View {
 
-    public static final String NAME = "COTIZACIONES_VENTA";
+    public static final String NAME = "REMISIONES_DE_ENTREGA";
     VerticalLayout container = new VerticalLayout();
 
     Empleado empleado = (Empleado) VaadinSession.getCurrent().getSession().getAttribute("USUARIO_ACTIVO");
 
     TextField txtBusqueda = new TextField();
     
-    Grid<CotizacionVenta> gridCotizaciones = new Grid<>();
+    Grid<RemisionEntrega> gridCotizaciones = new Grid<>();
     DateField txtFechaIni = new DateField();
     DateField txtFechaFin = new DateField();
     Button btnSearch = new Button(Fam3SilkIcon.MAGNIFIER);
     
     Button btnAdd = new Button("Agregar", Fam3SilkIcon.ADD);
     Button btnModify = new Button("Modificar", Fam3SilkIcon.PENCIL);
-    Button btnCancel = new Button("Cancelar", Fam3SilkIcon.CANCEL);
-    Button btnTerminar = new Button("Terminar", Fam3SilkIcon.NOTE_GO);
     Button btnPrint = new Button("Imprimir", Fam3SilkIcon.PRINTER);
     
-    List<CotizacionVenta> listOC = new ArrayList<>();
+    List<RemisionEntrega> listOC = new ArrayList<>();
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     
-    public VentasCotizaciones() {
+    public VentasRemisionesDeEntrega() {
         initComponents();
 
         HorizontalLayout hLayoutAux = new HorizontalLayout(
                 txtBusqueda,
                 new Label("Fecha: "),txtFechaIni,new Label("A: "),txtFechaFin,btnSearch);
         
-        HorizontalLayout hLayoutAux2 = new HorizontalLayout(btnAdd, btnModify, btnCancel, btnPrint, btnTerminar);
+        HorizontalLayout hLayoutAux2 = new HorizontalLayout(btnAdd, btnModify, btnPrint);
         
         hLayoutAux.setComponentAlignment(hLayoutAux.getComponent(1), Alignment.MIDDLE_CENTER);
         hLayoutAux.setComponentAlignment(hLayoutAux.getComponent(3), Alignment.MIDDLE_CENTER);
         
-        Label lblTitulo = new Label("COTIZACIONES DE VENTA") {
+        Label lblTitulo = new Label("REMISIONES DE ENTREGA DE MERCANCIA") {
             {
                 setStyleName("h1");
             }
@@ -106,68 +104,59 @@ public class VentasCotizaciones extends Panel implements View {
         txtFechaFin.setWidth("115");
         
         txtBusqueda.setWidth("200");
-        txtBusqueda.setPlaceholder("Folio Cotizacion");      
+        txtBusqueda.setPlaceholder("Folio Remision");      
 
-        Grid.Column<CotizacionVenta, String> columnFecha = gridCotizaciones.addColumn(det -> ((det.getFecha_elaboracion()!= null) ? dateFormat.format(det.getFecha_elaboracion()) : ""));
+        Grid.Column<RemisionEntrega, String> columnFecha = gridCotizaciones.addColumn(det -> ((det.getFecha_elaboracion()!= null) ? dateFormat.format(det.getFecha_elaboracion()) : ""));
         columnFecha.setCaption("FECHA");
         columnFecha.setId("FECHA");
         columnFecha.setWidth(120);
-        gridCotizaciones.addColumn(CotizacionVenta::getFolio).setCaption("FOLIO").setId("FOLIO").setWidth(120);
-        gridCotizaciones.addColumn(CotizacionVenta::getEstado_doc).setCaption("ESTADO").setId("ESTADO").setWidth(130);
-        gridCotizaciones.addColumn(CotizacionVenta::getCliente).setCaption("CLIENTE").setId("CLIENTE");
-        gridCotizaciones.addColumn(CotizacionVenta::getImporte).setCaption("IMPORTE").setId("IMPORTE").setWidth(120);
-        gridCotizaciones.addColumn(CotizacionVenta::getIva).setCaption("IVA").setId("IVA").setWidth(120);
-        gridCotizaciones.addColumn(CotizacionVenta::getTotal).setCaption("TOTAL").setId("TOTAL").setWidth(120);
+        gridCotizaciones.addColumn(RemisionEntrega::getFolio).setCaption("FOLIO").setId("FOLIO").setWidth(120);
+        gridCotizaciones.addColumn(RemisionEntrega::getEstado_doc).setCaption("ESTADO").setId("ESTADO").setWidth(130);
+        gridCotizaciones.addColumn(RemisionEntrega::getCliente).setCaption("CLIENTE").setId("CLIENTE");
+        gridCotizaciones.addColumn(RemisionEntrega::getFolio_cotizacion).setCaption("COTIZACION").setId("COTIZACION").setWidth(120);
+        gridCotizaciones.addColumn(RemisionEntrega::getFolio_orden_compra).setCaption("OC").setId("OC").setWidth(120);
 
-        gridCotizaciones.setItems(getCotizacionesVentas());
+        gridCotizaciones.setItems(getRemisionesEntrega());
         gridCotizaciones.setSelectionMode(Grid.SelectionMode.SINGLE);
         gridCotizaciones.setSizeFull();
         gridCotizaciones.setHeight("500px");
 
         btnAdd.addClickListener((event) -> {
-            WindowVentasCotizaciones windows = new WindowVentasCotizaciones();
+            WindowVentasRemisionDeEntrega windows = new WindowVentasRemisionDeEntrega();
             windows.center();
             windows.setModal(true);
             windows.addCloseListener(ev -> {
-                gridCotizaciones.setItems(getCotizacionesVentas());
+                gridCotizaciones.setItems(getRemisionesEntrega());
             });
             getUI().addWindow(windows);
         });
 
         btnModify.addClickListener((event) -> {
             if (gridCotizaciones.getSelectedItems().size() == 1) {
-                if(!gridCotizaciones.getSelectedItems().iterator().next().getEstado_doc().equals(_DocumentoEstados.TERMINADO)){
-                    WindowVentasCotizaciones windows = new WindowVentasCotizaciones(gridCotizaciones.getSelectedItems().iterator().next());
-                    windows.center();
-                    windows.setModal(true);
-                    windows.addCloseListener((e) -> {
-                        gridCotizaciones.setItems(getCotizacionesVentas());
-                    });
-                    getUI().addWindow(windows);
-                }else{
-                    MessageBox.createError()
-                            .withCaption("Error!")
-                            .withMessage("No puede modificar una Requisicion de Compra que esta en espera de su Autorizacion.")
-                            .withRetryButton()
-                            .open();
-                }
+                WindowVentasRemisionDeEntrega windows = new WindowVentasRemisionDeEntrega(gridCotizaciones.getSelectedItems().iterator().next());
+                windows.center();
+                windows.setModal(true);
+                windows.addCloseListener((e) -> {
+                    gridCotizaciones.setItems(getRemisionesEntrega());
+                });
+                getUI().addWindow(windows);
             } else {
                 MessageBox.createError()
                         .withCaption("Error!")
-                        .withMessage("Debe tener una Requisicion seleccionada para poder modificarla.")
+                        .withMessage("Debe tener una Remision de Entrega seleccionada para poder modificarla.")
                         .withRetryButton()
                         .open();
             }
         });
         
         btnSearch.addClickListener((event) -> {
-            gridCotizaciones.setItems(getCotizacionesVentas());
+            gridCotizaciones.setItems(getRemisionesEntrega());
             txtBusqueda.setValue("");
         });
         
         btnPrint.addClickListener((event) -> {
             if (gridCotizaciones.getSelectedItems().size() == 1) {
-                CotizacionVenta ocTemp = gridCotizaciones.getSelectedItems().iterator().next();
+                RemisionEntrega ocTemp = gridCotizaciones.getSelectedItems().iterator().next();
                 if (!ocTemp.getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)) {
 
                     try {
@@ -179,7 +168,7 @@ public class VentasCotizaciones extends Panel implements View {
                             public InputStream getStream() {
                                 byte[] b = null;
                                 try {
-                                    InputStream fileStream = getClass().getClassLoader().getResourceAsStream("/reportes/CotizacionDeVenta.jasper");
+                                    InputStream fileStream = getClass().getClassLoader().getResourceAsStream("/reportes/RemisionEntrega.jasper");
                                     b = JasperRunManager.runReportToPdf(fileStream, map, FactorySession.getRubikConnection(DomainConfig.getEnvironment()));
 
                                 } catch (JRException ex) {
@@ -223,52 +212,6 @@ public class VentasCotizaciones extends Panel implements View {
                         .open();
             }
         });
-        
-        btnTerminar.addClickListener((event) -> {
-            if (gridCotizaciones.getSelectedItems().size() == 1) {
-                
-                CotizacionVenta cotVenta = gridCotizaciones.getSelectedItems().iterator().next();
-                
-                if(cotVenta.getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)){
-                    
-                    MessageBox.createQuestion()
-                        .withCaption("Atencion!")
-                        .withMessage("Desea que la Cotizacion de Venta " + cotVenta.getFolio() + ""
-                                + " sea terminada? Ya no podrá realizar modificaciones.")
-                        .withOkButton(() -> {
-                            
-                            cotVenta.setEstado_doc(_DocumentoEstados.TERMINADO);
-                            
-                            CotizacionVentaDomain domain = new CotizacionVentaDomain();
-                            domain.CotizacionVentaUpdate(cotVenta);
-                            
-                            gridCotizaciones.setItems(getCotizacionesVentas());
-                            
-                            MessageBox.createInfo()
-                                    .withCaption("Error!")
-                                    .withMessage("Cotizacion de Venta terminada correctamente.")
-                                    .withRetryButton()
-                                    .open();
-                        })
-                        .withNoButton(() -> {})
-                        .open();
-                    
-                }else{
-                    MessageBox.createError()
-                        .withCaption("Error!")
-                        .withMessage("Con el estado " + cotVenta.getEstado_doc() + " de la Cotizacion " + cotVenta.getFolio() + ""
-                                + " no es posible pasar a Autorizacion.")
-                        .withRetryButton()
-                        .open();
-                }
-            } else {
-                MessageBox.createError()
-                        .withCaption("Error!")
-                        .withMessage("Debe tener una Cotizacion de Venta seleccionada para poder terminarlo.")
-                        .withRetryButton()
-                        .open();
-            }
-        });
 
     }
 
@@ -276,7 +219,7 @@ public class VentasCotizaciones extends Panel implements View {
     public void enter(ViewChangeListener.ViewChangeEvent event) {
     }
 
-    public List getCotizacionesVentas() {
+    public List getRemisionesEntrega() {
         String strWhere = " activo = 1 ";
 
         if (!"".equals(txtBusqueda.getValue())) {
@@ -287,8 +230,8 @@ public class VentasCotizaciones extends Panel implements View {
             strWhere += "";
         }
 
-        CotizacionVentaDomain service = new CotizacionVentaDomain();
-        service.getCotizacionVenta(strWhere, "", "fecha_elaboracion DESC");
+        RemisionEntregaDomain service = new RemisionEntregaDomain();
+        service.getRemisionEntrega(strWhere, "", "fecha_elaboracion DESC");
         listOC = service.getObjects();
 
         if (!service.getOk()) {

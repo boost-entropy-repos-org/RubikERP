@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Cotizaciones" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e3751d5e-8725-4e8e-8903-40f4a45612e9">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="66"/>
+	<property name="ireport.y" value="0"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="RubikERP"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<parameter name="REPORT_DIR" class="java.lang.String" isForPrompting="false">
@@ -552,7 +552,7 @@ WHERE t1.folio = $P{folio}]]>
 			<staticText>
 				<reportElement x="93" y="10" width="252" height="20" uuid="50ed14e4-e5d3-41e6-a256-64d847cffb79"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[IMPELLER WELL SERVICES, S.A. DE C.V.]]></text>
 			</staticText>

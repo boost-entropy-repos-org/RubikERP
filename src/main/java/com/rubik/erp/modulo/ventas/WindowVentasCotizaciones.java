@@ -293,6 +293,8 @@ public class WindowVentasCotizaciones extends Window {
                 cotizacionDeVenta.setReceptor_estado(cboCliente.getValue().getEstado());
                 cotizacionDeVenta.setReceptor_pais(cboCliente.getValue().getPais());
                 cotizacionDeVenta.setReceptor_codigo_postal(cboCliente.getValue().getCp());
+                cotizacionDeVenta.setTerminada_no_requisicion(false);
+                cotizacionDeVenta.setTerminada_requisicion(false);
                 
                 CotizacionVentaDomain service = new CotizacionVentaDomain();
 
@@ -312,6 +314,9 @@ public class WindowVentasCotizaciones extends Window {
                     for (CotizacionVentaDet partidaTemp : listCotizacionDeVentaDet) { //Guarda la partida con el ID de la cotizacionDeVenta
                         partidaTemp.setFolio(cotizacionDeVenta.getFolio());
                         partidaTemp.setDocumento_id(cotizacionDeVenta.getId());
+                        partidaTemp.setEntregada(false);
+                        partidaTemp.setFacturada(false);
+                        partidaTemp.setRequisicion_id(0);
                         domainDet.CotizacionVentaDetInsert(partidaTemp);
                     }
                 }

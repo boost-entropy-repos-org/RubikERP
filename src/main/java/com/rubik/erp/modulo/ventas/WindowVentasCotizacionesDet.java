@@ -156,6 +156,9 @@ public class WindowVentasCotizacionesDet extends Window {
                     partida.setCantidad(ManageNumbers.ToInteger(txtCantidad.getValue()));
                     partida.setEntregada(false);
                     partida.setFacturada(false);
+                    partida.setEntregada(false);
+                    partida.setFacturada(false);
+                    partida.setRequisicion_id(0);
                     
                     CotizacionVentaDetDomain domain = new CotizacionVentaDetDomain();
                     

@@ -17,6 +17,7 @@ import com.rubik.erp.modulo.generic.Login;
 import com.rubik.erp.modulo.rh.Empleados;
 import com.rubik.erp.modulo.ventas.VentasClientes;
 import com.rubik.erp.modulo.ventas.VentasCotizaciones;
+import com.rubik.erp.modulo.ventas.VentasRemisionesDeEntrega;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
@@ -55,6 +56,7 @@ public class FragmentTop extends HorizontalLayout {
     MenuBar.MenuItem menuVentas;
     MenuBar.MenuItem subVentasClientes;
     MenuBar.MenuItem subVentasCotizaciones;
+    MenuBar.MenuItem subVentasRemisionEntrega;
     
     MenuBar.MenuItem menuRecursosHumanos;
     MenuBar.MenuItem subRHEmpleados;
@@ -167,6 +169,9 @@ public class FragmentTop extends HorizontalLayout {
         subVentasCotizaciones = menuVentas.addItem("Cotizaciones de Venta", actionMenu);
         subVentasCotizaciones.setIcon(Fam3SilkIcon.PAGE_WHITE_TEXT);
         
+        subVentasRemisionEntrega = menuVentas.addItem("Remisiones de Entrega", actionMenu);
+        subVentasRemisionEntrega.setIcon(Fam3SilkIcon.TRANSMIT_GO);
+        
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
 //----------------------------------------------------------------- RECURSOS HUMANOS
@@ -239,6 +244,10 @@ public class FragmentTop extends HorizontalLayout {
                     
                 case "Cotizaciones de Venta":
                     getUI().getNavigator().navigateTo(VentasCotizaciones.NAME);
+                    break;
+                    
+                case "Remisiones de Entrega":
+                    getUI().getNavigator().navigateTo(VentasRemisionesDeEntrega.NAME);
                     break;
                     
  // ------------- RECURSOS HUMANOS

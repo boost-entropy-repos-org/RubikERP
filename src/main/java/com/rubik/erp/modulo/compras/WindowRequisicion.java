@@ -10,6 +10,7 @@ import com.rubik.erp.config._DocumentoTipos;
 import com.rubik.erp.config._Folios;
 import com.rubik.erp.domain.ConfiguracionDomain;
 import com.rubik.erp.domain.CotizacionVentaDetDomain;
+import com.rubik.erp.domain.CotizacionVentaDomain;
 import com.rubik.erp.domain.EmpleadoDomain;
 import com.rubik.erp.domain.ProveedorDomain;
 import com.rubik.erp.domain.RequisicionDetDomain;
@@ -340,7 +341,10 @@ public class WindowRequisicion extends Window {
 
                         if(partidaTemp.getPartida_cotizacion_id() != 0){ // actualiza la partida de la cotizacion
                             CotizacionVentaDetDomain domainPartidaCotizacion = new CotizacionVentaDetDomain();
-                            domainPartidaCotizacion.MarcarPartidaComoFacturada(partidaTemp.getPartida_cotizacion_id());
+                            domainPartidaCotizacion.MarcarPartidaComoFacturada(partidaTemp.getPartida_cotizacion_id(), requisicion.getId());
+                            
+                            CotizacionVentaDomain ventasDomain = new CotizacionVentaDomain();
+                            ventasDomain.MarcarGeneradaRequisicion(partidaTemp.getPartida_cotizacion_id());
                         }
                     }
                 }
@@ -470,7 +474,7 @@ public class WindowRequisicion extends Window {
     
     public String getFolio() {
         ConfiguracionDomain domain = new ConfiguracionDomain();
-        domain.getOneFolioConfiguracion(_Folios.FOLIO_REMISION, _Folios.SERIE_REMISION);
+        domain.getOneFolioConfiguracion(_Folios.FOLIO_REQUISICION, _Folios.SERIE_REQUISICION);
         Configuracion conf = domain.getObject();
         
         folio = conf.getSerie() + ManageString.fillWithZero(conf.getFolio(), 5);
@@ -480,7 +484,7 @@ public class WindowRequisicion extends Window {
     
     public void updateFolio() {
         ConfiguracionDomain domain = new ConfiguracionDomain();
-        domain.ConfiguracionFolioUpdate(_Folios.FOLIO_REMISION);
+        domain.ConfiguracionFolioUpdate(_Folios.FOLIO_REQUISICION);
     }
     
     public List<Proveedor> getProveedor() {

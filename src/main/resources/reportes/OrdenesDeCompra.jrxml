@@ -338,7 +338,7 @@ Tel. +52 (833) 3992231, www.impeller.com.mx]]></text>
 			<staticText>
 				<reportElement x="93" y="10" width="252" height="20" uuid="97200645-0ab8-4c47-8ce6-a0d4c7104859"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[IMPELLER WELL SERVICES, S.A. DE C.V.]]></text>
 			</staticText>
