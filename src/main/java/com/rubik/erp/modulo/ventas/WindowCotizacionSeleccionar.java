@@ -73,7 +73,6 @@ public class WindowCotizacionSeleccionar extends Window {
         columnFecha.setId("FECHA");
         columnFecha.setWidth(120);
         gridCotizacion.addColumn(CotizacionVenta::getFolio).setCaption("FOLIO").setWidth(120);
-//        gridCotizacion.addColumn(CotizacionVenta::getCliente).setCaption("CLIENTE");
         gridCotizacion.addColumn(CotizacionVenta::getVendedor).setCaption("VENDEDOR");
         gridCotizacion.setItems(getCotizaciones());
         
@@ -145,7 +144,7 @@ public class WindowCotizacionSeleccionar extends Window {
     
     public List getCotizacionesDet(CotizacionVenta cot) {
         CotizacionVentaDetDomain service = new CotizacionVentaDetDomain();
-        service.getCotizacionVentaDet(" documento_id = " + cot.getId() + " AND facturada = 0 ", "", " id DESC");
+        service.getCotizacionVentaDet(" documento_id = " + cot.getId() + " AND requisicion_id = 0 ", "", " id DESC");
         listCotizacionVentaDet = service.getObjects();
 
         if (!service.getOk()) {

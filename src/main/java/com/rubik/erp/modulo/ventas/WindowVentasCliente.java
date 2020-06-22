@@ -117,7 +117,7 @@ public class WindowVentasCliente extends Window {
         binder.forField(txtCuentaPagos).bind(Cliente::getCuenta_pagos, Cliente::setCuenta_pagos);
         binder.forField(txtCuentaAnticipos).bind(Cliente::getCuenta_anticipos, Cliente::setCuenta_anticipos);
         binder.forField(txtCuentaHonorarios).bind(Cliente::getCuenta_honorarios, Cliente::setCuenta_honorarios);
-        binder.forField(this.chkActivo).bind(Cliente::getActivo, Cliente::setActivo);
+        binder.forField(chkActivo).bind(Cliente::getActivo, Cliente::setActivo);
 
         if (isEdit) {
             binder.readBean(cliente);

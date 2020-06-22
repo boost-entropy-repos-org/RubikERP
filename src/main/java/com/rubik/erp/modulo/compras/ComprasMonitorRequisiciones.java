@@ -5,6 +5,8 @@
  */
 package com.rubik.erp.modulo.compras;
 
+import com.rubik.erp.config.DomainConfig;
+import com.rubik.erp.config.FactorySession;
 import com.rubik.erp.config._DocumentoEstados;
 import com.rubik.erp.config._DocumentoTipos;
 import com.rubik.erp.domain.EmpleadoDomain;
@@ -13,9 +15,11 @@ import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.Requisicion;
 import com.rubik.erp.modulo.generic.WindowCancelarDocumento;
+import com.rubik.erp.util.EmbedWindow;
 import com.rubik.model.FirmaElectronica;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.StreamResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -26,10 +30,15 @@ import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import de.steinwedel.messagebox.MessageBox;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperRunManager;
 import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
 
 /**
@@ -100,6 +109,7 @@ public class ComprasMonitorRequisiciones extends Panel implements View {
         gridRequisiciones.addColumn(Requisicion::getPrioridad).setCaption("PRIORIDAD").setId("PRIORIDAD").setWidth(135);
         gridRequisiciones.addColumn(Requisicion::getEstado_doc).setCaption("ESTADO").setId("ESTADO").setWidth(135);
         gridRequisiciones.addColumn(Requisicion::getSolicita).setCaption("SOLICITA").setId("SOLICITA");
+        gridRequisiciones.addComponentColumn(this::getBtnPrint).setCaption("").setWidth(131);
         gridRequisiciones.addComponentColumn(this::getBtnInfo).setCaption("").setWidth(131);
         gridRequisiciones.addComponentColumn(this::getBtnCancelar).setCaption("").setWidth(175);
         gridRequisiciones.addComponentColumn(this::getBtnAutorizar).setCaption("").setWidth(180);
@@ -116,6 +126,53 @@ public class ComprasMonitorRequisiciones extends Panel implements View {
         
         listAutorizadores = provService.getObjects();
         return listAutorizadores;
+    }
+    
+    private Button getBtnPrint(Requisicion requisicion) {
+        Button btnPrint = new Button("", Fam3SilkIcon.PRINTER);
+
+        btnPrint.addClickListener((event) -> {
+
+            try {
+                final HashMap map = new HashMap();
+                map.put("folio", requisicion.getFolio());
+
+                StreamResource.StreamSource source = new StreamResource.StreamSource() {
+                    @Override
+                    public InputStream getStream() {
+                        byte[] b = null;
+                        try {
+                            InputStream fileStream = getClass().getClassLoader().getResourceAsStream("/reportes/Requisiciones.jasper");
+                            b = JasperRunManager.runReportToPdf(fileStream, map, FactorySession.getRubikConnection(DomainConfig.getEnvironment()));
+
+                        } catch (JRException ex) {
+                            ex.printStackTrace();
+                        }
+                        return new ByteArrayInputStream(b);
+                    }
+                };
+
+                StreamResource resource = new StreamResource(source, "Requisicion_" + requisicion.getFolio() + ".pdf");
+
+                EmbedWindow windowPDF = new EmbedWindow(resource);
+                windowPDF.setCaption("Requisicion de compra:");
+                windowPDF.setHeight("100%");
+                windowPDF.setWidth("80%");
+                windowPDF.setMimeType("application/pdf");
+                windowPDF.setDraggable(false);
+                windowPDF.setResizable(false);
+                windowPDF.setScrollLeft(15);
+                windowPDF.center();
+                windowPDF.setModal(true);
+                windowPDF.insertEmbedded();
+                getUI().addWindow(windowPDF);
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        return btnPrint;
     }
     
     private Button getBtnInfo(Requisicion requisicion) {

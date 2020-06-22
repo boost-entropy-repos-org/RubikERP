@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.rubik.erp.modulo.ventas;
+package com.rubik.erp.modulo.compras;
 
 /**
  *
  * @author Dev
  */
-public class WindowVentasRemisionDeEntregaDet {
+public class WindowRemisionDeEntregaDet {
     
 }

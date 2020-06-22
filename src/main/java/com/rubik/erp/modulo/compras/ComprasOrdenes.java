@@ -137,21 +137,13 @@ public class ComprasOrdenes extends Panel implements View {
 
         btnModify.addClickListener((event) -> {
             if (gridOC.getSelectedItems().size() == 1) {
-                if(!gridOC.getSelectedItems().iterator().next().getEstado_doc().equals(_DocumentoEstados.TERMINADO)){
-                    WindowOrdenDeCompra windows = new WindowOrdenDeCompra(gridOC.getSelectedItems().iterator().next());
-                    windows.center();
-                    windows.setModal(true);
-                    windows.addCloseListener((e) -> {
-                        gridOC.setItems(getOrdenes());
-                    });
-                    getUI().addWindow(windows);
-                }else{
-                    MessageBox.createError()
-                            .withCaption("Error!")
-                            .withMessage("No puede modificar una Requisicion de Compra que esta en espera de su Autorizacion.")
-                            .withRetryButton()
-                            .open();
-                }
+                WindowOrdenDeCompra windows = new WindowOrdenDeCompra(gridOC.getSelectedItems().iterator().next());
+                windows.center();
+                windows.setModal(true);
+                windows.addCloseListener((e) -> {
+                    gridOC.setItems(getOrdenes());
+                });
+                getUI().addWindow(windows);
             } else {
                 MessageBox.createError()
                         .withCaption("Error!")
@@ -169,51 +161,42 @@ public class ComprasOrdenes extends Panel implements View {
         btnPrint.addClickListener((event) -> {
             if (gridOC.getSelectedItems().size() == 1) {
                 OrdenDeCompra ocTemp = gridOC.getSelectedItems().iterator().next();
-                if (!ocTemp.getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)) {
+                try {
+                    final HashMap map = new HashMap();
+                    map.put("folio", ocTemp.getFolio());
 
-                    try {
-                        final HashMap map = new HashMap();
-                        map.put("folio", ocTemp.getFolio());
+                    StreamResource.StreamSource source = new StreamResource.StreamSource() {
+                        @Override
+                        public InputStream getStream() {
+                            byte[] b = null;
+                            try {
+                                InputStream fileStream = getClass().getClassLoader().getResourceAsStream("/reportes/OrdenesDeCompra.jasper");
+                                b = JasperRunManager.runReportToPdf(fileStream, map, FactorySession.getRubikConnection(DomainConfig.getEnvironment()));
 
-                        StreamResource.StreamSource source = new StreamResource.StreamSource() {
-                            @Override
-                            public InputStream getStream() {
-                                byte[] b = null;
-                                try {
-                                    InputStream fileStream = getClass().getClassLoader().getResourceAsStream("/reportes/OrdenesDeCompra.jasper");
-                                    b = JasperRunManager.runReportToPdf(fileStream, map, FactorySession.getRubikConnection(DomainConfig.getEnvironment()));
-
-                                } catch (JRException ex) {
-                                    ex.printStackTrace();
-                                }
-                                return new ByteArrayInputStream(b);
+                            } catch (JRException ex) {
+                                ex.printStackTrace();
                             }
-                        };
+                            return new ByteArrayInputStream(b);
+                        }
+                    };
 
-                        StreamResource resource = new StreamResource(source, "OC_" + ocTemp.getFolio() + ".pdf");
+                    StreamResource resource = new StreamResource(source, "OC_" + ocTemp.getFolio() + ".pdf");
 
-                        EmbedWindow windowPDF = new EmbedWindow(resource);
-                        windowPDF.setCaption("Orden de compra:");
-                        windowPDF.setHeight("100%");
-                        windowPDF.setWidth("80%");
-                        windowPDF.setMimeType("application/pdf");
-                        windowPDF.setDraggable(false);
-                        windowPDF.setResizable(false);
-                        windowPDF.setScrollLeft(15);
-                        windowPDF.center();
-                        windowPDF.setModal(true);
-                        windowPDF.insertEmbedded();
-                        getUI().addWindow(windowPDF);
+                    EmbedWindow windowPDF = new EmbedWindow(resource);
+                    windowPDF.setCaption("Orden de compra:");
+                    windowPDF.setHeight("100%");
+                    windowPDF.setWidth("80%");
+                    windowPDF.setMimeType("application/pdf");
+                    windowPDF.setDraggable(false);
+                    windowPDF.setResizable(false);
+                    windowPDF.setScrollLeft(15);
+                    windowPDF.center();
+                    windowPDF.setModal(true);
+                    windowPDF.insertEmbedded();
+                    getUI().addWindow(windowPDF);
 
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                } else {
-                    MessageBox.createError()
-                            .withCaption("Error!")
-                            .withMessage("Debe Terminar la Orden de Compra para Imprimir el documento")
-                            .withRetryButton()
-                            .open();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
 
             } else {
@@ -235,11 +218,11 @@ public class ComprasOrdenes extends Panel implements View {
                     MessageBox.createQuestion()
                         .withCaption("Atencion!")
                         .withMessage("Desea que la Orden de Compra " + ocTemp.getFolio() + ""
-                                + " sea terminada? Ya no podrá realizar modificaciones.")
+                                + " sea marcada como Entregada?")
                         .withOkButton(() -> {
                             
                             OrdenDeCompraDomain domain = new OrdenDeCompraDomain();
-                            domain.OrdenDeCompraTerminar(ocTemp);
+                            domain.OrdenDeCompraEntregar(ocTemp);
                             
                             gridOC.setItems(getOrdenes());
                             

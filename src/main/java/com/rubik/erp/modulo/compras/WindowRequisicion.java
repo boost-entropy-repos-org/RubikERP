@@ -284,10 +284,6 @@ public class WindowRequisicion extends Window {
             try {
                 Empleado autoriza = cboAutorizador.getValue();
                 Double total = 0.0;
-                
-                if(!isEdit){
-                    requisicion = new Requisicion();
-                }
 
                 binder.writeBean(requisicion);
                 toUpperCase();
@@ -394,6 +390,10 @@ public class WindowRequisicion extends Window {
         cboAutorizador.setSelectedItem(listAutorizadoresCompras.get(0));
         cboAutorizador.setEmptySelectionAllowed(false);
 
+        if(requisicion.getCotizacion_id()!=null){
+            btnBuscarCotizacion.setEnabled(false);
+        }
+        
         if (isEdit) {
             binder.readBean(requisicion);
             

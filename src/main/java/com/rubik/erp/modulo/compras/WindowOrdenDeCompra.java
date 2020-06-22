@@ -92,7 +92,6 @@ public class WindowOrdenDeCompra extends Window {
     TextField txtTotal = new TextField("Total:");
     TextField txtCotizacionProveedor = new TextField();
     
-    TextField txtPedido = new TextField("Pedido:");
     TextField txtTiempoEntrega = new TextField("Tiempo de Entrega:");
     
     TextArea txtDireccionEntrega = new TextArea("Direccion Entrega:");
@@ -161,7 +160,6 @@ public class WindowOrdenDeCompra extends Window {
         binder.forField(txtDireccionEntrega).bind(OrdenDeCompra::getDireccion_entrega, OrdenDeCompra::setDireccion_entrega);
         binder.forField(txtCotizacionProveedor).bind(OrdenDeCompra::getCotizacion_proveedor, OrdenDeCompra::setCotizacion_proveedor);
         
-        binder.forField(txtPedido).bind(OrdenDeCompra::getPedido, OrdenDeCompra::setPedido);
         binder.forField(txtTiempoEntrega).bind(OrdenDeCompra::getTiempo_entrega, OrdenDeCompra::setTiempo_entrega);
         binder.forField(txtMontoLetra).bind(OrdenDeCompra::getImporte_letra, OrdenDeCompra::setImporte_letra);
 
@@ -376,6 +374,8 @@ public class WindowOrdenDeCompra extends Window {
 
                     txtSolicita.setValue(requisicion.getSolicita());
                     ordenDeCompra.setComprador(requisicion.getSolicita());
+                    ordenDeCompra.setCotizacion_id(requisicion.getCotizacion_id());
+                    ordenDeCompra.setCotizacion(requisicion.getFolio_cotizacion());
                     txtFolioRequisicion.setValue(requisicion.getFolio());
                     txtFechaRequerida.setValue(ManageDates.getLocalDateFromDate(requisicion.getFecha_requerida()));
                     txtTiempoEntrega.setValue(requisicion.getTiempo_entrega());
@@ -438,7 +438,6 @@ public class WindowOrdenDeCompra extends Window {
 
         gridOrdenDeCompraDet.setWidth("100%");
         
-        txtPedido.setWidth(strWidth);
         txtSolicita.setWidth(strWidth);
         txtFechaRequerida.setWidth(strWidth);
         txtFechaEntrega.setWidth(strWidth);
@@ -470,8 +469,16 @@ public class WindowOrdenDeCompra extends Window {
         cboAutorizador.setEmptySelectionAllowed(false);
 
         cboProveedor.setItems(getProveedor());
-        cboProveedor.setSelectedItem(proveedorList.get(0));
         cboProveedor.setEmptySelectionAllowed(false);
+        try {
+            cboProveedor.setSelectedItem(proveedorList.get(0));
+        } catch (Exception e) {
+            MessageBox.createError()
+                    .withCaption("Error!")
+                    .withMessage("No existen proveedores dados de alta. ")
+                    .withRetryButton()
+                    .open();
+        }
         
         txtFolioRequisicion.setEnabled(false);
         txtImporte.setEnabled(false);
@@ -493,7 +500,7 @@ public class WindowOrdenDeCompra extends Window {
         
         // ACOMODO =============================================================
         FormLayout fLay1 = new FormLayout();
-        fLay1.addComponents(txtPedido, txtSolicita,txtFechaRequerida, txtTiempoEntrega, cboProveedor);
+        fLay1.addComponents(txtSolicita,txtFechaRequerida, txtTiempoEntrega, cboProveedor);
         fLay1.setSpacing(false);
         
         FormLayout fLay2 = new FormLayout();
@@ -571,7 +578,6 @@ public class WindowOrdenDeCompra extends Window {
     
     public void toUpperCase() {
         ordenDeCompra.setSolicita(txtSolicita.getValue().toUpperCase());
-        ordenDeCompra.setPedido(txtPedido.getValue().toUpperCase());
         ordenDeCompra.setObservaciones(txtObservaciones.getValue().toUpperCase());
         ordenDeCompra.setDireccion_entrega(txtDireccionEntrega.getValue().toUpperCase());
     }

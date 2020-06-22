@@ -115,6 +115,7 @@ public class ComprasRequisiciones extends Panel implements View {
         columnFecha.setId("F. REQ");
         columnFecha.setWidth(120);
         gridRequisiciones.addColumn(Requisicion::getFolio).setCaption("FOLIO").setId("FOLIO").setWidth(120);
+        gridRequisiciones.addColumn(Requisicion::getFolio_cotizacion).setCaption("COTIZACION").setId("COTIZACION").setWidth(120);
         gridRequisiciones.addColumn(Requisicion::getPrioridad).setCaption("PRIORIDAD").setId("PRIORIDAD").setWidth(135);
         gridRequisiciones.addColumn(Requisicion::getEstado_doc).setCaption("ESTADO").setId("ESTADO").setWidth(135);
         

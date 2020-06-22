@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.rubik.erp.modulo.ventas;
+package com.rubik.erp.modulo.compras;
 
 import com.rubik.erp.config.DomainConfig;
 import com.rubik.erp.config.FactorySession;
@@ -41,7 +41,7 @@ import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
  *
  * @author Dev
  */
-public class VentasRemisionesDeEntrega extends Panel implements View {
+public class ComprasRemisionesDeEntrega extends Panel implements View {
 
     public static final String NAME = "REMISIONES_DE_ENTREGA";
     VerticalLayout container = new VerticalLayout();
@@ -63,7 +63,7 @@ public class VentasRemisionesDeEntrega extends Panel implements View {
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     
-    public VentasRemisionesDeEntrega() {
+    public ComprasRemisionesDeEntrega() {
         initComponents();
 
         HorizontalLayout hLayoutAux = new HorizontalLayout(
@@ -122,7 +122,7 @@ public class VentasRemisionesDeEntrega extends Panel implements View {
         gridCotizaciones.setHeight("500px");
 
         btnAdd.addClickListener((event) -> {
-            WindowVentasRemisionDeEntrega windows = new WindowVentasRemisionDeEntrega();
+            WindowRemisionDeEntrega windows = new WindowRemisionDeEntrega();
             windows.center();
             windows.setModal(true);
             windows.addCloseListener(ev -> {
@@ -133,7 +133,7 @@ public class VentasRemisionesDeEntrega extends Panel implements View {
 
         btnModify.addClickListener((event) -> {
             if (gridCotizaciones.getSelectedItems().size() == 1) {
-                WindowVentasRemisionDeEntrega windows = new WindowVentasRemisionDeEntrega(gridCotizaciones.getSelectedItems().iterator().next());
+                WindowRemisionDeEntrega windows = new WindowRemisionDeEntrega(gridCotizaciones.getSelectedItems().iterator().next());
                 windows.center();
                 windows.setModal(true);
                 windows.addCloseListener((e) -> {

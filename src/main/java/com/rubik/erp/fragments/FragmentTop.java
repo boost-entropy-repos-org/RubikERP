@@ -17,7 +17,8 @@ import com.rubik.erp.modulo.generic.Login;
 import com.rubik.erp.modulo.rh.Empleados;
 import com.rubik.erp.modulo.ventas.VentasClientes;
 import com.rubik.erp.modulo.ventas.VentasCotizaciones;
-import com.rubik.erp.modulo.ventas.VentasRemisionesDeEntrega;
+import com.rubik.erp.modulo.ventas.VentasProyectos;
+import com.rubik.erp.modulo.compras.ComprasRemisionesDeEntrega;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
@@ -49,14 +50,15 @@ public class FragmentTop extends HorizontalLayout {
     MenuBar.MenuItem subComprasOrdenDeCompra;
     MenuBar.MenuItem subComprasMonitoreoRequisiciones;
     MenuBar.MenuItem subComprasMonitoreoOC;
+    MenuBar.MenuItem subComprasRemisionEntrega;
     MenuBar.MenuItem subComprasReportesCompras;
     MenuBar.MenuItem subComprasReporteRequisicion;
     MenuBar.MenuItem subComprasReporteOrdenDeCompra;
     
     MenuBar.MenuItem menuVentas;
     MenuBar.MenuItem subVentasClientes;
+    MenuBar.MenuItem subVentasProyectos;
     MenuBar.MenuItem subVentasCotizaciones;
-    MenuBar.MenuItem subVentasRemisionEntrega;
     
     MenuBar.MenuItem menuRecursosHumanos;
     MenuBar.MenuItem subRHEmpleados;
@@ -115,6 +117,23 @@ public class FragmentTop extends HorizontalLayout {
 
         menubar.setHtmlContentAllowed(true);
         menubar.setWidth("100%");
+        
+// ----------------------------------------------------------------
+// ----------------------------------------------------------------
+//----------------------------------------------------------------- VENTAS
+        menuVentas = menubar.addItem("Ventas", null);
+        menuVentas.setIcon(Fam3SilkIcon.FOLDER_GO);
+
+        subVentasClientes = menuVentas.addItem("Clientes", actionMenu);
+        subVentasClientes.setIcon(Fam3SilkIcon.USER_SUIT);
+        
+        subVentasProyectos = menuVentas.addItem("Proyectos / Contratos", actionMenu);
+        subVentasProyectos.setIcon(Fam3SilkIcon.FOLDER_BELL);
+        
+        menuVentas.addSeparator();
+        
+        subVentasCotizaciones = menuVentas.addItem("Cotizaciones de Venta", actionMenu);
+        subVentasCotizaciones.setIcon(Fam3SilkIcon.PAGE_WHITE_TEXT);
 
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
@@ -135,6 +154,9 @@ public class FragmentTop extends HorizontalLayout {
 
         subComprasOrdenDeCompra = menuCompras.addItem("Ordenes de Compra", actionMenu);
         subComprasOrdenDeCompra.setIcon(Fam3SilkIcon.PAGE_GO);
+        
+        subComprasOrdenDeCompra = menuCompras.addItem("Remisiones de Entrega", actionMenu);
+        subComprasOrdenDeCompra.setIcon(Fam3SilkIcon.TRANSMIT_GO);
                 
         menuCompras.addSeparator();
         
@@ -154,23 +176,6 @@ public class FragmentTop extends HorizontalLayout {
 
         subComprasReporteOrdenDeCompra = subComprasReportesCompras.addItem("Reporte de Ordenes de Compra", actionMenu);
         subComprasReporteOrdenDeCompra.setIcon(Fam3SilkIcon.LAYOUT_EDIT);
-        
-// ----------------------------------------------------------------
-// ----------------------------------------------------------------
-//----------------------------------------------------------------- VENTAS
-        menuVentas = menubar.addItem("Ventas", null);
-        menuVentas.setIcon(Fam3SilkIcon.FOLDER_GO);
-
-        subVentasClientes = menuVentas.addItem("Clientes", actionMenu);
-        subVentasClientes.setIcon(Fam3SilkIcon.USER_SUIT);
-        
-        menuVentas.addSeparator();
-        
-        subVentasCotizaciones = menuVentas.addItem("Cotizaciones de Venta", actionMenu);
-        subVentasCotizaciones.setIcon(Fam3SilkIcon.PAGE_WHITE_TEXT);
-        
-        subVentasRemisionEntrega = menuVentas.addItem("Remisiones de Entrega", actionMenu);
-        subVentasRemisionEntrega.setIcon(Fam3SilkIcon.TRANSMIT_GO);
         
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
@@ -228,6 +233,9 @@ public class FragmentTop extends HorizontalLayout {
                 case "Monitoreo OC":
                     getUI().getNavigator().navigateTo(ComprasMonitorOrdenes.NAME);
                     break;
+                case "Remisiones de Entrega":
+                    getUI().getNavigator().navigateTo(ComprasRemisionesDeEntrega.NAME);
+                    break;
                     
 // ------------- COMPRAS ---------- REPORTES DE COMPRA
 //                case "Reporte de Requisiciones":
@@ -237,17 +245,17 @@ public class FragmentTop extends HorizontalLayout {
 //                    getUI().getNavigator().navigateTo(ViewComprasReporteOrdenesCompra.NAME);
 //                    break;
 
-// ------------- COMERCIAL
+// ------------- VENTAS
                 case "Clientes":
                     getUI().getNavigator().navigateTo(VentasClientes.NAME);
                     break;
                     
-                case "Cotizaciones de Venta":
-                    getUI().getNavigator().navigateTo(VentasCotizaciones.NAME);
+                case "Proyectos / Contratos":
+                    getUI().getNavigator().navigateTo(VentasProyectos.NAME);
                     break;
                     
-                case "Remisiones de Entrega":
-                    getUI().getNavigator().navigateTo(VentasRemisionesDeEntrega.NAME);
+                case "Cotizaciones de Venta":
+                    getUI().getNavigator().navigateTo(VentasCotizaciones.NAME);
                     break;
                     
  // ------------- RECURSOS HUMANOS

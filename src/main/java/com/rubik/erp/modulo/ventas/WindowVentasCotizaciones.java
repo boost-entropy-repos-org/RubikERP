@@ -16,11 +16,13 @@ import com.rubik.erp.domain.ClienteDomain;
 import com.rubik.erp.domain.ConfiguracionDomain;
 import com.rubik.erp.domain.CotizacionVentaDetDomain;
 import com.rubik.erp.domain.CotizacionVentaDomain;
+import com.rubik.erp.domain.ProyectoDomain;
 import com.rubik.erp.model.Cliente;
 import com.rubik.erp.model.Configuracion;
 import com.rubik.erp.model.CotizacionVenta;
 import com.rubik.erp.model.CotizacionVentaDet;
 import com.rubik.erp.model.Empleado;
+import com.rubik.erp.model.Proyecto;
 import com.rubik.manage.ManageNumbers;
 import com.rubik.manage.ManageString;
 import com.rubik.manage.Numero_Letras;
@@ -67,6 +69,10 @@ public class WindowVentasCotizaciones extends Window {
     TextField txtTipoCambio = new TextField("Tipo de Cambio:");
     TextField txtVendedor = new TextField("Vendedor:");
     TextField txtTiempoEntrega = new TextField("Tiempo de Entrega:");
+    TextField txtSolicitante = new TextField("Solicita:");
+    TextField txtAtencion = new TextField("Atencion:");
+    TextField txtReferanciaCliente = new TextField("Referencia:");
+    NativeSelect<Proyecto> cboProyecto = new NativeSelect("Proyecto:");
     TextArea txtCondicionesDeCotizacion = new TextArea("Condiciones de Cotizacion:");
     TextArea txtNotas = new TextArea("Notas:");
     TextArea txtMontoLetra = new TextArea("Monto con Letra:");
@@ -88,6 +94,7 @@ public class WindowVentasCotizaciones extends Window {
     List<CotizacionVentaDet> listCotizacionDeVentaDet = new ArrayList<>();
     
     List<Cliente> clienteList = new ArrayList<>();
+    List<Proyecto> proyectoList = new ArrayList<>();
     
     Label lblFolio;
     String folio = "";
@@ -130,6 +137,10 @@ public class WindowVentasCotizaciones extends Window {
         binder.forField(txtTipoCambio).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(CotizacionVenta::getTipo_cambio, CotizacionVenta::setTipo_cambio);
         binder.forField(txtVendedor).bind(CotizacionVenta::getVendedor, CotizacionVenta::setVendedor);
         binder.forField(txtTiempoEntrega).bind(CotizacionVenta::getTiempo_tentrega, CotizacionVenta::setTiempo_tentrega);
+        
+        binder.forField(txtSolicitante).bind(CotizacionVenta::getSolicitante, CotizacionVenta::setSolicitante);
+        binder.forField(txtAtencion).bind(CotizacionVenta::getAtencion, CotizacionVenta::setAtencion);
+        binder.forField(txtReferanciaCliente).bind(CotizacionVenta::getReferencia_cliente, CotizacionVenta::setReferencia_cliente);
         
         binder.forField(txtNotas).bind(CotizacionVenta::getObservaciones, CotizacionVenta::setObservaciones);
         binder.forField(txtCondicionesDeCotizacion).bind(CotizacionVenta::getCondiciones_cotizacion, CotizacionVenta::setCondiciones_cotizacion);
@@ -296,6 +307,9 @@ public class WindowVentasCotizaciones extends Window {
                 cotizacionDeVenta.setTerminada_no_requisicion(false);
                 cotizacionDeVenta.setTerminada_requisicion(false);
                 
+                cotizacionDeVenta.setProyecto_id(cboProyecto.getValue().getId());
+                cotizacionDeVenta.setProyecto(cboProyecto.getValue().getNombre());
+                
                 CotizacionVentaDomain service = new CotizacionVentaDomain();
 
                 if (isEdit) {
@@ -384,7 +398,11 @@ public class WindowVentasCotizaciones extends Window {
         
         txtVendedor.setWidth(strWidth);
         cboCliente.setWidth(strWidth);
+        cboProyecto.setWidth(strWidth);
         
+        txtSolicitante.setWidth(strWidth);
+        txtAtencion.setWidth(strWidth);
+        txtReferanciaCliente.setWidth(strWidth);
         txtTiempoEntrega.setWidth(strWidth);
         cboCondicionesPago.setWidth(strWidth);
         cboMetodoPago.setWidth(strWidth);
@@ -406,6 +424,10 @@ public class WindowVentasCotizaciones extends Window {
         cboCliente.setSelectedItem(clienteList.get(0));
         cboCliente.setEmptySelectionAllowed(false);
         
+        cboProyecto.setItems(getProyectos());
+        cboProyecto.setSelectedItem(proyectoList.get(0));
+        cboProyecto.setEmptySelectionAllowed(false);
+        
         txtImporte.setEnabled(false);
         txtSubtotal.setEnabled(false);
         txtIVA.setEnabled(false);
@@ -415,15 +437,29 @@ public class WindowVentasCotizaciones extends Window {
             binder.readBean(cotizacionDeVenta);
             
             gridCotizacionDeVentaDet.setItems(getPartidas());
+            
+            for (Cliente cte : clienteList) {
+                if (cotizacionDeVenta.getCliente_id().equals(cte.getId())) {
+                    cboCliente.setValue(cte);
+                    break;
+                }
+            }
+            
+            for (Proyecto proy : proyectoList) {
+                if (cotizacionDeVenta.getProyecto_id().equals(proy.getId())) {
+                    cboProyecto.setValue(proy);
+                    break;
+                }
+            }
         }
         
         // ACOMODO =============================================================
         FormLayout fLay1 = new FormLayout();
-        fLay1.addComponents(cboVigencia,txtVendedor,txtTiempoEntrega, cboCliente);
+        fLay1.addComponents(cboVigencia,txtVendedor,txtTiempoEntrega, cboCliente, txtSolicitante, txtAtencion);
         fLay1.setSpacing(false);
         
         FormLayout fLay2 = new FormLayout();
-        fLay2.addComponents(cboCondicionesPago, cboMetodoPago, cboMoneda, txtTipoCambio);
+        fLay2.addComponents(cboCondicionesPago, cboMetodoPago, cboMoneda, txtTipoCambio, txtReferanciaCliente, cboProyecto);
         fLay2.setSpacing(false);
         
         FormLayout fLayTotales = new FormLayout();
@@ -488,6 +524,9 @@ public class WindowVentasCotizaciones extends Window {
         cotizacionDeVenta.setCondiciones_cotizacion(txtCondicionesDeCotizacion.getValue().toUpperCase());
         cotizacionDeVenta.setObservaciones(txtNotas.getValue().toUpperCase());
         cotizacionDeVenta.setTiempo_tentrega(txtTiempoEntrega.getValue().toUpperCase());
+        cotizacionDeVenta.setSolicitante(txtSolicitante.getValue().toUpperCase());
+        cotizacionDeVenta.setAtencion(txtAtencion.getValue().toUpperCase());
+        cotizacionDeVenta.setReferencia_cliente(txtReferanciaCliente.getValue().toUpperCase());
     }
     
     public String getFolio() {
@@ -511,6 +550,14 @@ public class WindowVentasCotizaciones extends Window {
 
         clienteList = cliDomain.getObjects();
         return clienteList;
+    }
+    
+    public List<Proyecto> getProyectos() {
+        ProyectoDomain cliDomain = new ProyectoDomain();
+        cliDomain.getProyecto("activo = 1", "", "id ASC");
+
+        proyectoList = cliDomain.getObjects();
+        return proyectoList;
     }
     
     public void cargarPartidas(){

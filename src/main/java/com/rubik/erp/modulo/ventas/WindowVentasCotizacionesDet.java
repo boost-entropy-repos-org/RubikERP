@@ -46,6 +46,7 @@ public class WindowVentasCotizacionesDet extends Window {
     TextField txtCantidad = new TextField("Cantidad:");
     TextArea txtDescripcion = new TextArea("Descripcion:");
     TextField txtImporte = new TextField("Importe:");
+    TextField txtTiempoEntrega = new TextField("Tiempo Entrega:");
 
     Button btnCancelar = new Button("Cancelar", Fam3SilkIcon.CANCEL);
     Button btnGuardar = new Button("Guardar", Fam3SilkIcon.DISK);
@@ -75,14 +76,15 @@ public class WindowVentasCotizacionesDet extends Window {
 
     public void initComponents() {
         setCaption("PARTIDAS DE LA ORDEN DE COMPRA");
-        setWidth("490");
-        setHeight("455");
+        setWidth("510");
+        setHeight("560");
         
         String strWidth = "350";
 
         txtCantidad.setWidth(strWidth);
         txtDescripcion.setWidth(strWidth);
         txtImporte.setWidth(strWidth);
+        txtTiempoEntrega.setWidth(strWidth);
         
         txtCantidad.setValue("1");
         txtDescripcion.setEnabled(false);
@@ -97,6 +99,7 @@ public class WindowVentasCotizacionesDet extends Window {
 
         binder.forField(txtCantidad).withConverter(new StringToIntegerConverter(0, "El valor debe ser numerico.")).bind(CotizacionVentaDet::getCantidad, CotizacionVentaDet::setCantidad);
         binder.forField(txtDescripcion).withValidator(val -> val.length() >= 1 , "Verifique que este un Producto seleccionado").bind(CotizacionVentaDet::getDescripcion, CotizacionVentaDet::setDescripcion);
+        binder.forField(txtTiempoEntrega).bind(CotizacionVentaDet::getFecha_entrega, CotizacionVentaDet::setFecha_entrega);
         binder.forField(txtImporte).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico.")).bind(CotizacionVentaDet::getPrecio_unitario, CotizacionVentaDet::setPrecio_unitario);
 
         if (isEdit) {
@@ -192,11 +195,11 @@ public class WindowVentasCotizacionesDet extends Window {
         });
         
         FormLayout fLay = new FormLayout();
-        fLay.addComponents(btnProducto,txtCantidad, txtDescripcion, txtImporte);
+        fLay.addComponents(btnProducto,txtCantidad, txtDescripcion, txtImporte, txtTiempoEntrega);
         
         cont.addComponents(fLay, new HorizontalLayout(btnCancelar, btnGuardar));
         
-        cont.setComponentAlignment(cont.getComponent(0), Alignment.MIDDLE_LEFT);
+        cont.setComponentAlignment(cont.getComponent(0), Alignment.MIDDLE_CENTER);
         cont.setComponentAlignment(cont.getComponent(1), Alignment.MIDDLE_CENTER);
         
         center();

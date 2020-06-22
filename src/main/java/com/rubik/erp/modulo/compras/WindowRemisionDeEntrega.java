@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.rubik.erp.modulo.ventas;
+package com.rubik.erp.modulo.compras;
 
 import com.rubik.erp.config._DocumentoEstados;
 import com.rubik.erp.config._DocumentoTipos;
@@ -47,7 +47,7 @@ import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
  *
  * @author Dev
  */
-public class WindowVentasRemisionDeEntrega  extends Window {
+public class WindowRemisionDeEntrega  extends Window {
     
     Empleado empleado = (Empleado) VaadinSession.getCurrent().getSession().getAttribute("USUARIO_ACTIVO");
     
@@ -77,7 +77,7 @@ public class WindowVentasRemisionDeEntrega  extends Window {
     Label lblFolio;
     String folio = "";
 
-    public WindowVentasRemisionDeEntrega() {
+    public WindowRemisionDeEntrega() {
         remisionDeEntrega = new RemisionEntrega();
         
         lblFolio = new Label("REMISION DE ENTREGA " + getFolio()) {
@@ -89,7 +89,7 @@ public class WindowVentasRemisionDeEntrega  extends Window {
         initComponents();
     }
 
-    public WindowVentasRemisionDeEntrega(RemisionEntrega remEntrega) {
+    public WindowRemisionDeEntrega(RemisionEntrega remEntrega) {
         isEdit = true;
         remisionDeEntrega = remEntrega;
         lblFolio = new Label("REMISION DE ENTREGA " + remEntrega.getFolio()) {
@@ -252,9 +252,9 @@ public class WindowVentasRemisionDeEntrega  extends Window {
         if (isEdit) {
             binder.readBean(remisionDeEntrega);
             
-            for (Cliente prov : clienteList) {
-                if (remisionDeEntrega.getCliente_id().equals(prov.getId())) {
-                    cboCliente.setValue(prov);
+            for (Cliente cte : clienteList) {
+                if (remisionDeEntrega.getCliente_id().equals(cte.getId())) {
+                    cboCliente.setValue(cte);
                 }
             }
             
