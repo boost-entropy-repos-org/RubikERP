@@ -5,6 +5,8 @@
  */
 package com.rubik.erp.fragments;
 
+import com.rubik.erp.config._Departamentos;
+import com.rubik.erp.config._Puestos;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.modulo.compras.ComprasMonitorOrdenes;
 import com.rubik.erp.modulo.compras.ComprasMonitorRequisiciones;
@@ -275,9 +277,12 @@ public class FragmentTop extends HorizontalLayout {
                     break;
             }
         };
-//
-//        menubar.setHtmlContentAllowed(true);
-//        menubar.setWidth("100%");
+        
+        if (!empleado.getDepartamento().equals(_Departamentos.GERENCIA)) {
+            security();
+        }
+        
+        
     }
     
     public void security(){
@@ -304,15 +309,29 @@ public class FragmentTop extends HorizontalLayout {
                 item.setVisible(false);
             }
         }
-
         
-        
+        if (empleado.getDepartamento().equals(_Departamentos.COMPRAS)) {            
+            if(empleado.getPuesto().equals(_Puestos.GERENTE_COMPRAS)){
+            }else{
+            }
+        } else if (empleado.getDepartamento().equals(_Departamentos.VENTAS)){
+            menuVentas.setVisible(true);
+            subVentasClientes.setVisible(true);
+            subVentasProyectos.setVisible(true);
+            subVentasCotizaciones.setVisible(true);
+            
+            menuCompras.setVisible(true);
+            subComprasProveedor.setVisible(true);
+            subComprasProducto.setVisible(true);
+            subComprasRequisiciones.setVisible(true);
 
+            if(empleado.getPuesto().equals(_Puestos.GERENTE_VENTAS)){
+                subComprasMonitoreoRequisiciones.setVisible(true);
+                subComprasReporteRequisicion.setVisible(true);
+            }else{                
+            }            
+        }
 
-
-
-
-        
     }
 
 }

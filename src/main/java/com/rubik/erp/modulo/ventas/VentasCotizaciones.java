@@ -8,6 +8,7 @@ package com.rubik.erp.modulo.ventas;
 import com.rubik.erp.config.DomainConfig;
 import com.rubik.erp.config.FactorySession;
 import com.rubik.erp.config._DocumentoEstados;
+import com.rubik.erp.config._Puestos;
 import com.rubik.erp.domain.CotizacionVentaDomain;
 import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.CotizacionVenta;
@@ -269,6 +270,10 @@ public class VentasCotizaciones extends Panel implements View {
 
     public List getCotizacionesVentas() {
         String strWhere = " activo = 1 ";
+        
+        if(empleado.getPuesto().equals(_Puestos.AUXILIAR_VENTAS)){
+            strWhere += " usuario_id = " + empleado.getId();
+        }
 
         if (!"".equals(txtBusqueda.getValue())) {
             strWhere += " AND folio = '" + txtBusqueda.getValue().toUpperCase() + "'";

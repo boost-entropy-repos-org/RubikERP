@@ -75,7 +75,7 @@ public class WindowVentasCotizacionesDet extends Window {
     }
 
     public void initComponents() {
-        setCaption("PARTIDAS DE LA ORDEN DE COMPRA");
+        setCaption("PARTIDAS DE LA COTIZACION DE VENTA");
         setWidth("510");
         setHeight("560");
         

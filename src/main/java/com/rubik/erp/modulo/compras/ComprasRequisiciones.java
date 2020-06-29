@@ -8,6 +8,7 @@ package com.rubik.erp.modulo.compras;
 import com.rubik.erp.config.DomainConfig;
 import com.rubik.erp.config.FactorySession;
 import com.rubik.erp.config._DocumentoEstados;
+import com.rubik.erp.config._Puestos;
 import com.rubik.erp.domain.RequisicionDomain;
 import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.Empleado;
@@ -283,6 +284,10 @@ public class ComprasRequisiciones extends Panel implements View {
     public List getRequisiciones() {
         String strWhere = " activo = 1 ";
 
+        if(empleado.getPuesto().equals(_Puestos.AUXILIAR_VENTAS)){
+            strWhere += " usuario_id = " + empleado.getId();
+        }
+        
         if (!"".equals(txtBusqueda.getValue())) {
             strWhere += " AND folio = '" + txtBusqueda.getValue().toUpperCase() + "'";
         }

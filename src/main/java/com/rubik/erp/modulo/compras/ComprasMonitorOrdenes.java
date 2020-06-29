@@ -50,7 +50,7 @@ public class ComprasMonitorOrdenes  extends Panel implements View {
     public ComprasMonitorOrdenes() {
         initComponents();
         
-        Label lblTitulo = new Label("MONITOR DE REQUISICIONES") {
+        Label lblTitulo = new Label("MONITOR DE ORDENES DE COMPRA") {
             {
                 setStyleName("h1");
             }

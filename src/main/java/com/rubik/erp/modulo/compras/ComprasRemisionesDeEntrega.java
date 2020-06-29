@@ -168,7 +168,7 @@ public class ComprasRemisionesDeEntrega extends Panel implements View {
                             public InputStream getStream() {
                                 byte[] b = null;
                                 try {
-                                    InputStream fileStream = getClass().getClassLoader().getResourceAsStream("/reportes/RemisionEntrega.jasper");
+                                    InputStream fileStream = getClass().getClassLoader().getResourceAsStream("/reportes/RemisionesEntrega.jasper");
                                     b = JasperRunManager.runReportToPdf(fileStream, map, FactorySession.getRubikConnection(DomainConfig.getEnvironment()));
 
                                 } catch (JRException ex) {
@@ -181,7 +181,7 @@ public class ComprasRemisionesDeEntrega extends Panel implements View {
                         StreamResource resource = new StreamResource(source, "OC_" + ocTemp.getFolio() + ".pdf");
 
                         EmbedWindow windowPDF = new EmbedWindow(resource);
-                        windowPDF.setCaption("Cotizacion de Venta:");
+                        windowPDF.setCaption("Remision de Entrega:");
                         windowPDF.setHeight("100%");
                         windowPDF.setWidth("80%");
                         windowPDF.setMimeType("application/pdf");
