@@ -84,6 +84,11 @@ public class FragmentTop extends HorizontalLayout {
         logo.setHeight("37px");
         Image profilePic = new Image(null, new ThemeResource("img/user.png"));
         profilePic.setWidth("37px");
+        
+        HorizontalLayout rolePanel = new HorizontalLayout();
+        initializeActionMenu();
+        rolePanel.addComponents(profilePic, lblusuario);
+        rolePanel.setComponentAlignment(lblusuario, Alignment.MIDDLE_CENTER);
 
         btnPassword.setStyleName(ValoTheme.BUTTON_PRIMARY);
 
@@ -111,11 +116,6 @@ public class FragmentTop extends HorizontalLayout {
 //
 //            getUI().addWindow(windows);
         });
-
-        HorizontalLayout rolePanel = new HorizontalLayout();
-        initializeActionMenu();
-        rolePanel.addComponents(profilePic, lblusuario);
-        rolePanel.setComponentAlignment(lblusuario, Alignment.MIDDLE_CENTER);
 
         menubar.setHtmlContentAllowed(true);
         menubar.setWidth("100%");
@@ -202,14 +202,16 @@ public class FragmentTop extends HorizontalLayout {
 // ---------------------------------------------------------------- SALIR
         menuSalir = menubar.addItem("Salir", actionMenu);
         menuSalir.setIcon(Fam3SilkIcon.DOOR_OUT);
-
+        
         addComponents(new HorizontalLayout(logo, menubar), rolePanel);
         setSpacing(true);
         setComponentAlignment(rolePanel, Alignment.MIDDLE_RIGHT);
         
-//        if(!empleado.getDepartamento().equals(_TipoUsuario.USUARIO_SUPER)){
-//            security();
-//        }
+        initializeActionMenu();
+        
+        if (!empleado.getDepartamento().equals(_Departamentos.GERENCIA)) {
+            security();
+        }
     }
     
     public void initializeActionMenu(){
@@ -277,12 +279,7 @@ public class FragmentTop extends HorizontalLayout {
                     break;
             }
         };
-        
-        if (!empleado.getDepartamento().equals(_Departamentos.GERENCIA)) {
-            security();
-        }
-        
-        
+
     }
     
     public void security(){
@@ -309,6 +306,8 @@ public class FragmentTop extends HorizontalLayout {
                 item.setVisible(false);
             }
         }
+        
+        menuSalir.setVisible(true);
         
         if (empleado.getDepartamento().equals(_Departamentos.COMPRAS)) {            
             if(empleado.getPuesto().equals(_Puestos.GERENTE_COMPRAS)){
