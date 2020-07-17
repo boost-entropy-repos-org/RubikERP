@@ -252,11 +252,11 @@ public class WindowVentasCliente extends Window {
     }
     
     public void toUpperCase() {
-        cliente.setRazon_social(txtRazonSocial.getValue().toUpperCase());
-        cliente.setDomicilio(txtDomicilio.getValue().toUpperCase());
-        cliente.setRfc(txtRfc.getValue().toUpperCase());
-        cliente.setEstado(txtEstado.getValue().toUpperCase());
-        cliente.setCiudad(txtCiudad.getValue().toUpperCase());
+        cliente.setRazon_social(txtRazonSocial.getValue().toUpperCase().trim());
+        cliente.setDomicilio(txtDomicilio.getValue().toUpperCase().trim());
+        cliente.setRfc(txtRfc.getValue().toUpperCase().trim());
+        cliente.setEstado(txtEstado.getValue().toUpperCase().trim());
+        cliente.setCiudad(txtCiudad.getValue().toUpperCase().trim());
     }
     
 }
