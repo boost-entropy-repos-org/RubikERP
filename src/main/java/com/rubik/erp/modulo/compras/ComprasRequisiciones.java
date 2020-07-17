@@ -285,7 +285,7 @@ public class ComprasRequisiciones extends Panel implements View {
         String strWhere = " activo = 1 ";
 
         if(empleado.getPuesto().equals(_Puestos.AUXILIAR_VENTAS)){
-            strWhere += " usuario_id = " + empleado.getId();
+            strWhere += "AND usuario_id = " + empleado.getId();
         }
         
         if (!"".equals(txtBusqueda.getValue())) {

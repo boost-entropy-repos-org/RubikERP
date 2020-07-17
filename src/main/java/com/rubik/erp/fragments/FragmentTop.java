@@ -157,8 +157,8 @@ public class FragmentTop extends HorizontalLayout {
         subComprasOrdenDeCompra = menuCompras.addItem("Ordenes de Compra", actionMenu);
         subComprasOrdenDeCompra.setIcon(Fam3SilkIcon.PAGE_GO);
         
-        subComprasOrdenDeCompra = menuCompras.addItem("Remisiones de Entrega", actionMenu);
-        subComprasOrdenDeCompra.setIcon(Fam3SilkIcon.TRANSMIT_GO);
+        subComprasRemisionEntrega = menuCompras.addItem("Remisiones de Entrega", actionMenu);
+        subComprasRemisionEntrega.setIcon(Fam3SilkIcon.TRANSMIT_GO);
                 
         menuCompras.addSeparator();
         
@@ -309,7 +309,17 @@ public class FragmentTop extends HorizontalLayout {
         
         menuSalir.setVisible(true);
         
-        if (empleado.getDepartamento().equals(_Departamentos.COMPRAS)) {            
+        if (empleado.getDepartamento().equals(_Departamentos.COMPRAS)) {
+            menuCompras.setVisible(true);
+            subComprasProveedor.setVisible(true);
+            subComprasProducto.setVisible(true);
+            subComprasRequisiciones.setVisible(true);
+            subComprasOrdenDeCompra.setVisible(true);
+            subComprasRemisionEntrega.setVisible(true);
+            subComprasMonitoreoOC.setVisible(true);
+            subComprasMonitoreoRequisiciones.setVisible(true);
+            subComprasReportesCompras.setVisible(true);
+            
             if(empleado.getPuesto().equals(_Puestos.GERENTE_COMPRAS)){
             }else{
             }
