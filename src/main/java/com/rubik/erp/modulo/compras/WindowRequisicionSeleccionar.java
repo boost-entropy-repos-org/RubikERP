@@ -101,7 +101,7 @@ public class WindowRequisicionSeleccionar extends Window {
     
     public List getRequisiciones() {
         RequisicionDomain service = new RequisicionDomain();
-        service.getRequisicion(" activo = 1 AND estado_doc = 'AUTORIZADO' ", "", " folio DESC");
+        service.getRequisicionToCotizacion();
         listRequisicion = service.getObjects();
 
         if (!service.getOk()) {
