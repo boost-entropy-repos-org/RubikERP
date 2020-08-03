@@ -194,7 +194,6 @@ public class WindowRemisionDeEntrega  extends Window {
                 remisionDeEntrega.setEntrega(txtEntrega.getValue().toUpperCase());
                 remisionDeEntrega.setActivo(true);
 
-                
                 RemisionEntregaDomain service = new RemisionEntregaDomain();
 
                 if (isEdit) {

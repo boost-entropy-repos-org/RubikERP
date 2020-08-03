@@ -18,6 +18,7 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.NativeSelect;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -41,6 +42,7 @@ public class WindowProductoSimple extends Window {
 
     TextField txtCodigoInterno = new TextField("Codigo Interno:");
     TextField txtDescripcionCorta = new TextField("Desc. Corta:");
+    TextArea txtDescripcion = new TextArea("Descripcion:");
     TextField txtModelo = new TextField("Modelo:");
     TextField txtNoParte = new TextField("No Parte:");
     TextField txtNoSerie = new TextField("No Serie:");
@@ -72,14 +74,15 @@ public class WindowProductoSimple extends Window {
         setContent(cont);
         setResizable(false);
         
-        String strWidth = "400";
+        String strWidth = "100%";
         
-        setWidth("600");
+        setWidth("75%");
         setHeight("80%");
     
         Binder<Producto> binder = new Binder<>();
         binder.forField(txtCodigoInterno).bind(Producto::getCodigo_interno, Producto::setCodigo_interno);
         binder.forField(txtDescripcionCorta).bind(Producto::getDescripcion_corta, Producto::setDescripcion_corta);
+        binder.forField(txtDescripcion).bind(Producto::getDescripcion, Producto::setDescripcion);
         binder.forField(txtModelo).bind(Producto::getModelo, Producto::setModelo);
         binder.forField(txtNoParte).bind(Producto::getNo_parte, Producto::setNo_parte);
         binder.forField(txtNoSerie).bind(Producto::getNo_serie, Producto::setNo_serie);
@@ -135,6 +138,8 @@ public class WindowProductoSimple extends Window {
         txtCodigoInterno.setEnabled(false);
         txtDescripcionCorta.setMaxLength(100);
         
+        txtDescripcion.setRows(7);
+        
         txtModelo.setMaxLength(50);
         txtNoParte.setMaxLength(50);
         txtNoSerie.setMaxLength(50);
@@ -152,6 +157,7 @@ public class WindowProductoSimple extends Window {
         
         txtCodigoInterno.setWidth(strWidth);
         txtDescripcionCorta.setWidth(strWidth);
+        txtDescripcion.setWidth(strWidth);
         txtModelo.setWidth(strWidth);
         txtNoParte.setWidth(strWidth);
         txtNoSerie.setWidth(strWidth);
@@ -167,7 +173,7 @@ public class WindowProductoSimple extends Window {
         FormLayout fLay = new FormLayout();
         
         fLay.addComponents(new Label("Informacion Basica del Producto"){{setStyleName("h3");}});
-        fLay.addComponents(txtCodigoInterno, txtDescripcionCorta, txtModelo, txtNoParte, txtNoSerie, 
+        fLay.addComponents(txtCodigoInterno, txtDescripcionCorta, txtDescripcion, txtModelo, txtNoParte, txtNoSerie, 
                 txtMarca, cboUnidadMedida, cboIVA, txtPrecioCompra);
      
         cont.addComponents(fLay, new HorizontalLayout(btnCancelar, btnGuardar));
@@ -176,6 +182,7 @@ public class WindowProductoSimple extends Window {
     
     public void toUpperCase() {
         producto.setDescripcion_corta(txtDescripcionCorta.getValue().toUpperCase());
+        producto.setDescripcion(txtDescripcion.getValue().toUpperCase());
         producto.setModelo(txtModelo.getValue().toUpperCase());
         producto.setMarca(txtMarca.getValue().toUpperCase());
         producto.setNo_serie(txtNoSerie.getValue().toUpperCase());

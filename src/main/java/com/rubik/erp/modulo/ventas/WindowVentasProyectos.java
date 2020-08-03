@@ -45,7 +45,7 @@ public class WindowVentasProyectos extends Window {
     public Proyecto proyecto = new Proyecto();
     public Boolean isEdit = false;
     
-    TextField txtNombre = new TextField("Nombre:");
+    TextArea txtNombre = new TextArea("Nombre:");
     TextArea txtDescripcion = new TextArea("Descripcion:");
     DateField txtFechaInicio = new DateField("Fecha Inicio:", LocalDate.now());
     DateField txtFechaFin = new DateField("Fecha Fin:", LocalDate.now());
@@ -154,6 +154,9 @@ public class WindowVentasProyectos extends Window {
         });
 
         txtDescripcion.setRows(5);
+        txtNombre.setRows(2);
+        
+        txtNombre.setMaxLength(200);
 
         txtNombre.setWidth(strWidth);
         txtDescripcion.setWidth(strWidth);

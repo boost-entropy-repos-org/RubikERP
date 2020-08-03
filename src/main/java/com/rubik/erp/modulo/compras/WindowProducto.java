@@ -99,9 +99,9 @@ public class WindowProducto extends Window {
         setContent(cont);
         setResizable(false);
         
-        String strWidth = "400";
+        String strWidth = "100%";
         
-        setWidth("600");
+        setWidth("75%");
         setHeight("80%");
     
         Binder<Producto> binder = new Binder<>();
@@ -206,7 +206,7 @@ public class WindowProducto extends Window {
         
         txtCodigoInterno.setEnabled(false);
         txtDescripcionCorta.setMaxLength(100);
-        txtDescripcion.setRows(3);
+        txtDescripcion.setRows(7);
         
         cboClasificacion.setEmptySelectionAllowed(false);
         cboClasificacion.setItems("PRODUCTO", "SERVICIO");

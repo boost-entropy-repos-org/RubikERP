@@ -76,10 +76,10 @@ public class WindowVentasCotizacionesDet extends Window {
 
     public void initComponents() {
         setCaption("PARTIDAS DE LA COTIZACION DE VENTA");
-        setWidth("510");
-        setHeight("560");
+        setWidth("70%");
+        setHeight("80%");
         
-        String strWidth = "350";
+        String strWidth = "100%";
 
         txtCantidad.setWidth(strWidth);
         txtDescripcion.setWidth(strWidth);
@@ -88,6 +88,7 @@ public class WindowVentasCotizacionesDet extends Window {
         
         txtCantidad.setValue("1");
         txtDescripcion.setEnabled(false);
+        txtDescripcion.setRows(7);
         
         txtCantidad.addFocusListener((event) -> {            
             txtCantidad.setSelection(0, txtCantidad.getValue().length());
@@ -114,12 +115,12 @@ public class WindowVentasCotizacionesDet extends Window {
         btnProducto.addClickListener((event) -> {
             WindowSeleccionarProducto window = new WindowSeleccionarProducto();
             window.addCloseListener(ev -> {
-                
+
                 Producto p = (Producto) VaadinSession.getCurrent().getSession().getAttribute("PRODUCTO_SELECCIONADO");
                 System.out.println("PRODUCTO SELECCIONADO " + p);
                 if(p != null){
                     partida = new CotizacionVentaDet();
-                    partida.setDescripcion(p.getDescripcion_corta());
+                    partida.setDescripcion(p.getDescripcion());
                     partida.setProducto_id(p.getId());
                     partida.setUnidad_medida(p.getUnidad_medida());
                     partida.setPrecio_unitario(p.getPrecio_compra());
@@ -130,7 +131,7 @@ public class WindowVentasCotizacionesDet extends Window {
                     partida.setMarca(p.getMarca());
                     partida.setCodigo_interno(p.getCodigo_interno());
 
-                    txtDescripcion.setValue(p.getDescripcion_corta());
+                    txtDescripcion.setValue(p.getDescripcion());
                     txtImporte.setValue(p.getPrecio_compra().toString());
                 }
             });

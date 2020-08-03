@@ -57,7 +57,7 @@ public class WindowSeleccionarProducto extends Window {
         gridSelecProd.setWidth("100%");
         gridSelecProd.setSelectionMode(SelectionMode.SINGLE);
         gridSelecProd.addColumn(Producto::getCodigo_interno).setCaption("CODIGO").setId("CODIGO");
-        gridSelecProd.addColumn(Producto::getDescripcion_corta).setCaption("DESCRIPCION").setId("DESCRIPCION");
+        gridSelecProd.addColumn(Producto::getDescripcion_corta).setCaption("DESCRIPCION CORTA").setId("DESCRIPCION CORTA");
         gridSelecProd.addColumn(Producto::getNo_serie).setCaption("NO SERIE").setId("NO SERIE");
         gridSelecProd.addColumn(Producto::getModelo).setCaption("MODELO").setId("MODELO");
         gridSelecProd.addColumn(Producto::getMarca).setCaption("MARCA").setId("MARCA");

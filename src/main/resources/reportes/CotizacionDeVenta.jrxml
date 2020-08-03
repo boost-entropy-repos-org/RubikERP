@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Cotizaciones" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e3751d5e-8725-4e8e-8903-40f4a45612e9">
-	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="66"/>
+	<property name="ireport.y" value="0"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="RubikERP"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<parameter name="REPORT_DIR" class="java.lang.String" isForPrompting="false">
@@ -436,7 +436,7 @@ WHERE t1.folio = $P{folio}]]>
 				<text><![CDATA[RFC:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="4" y="151" width="89" height="16" uuid="a926adcc-ad8d-45cb-a315-74869ca5f859"/>
+				<reportElement x="4" y="151" width="116" height="16" uuid="a926adcc-ad8d-45cb-a315-74869ca5f859"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -483,42 +483,42 @@ WHERE t1.folio = $P{folio}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha_elaboracion}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="46" y="134" width="245" height="16" uuid="6eafc888-94c8-4e1e-b970-1e5056775756"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{atencion}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="93" y="151" width="103" height="16" uuid="947a27c2-4aac-4f60-bb96-b358a0b73e8f"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="123" y="151" width="447" height="16" uuid="947a27c2-4aac-4f60-bb96-b358a0b73e8f"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{referencia_cliente}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="45" y="103" width="373" height="16" uuid="d07b67d5-8fcc-4564-826a-0b6335411302"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{receptor_nombre}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="461" y="118" width="109" height="16" uuid="b5a6a17d-0526-4810-847a-48b04d4d1d3e"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{receptor_municipio}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="461" y="103" width="109" height="15" uuid="24f27d22-7e3c-472f-8a52-067f80ed64ab"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{rfc}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="333" y="134" width="237" height="16" uuid="fa8b2b3f-1711-4550-89a3-e917ae1f4938"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -532,14 +532,14 @@ WHERE t1.folio = $P{folio}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{moneda}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="291" y="185" width="99" height="15" uuid="5e384cc6-6f4f-4896-ad65-bd1045c501fd"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{condiciones_pago}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="393" y="185" width="179" height="15" uuid="de9802ef-64f1-4bc6-b09f-61600636a37e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -601,7 +601,7 @@ Tel. +52 (833) 3992231, www.impeller.com.mx]]></text>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{dias_caduca}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="46" y="119" width="372" height="15" uuid="d5dc1bb0-a6f8-4b86-a47d-e7adce87bcff"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -634,7 +634,7 @@ Tel. +52 (833) 3992231, www.impeller.com.mx]]></text>
 				<text><![CDATA[No.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="46" y="0" width="390" height="15" backcolor="#CCCCCC" uuid="315bfaf1-0c9a-494f-b8ea-bba9ae0f3f2e"/>
+				<reportElement mode="Opaque" x="46" y="0" width="393" height="15" backcolor="#CCCCCC" uuid="315bfaf1-0c9a-494f-b8ea-bba9ae0f3f2e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
@@ -648,11 +648,18 @@ Tel. +52 (833) 3992231, www.impeller.com.mx]]></text>
 				<text><![CDATA[CTD]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="436" y="0" width="58" height="15" backcolor="#CCCCCC" uuid="42b6a94a-a59a-4e45-8a1d-48a1d71faee8"/>
+				<reportElement mode="Opaque" x="439" y="0" width="55" height="15" backcolor="#CCCCCC" uuid="42b6a94a-a59a-4e45-8a1d-48a1d71faee8"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
 				<text><![CDATA[ENTREGA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="390" y="0" width="49" height="15" backcolor="#CCCCCC" uuid="8a710163-1712-4334-9ff1-2d8a63897f05"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[UNIDAD]]></text>
 			</staticText>
 			<rectangle>
 				<reportElement mode="Transparent" x="0" y="0" width="572" height="15" uuid="73bcffbf-c140-4b6e-be21-a3c26f10de5d"/>
@@ -660,23 +667,25 @@ Tel. +52 (833) 3992231, www.impeller.com.mx]]></text>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="22" splitType="Stretch">
+		<band height="12" splitType="Stretch">
 			<textField>
-				<reportElement x="20" y="0" width="26" height="22" uuid="794e238e-ed98-4612-8d1d-f49a00beca1d"/>
+				<reportElement x="20" y="0" width="26" height="12" uuid="794e238e-ed98-4612-8d1d-f49a00beca1d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
-				<reportElement x="0" y="0" width="20" height="22" uuid="d378c40f-28bf-46e3-a3ba-50684a1a5635"/>
+				<reportElement x="0" y="0" width="20" height="12" uuid="d378c40f-28bf-46e3-a3ba-50684a1a5635">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{partida}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="46" y="0" width="390" height="22" uuid="cdb2ac62-a3ad-401d-9047-bcd9c4746b60"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="46" y="0" width="344" height="12" isPrintWhenDetailOverflows="true" uuid="cdb2ac62-a3ad-401d-9047-bcd9c4746b60"/>
 				<box leftPadding="3"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="7"/>
@@ -684,25 +693,32 @@ Tel. +52 (833) 3992231, www.impeller.com.mx]]></text>
 				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="494" y="0" width="39" height="22" uuid="c0388578-f5e5-4063-8b49-23000ea9591d"/>
+				<reportElement x="494" y="0" width="39" height="12" uuid="c0388578-f5e5-4063-8b49-23000ea9591d"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{precio_unitario}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="533" y="0" width="39" height="22" uuid="9b17a20e-bfc5-4797-aef7-5400e887e1b9"/>
+				<reportElement x="533" y="0" width="39" height="12" uuid="9b17a20e-bfc5-4797-aef7-5400e887e1b9"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{importe_partida}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="436" y="0" width="58" height="22" uuid="5800d459-1470-455b-b497-f308693524ac"/>
+				<reportElement x="439" y="0" width="55" height="12" uuid="5800d459-1470-455b-b497-f308693524ac"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha_entrega}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="390" y="0" width="49" height="12" uuid="342b93e1-a59b-4261-930d-28c7a0bf5a8b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{unidad_medida}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
