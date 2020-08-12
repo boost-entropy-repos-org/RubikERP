@@ -153,7 +153,7 @@ public class WindowSeleccionarProducto extends Window {
     
     public List getProducto() {
         ProductoDomain service = new ProductoDomain();
-        service.getProducto("activo = 1", "", " id ASC");
+        service.getProducto("activo = 1", "", " descripcion_corta ASC");
         listProducto = service.getObjects();
 
         if (!service.getOk()) {
@@ -168,7 +168,7 @@ public class WindowSeleccionarProducto extends Window {
     
     public List getProducto(Integer id) {
         ProductoDomain service = new ProductoDomain();
-        service.getProducto("id = " + id, "", " id ASC");
+        service.getProducto("id = " + id, "", " descripcion_corta ASC");
         listProducto = service.getObjects();
 
         if (!service.getOk()) {

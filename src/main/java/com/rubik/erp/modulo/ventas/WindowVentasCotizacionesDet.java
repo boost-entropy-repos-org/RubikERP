@@ -117,13 +117,13 @@ public class WindowVentasCotizacionesDet extends Window {
             window.addCloseListener(ev -> {
 
                 Producto p = (Producto) VaadinSession.getCurrent().getSession().getAttribute("PRODUCTO_SELECCIONADO");
-                System.out.println("PRODUCTO SELECCIONADO " + p);
+//                System.out.println("PRODUCTO SELECCIONADO " + p);
                 if(p != null){
                     partida = new CotizacionVentaDet();
                     partida.setDescripcion(p.getDescripcion());
                     partida.setProducto_id(p.getId());
                     partida.setUnidad_medida(p.getUnidad_medida());
-                    partida.setPrecio_unitario(p.getPrecio_compra());
+                    partida.setPrecio_unitario(p.getPrecio_venta());
                     
                     partida.setNo_parte(p.getNo_parte());
                     partida.setNo_serie(p.getNo_serie());
@@ -132,7 +132,7 @@ public class WindowVentasCotizacionesDet extends Window {
                     partida.setCodigo_interno(p.getCodigo_interno());
 
                     txtDescripcion.setValue(p.getDescripcion());
-                    txtImporte.setValue(p.getPrecio_compra().toString());
+                    txtImporte.setValue(p.getPrecio_venta().toString());
                 }
             });
             getUI().addWindow(window);

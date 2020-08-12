@@ -77,9 +77,9 @@ public class ComprasProductos extends Panel implements View {
         txtBusqueda.setPlaceholder("Producto a buscar");      
 
         gridProducto.addColumn(Producto::getCodigo_interno).setCaption("CODIGO").setId("CODIGO").setWidth(105);
+        gridProducto.addColumn(Producto::getDescripcion_corta).setCaption("DESCRIPCION").setId("DESCRIPCION");
         gridProducto.addColumn(Producto::getNo_serie).setCaption("NS").setId("NS").setWidth(97);
         gridProducto.addColumn(Producto::getMarca).setCaption("MARCA").setId("MARCA").setWidth(135);
-        gridProducto.addColumn(Producto::getDescripcion_corta).setCaption("DESCRIPCION").setId("DESCRIPCION");
         gridProducto.addColumn(Producto::getInventario_actual).setCaption("INVENTARIO").setId("INVENTARIO").setWidth(120);
         
 
@@ -135,11 +135,11 @@ public class ComprasProductos extends Panel implements View {
                     + "OR marca LIKE '%" + txtBusqueda.getValue().toUpperCase() + "%' "
                     + "OR modelo LIKE '%" + txtBusqueda.getValue().toUpperCase() + "%' "
                     + "OR descripcion LIKE '%" + txtBusqueda.getValue().toUpperCase() + "%' "
-                    + "OR numero_serie LIKE '%" + txtBusqueda.getValue().toUpperCase() + "%' ";
+                    + "OR no_serie LIKE '%" + txtBusqueda.getValue().toUpperCase() + "%' ";
         }
 
         ProductoDomain service = new ProductoDomain();
-        service.getProducto(strWhere, "", "descripcion ASC");
+        service.getProducto(strWhere, "", "descripcion_corta ASC");
         listProducto = service.getObjects();
 
         if (!service.getOk()) {

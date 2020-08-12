@@ -29,6 +29,7 @@ import com.rubik.manage.Numero_Letras;
 import com.vaadin.data.Binder;
 import com.vaadin.data.converter.StringToDoubleConverter;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.shared.ui.grid.ColumnResizeMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.FormLayout;
@@ -152,7 +153,7 @@ public class WindowVentasCotizaciones extends Window {
         binder.forField(txtIVA).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(CotizacionVenta::getIva, CotizacionVenta::setIva);
         binder.forField(txtTotal).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(CotizacionVenta::getTotal, CotizacionVenta::setTotal);
         
-        gridCotizacionDeVentaDet.setHeight("272");
+        gridCotizacionDeVentaDet.setHeight("450");
         gridCotizacionDeVentaDet.setSelectionMode(Grid.SelectionMode.SINGLE);
         
         gridCotizacionDeVentaDet.addItemClickListener(event -> {
@@ -187,6 +188,7 @@ public class WindowVentasCotizaciones extends Window {
         gridCotizacionDeVentaDet.addColumn(CotizacionVentaDet::getDescripcion).setCaption("DESCRIPCION");
         gridCotizacionDeVentaDet.addColumn(CotizacionVentaDet::getPrecio_unitario).setCaption("P.U.").setWidth(120);
         gridCotizacionDeVentaDet.addColumn(CotizacionVentaDet::getImporte).setCaption("IMPORTE").setWidth(120);
+
 
         btnAgregarPartida.addClickListener((event) -> {
             WindowVentasCotizacionesDet windows = new WindowVentasCotizacionesDet(cotizacionDeVenta);
