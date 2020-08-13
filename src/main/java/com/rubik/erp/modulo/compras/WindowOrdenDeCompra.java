@@ -695,7 +695,8 @@ public class WindowOrdenDeCompra extends Window {
         txtTotal.setValue(total+""); 
         
         Numero_Letras importeLetra = new Numero_Letras();
-        txtMontoLetra.setValue(importeLetra.Convertir(total.toString(), true));
+        txtMontoLetra.setValue(importeLetra.Convertir(total.toString(), true, 
+                cboMoneda.getValue().equals(_Pago_Documentos.MONEDA_PESOS)?true:false));
         
         gridOrdenDeCompraDet.getDataProvider().refreshAll();
     }

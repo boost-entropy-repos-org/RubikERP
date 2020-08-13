@@ -189,7 +189,7 @@ public class VentasCotizaciones extends Panel implements View {
                         }
                     };
 
-                    StreamResource resource = new StreamResource(source, "OC_" + ocTemp.getFolio() + ".pdf");
+                    StreamResource resource = new StreamResource(source, "COTIZACION_" + ocTemp.getFolio() + ".pdf");
 
                     EmbedWindow windowPDF = new EmbedWindow(resource);
                     windowPDF.setCaption("Cotizacion de Venta:");

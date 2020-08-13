@@ -29,7 +29,6 @@ import com.rubik.manage.Numero_Letras;
 import com.vaadin.data.Binder;
 import com.vaadin.data.converter.StringToDoubleConverter;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.shared.ui.grid.ColumnResizeMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.FormLayout;
@@ -426,6 +425,14 @@ public class WindowVentasCotizaciones extends Window {
         cboCliente.setSelectedItem(clienteList.get(0));
         cboCliente.setEmptySelectionAllowed(false);
         
+        cboCliente.addValueChangeListener((event) -> {
+            if(cboCliente.getValue().getPais().equals(_Pais.NACIONAL)){
+                cboMoneda.setValue(_Pago_Documentos.MONEDA_PESOS);
+            } else {
+                cboMoneda.setValue(_Pago_Documentos.MONEDA_DOLARES);
+            }
+        });
+        
         cboProyecto.setItems(getProyectos());
         cboProyecto.setSelectedItem(proyectoList.get(0));
         cboProyecto.setEmptySelectionAllowed(false);
@@ -641,7 +648,8 @@ public class WindowVentasCotizaciones extends Window {
         txtTotal.setValue(total+""); 
         
         Numero_Letras importeLetra = new Numero_Letras();
-        txtMontoLetra.setValue(importeLetra.Convertir(total.toString(), true));
+        txtMontoLetra.setValue(importeLetra.Convertir(total.toString(), true, 
+                cboMoneda.getValue().equals(_Pago_Documentos.MONEDA_PESOS)?true:false));
         
         gridCotizacionDeVentaDet.getDataProvider().refreshAll();
     }
