@@ -85,6 +85,16 @@ public class ExpedienteDigital {
         return false;
     }
     
+    public static boolean deleteDocument(NodeFile node){
+        
+        File file = new File(node.getUrl());
+        if(file.delete()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
     static void createEDFolder(String folder){
         File f = new File(folder);
         

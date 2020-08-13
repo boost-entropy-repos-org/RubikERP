@@ -141,7 +141,7 @@ public class WindowVentasCotizacionesDet extends Window {
         txtCantidad.addValueChangeListener((event) -> {
             if(ManageNumbers.ToInteger(txtCantidad.getValue())==0){
                 txtCantidad.setValue("1");
-            }            
+            }
         });
 
         btnGuardar.addClickListener((event) -> {

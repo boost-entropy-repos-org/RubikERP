@@ -9,6 +9,7 @@ import com.rubik.Base.DocumentObjectBase;
 import com.rubik.erp.domain.NodeFileDomain;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.NodeFile;
+import com.rubik.erp.util.ExpedienteDigital;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -35,7 +36,7 @@ public class WindowVisorDocumentos extends Window {
     DocumentObjectBase documento;
     
     Button btnAdd = new Button("Agregar",Fam3SilkIcon.ADD);
-    Button btnDelete = new Button("Eliminar",Fam3SilkIcon.ADD);
+    Button btnDelete = new Button("Eliminar",Fam3SilkIcon.DELETE);
     
     Grid<NodeFile> gridDocumentos = new Grid<>();
     List<NodeFile> listProducto = new ArrayList<>();
@@ -58,6 +59,32 @@ public class WindowVisorDocumentos extends Window {
         cont.setComponentAlignment(cont.getComponent(0), Alignment.MIDDLE_CENTER);
         cont.setComponentAlignment(cont.getComponent(1), Alignment.MIDDLE_CENTER);
 
+        btnDelete.addClickListener((event) -> {
+            if (gridDocumentos.getSelectedItems().size() == 1) {
+
+                MessageBox.createQuestion()
+                        .withCaption("Atencion")
+                        .withMessage("Desea eliminar el Documento seleccionado?")
+                        .withYesButton(() -> {
+
+                            NodeFileDomain service = new NodeFileDomain();
+                            service.NodeFileDelete(gridDocumentos.getSelectedItems().iterator().next());
+                            if (service.getOk()) {
+                                ExpedienteDigital.deleteDocument(gridDocumentos.getSelectedItems().iterator().next());
+
+                                MessageBox.createError()
+                                        .withCaption("Atencion!")
+                                        .withMessage(service.getNotification())
+                                        .withRetryButton()
+                                        .open();
+                            }
+
+                        })
+                        .withRetryButton()
+                        .open();
+            }
+        });
+        
         btnAdd.addClickListener((event) -> {
             WindowFileNode windows = new WindowFileNode(documento);
             windows.center();
