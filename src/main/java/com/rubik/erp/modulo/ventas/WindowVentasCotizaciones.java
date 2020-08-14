@@ -41,6 +41,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import de.steinwedel.messagebox.MessageBox;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -638,14 +639,14 @@ public class WindowVentasCotizaciones extends Window {
             IVA = 0.0;
         }
         
-        IVA = new Double(Math.round(IVA*100)/100+"");
+        DecimalFormat df = new DecimalFormat("#.00");
         total = subtotal + IVA;
 
         txtImporte.setValue(importe+"");
         txtDescuento.setValue(descuento+"");
         txtSubtotal.setValue(subtotal+"");
-        txtIVA.setValue(IVA+"");
-        txtTotal.setValue(total+""); 
+        txtIVA.setValue(df.format(IVA));
+        txtTotal.setValue(df.format(total)); 
         
         Numero_Letras importeLetra = new Numero_Letras();
         txtMontoLetra.setValue(importeLetra.Convertir(total.toString(), true, 

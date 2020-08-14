@@ -47,6 +47,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import de.steinwedel.messagebox.MessageBox;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -170,8 +171,37 @@ public class WindowOrdenDeCompra extends Window {
         binder.forField(txtIVA).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(OrdenDeCompra::getIva, OrdenDeCompra::setIva);
         binder.forField(txtTotal).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(OrdenDeCompra::getTotal, OrdenDeCompra::setTotal);
         
+        txtSolicita.setEnabled(false);
+        txtSolicita.setValue(empleado.getNombre_completo());
+        
+        txtObservaciones.setRows(3);
+        txtDireccionEntrega.setRows(3);
+        txtMontoLetra.setRows(3);
+        
+        cboCondicionesPago.setItems(_Pago_Documentos.CONDICIONES_PAGO);
+        cboCondicionesPago.setValue(_Pago_Documentos.CONDICIONES_PAGO.get(0));
+        cboCondicionesPago.setEmptySelectionAllowed(false);
+
+        cboMetodoPago.setItems(_Pago_Documentos.METODOS_PAGO);
+        cboMetodoPago.setValue(_Pago_Documentos.METODOS_PAGO.get(0));
+        cboMetodoPago.setEmptySelectionAllowed(false);
+        
+        cboMoneda.setItems(_Pago_Documentos.MONEDAS);
+        cboMoneda.setValue(_Pago_Documentos.MONEDAS.get(0));
+        cboMoneda.setEmptySelectionAllowed(false);
+        
+        cboAlmacenRecibe.setItems("Almacen Matriz");
+        cboAlmacenRecibe.setValue("Almacen Matriz");
+        cboAlmacenRecibe.setEmptySelectionAllowed(false);
+
         gridOrdenDeCompraDet.setHeight("272");
         gridOrdenDeCompraDet.setSelectionMode(Grid.SelectionMode.SINGLE);
+        
+        gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getCantidad).setCaption("CTD").setWidth(75);
+        gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getDescripcion).setCaption("DESCRIPCION");
+        gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getPrecio_unitario).setCaption("P.U.").setWidth(120);
+        gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getImporte).setCaption("IMPORTE").setWidth(120);
+        gridOrdenDeCompraDet.setWidth("100%");
         
         gridOrdenDeCompraDet.addItemClickListener(event -> {
             if (event.getMouseEventDetails().isDoubleClick()) {
@@ -200,11 +230,6 @@ public class WindowOrdenDeCompra extends Window {
                 }
             }
         });
-
-        gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getCantidad).setCaption("CTD").setWidth(75);
-        gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getDescripcion).setCaption("DESCRIPCION");
-        gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getPrecio_unitario).setCaption("P.U.").setWidth(120);
-        gridOrdenDeCompraDet.addColumn(OrdenDeCompraDet::getImporte).setCaption("IMPORTE").setWidth(120);
 
         btnAgregarPartida.addClickListener((event) -> {
             WindowOrdenDeCompraDet windows = new WindowOrdenDeCompraDet(ordenDeCompra);
@@ -412,31 +437,6 @@ public class WindowOrdenDeCompra extends Window {
         txtDescuento.addBlurListener((event) -> {
             calcularTotales();
         });
-        
-        txtSolicita.setEnabled(false);
-        txtSolicita.setValue(empleado.getNombre_completo());
-        
-        txtObservaciones.setRows(3);
-        txtDireccionEntrega.setRows(3);
-        txtMontoLetra.setRows(3);
-        
-        cboCondicionesPago.setItems(_Pago_Documentos.CONDICIONES_PAGO);
-        cboCondicionesPago.setValue(_Pago_Documentos.CONDICIONES_PAGO.get(0));
-        cboCondicionesPago.setEmptySelectionAllowed(false);
-
-        cboMetodoPago.setItems(_Pago_Documentos.METODOS_PAGO);
-        cboMetodoPago.setValue(_Pago_Documentos.METODOS_PAGO.get(0));
-        cboMetodoPago.setEmptySelectionAllowed(false);
-        
-        cboMoneda.setItems(_Pago_Documentos.MONEDAS);
-        cboMoneda.setValue(_Pago_Documentos.MONEDAS.get(0));
-        cboMoneda.setEmptySelectionAllowed(false);
-        
-        cboAlmacenRecibe.setItems("Almacen Matriz");
-        cboAlmacenRecibe.setValue("Almacen Matriz");
-        cboAlmacenRecibe.setEmptySelectionAllowed(false);
-
-        gridOrdenDeCompraDet.setWidth("100%");
         
         txtSolicita.setWidth(strWidth);
         txtFechaRequerida.setWidth(strWidth);
@@ -662,7 +662,6 @@ public class WindowOrdenDeCompra extends Window {
     }
 
     public void calcularTotales(){
-       
         Double importe = 0.0;
         Double descuento = ManageNumbers.stringToDouble(txtDescuento.getValue());
         Double subtotal = 0.0;
@@ -685,18 +684,23 @@ public class WindowOrdenDeCompra extends Window {
             IVA = 0.0;
         }
         
-        IVA = new Double(Math.round(IVA*100)/100+"");
+        DecimalFormat df = new DecimalFormat("#.00");
         total = subtotal + IVA;
 
         txtImporte.setValue(importe+"");
         txtDescuento.setValue(descuento+"");
         txtSubtotal.setValue(subtotal+"");
-        txtIVA.setValue(IVA+"");
-        txtTotal.setValue(total+""); 
+        txtIVA.setValue(df.format(IVA));
+        txtTotal.setValue(df.format(total)); 
         
         Numero_Letras importeLetra = new Numero_Letras();
-        txtMontoLetra.setValue(importeLetra.Convertir(total.toString(), true, 
-                cboMoneda.getValue().equals(_Pago_Documentos.MONEDA_PESOS)?true:false));
+        txtMontoLetra.setValue(
+                importeLetra.Convertir(
+                        df.format(total), 
+                        true, 
+                        cboMoneda.getValue().equals(_Pago_Documentos.MONEDA_PESOS)
+                )
+        );
         
         gridOrdenDeCompraDet.getDataProvider().refreshAll();
     }
