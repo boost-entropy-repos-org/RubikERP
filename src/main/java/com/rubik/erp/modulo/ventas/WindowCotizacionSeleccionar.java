@@ -13,6 +13,7 @@ import com.rubik.erp.model.Empleado;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -37,6 +38,7 @@ public class WindowCotizacionSeleccionar extends Window {
 
     public CotizacionVenta cotizacion_selected;
     public Boolean seleccionado = false;
+    public Boolean quitarPartida = false;
 
     Button btnAceptar = new Button("Seleccionar", Fam3SilkIcon.ACCEPT);
     Button btnCancelar = new Button("Cancelar", Fam3SilkIcon.CANCEL);
@@ -47,6 +49,8 @@ public class WindowCotizacionSeleccionar extends Window {
     Grid<CotizacionVentaDet> gridCotizacionVentaDet = new Grid<>();
     List<CotizacionVentaDet> listCotizacionVentaDet = new ArrayList<>();
     public List<CotizacionVentaDet> listPartidasSeleccionadas = new ArrayList<>();
+    
+    CheckBox chkQuitarPartida = new CheckBox("Quitar partida de la cotizacion.",false);
     
     Label lblFolio;
 
@@ -68,11 +72,11 @@ public class WindowCotizacionSeleccionar extends Window {
         gridCotizacion.setCaption("Cotizaciones:");
         gridCotizacion.setSelectionMode(Grid.SelectionMode.SINGLE);
 
+        gridCotizacion.addColumn(CotizacionVenta::getFolio).setCaption("FOLIO").setWidth(120);
         Grid.Column<CotizacionVenta, String> columnFecha = gridCotizacion.addColumn(det -> ((det.getFecha_elaboracion()!= null) ? dateFormat.format(det.getFecha_elaboracion()) : ""));
         columnFecha.setCaption("FECHA");
         columnFecha.setId("FECHA");
         columnFecha.setWidth(120);
-        gridCotizacion.addColumn(CotizacionVenta::getFolio).setCaption("FOLIO").setWidth(120);
         gridCotizacion.addColumn(CotizacionVenta::getVendedor).setCaption("VENDEDOR");
         gridCotizacion.setItems(getCotizaciones());
         
@@ -94,6 +98,7 @@ public class WindowCotizacionSeleccionar extends Window {
             if (gridCotizacionVentaDet.getSelectedItems().size() >= 1) {
                 
                 seleccionado = true;
+                quitarPartida = chkQuitarPartida.getValue();
                 cotizacion_selected = gridCotizacion.getSelectedItems().iterator().next();
                 
                 gridCotizacionVentaDet.getSelectedItems().forEach((t) -> {
@@ -114,11 +119,13 @@ public class WindowCotizacionSeleccionar extends Window {
         cont.setSpacing(false);
         cont.addComponents(lblFolio,
                 new HorizontalLayout(btnCancelar, btnAceptar),
+                chkQuitarPartida,
                 new HorizontalLayout(gridCotizacion,gridCotizacionVentaDet){{setSpacing(true); setMargin(true);}});
 
         cont.setComponentAlignment(cont.getComponent(0), Alignment.MIDDLE_CENTER);
         cont.setComponentAlignment(cont.getComponent(1), Alignment.MIDDLE_CENTER);
         cont.setComponentAlignment(cont.getComponent(2), Alignment.MIDDLE_CENTER);
+        cont.setComponentAlignment(cont.getComponent(3), Alignment.MIDDLE_CENTER);
         
         setContent(cont);
         setModal(true);
@@ -128,7 +135,7 @@ public class WindowCotizacionSeleccionar extends Window {
     
     public List getCotizaciones() {
         CotizacionVentaDomain service = new CotizacionVentaDomain();
-        service.getCotizacionVenta(" activo = 1 AND estado_doc = 'TERMINADO' AND terminada_requisicion = 0 AND terminada_no_requisicion = 0 ", "", " folio DESC");
+        service.getCOTIZACIONES_DISPONIBLES();
         listCotizacion = service.getObjects();
 
         if (!service.getOk()) {

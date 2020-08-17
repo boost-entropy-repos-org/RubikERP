@@ -154,6 +154,7 @@ public class WindowOrdenDeCompraDet extends Window {
                     partida.setEmpresa_id(empleado.getEmpresa_id());
                     partida.setFecha_alta(new Date());
                     partida.setCantidad(ManageNumbers.ToInteger(txtCantidad.getValue()));
+                    partida.setImporte(partida.getCantidad() * partida.getPrecio_unitario());
                     
                     OrdenDeCompraDetDomain domain = new OrdenDeCompraDetDomain();
                     

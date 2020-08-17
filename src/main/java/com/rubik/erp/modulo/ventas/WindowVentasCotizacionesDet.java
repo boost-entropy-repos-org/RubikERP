@@ -124,6 +124,7 @@ public class WindowVentasCotizacionesDet extends Window {
                     partida.setProducto_id(p.getId());
                     partida.setUnidad_medida(p.getUnidad_medida());
                     partida.setPrecio_unitario(p.getPrecio_venta());
+                    partida.setPorc_iva(p.getPorc_iva());
                     
                     partida.setNo_parte(p.getNo_parte());
                     partida.setNo_serie(p.getNo_serie());
@@ -159,6 +160,13 @@ public class WindowVentasCotizacionesDet extends Window {
                     partida.setFecha_alta(new Date());
                     partida.setCantidad(ManageNumbers.ToInteger(txtCantidad.getValue()));
                     partida.setImporte(partida.getCantidad() * partida.getPrecio_unitario());
+                    
+                    // Pendiente rutina que genere totales de manera generica
+                    partida.setDescuento(0.0);
+//                    partida.setSubtotal(partida.getImporte() - partida.getDescuento());
+//                    partida.setIva(0.0);
+//                    partida.setTotal(Double.NaN);
+                    
                     partida.setEntregada(false);
                     partida.setFacturada(false);
                     partida.setEntregada(false);

@@ -12,6 +12,7 @@ import com.rubik.erp.domain.ConfiguracionDomain;
 import com.rubik.erp.domain.CotizacionVentaDetDomain;
 import com.rubik.erp.domain.CotizacionVentaDomain;
 import com.rubik.erp.domain.EmpleadoDomain;
+import com.rubik.erp.domain.ProductoDomain;
 import com.rubik.erp.domain.ProveedorDomain;
 import com.rubik.erp.domain.RequisicionDetDomain;
 import com.rubik.erp.domain.RequisicionDomain;
@@ -63,6 +64,8 @@ public class WindowRequisicion extends Window {
     CotizacionVenta cotizacionVenta;
     Requisicion requisicion;
     Boolean isEdit = false;
+    
+    Boolean quitarPartida = false;
 
     TextField txtFolioCotizacion = new TextField();
     
@@ -241,7 +244,8 @@ public class WindowRequisicion extends Window {
             windowCotSelected.addCloseListener((e) -> {
                 if (windowCotSelected.seleccionado) {
                     cotizacionVenta = windowCotSelected.cotizacion_selected;
-
+                    quitarPartida = windowCotSelected.quitarPartida;
+                    
                     requisicion.setCotizacion_id(cotizacionVenta.getId());
                     requisicion.setFolio_cotizacion(cotizacionVenta.getFolio());
 
@@ -253,20 +257,26 @@ public class WindowRequisicion extends Window {
                         RequisicionDet partida = new RequisicionDet();
                         
                         partida.setCotizacion_id(partSelected.getDocumento_id());
+                        partida.setCantidad(partSelected.getCantidad());
                         partida.setFolio_cotizacion(partSelected.getFolio());
                         partida.setPartida_cotizacion_id(partSelected.getId());
-                        partida.setCantidad(partSelected.getCantidad());
                         partida.setDescripcion(partSelected.getDescripcion());
                         partida.setProducto_id(partSelected.getProducto_id());
                         partida.setUnidad_medida(partSelected.getUnidad_medida());
-                        partida.setPrecio_unitario(0.0);
-                        partida.setImporte(0.0);
                         partida.setPorc_iva(partSelected.getPorc_iva());
                         partida.setNo_parte(partSelected.getNo_parte());
                         partida.setNo_serie(partSelected.getNo_serie());
                         partida.setModelo(partSelected.getModelo());
                         partida.setMarca(partSelected.getMarca());
                         partida.setCodigo_interno(partSelected.getCodigo_interno());
+                        
+                        ProductoDomain pDomain = new ProductoDomain();
+                        pDomain.getProducto(" id = " + partSelected.getProducto_id(), "", "");
+                        
+                        if(pDomain.getOk()){
+                            partida.setPrecio_unitario(pDomain.getObject().getPrecio_compra());
+                            partida.setImporte(partida.getCantidad() * partida.getPrecio_unitario());
+                        }
                         
                         listRequisicionDet.add(partida);
                     }
@@ -335,7 +345,7 @@ public class WindowRequisicion extends Window {
                         partidaTemp.setCodigo_proveedor(requisicion.getProveedor_id()+"");
                         domainDet.RequisicionDetInsert(partidaTemp);
 
-                        if(partidaTemp.getPartida_cotizacion_id() != 0){ // actualiza la partida de la cotizacion
+                        if(!quitarPartida && partidaTemp.getPartida_cotizacion_id() != 0){ // actualiza la partida de la cotizacion
                             CotizacionVentaDetDomain domainPartidaCotizacion = new CotizacionVentaDetDomain();
                             domainPartidaCotizacion.MarcarPartidaComoFacturada(partidaTemp.getPartida_cotizacion_id(), requisicion.getId());
                             

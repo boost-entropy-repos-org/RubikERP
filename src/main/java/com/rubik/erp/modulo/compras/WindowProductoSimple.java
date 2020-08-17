@@ -51,6 +51,7 @@ public class WindowProductoSimple extends Window {
     NativeSelect<Integer> cboIVA = new NativeSelect("% IVA:");
     
     TextField txtPrecioCompra = new TextField("Precio Compra:");
+    TextField txtPrecioVenta = new TextField("Precio Venta:");
     
     Button btnGuardar = new Button("Guardar", Fam3SilkIcon.DISK);
     Button btnCancelar = new Button("Cancelar", Fam3SilkIcon.CANCEL);
@@ -89,6 +90,7 @@ public class WindowProductoSimple extends Window {
         binder.forField(txtMarca).bind(Producto::getMarca, Producto::setMarca);
         binder.forField(cboUnidadMedida).bind(Producto::getUnidad_medida, Producto::setUnidad_medida);
         binder.forField(txtPrecioCompra).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(Producto::getPrecio_compra, Producto::setPrecio_compra);
+        binder.forField(txtPrecioVenta).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(Producto::getPrecio_venta, Producto::setPrecio_venta);
         binder.forField(cboIVA).bind(Producto::getPorc_iva, Producto::setPorc_iva);
 
         btnCancelar.addClickListener((event) -> {
@@ -96,37 +98,45 @@ public class WindowProductoSimple extends Window {
         });
 
         btnGuardar.addClickListener((event) -> {
-            try {
-                binder.writeBean(producto);
-                toUpperCase();
+            if (isFormOK()) {
+                try {
+                    binder.writeBean(producto);
+                    toUpperCase();
 
-                ProductoDomain service = new ProductoDomain();
-                
-                producto.setActivo(true);
-                
-                if (isEdit) {
-                    producto.setFecha_modificacion(new Date());
-                    service.ProductoUpdate(producto);
-                } else {
-                    producto.setFecha_elaboracion(new Date());
-                    producto.setFecha_modificacion(new Date());
-                    service.ProductoInsert(producto);
-                }
-                
-                if (service.getOk()) {
-                    MessageBox.createInfo()
-                            .withCaption("Atencion")
-                            .withMessage(service.getNotification())
-                            .open();
-                    close();
-                } else {
+                    ProductoDomain service = new ProductoDomain();
+
+                    producto.setActivo(true);
+
+                    if (isEdit) {
+                        producto.setFecha_modificacion(new Date());
+                        service.ProductoUpdate(producto);
+                    } else {
+                        producto.setFecha_elaboracion(new Date());
+                        producto.setFecha_modificacion(new Date());
+                        service.ProductoInsert(producto);
+                    }
+
+                    if (service.getOk()) {
+                        MessageBox.createInfo()
+                                .withCaption("Atencion")
+                                .withMessage(service.getNotification())
+                                .open();
+                        close();
+                    } else {
+                        MessageBox.createError()
+                                .withCaption("Error!")
+                                .withMessage(service.getNotification())
+                                .withRetryButton()
+                                .open();
+                    }
+                } catch (Exception ex) {
                     MessageBox.createError()
                             .withCaption("Error!")
-                            .withMessage(service.getNotification())
+                            .withMessage("Verifique que la informacion este completa o sea correcta. ")
                             .withRetryButton()
                             .open();
                 }
-            } catch (Exception ex) {
+            } else {
                 MessageBox.createError()
                         .withCaption("Error!")
                         .withMessage("Verifique que la informacion este completa o sea correcta. ")
@@ -154,6 +164,7 @@ public class WindowProductoSimple extends Window {
         cboIVA.setValue(16);
         
         txtPrecioCompra.setMaxLength(12);
+        txtPrecioVenta.setMaxLength(12);
         
         txtCodigoInterno.setWidth(strWidth);
         txtDescripcionCorta.setWidth(strWidth);
@@ -165,6 +176,7 @@ public class WindowProductoSimple extends Window {
         cboIVA.setWidth(strWidth);
         cboUnidadMedida.setWidth(strWidth);
         txtPrecioCompra.setWidth(strWidth);
+        txtPrecioVenta.setWidth(strWidth);
         
         if (isEdit) {
             binder.readBean(producto);
@@ -174,18 +186,29 @@ public class WindowProductoSimple extends Window {
         
         fLay.addComponents(new Label("Informacion Basica del Producto"){{setStyleName("h3");}});
         fLay.addComponents(txtCodigoInterno, txtDescripcionCorta, txtDescripcion, txtModelo, txtNoParte, txtNoSerie, 
-                txtMarca, cboUnidadMedida, cboIVA, txtPrecioCompra);
+                txtMarca, cboUnidadMedida, cboIVA, txtPrecioCompra,txtPrecioVenta);
      
         cont.addComponents(fLay, new HorizontalLayout(btnCancelar, btnGuardar));
         cont.setComponentAlignment(cont.getComponent(1), Alignment.MIDDLE_CENTER);
     }
     
     public void toUpperCase() {
-        producto.setDescripcion_corta(txtDescripcionCorta.getValue().toUpperCase());
-        producto.setDescripcion(txtDescripcion.getValue().toUpperCase());
-        producto.setModelo(txtModelo.getValue().toUpperCase());
-        producto.setMarca(txtMarca.getValue().toUpperCase());
-        producto.setNo_serie(txtNoSerie.getValue().toUpperCase());
+        producto.setDescripcion_corta(txtDescripcionCorta.getValue().toUpperCase().trim());
+        producto.setDescripcion(txtDescripcion.getValue().toUpperCase().trim());
+        producto.setModelo(txtModelo.getValue().toUpperCase().trim());
+        producto.setMarca(txtMarca.getValue().toUpperCase().trim());
+        producto.setNo_serie(txtNoSerie.getValue().toUpperCase().trim());
+    }
+    
+    public boolean isFormOK(){
+        return (!txtDescripcion.getValue().isEmpty() 
+                || !txtDescripcionCorta.getValue().isEmpty()
+                || !"0.0".equals(txtPrecioCompra.getValue())
+                || !"0".equals(txtPrecioCompra.getValue())
+                || !txtPrecioCompra.getValue().isEmpty()
+                || !"0.0".equals(txtPrecioVenta.getValue())
+                || !"0".equals(txtPrecioVenta.getValue())
+                || !txtPrecioVenta.getValue().isEmpty());
     }
     
 }

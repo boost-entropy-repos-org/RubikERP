@@ -148,60 +148,69 @@ public class WindowProducto extends Window {
         });
 
         btnGuardar.addClickListener((event) -> {
-            try {
-                binder.writeBean(producto);
-                toUpperCase();
+            if (isFormOK()) {
+                try {
+                    binder.writeBean(producto);
+                    toUpperCase();
 
-                ProductoDomain service = new ProductoDomain();
+                    ProductoDomain service = new ProductoDomain();
 
-                Proveedor prov1 = cboProveedor1.getValue();
-                Proveedor prov2 = cboProveedor2.getValue();
-                
-                if(prov1 != null){
-                    producto.setProveedor_1(prov1.getRazon_social());
-                    producto.setProveedor_id_1(prov1.getId());
-                }else{
-                    producto.setProveedor_1("");
-                    producto.setProveedor_id_1(0);
-                }
-                
-                if(prov2 != null){
-                    producto.setProveedor_2(prov2.getRazon_social());
-                    producto.setProveedor_id_2(prov2.getId());                    
-                }else{
-                    producto.setProveedor_2("");
-                    producto.setProveedor_id_2(0);
-                }
-                
-                if (isEdit) {
-                    producto.setFecha_modificacion(new Date());
-                    service.ProductoUpdate(producto);
-                } else {
-                    producto.setFecha_elaboracion(new Date());
-                    producto.setFecha_modificacion(new Date());
-                    service.ProductoInsert(producto);
-                }
-                
-                if (service.getOk()) {
-                    MessageBox.createInfo()
-                            .withCaption("Atencion")
-                            .withMessage(service.getNotification())
-                            .open();
-                    close();
-                } else {
+                    Proveedor prov1 = cboProveedor1.getValue();
+                    Proveedor prov2 = cboProveedor2.getValue();
+
+                    if (prov1 != null) {
+                        producto.setProveedor_1(prov1.getRazon_social());
+                        producto.setProveedor_id_1(prov1.getId());
+                    } else {
+                        producto.setProveedor_1("");
+                        producto.setProveedor_id_1(0);
+                    }
+
+                    if (prov2 != null) {
+                        producto.setProveedor_2(prov2.getRazon_social());
+                        producto.setProveedor_id_2(prov2.getId());
+                    } else {
+                        producto.setProveedor_2("");
+                        producto.setProveedor_id_2(0);
+                    }
+
+                    if (isEdit) {
+                        producto.setFecha_modificacion(new Date());
+                        service.ProductoUpdate(producto);
+                    } else {
+                        producto.setFecha_elaboracion(new Date());
+                        producto.setFecha_modificacion(new Date());
+                        service.ProductoInsert(producto);
+                    }
+
+                    if (service.getOk()) {
+                        MessageBox.createInfo()
+                                .withCaption("Atencion")
+                                .withMessage(service.getNotification())
+                                .open();
+                        close();
+                    } else {
+                        MessageBox.createError()
+                                .withCaption("Error!")
+                                .withMessage(service.getNotification())
+                                .withRetryButton()
+                                .open();
+                    }
+                } catch (Exception ex) {
                     MessageBox.createError()
                             .withCaption("Error!")
-                            .withMessage(service.getNotification())
+                            .withMessage("Verifique que la informacion este completa o sea correcta. ")
                             .withRetryButton()
                             .open();
                 }
-            } catch (Exception ex) {
+            } else {
                 MessageBox.createError()
                         .withCaption("Error!")
                         .withMessage("Verifique que la informacion este completa o sea correcta. ")
                         .withRetryButton()
                         .open();
             }
+
         });
         
         txtCodigoInterno.setEnabled(false);
@@ -322,11 +331,11 @@ public class WindowProducto extends Window {
     }
     
     public void toUpperCase() {
-        producto.setDescripcion_corta(txtDescripcionCorta.getValue().toUpperCase());
-        producto.setDescripcion(txtDescripcion.getValue().toUpperCase());
-        producto.setModelo(txtModelo.getValue().toUpperCase());
-        producto.setMarca(txtMarca.getValue().toUpperCase());
-        producto.setNo_serie(txtNoSerie.getValue().toUpperCase());
+        producto.setDescripcion_corta(txtDescripcionCorta.getValue().toUpperCase().trim());
+        producto.setDescripcion(txtDescripcion.getValue().toUpperCase().trim());
+        producto.setModelo(txtModelo.getValue().toUpperCase().trim());
+        producto.setMarca(txtMarca.getValue().toUpperCase().trim());
+        producto.setNo_serie(txtNoSerie.getValue().toUpperCase().trim());
     }
     
     public List<Proveedor> getProveedor(int prov) {
@@ -340,6 +349,17 @@ public class WindowProducto extends Window {
             proveedorList2 = provService.getObjects();
             return proveedorList2;
         }
+    }
+    
+    public boolean isFormOK(){
+        return (!txtDescripcion.getValue().isEmpty() 
+                || !txtDescripcionCorta.getValue().isEmpty()
+                || !"0.0".equals(txtPrecioCompra.getValue())
+                || !"0".equals(txtPrecioCompra.getValue())
+                || !txtPrecioCompra.getValue().isEmpty()
+                || !"0.0".equals(txtPrecioVenta.getValue())
+                || !"0".equals(txtPrecioVenta.getValue())
+                || !txtPrecioVenta.getValue().isEmpty());
     }
     
 }

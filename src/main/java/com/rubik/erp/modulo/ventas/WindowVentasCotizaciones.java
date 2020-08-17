@@ -154,6 +154,7 @@ public class WindowVentasCotizaciones extends Window {
         binder.forField(txtTotal).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(CotizacionVenta::getTotal, CotizacionVenta::setTotal);
         
         gridCotizacionDeVentaDet.setHeight("450");
+        gridCotizacionDeVentaDet.setWidth("100%");
         gridCotizacionDeVentaDet.setSelectionMode(Grid.SelectionMode.SINGLE);
         
         gridCotizacionDeVentaDet.addItemClickListener(event -> {
@@ -188,7 +189,6 @@ public class WindowVentasCotizaciones extends Window {
         gridCotizacionDeVentaDet.addColumn(CotizacionVentaDet::getDescripcion).setCaption("DESCRIPCION");
         gridCotizacionDeVentaDet.addColumn(CotizacionVentaDet::getPrecio_unitario).setCaption("P.U.").setWidth(120);
         gridCotizacionDeVentaDet.addColumn(CotizacionVentaDet::getImporte).setCaption("IMPORTE").setWidth(120);
-
 
         btnAgregarPartida.addClickListener((event) -> {
             WindowVentasCotizacionesDet windows = new WindowVentasCotizacionesDet(cotizacionDeVenta);
@@ -395,8 +395,6 @@ public class WindowVentasCotizaciones extends Window {
         cboMoneda.setItems(_Pago_Documentos.MONEDAS);
         cboMoneda.setValue(_Pago_Documentos.MONEDAS.get(0));
         cboMoneda.setEmptySelectionAllowed(false);
-
-        gridCotizacionDeVentaDet.setWidth("100%");
         
         txtVendedor.setWidth(strWidth);
         cboCliente.setWidth(strWidth);
@@ -649,8 +647,13 @@ public class WindowVentasCotizaciones extends Window {
         txtTotal.setValue(df.format(total)); 
         
         Numero_Letras importeLetra = new Numero_Letras();
-        txtMontoLetra.setValue(importeLetra.Convertir(total.toString(), true, 
-                cboMoneda.getValue().equals(_Pago_Documentos.MONEDA_PESOS)?true:false));
+        txtMontoLetra.setValue(
+                importeLetra.Convertir(
+                        df.format(total), 
+                        true, 
+                        cboMoneda.getValue().equals(_Pago_Documentos.MONEDA_PESOS)
+                )
+        );
         
         gridCotizacionDeVentaDet.getDataProvider().refreshAll();
     }

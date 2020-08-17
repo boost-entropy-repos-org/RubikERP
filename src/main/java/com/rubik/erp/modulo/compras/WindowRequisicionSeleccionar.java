@@ -35,7 +35,7 @@ public class WindowRequisicionSeleccionar extends Window {
     public Requisicion requisicion_selected;
     public Boolean seleccionado = false;
 
-    Button btnChecar = new Button("Seleccionar", Fam3SilkIcon.ACCEPT);
+    Button btnSeleccionar = new Button("Seleccionar", Fam3SilkIcon.ACCEPT);
     Button btnCancelar = new Button("Cancelar", Fam3SilkIcon.CANCEL);
     
     Grid<Requisicion> gridRequisicion = new Grid<>();
@@ -68,7 +68,7 @@ public class WindowRequisicionSeleccionar extends Window {
             close();
         });
 
-        btnChecar.addClickListener((event) -> {
+        btnSeleccionar.addClickListener((event) -> {
             if (gridRequisicion.getSelectedItems().size() == 1) {
                 
                 seleccionado = true;
@@ -86,7 +86,7 @@ public class WindowRequisicionSeleccionar extends Window {
 
         cont.setSpacing(false);
         cont.addComponents(lblFolio,
-                new HorizontalLayout(btnCancelar, btnChecar),
+                new HorizontalLayout(btnCancelar, btnSeleccionar),
                 gridRequisicion);
 
         cont.setComponentAlignment(cont.getComponent(0), Alignment.MIDDLE_CENTER);
