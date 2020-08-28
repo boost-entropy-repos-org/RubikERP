@@ -50,7 +50,7 @@ public class WindowCotizacionSeleccionar extends Window {
     List<CotizacionVentaDet> listCotizacionVentaDet = new ArrayList<>();
     public List<CotizacionVentaDet> listPartidasSeleccionadas = new ArrayList<>();
     
-    CheckBox chkQuitarPartida = new CheckBox("Quitar partida de la cotizacion.",false);
+    CheckBox chkQuitarPartida = new CheckBox("Quitar partida de la cotizacion.",true);
     
     Label lblFolio;
 
