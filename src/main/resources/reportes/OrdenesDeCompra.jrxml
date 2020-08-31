@@ -17,7 +17,8 @@ t3.contacto_compra_telefono,t3.contacto_compra_email,t3.contacto_compra_ext
 FROM (SELECT @i:=0) m, orden_compra t1 
 INNER JOIN orden_compra_det t2 ON t1.id = t2.documento_id
 INNER JOIN proveedor t3 ON t1.proveedor_id = t3.id
-WHERE t1.folio = $P{folio}]]>
+WHERE t1.folio = $P{folio}
+ORDER BY t2.id ASC]]>
 	</queryString>
 	<field name="partida" class="java.lang.Long"/>
 	<field name="id" class="java.lang.Integer">
@@ -327,23 +328,6 @@ WHERE t1.folio = $P{folio}]]>
 				<imageExpression><![CDATA["logo.png"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="93" y="33" width="252" height="43" uuid="29e5b00c-2b1d-4058-8a62-993de22db6be"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[RFC: IWS140818UY0
-Emilio Castan No. 203, Col. 2 de Junio, 
-Tampico, Tamps. Mexico, Cp. 89327,
-Tel. +52 (833) 3992231, www.impeller.com.mx]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="93" y="10" width="252" height="20" uuid="97200645-0ab8-4c47-8ce6-a0d4c7104859"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[IMPELLER WELL SERVICES, S.A. DE C.V.]]></text>
-			</staticText>
-			<staticText>
 				<reportElement mode="Opaque" x="0" y="208" width="105" height="15" backcolor="#CCCCCC" uuid="14138d2b-ad7e-4731-ad80-1921dbc3f9c0"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
@@ -609,7 +593,7 @@ Tel. +52 (833) 3992231, www.impeller.com.mx]]></text>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{contacto_compra_ext}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="435" y="50" width="136" height="15" uuid="8bfa547b-47c6-43cb-b867-802fb9a93191"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -658,6 +642,24 @@ Tel. +52 (833) 3992231, www.impeller.com.mx]]></text>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{solicita}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="93" y="27" width="252" height="55" uuid="4ae9474f-8165-4635-8f19-4525ce6a71a7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[RFC: IWS140818UY0
+Emilio Castan No. 203, Col. 2 de Junio, 
+Tampico, Tamps. Mexico, Cp. 89327,
+Tel. +52 (833) 3992231, ventas@impeller.com.mx, 
+www.impeller.com.mx]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="93" y="7" width="252" height="20" uuid="703dbc09-7696-44ec-af2f-ed638007b822"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IMPELLER WELL SERVICES, S.A. DE C.V.]]></text>
+			</staticText>
 		</band>
 	</title>
 	<columnHeader>

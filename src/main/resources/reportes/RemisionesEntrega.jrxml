@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.11.0.final using JasperReports Library version 6.11.0-0c4056ccaa4d25a5a8c45672d2f764ea3498bebb  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Requisiciones" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e3751d5e-8725-4e8e-8903-40f4a45612e9">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
@@ -15,7 +16,8 @@ t3.razon_social,t3.rfc,t3.estado AS localidad, t3.contacto_telefono_general
 FROM (SELECT @i:=0) m, remision_entrega t1 
 INNER JOIN remision_entrega_det t2 ON t1.id = t2.documento_id
 INNER JOIN cliente t3 ON t1.cliente_id = t3.id
-WHERE t1.folio = $P{folio}]]>
+WHERE t1.folio = $P{folio}
+ORDER BY t2.id ASC]]>
 	</queryString>
 	<field name="partida" class="java.lang.Long"/>
 	<field name="id" class="java.lang.Integer">
@@ -204,23 +206,6 @@ WHERE t1.folio = $P{folio}]]>
 				</textElement>
 				<text><![CDATA[Folio:]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="93" y="33" width="252" height="43" uuid="29e5b00c-2b1d-4058-8a62-993de22db6be"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[RFC: IWS140818UY0
-Emilio Castan No. 203, Col. 2 de Junio, 
-Tampico, Tamps. Mexico, Cp. 89327,
-Tel. +52 (833) 3992231, www.impeller.com.mx]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="93" y="10" width="252" height="20" uuid="97200645-0ab8-4c47-8ce6-a0d4c7104859"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[IMPELLER WELL SERVICES, S.A. DE C.V.]]></text>
-			</staticText>
 			<image>
 				<reportElement x="0" y="7" width="93" height="75" uuid="b07ec704-550b-41b4-85fb-af464981be2e"/>
 				<imageExpression><![CDATA["logo.png"]]></imageExpression>
@@ -253,6 +238,24 @@ Tel. +52 (833) 3992231, www.impeller.com.mx]]></text>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{entrega}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="93" y="27" width="252" height="55" uuid="52df9336-6f9a-4de6-94cc-a47dce05c63e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[RFC: IWS140818UY0
+Emilio Castan No. 203, Col. 2 de Junio, 
+Tampico, Tamps. Mexico, Cp. 89327,
+Tel. +52 (833) 3992231, ventas@impeller.com.mx, 
+www.impeller.com.mx]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="93" y="7" width="252" height="20" uuid="3ede3ab3-2381-423d-b044-1b49e38b1c76"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IMPELLER WELL SERVICES, S.A. DE C.V.]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>

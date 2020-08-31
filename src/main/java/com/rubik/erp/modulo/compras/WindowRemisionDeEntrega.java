@@ -19,7 +19,6 @@ import com.rubik.erp.model.OrdenDeCompra;
 import com.rubik.erp.model.OrdenDeCompraDet;
 import com.rubik.erp.model.RemisionEntrega;
 import com.rubik.erp.model.RemisionEntregaDet;
-import com.rubik.erp.modulo.compras.WindowOrdenDeCompraSeleccionar;
 import com.rubik.manage.ManageDates;
 import com.rubik.manage.ManageString;
 import com.vaadin.data.Binder;
@@ -290,7 +289,7 @@ public class WindowRemisionDeEntrega  extends Window {
         String strWhere = " documento_id = " + remisionDeEntrega.getId();
 
         RemisionEntregaDetDomain service = new RemisionEntregaDetDomain();
-        service.getRemisionEntregaDet(strWhere, "", " id DESC");
+        service.getRemisionEntregaDet(strWhere, "", " id ASC");
         listRemisionDet = service.getObjects();
 
         if (!service.getOk()) {

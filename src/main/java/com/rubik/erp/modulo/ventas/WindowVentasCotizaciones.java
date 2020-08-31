@@ -515,7 +515,7 @@ public class WindowVentasCotizaciones extends Window {
         String strWhere = " documento_id = " + cotizacionDeVenta.getId();
 
         CotizacionVentaDetDomain service = new CotizacionVentaDetDomain();
-        service.getCotizacionVentaDet(strWhere, "", " id DESC");
+        service.getCotizacionVentaDet(strWhere, "", " id ASC");
         listCotizacionDeVentaDet = service.getObjects();
 
         if (!service.getOk()) {

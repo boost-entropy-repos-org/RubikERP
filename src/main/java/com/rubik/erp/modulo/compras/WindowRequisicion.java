@@ -455,7 +455,7 @@ public class WindowRequisicion extends Window {
         String strWhere = " documento_id = " + requisicion.getId();
 
         RequisicionDetDomain service = new RequisicionDetDomain();
-        service.getRequisicionDet(strWhere, "", " id DESC");
+        service.getRequisicionDet(strWhere, "", " id ASC");
         listRequisicionDet = service.getObjects();
 
         if (!service.getOk()) {

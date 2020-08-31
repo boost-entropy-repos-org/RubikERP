@@ -17,7 +17,8 @@ t3.contacto_compra_telefono,t3.contacto_compra_email,t3.contacto_compra_ext
 FROM (SELECT @i:=0) m, requisicion t1 
 INNER JOIN requisicion_det t2 ON t1.id = t2.documento_id
 INNER JOIN proveedor t3 ON t1.proveedor_id = t3.id
-WHERE t1.folio = $P{folio}]]>
+WHERE t1.folio = $P{folio}
+ORDER BY t2.id ASC]]>
 	</queryString>
 	<field name="partida" class="java.lang.Long"/>
 	<field name="id" class="java.lang.Integer">
@@ -253,23 +254,6 @@ WHERE t1.folio = $P{folio}]]>
 				<text><![CDATA[Folio:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="93" y="33" width="252" height="43" uuid="29e5b00c-2b1d-4058-8a62-993de22db6be"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[RFC: IWS140818UY0
-Emilio Castan No. 203, Col. 2 de Junio, 
-Tampico, Tamps. Mexico, Cp. 89327,
-Tel. +52 (833) 3992231, www.impeller.com.mx]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="93" y="10" width="252" height="20" uuid="97200645-0ab8-4c47-8ce6-a0d4c7104859"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[IMPELLER WELL SERVICES, S.A. DE C.V.]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="358" y="65" width="70" height="16" uuid="6ac10b26-0eda-4e1c-9be1-62b8bcadc2a0"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -308,6 +292,24 @@ Tel. +52 (833) 3992231, www.impeller.com.mx]]></text>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{prioridad}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="93" y="27" width="252" height="55" uuid="5deaca1c-9d1a-41b6-8cf1-013aa1c15b4e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[RFC: IWS140818UY0
+Emilio Castan No. 203, Col. 2 de Junio, 
+Tampico, Tamps. Mexico, Cp. 89327,
+Tel. +52 (833) 3992231, ventas@impeller.com.mx, 
+www.impeller.com.mx]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="93" y="7" width="252" height="20" uuid="bee399a0-2631-4be2-b5b5-93845c239d10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IMPELLER WELL SERVICES, S.A. DE C.V.]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>

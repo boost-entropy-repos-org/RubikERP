@@ -615,7 +615,7 @@ public class WindowOrdenDeCompra extends Window {
     
     public void cargarPartidas(){
         RequisicionDetDomain requisicionDetService = new RequisicionDetDomain();
-        requisicionDetService.getRequisicionDet(" documento_id = " + requisicion.getId(), "", "");
+        requisicionDetService.getRequisicionDet(" documento_id = " + requisicion.getId(), "", " id ASC");
         listRequisicionDet = requisicionDetService.getObjects();
         
         for (RequisicionDet partTemp : listRequisicionDet) {
