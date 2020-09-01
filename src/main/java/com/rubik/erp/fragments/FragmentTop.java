@@ -21,6 +21,7 @@ import com.rubik.erp.modulo.ventas.VentasClientes;
 import com.rubik.erp.modulo.ventas.VentasCotizaciones;
 import com.rubik.erp.modulo.ventas.VentasProyectos;
 import com.rubik.erp.modulo.compras.ComprasRemisionesDeEntrega;
+import com.rubik.erp.modulo.ventas.VentasReporteGeneralCotizaciones;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
@@ -44,7 +45,7 @@ public class FragmentTop extends HorizontalLayout {
 
     MenuBar menubar = new MenuBar();
     Command actionMenu;
-    
+    // --------------------------------------------------COMPRAS
     MenuBar.MenuItem menuCompras;
     MenuBar.MenuItem subComprasProveedor;
     MenuBar.MenuItem subComprasProducto;
@@ -56,12 +57,18 @@ public class FragmentTop extends HorizontalLayout {
     MenuBar.MenuItem subComprasReportesCompras;
     MenuBar.MenuItem subComprasReporteRequisicion;
     MenuBar.MenuItem subComprasReporteOrdenDeCompra;
-    
+    MenuBar.MenuItem subComprasReporteOrdenDeCompraPorProyecto;
+    MenuBar.MenuItem subComprasReporteOrdenDeCompraPorVendedor;
+    // --------------------------------------------------VENTAS
     MenuBar.MenuItem menuVentas;
     MenuBar.MenuItem subVentasClientes;
     MenuBar.MenuItem subVentasProyectos;
     MenuBar.MenuItem subVentasCotizaciones;
-    
+    MenuBar.MenuItem subComprasReportesVentas;
+    MenuBar.MenuItem subVentasReporteGeneralDeCotizaciones;
+    MenuBar.MenuItem subVentasReporteCotizacionesPorVendedor;
+    MenuBar.MenuItem subVentasReporteCotizacionesPorProyecto;
+    // --------------------------------------------------RECURSOS HUMANOS
     MenuBar.MenuItem menuRecursosHumanos;
     MenuBar.MenuItem subRHEmpleados;
 
@@ -136,7 +143,18 @@ public class FragmentTop extends HorizontalLayout {
         
         subVentasCotizaciones = menuVentas.addItem("Cotizaciones de Venta", actionMenu);
         subVentasCotizaciones.setIcon(Fam3SilkIcon.PAGE_WHITE_TEXT);
+        
+        subComprasReportesVentas = menuVentas.addItem("Reportes de Venta", actionMenu);
+        subComprasReportesVentas.setIcon(Fam3SilkIcon.REPORT);
+        
+        subVentasReporteGeneralDeCotizaciones = subComprasReportesVentas.addItem("Reporte General de Cotizaciones", actionMenu);
+        subVentasReporteGeneralDeCotizaciones.setIcon(Fam3SilkIcon.REPORT);
 
+        subVentasReporteCotizacionesPorProyecto = subComprasReportesVentas.addItem("Reportes de Cotizaciones Por Proyecto", actionMenu);
+        subVentasReporteCotizacionesPorProyecto.setIcon(Fam3SilkIcon.REPORT_GO);
+        
+        subVentasReporteCotizacionesPorVendedor = subComprasReportesVentas.addItem("Reportes de Cotizaciones Por Vendedor", actionMenu);
+        subVentasReporteCotizacionesPorVendedor.setIcon(Fam3SilkIcon.REPORT_USER);
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
 // ---------------------------------------------------------------- COMPRAS
@@ -179,6 +197,11 @@ public class FragmentTop extends HorizontalLayout {
         subComprasReporteOrdenDeCompra = subComprasReportesCompras.addItem("Reporte de Ordenes de Compra", actionMenu);
         subComprasReporteOrdenDeCompra.setIcon(Fam3SilkIcon.LAYOUT_EDIT);
         
+        subComprasReporteOrdenDeCompraPorProyecto = subComprasReportesCompras.addItem("Reporte de OC Por Proyecto", actionMenu);
+        subComprasReporteOrdenDeCompraPorProyecto.setIcon(Fam3SilkIcon.REPORT_GO);
+
+        subComprasReporteOrdenDeCompraPorVendedor = subComprasReportesCompras.addItem("Reporte de OC Por Vendedor", actionMenu);
+        subComprasReporteOrdenDeCompraPorVendedor.setIcon(Fam3SilkIcon.REPORT_USER);
 // ----------------------------------------------------------------
 // ----------------------------------------------------------------
 //----------------------------------------------------------------- RECURSOS HUMANOS
@@ -260,6 +283,18 @@ public class FragmentTop extends HorizontalLayout {
                     
                 case "Cotizaciones de Venta":
                     getUI().getNavigator().navigateTo(VentasCotizaciones.NAME);
+                    break;
+
+                case "Reporte General de Cotizaciones":
+                    getUI().getNavigator().navigateTo(VentasReporteGeneralCotizaciones.NAME);
+                    break;
+                    
+                case "Reportes de Cotizaciones Por Proyecto":
+//                    getUI().getNavigator().navigateTo(VentasCotizaciones.NAME);
+                    break;
+                    
+                case "Reportes de Cotizaciones Por Vendedor":
+//                    getUI().getNavigator().navigateTo(VentasCotizaciones.NAME);
                     break;
                     
  // ------------- RECURSOS HUMANOS
