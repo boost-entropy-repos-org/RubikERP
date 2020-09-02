@@ -270,8 +270,7 @@ public class WindowProducto extends Window {
             
             if(iva_porc > 0 && txtPrecioCompra.getValue().length() > 0){
                 Double precio = Double.parseDouble(txtPrecioCompra.getValue());
-                Double precioTemp = precio / 1.16;
-                iva = precio - precioTemp;
+                iva =  precio * 0.16;
                 txtIVACompra.setValue(df.format(iva));
             }else{
                 txtIVACompra.setValue("0.0");
@@ -285,8 +284,7 @@ public class WindowProducto extends Window {
             
             if(iva_porc > 0 && txtPrecioVenta.getValue().length() > 0){
                 Double precio = Double.parseDouble(txtPrecioVenta.getValue());
-                Double precioTemp = precio / 1.16;
-                iva = precio - precioTemp;
+                iva = precio  * 0.16;
                 txtIVAVenta.setValue(df.format(iva));
             }else{
                 txtIVAVenta.setValue("0.0");

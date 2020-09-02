@@ -113,7 +113,6 @@ public class WindowOrdenDeCompraDet extends Window {
             window.addCloseListener(ev -> {
                 
                 Producto p = (Producto) VaadinSession.getCurrent().getSession().getAttribute("PRODUCTO_SELECCIONADO");
-                System.out.println("PRODUCTO SELECCIONADO " + p);
                 if(p != null){
                     partida = new OrdenDeCompraDet();
                     partida.setDescripcion(p.getDescripcion_corta());
