@@ -256,6 +256,13 @@ public class WindowRequisicion extends Window {
                     for (CotizacionVentaDet partSelected : partidasCotizacion) {
                         RequisicionDet partida = new RequisicionDet();
                         
+                        partida.setUsuario(empleado.getNombre_completo());
+                        partida.setUsuario_id(empleado.getId());
+                        partida.setEmpresa_id(0);
+                        partida.setEmpresa("");
+                        partida.setUnidad_id(0);
+                        partida.setUnidad("");
+                        
                         partida.setCotizacion_id(partSelected.getDocumento_id());
                         partida.setCantidad(partSelected.getCantidad());
                         partida.setFolio_cotizacion(partSelected.getFolio());
@@ -275,7 +282,13 @@ public class WindowRequisicion extends Window {
                         
                         if(pDomain.getOk()){
                             partida.setPrecio_unitario(pDomain.getObject().getPrecio_compra());
+                            partida.setDescuento(0.0);
                             partida.setImporte(partida.getCantidad() * partida.getPrecio_unitario());
+                    
+                            partida.setSubtotal(partida.getCantidad() * partida.getPrecio_unitario());
+                            partida.setPorc_iva(pDomain.getObject().getPorc_iva());
+                            partida.setIva(partida.getCantidad() * (partida.getSubtotal() * partida.getPorc_iva()));
+                            partida.setTotal(partida.getSubtotal() + partida.getIva());
                         }
                         
                         listRequisicionDet.add(partida);
@@ -343,9 +356,14 @@ public class WindowRequisicion extends Window {
                         partidaTemp.setFolio(requisicion.getFolio());
                         partidaTemp.setDocumento_id(requisicion.getId());
                         partidaTemp.setCodigo_proveedor(requisicion.getProveedor_id()+"");
+
                         domainDet.RequisicionDetInsert(partidaTemp);
 
-                        if(!quitarPartida && partidaTemp.getPartida_cotizacion_id() != 0){ // actualiza la partida de la cotizacion
+                        System.out.println("Valor quitar partida : " + quitarPartida);
+                        System.out.println("Valor partidaTemp producto : " + partidaTemp);
+                        System.out.println("Valor partidaTemp Cotizacion_id : " + partidaTemp.getPartida_cotizacion_id());
+                        
+                        if(quitarPartida && (partidaTemp.getPartida_cotizacion_id() != 0 && partidaTemp.getPartida_cotizacion_id() != null)){ // actualiza la partida de la cotizacion
                             CotizacionVentaDetDomain domainPartidaCotizacion = new CotizacionVentaDetDomain();
                             domainPartidaCotizacion.MarcarPartidaComoFacturada(partidaTemp.getPartida_cotizacion_id(), requisicion.getId());
                             

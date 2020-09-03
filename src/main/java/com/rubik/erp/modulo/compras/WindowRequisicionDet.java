@@ -113,12 +113,20 @@ public class WindowRequisicionDet extends Window {
                     partida.setUnidad_medida(p.getUnidad_medida());
                     partida.setPrecio_unitario(p.getPrecio_compra());
                     partida.setImporte(Integer.parseInt(txtCantidad.getValue()) * partida.getPrecio_unitario());
+                    partida.setSubtotal(Integer.parseInt(txtCantidad.getValue()) * partida.getPrecio_unitario());
                     partida.setPorc_iva(p.getPorc_iva());
+                    partida.setDescuento(0.0);
+                    partida.setIva(Integer.parseInt(txtCantidad.getValue()) * p.getIva_compra());
+                    partida.setTotal(partida.getSubtotal() + partida.getIva());
+                    
                     partida.setNo_parte(p.getNo_parte());
                     partida.setNo_serie(p.getNo_serie());
                     partida.setModelo(p.getModelo());
                     partida.setMarca(p.getMarca());
                     partida.setCodigo_interno(p.getCodigo_interno());
+                    partida.setPartida_cotizacion_id(0);
+                    partida.setCotizacion_id(0);
+                    partida.setFolio_cotizacion("");
 
                     txtDescripcion.setValue(p.getDescripcion_corta());
                 }
@@ -140,17 +148,20 @@ public class WindowRequisicionDet extends Window {
 
                     partida.setUsuario(empleado.getNombre_completo());
                     partida.setUsuario_id(empleado.getId());
-                    partida.setUnidad(empleado.getUnidad());
-                    partida.setUnidad_id(empleado.getUnidad_id());
-                    partida.setEmpresa(empleado.getEmpresa());
-                    partida.setEmpresa_id(empleado.getEmpresa_id());
+                    partida.setEmpresa_id(0);
+                    partida.setEmpresa("");
+                    partida.setUnidad_id(0);
+                    partida.setUnidad("");
                     partida.setFecha_alta(new Date());
                     partida.setCantidad(ManageNumbers.ToInteger(txtCantidad.getValue()));
                     partida.setImporte(partida.getCantidad() * partida.getPrecio_unitario());
                     partida.setDescuento(0.0);
                     partida.setSubtotal(partida.getImporte() - partida.getDescuento());
-                    partida.setIva(partida.getSubtotal() * ((float)partida.getPorc_iva()/100));
+                    partida.setIva(Integer.parseInt(txtCantidad.getValue()) * (partida.getSubtotal() * partida.getPorc_iva()));
                     partida.setTotal(partida.getSubtotal() + partida.getIva());
+                    partida.setPartida_cotizacion_id(0);
+                    partida.setCotizacion_id(0);
+                    partida.setFolio_cotizacion("");
                     
                     RequisicionDetDomain domain = new RequisicionDetDomain();
                     
