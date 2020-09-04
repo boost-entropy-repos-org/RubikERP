@@ -111,7 +111,7 @@ public class WindowSeleccionarProducto extends Window {
             final HeaderCell headerCell = filterRow.getCell(column);
             if (null != column.getId()) {
                 switch (column.getId()) {
-                    case "DESCRIPCION":
+                    case "DESCRIPCION CORTA":
                         headerCell.setComponent(createFilterTextField(column));
                         break;
                     default:
