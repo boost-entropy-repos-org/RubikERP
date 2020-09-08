@@ -424,13 +424,13 @@ public class WindowVentasCotizaciones extends Window {
         cboCliente.setSelectedItem(clienteList.get(0));
         cboCliente.setEmptySelectionAllowed(false);
         
-        cboCliente.addValueChangeListener((event) -> {
-            if(cboCliente.getValue().getPais().equals(_Pais.NACIONAL)){
-                cboMoneda.setValue(_Pago_Documentos.MONEDA_PESOS);
-            } else {
-                cboMoneda.setValue(_Pago_Documentos.MONEDA_DOLARES);
-            }
-        });
+//        cboCliente.addValueChangeListener((event) -> {
+//            if(cboCliente.getValue().getPais().equals(_Pais.NACIONAL)){
+//                cboMoneda.setValue(_Pago_Documentos.MONEDA_PESOS);
+//            } else {
+//                cboMoneda.setValue(_Pago_Documentos.MONEDA_DOLARES);
+//            }
+//        });
         
         cboProyecto.setItems(getProyectos());
         cboProyecto.setSelectedItem(proyectoList.get(0));

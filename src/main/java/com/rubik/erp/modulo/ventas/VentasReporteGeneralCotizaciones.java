@@ -45,7 +45,8 @@ import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
  */
 public class VentasReporteGeneralCotizaciones extends Panel implements View {
 
-public static final String NAME = "REPORTE_GENERAL_COTIZACIONES";
+    public static final String NAME = "REPORTE_GENERAL_COTIZACIONES";
+    
     VerticalLayout container = new VerticalLayout();
 
     Empleado empleado = (Empleado) VaadinSession.getCurrent().getSession().getAttribute("USUARIO_ACTIVO");
@@ -84,9 +85,10 @@ public static final String NAME = "REPORTE_GENERAL_COTIZACIONES";
             }
         };
         lblTitulo.setSizeUndefined();
-       
-        txtFechaIni.setValue(ManageDates.getLocalDateFromDate(ManageDates.getFirstDayOfTheMonth()));
-        txtFechaFin.setValue(ManageDates.getLocalDateFromDate(ManageDates.getLastDayOfTheMonth()));
+        
+        btnSearch.addClickListener((event) -> {
+            gridCotizaciones.setItems(getCotizacionesVentas());
+        });
 
         container.setMargin(false);
         container.addComponents(new FragmentTop(),
@@ -105,6 +107,9 @@ public static final String NAME = "REPORTE_GENERAL_COTIZACIONES";
     public void initComponents() {
         setSizeFull();    
 
+        txtFechaIni.setValue(ManageDates.getLocalDateFromDate(ManageDates.getFirstDayOfTheMonth()));
+        txtFechaFin.setValue(ManageDates.getLocalDateFromDate(ManageDates.getLastDayOfTheMonth()));
+        
         gridCotizaciones.addColumn(CotizacionVenta::getFolio).setCaption("FOLIO").setId("FOLIO").setWidth(120);
         Grid.Column<CotizacionVenta, String> columnFecha = gridCotizaciones.addColumn(det -> ((det.getFecha_elaboracion()!= null) ? dateFormat.format(det.getFecha_elaboracion()) : ""));
         columnFecha.setCaption("FECHA");

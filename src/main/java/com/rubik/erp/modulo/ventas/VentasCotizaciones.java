@@ -14,6 +14,7 @@ import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.CotizacionVenta;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.util.EmbedWindow;
+import com.rubik.manage.ManageDates;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.StreamResource;
@@ -24,6 +25,7 @@ import com.vaadin.ui.DateField;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -56,6 +58,8 @@ public class VentasCotizaciones extends Panel implements View {
     DateField txtFechaFin = new DateField();
     Button btnSearch = new Button(Fam3SilkIcon.MAGNIFIER);
     
+    NativeSelect<String> cboEstadoDocumento = new NativeSelect();
+    
     Button btnAdd = new Button("Agregar", Fam3SilkIcon.ADD);
     Button btnModify = new Button("Modificar", Fam3SilkIcon.PENCIL);
     Button btnCancel = new Button("Cancelar", Fam3SilkIcon.CANCEL);
@@ -70,6 +74,7 @@ public class VentasCotizaciones extends Panel implements View {
         initComponents();
 
         HorizontalLayout hLayoutAux = new HorizontalLayout(
+                cboEstadoDocumento,
                 txtBusqueda,
                 new Label("Fecha: "),txtFechaIni,new Label("A: "),txtFechaFin,btnSearch);
         
@@ -107,8 +112,12 @@ public class VentasCotizaciones extends Panel implements View {
         txtFechaFin.setWidth("115");
         
         txtBusqueda.setWidth("200");
-        txtBusqueda.setPlaceholder("Folio Cotizacion");      
-
+        txtBusqueda.setPlaceholder("Folio Cotizacion");
+        
+        cboEstadoDocumento.setItems("TODOS", _DocumentoEstados.EN_PROCESO, _DocumentoEstados.TERMINADO,_DocumentoEstados.CANCELADO);
+        cboEstadoDocumento.setEmptySelectionAllowed(false);
+        cboEstadoDocumento.setValue(_DocumentoEstados.EN_PROCESO);
+        
         Grid.Column<CotizacionVenta, String> columnFecha = gridCotizaciones.addColumn(det -> ((det.getFecha_elaboracion()!= null) ? dateFormat.format(det.getFecha_elaboracion()) : ""));
         columnFecha.setCaption("FECHA");
         columnFecha.setId("FECHA");
@@ -279,8 +288,16 @@ public class VentasCotizaciones extends Panel implements View {
             strWhere += " AND folio = '" + txtBusqueda.getValue().toUpperCase() + "'";
         }
         
-        if(txtFechaIni.getValue() != null && txtFechaFin.getValue() != null){
-            strWhere += "";
+        if (txtFechaIni.getValue() != null && txtFechaFin.getValue() != null) {
+            SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
+
+            strWhere
+                    += " AND fecha_elaboracion >= '" + dt.format(ManageDates.getDateFromLocalDate(txtFechaIni.getValue())) + " 00:00:00"
+                    + "' AND fecha_elaboracion <= '" + dt.format(ManageDates.getDateFromLocalDate(txtFechaFin.getValue())) + " 23:59:59'";
+        }
+        
+        if(!"TODOS".equals(cboEstadoDocumento.getValue())){
+            strWhere += " AND estado_doc = '" + cboEstadoDocumento.getValue() + "'";
         }
 
         CotizacionVentaDomain service = new CotizacionVentaDomain();
