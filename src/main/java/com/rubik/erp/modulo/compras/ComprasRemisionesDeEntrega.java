@@ -12,6 +12,7 @@ import com.rubik.erp.domain.RemisionEntregaDomain;
 import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.RemisionEntrega;
+import com.rubik.erp.modulo.generic.WindowCancelarDocumento;
 import com.rubik.erp.util.EmbedWindow;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -23,6 +24,7 @@ import com.vaadin.ui.DateField;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -50,13 +52,16 @@ public class ComprasRemisionesDeEntrega extends Panel implements View {
 
     TextField txtBusqueda = new TextField();
     
-    Grid<RemisionEntrega> gridCotizaciones = new Grid<>();
+    Grid<RemisionEntrega> gridRemisionesEntrega = new Grid<>();
     DateField txtFechaIni = new DateField();
     DateField txtFechaFin = new DateField();
     Button btnSearch = new Button(Fam3SilkIcon.MAGNIFIER);
     
+    NativeSelect<String> cboEstadoDocumento = new NativeSelect();
+    
     Button btnAdd = new Button("Agregar", Fam3SilkIcon.ADD);
     Button btnModify = new Button("Modificar", Fam3SilkIcon.PENCIL);
+    Button btnCancel = new Button("Cancelar", Fam3SilkIcon.CANCEL);
     Button btnPrint = new Button("Imprimir", Fam3SilkIcon.PRINTER);
     
     List<RemisionEntrega> listOC = new ArrayList<>();
@@ -67,10 +72,11 @@ public class ComprasRemisionesDeEntrega extends Panel implements View {
         initComponents();
 
         HorizontalLayout hLayoutAux = new HorizontalLayout(
+                cboEstadoDocumento,
                 txtBusqueda,
                 new Label("Fecha: "),txtFechaIni,new Label("A: "),txtFechaFin,btnSearch);
         
-        HorizontalLayout hLayoutAux2 = new HorizontalLayout(btnAdd, btnModify, btnPrint);
+        HorizontalLayout hLayoutAux2 = new HorizontalLayout(btnAdd, btnModify, btnCancel, btnPrint);
         
         hLayoutAux.setComponentAlignment(hLayoutAux.getComponent(1), Alignment.MIDDLE_CENTER);
         hLayoutAux.setComponentAlignment(hLayoutAux.getComponent(3), Alignment.MIDDLE_CENTER);
@@ -87,7 +93,7 @@ public class ComprasRemisionesDeEntrega extends Panel implements View {
                 lblTitulo,
                 hLayoutAux,
                 hLayoutAux2,
-                gridCotizaciones);
+                gridRemisionesEntrega);
         
         container.setComponentAlignment(container.getComponent(0), Alignment.MIDDLE_CENTER);
         container.setComponentAlignment(container.getComponent(1), Alignment.MIDDLE_CENTER);
@@ -104,40 +110,44 @@ public class ComprasRemisionesDeEntrega extends Panel implements View {
         txtFechaFin.setWidth("115");
         
         txtBusqueda.setWidth("200");
-        txtBusqueda.setPlaceholder("Folio Remision");      
+        txtBusqueda.setPlaceholder("Folio Remision");
+        
+        cboEstadoDocumento.setItems("TODOS", _DocumentoEstados.EN_PROCESO, _DocumentoEstados.TERMINADO,_DocumentoEstados.CANCELADO);
+        cboEstadoDocumento.setEmptySelectionAllowed(false);
+        cboEstadoDocumento.setValue(_DocumentoEstados.EN_PROCESO);
 
-        Grid.Column<RemisionEntrega, String> columnFecha = gridCotizaciones.addColumn(det -> ((det.getFecha_elaboracion()!= null) ? dateFormat.format(det.getFecha_elaboracion()) : ""));
+        Grid.Column<RemisionEntrega, String> columnFecha = gridRemisionesEntrega.addColumn(det -> ((det.getFecha_elaboracion()!= null) ? dateFormat.format(det.getFecha_elaboracion()) : ""));
         columnFecha.setCaption("FECHA");
         columnFecha.setId("FECHA");
         columnFecha.setWidth(120);
-        gridCotizaciones.addColumn(RemisionEntrega::getFolio).setCaption("FOLIO").setId("FOLIO").setWidth(120);
-        gridCotizaciones.addColumn(RemisionEntrega::getEstado_doc).setCaption("ESTADO").setId("ESTADO").setWidth(130);
-        gridCotizaciones.addColumn(RemisionEntrega::getCliente).setCaption("CLIENTE").setId("CLIENTE");
-        gridCotizaciones.addColumn(RemisionEntrega::getFolio_cotizacion).setCaption("COTIZACION").setId("COTIZACION").setWidth(120);
-        gridCotizaciones.addColumn(RemisionEntrega::getFolio_orden_compra).setCaption("OC").setId("OC").setWidth(120);
+        gridRemisionesEntrega.addColumn(RemisionEntrega::getFolio).setCaption("FOLIO").setId("FOLIO").setWidth(120);
+        gridRemisionesEntrega.addColumn(RemisionEntrega::getEstado_doc).setCaption("ESTADO").setId("ESTADO").setWidth(130);
+        gridRemisionesEntrega.addColumn(RemisionEntrega::getCliente).setCaption("CLIENTE").setId("CLIENTE");
+        gridRemisionesEntrega.addColumn(RemisionEntrega::getFolio_cotizacion).setCaption("COTIZACION").setId("COTIZACION").setWidth(120);
+        gridRemisionesEntrega.addColumn(RemisionEntrega::getFolio_orden_compra).setCaption("OC").setId("OC").setWidth(120);
 
-        gridCotizaciones.setItems(getRemisionesEntrega());
-        gridCotizaciones.setSelectionMode(Grid.SelectionMode.SINGLE);
-        gridCotizaciones.setSizeFull();
-        gridCotizaciones.setHeight("500px");
+        gridRemisionesEntrega.setItems(getRemisionesEntrega());
+        gridRemisionesEntrega.setSelectionMode(Grid.SelectionMode.SINGLE);
+        gridRemisionesEntrega.setSizeFull();
+        gridRemisionesEntrega.setHeight("500px");
 
         btnAdd.addClickListener((event) -> {
             WindowRemisionDeEntrega windows = new WindowRemisionDeEntrega();
             windows.center();
             windows.setModal(true);
             windows.addCloseListener(ev -> {
-                gridCotizaciones.setItems(getRemisionesEntrega());
+                gridRemisionesEntrega.setItems(getRemisionesEntrega());
             });
             getUI().addWindow(windows);
         });
 
         btnModify.addClickListener((event) -> {
-            if (gridCotizaciones.getSelectedItems().size() == 1) {
-                WindowRemisionDeEntrega windows = new WindowRemisionDeEntrega(gridCotizaciones.getSelectedItems().iterator().next());
+            if (gridRemisionesEntrega.getSelectedItems().size() == 1) {
+                WindowRemisionDeEntrega windows = new WindowRemisionDeEntrega(gridRemisionesEntrega.getSelectedItems().iterator().next());
                 windows.center();
                 windows.setModal(true);
                 windows.addCloseListener((e) -> {
-                    gridCotizaciones.setItems(getRemisionesEntrega());
+                    gridRemisionesEntrega.setItems(getRemisionesEntrega());
                 });
                 getUI().addWindow(windows);
             } else {
@@ -150,13 +160,13 @@ public class ComprasRemisionesDeEntrega extends Panel implements View {
         });
         
         btnSearch.addClickListener((event) -> {
-            gridCotizaciones.setItems(getRemisionesEntrega());
+            gridRemisionesEntrega.setItems(getRemisionesEntrega());
             txtBusqueda.setValue("");
         });
         
         btnPrint.addClickListener((event) -> {
-            if (gridCotizaciones.getSelectedItems().size() == 1) {
-                RemisionEntrega ocTemp = gridCotizaciones.getSelectedItems().iterator().next();
+            if (gridRemisionesEntrega.getSelectedItems().size() == 1) {
+                RemisionEntrega ocTemp = gridRemisionesEntrega.getSelectedItems().iterator().next();
                 if (!ocTemp.getEstado_doc().equals(_DocumentoEstados.EN_PROCESO)) {
 
                     try {
@@ -213,6 +223,47 @@ public class ComprasRemisionesDeEntrega extends Panel implements View {
             }
         });
 
+        btnCancel.addClickListener((event) -> {
+            if (gridRemisionesEntrega.getSelectedItems().size() == 1) {
+                RemisionEntrega cotizacion = gridRemisionesEntrega.getSelectedItems().iterator().next();
+                if (cotizacion.getEstado_doc().equals(_DocumentoEstados.CANCELADO) || cotizacion.getEstado_doc().equals(_DocumentoEstados.AUTORIZADO)) {
+                    MessageBox.createError()
+                            .withCaption("Error!")
+                            .withMessage("El documento seleccionado esta cancelado o esta autorizado. No se puede CANCELAR.")
+                            .withRetryButton()
+                            .open();
+                } else {
+                    MessageBox.createQuestion()
+                            .withCaption("Confirmar Accion")
+                            .withMessage("Desea Cancelar la Cotizacion " + cotizacion.getFolio() + "?")
+                            .withYesButton(() -> {
+
+                                WindowCancelarDocumento winCancelar = new WindowCancelarDocumento();
+                                winCancelar.addCloseListener((e) -> {
+                                    cotizacion.setActivo(false);
+                                    String razon_cancelar = WindowCancelarDocumento.RAZON_DE_CANCELAMIENTO;
+                                    cotizacion.setRazon_cancelar(razon_cancelar);
+
+                                    RemisionEntregaDomain service = new RemisionEntregaDomain();
+                                    service.Cancelar(cotizacion.getId(), cotizacion.getRazon_cancelar(), cotizacion.getUsuario_id(), cotizacion.getUsuario(), cotizacion.getActivo());
+
+                                    gridRemisionesEntrega.setItems(getRemisionesEntrega());
+
+                                });
+                                getUI().addWindow(winCancelar);
+                            })
+                            .withNoButton()
+                            .open();
+                }
+            } else {
+                MessageBox.createError()
+                        .withCaption("Error!")
+                        .withMessage("Debe seleccionar una Requisicion para Cancelarla")
+                        .withRetryButton()
+                        .open();
+            }
+        });
+        
     }
 
     @Override
@@ -230,6 +281,10 @@ public class ComprasRemisionesDeEntrega extends Panel implements View {
             strWhere += "";
         }
 
+        if(!"TODOS".equals(cboEstadoDocumento.getValue())){
+            strWhere += " AND estado_doc = '" + cboEstadoDocumento.getValue() + "'";
+        }
+        
         RemisionEntregaDomain service = new RemisionEntregaDomain();
         service.getRemisionEntrega(strWhere, "", "fecha_elaboracion DESC");
         listOC = service.getObjects();

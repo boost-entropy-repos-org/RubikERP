@@ -25,7 +25,7 @@ public class WindowCancelarDocumento extends Window {
     VerticalLayout content = new VerticalLayout();
 
     TextArea txtRazonCan = new TextArea();
-    Button btnAceptar = new Button(Fam3SilkIcon.DISK);
+    Button btnAceptar = new Button("Guardar",Fam3SilkIcon.DISK);
 
     public static String RAZON_DE_CANCELAMIENTO = "";
 

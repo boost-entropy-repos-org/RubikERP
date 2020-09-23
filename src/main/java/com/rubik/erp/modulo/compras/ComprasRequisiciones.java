@@ -13,6 +13,7 @@ import com.rubik.erp.domain.RequisicionDomain;
 import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.Requisicion;
+import com.rubik.erp.modulo.generic.WindowCancelarDocumento;
 import com.rubik.erp.util.EmbedWindow;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -24,6 +25,7 @@ import com.vaadin.ui.DateField;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -51,6 +53,8 @@ public class ComprasRequisiciones extends Panel implements View {
 
     TextField txtBusqueda = new TextField();
     
+    NativeSelect<String> cboEstadoDocumento = new NativeSelect();
+    
     Grid<Requisicion> gridRequisiciones = new Grid<>();
     DateField txtFechaIni = new DateField();
     DateField txtFechaFin = new DateField();
@@ -70,6 +74,7 @@ public class ComprasRequisiciones extends Panel implements View {
         initComponents();
 
         HorizontalLayout hLayoutAux = new HorizontalLayout(
+                cboEstadoDocumento,
                 txtBusqueda,
                 new Label("Fecha: "),txtFechaIni,new Label("A: "),txtFechaFin,btnSearch);
         
@@ -109,7 +114,11 @@ public class ComprasRequisiciones extends Panel implements View {
         txtFechaFin.setWidth("115");
         
         txtBusqueda.setWidth("200");
-        txtBusqueda.setPlaceholder("Folio de Requisicion");      
+        txtBusqueda.setPlaceholder("Folio de Requisicion");
+        
+        cboEstadoDocumento.setItems("TODOS", _DocumentoEstados.EN_PROCESO, _DocumentoEstados.TERMINADO,_DocumentoEstados.CANCELADO);
+        cboEstadoDocumento.setEmptySelectionAllowed(false);
+        cboEstadoDocumento.setValue(_DocumentoEstados.EN_PROCESO);
 
         Grid.Column<Requisicion, String> columnFecha = gridRequisiciones.addColumn(det -> ((det.getFecha_requerida() != null) ? dateFormat.format(det.getFecha_requerida()) : ""));
         columnFecha.setCaption("F. REQ");
@@ -274,6 +283,47 @@ public class ComprasRequisiciones extends Panel implements View {
                         .open();
             }
         });
+        
+        btnCancel.addClickListener((event) -> {
+            if (gridRequisiciones.getSelectedItems().size() == 1) {
+                Requisicion requisicion = gridRequisiciones.getSelectedItems().iterator().next();
+                if (requisicion.getEstado_doc().equals(_DocumentoEstados.CANCELADO) || requisicion.getEstado_doc().equals(_DocumentoEstados.AUTORIZADO)) {
+                    MessageBox.createError()
+                            .withCaption("Error!")
+                            .withMessage("El documento seleccionado esta cancelado o esta autorizado. No se puede CANCELAR.")
+                            .withRetryButton()
+                            .open();
+                } else {
+                    MessageBox.createQuestion()
+                            .withCaption("Confirmar Accion")
+                            .withMessage("Desea Cancelar la Cotizacion " + requisicion.getFolio() + "?")
+                            .withYesButton(() -> {
+
+                                WindowCancelarDocumento winCancelar = new WindowCancelarDocumento();
+                                winCancelar.addCloseListener((e) -> {
+                                    requisicion.setActivo(false);
+                                    String razon_cancelar = WindowCancelarDocumento.RAZON_DE_CANCELAMIENTO;
+                                    requisicion.setRazon_cancelar(razon_cancelar);
+
+                                    RequisicionDomain service = new RequisicionDomain();
+                                    service.Cancelar(requisicion.getId(), requisicion.getRazon_cancelar(), requisicion.getUsuario_id(), requisicion.getUsuario(), requisicion.getActivo());
+
+                                    gridRequisiciones.setItems(getRequisiciones());
+
+                                });
+                                getUI().addWindow(winCancelar);
+                            })
+                            .withNoButton()
+                            .open();
+                }
+            } else {
+                MessageBox.createError()
+                        .withCaption("Error!")
+                        .withMessage("Debe seleccionar una Requisicion para Cancelarla")
+                        .withRetryButton()
+                        .open();
+            }
+        });
 
     }
 
@@ -294,6 +344,10 @@ public class ComprasRequisiciones extends Panel implements View {
         
         if(txtFechaIni.getValue() != null && txtFechaFin.getValue() != null){
             strWhere += "";
+        }
+        
+        if(!"TODOS".equals(cboEstadoDocumento.getValue())){
+            strWhere += " AND estado_doc = '" + cboEstadoDocumento.getValue() + "'";
         }
 
         RequisicionDomain service = new RequisicionDomain();

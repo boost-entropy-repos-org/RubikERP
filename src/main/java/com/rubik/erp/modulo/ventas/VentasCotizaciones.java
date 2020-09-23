@@ -13,6 +13,7 @@ import com.rubik.erp.domain.CotizacionVentaDomain;
 import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.CotizacionVenta;
 import com.rubik.erp.model.Empleado;
+import com.rubik.erp.modulo.generic.WindowCancelarDocumento;
 import com.rubik.erp.util.EmbedWindow;
 import com.rubik.manage.ManageDates;
 import com.vaadin.navigator.View;
@@ -270,7 +271,48 @@ public class VentasCotizaciones extends Panel implements View {
                         .open();
             }
         });
+        
+        btnCancel.addClickListener((event) -> {
+            if (gridCotizaciones.getSelectedItems().size() == 1) {
+                CotizacionVenta cotizacion = gridCotizaciones.getSelectedItems().iterator().next();
+                if (cotizacion.getEstado_doc().equals(_DocumentoEstados.CANCELADO) || cotizacion.getEstado_doc().equals(_DocumentoEstados.AUTORIZADO)) {
+                    MessageBox.createError()
+                            .withCaption("Error!")
+                            .withMessage("El documento seleccionado esta cancelado o esta autorizado. No se puede CANCELAR.")
+                            .withRetryButton()
+                            .open();
+                } else {
+                    MessageBox.createQuestion()
+                            .withCaption("Confirmar Accion")
+                            .withMessage("Desea Cancelar la Cotizacion " + cotizacion.getFolio() + "?")
+                            .withYesButton(() -> {
 
+                                WindowCancelarDocumento winCancelar = new WindowCancelarDocumento();
+                                winCancelar.addCloseListener((e) -> {
+                                    cotizacion.setActivo(false);
+                                    String razon_cancelar = WindowCancelarDocumento.RAZON_DE_CANCELAMIENTO;
+                                    cotizacion.setRazon_cancelar(razon_cancelar);
+
+                                    CotizacionVentaDomain service = new CotizacionVentaDomain();
+                                    service.Cancelar(cotizacion.getId(), cotizacion.getRazon_cancelar(), cotizacion.getUsuario_id(), cotizacion.getUsuario(), cotizacion.getActivo());
+
+                                    gridCotizaciones.setItems(getCotizacionesVentas());
+
+                                });
+                                getUI().addWindow(winCancelar);
+                            })
+                            .withNoButton()
+                            .open();
+                }
+            } else {
+                MessageBox.createError()
+                        .withCaption("Error!")
+                        .withMessage("Debe seleccionar una Requisicion para Cancelarla")
+                        .withRetryButton()
+                        .open();
+            }
+        });
+        
     }
 
     @Override

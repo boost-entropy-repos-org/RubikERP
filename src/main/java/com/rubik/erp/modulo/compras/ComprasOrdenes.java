@@ -12,6 +12,7 @@ import com.rubik.erp.domain.OrdenDeCompraDomain;
 import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.OrdenDeCompra;
+import com.rubik.erp.modulo.generic.WindowCancelarDocumento;
 import com.rubik.erp.util.EmbedWindow;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -23,6 +24,7 @@ import com.vaadin.ui.DateField;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -55,6 +57,8 @@ public class ComprasOrdenes extends Panel implements View {
     DateField txtFechaFin = new DateField();
     Button btnSearch = new Button(Fam3SilkIcon.MAGNIFIER);
     
+    NativeSelect<String> cboEstadoDocumento = new NativeSelect();
+    
     Button btnAdd = new Button("Agregar", Fam3SilkIcon.ADD);
     Button btnModify = new Button("Modificar", Fam3SilkIcon.PENCIL);
     Button btnCancel = new Button("Cancelar", Fam3SilkIcon.CANCEL);
@@ -69,6 +73,7 @@ public class ComprasOrdenes extends Panel implements View {
         initComponents();
 
         HorizontalLayout hLayoutAux = new HorizontalLayout(
+                cboEstadoDocumento,
                 txtBusqueda,
                 new Label("Fecha: "),txtFechaIni,new Label("A: "),txtFechaFin,btnSearch);
         
@@ -106,7 +111,11 @@ public class ComprasOrdenes extends Panel implements View {
         txtFechaFin.setWidth("115");
         
         txtBusqueda.setWidth("200");
-        txtBusqueda.setPlaceholder("Folio de OC");      
+        txtBusqueda.setPlaceholder("Folio de OC");
+        
+        cboEstadoDocumento.setItems("TODOS", _DocumentoEstados.EN_PROCESO, _DocumentoEstados.TERMINADO,_DocumentoEstados.CANCELADO);
+        cboEstadoDocumento.setEmptySelectionAllowed(false);
+        cboEstadoDocumento.setValue(_DocumentoEstados.EN_PROCESO);
 
         Grid.Column<OrdenDeCompra, String> columnFecha = gridOC.addColumn(det -> ((det.getFecha_elaboracion()!= null) ? dateFormat.format(det.getFecha_elaboracion()) : ""));
         columnFecha.setCaption("FECHA");
@@ -252,6 +261,47 @@ public class ComprasOrdenes extends Panel implements View {
             }
         });
 
+        btnCancel.addClickListener((event) -> {
+            if (gridOC.getSelectedItems().size() == 1) {
+                OrdenDeCompra ocTemporal = gridOC.getSelectedItems().iterator().next();
+                if (ocTemporal.getEstado_doc().equals(_DocumentoEstados.CANCELADO) || ocTemporal.getEstado_doc().equals(_DocumentoEstados.AUTORIZADO)) {
+                    MessageBox.createError()
+                            .withCaption("Error!")
+                            .withMessage("El documento seleccionado esta cancelado o esta autorizado. No se puede CANCELAR.")
+                            .withRetryButton()
+                            .open();
+                } else {
+                    MessageBox.createQuestion()
+                            .withCaption("Confirmar Accion")
+                            .withMessage("Desea Cancelar la Cotizacion " + ocTemporal.getFolio() + "?")
+                            .withYesButton(() -> {
+
+                                WindowCancelarDocumento winCancelar = new WindowCancelarDocumento();
+                                winCancelar.addCloseListener((e) -> {
+                                    ocTemporal.setActivo(false);
+                                    String razon_cancelar = WindowCancelarDocumento.RAZON_DE_CANCELAMIENTO;
+                                    ocTemporal.setRazon_cancelar(razon_cancelar);
+
+                                    OrdenDeCompraDomain service = new OrdenDeCompraDomain();
+                                    service.Cancelar(ocTemporal.getId(), ocTemporal.getRazon_cancelar(), ocTemporal.getUsuario_id(), ocTemporal.getUsuario(), ocTemporal.getActivo());
+
+                                    gridOC.setItems(getOrdenes());
+
+                                });
+                                getUI().addWindow(winCancelar);
+                            })
+                            .withNoButton()
+                            .open();
+                }
+            } else {
+                MessageBox.createError()
+                        .withCaption("Error!")
+                        .withMessage("Debe seleccionar una Requisicion para Cancelarla")
+                        .withRetryButton()
+                        .open();
+            }
+        });
+        
     }
 
     @Override
@@ -267,6 +317,10 @@ public class ComprasOrdenes extends Panel implements View {
         
         if(txtFechaIni.getValue() != null && txtFechaFin.getValue() != null){
             strWhere += "";
+        }
+        
+        if(!"TODOS".equals(cboEstadoDocumento.getValue())){
+            strWhere += " AND estado_doc = '" + cboEstadoDocumento.getValue() + "'";
         }
 
         OrdenDeCompraDomain service = new OrdenDeCompraDomain();

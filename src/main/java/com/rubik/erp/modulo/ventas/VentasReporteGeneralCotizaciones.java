@@ -163,8 +163,9 @@ public class VentasReporteGeneralCotizaciones extends Panel implements View {
 
                 String fileName = "ReportCotizaciones_" + UUID.randomUUID() + ".xlsx";
 
-                ExportExcelManager exportToExcel = new ExportExcelManager();
-               
+                ExportExcelManager exportToExcel = new ExportExcelManager("REPORTE GENERAL DE COTIZACIONES", "Generado del " + ManageDates.getDateSimpleFormat(txtFechaIni.getValue()) + " al " + ManageDates.getDateSimpleFormat(txtFechaFin.getValue()));
+                exportToExcel.setPositionCurrency(new int[]{4,5,6});
+                
                 resourceFile = () -> exportToExcel.getExcelFromListData("Reporte", headers, data);
                 downloader.setFileDownloadResource(new StreamResource(resourceFile, fileName));
 
