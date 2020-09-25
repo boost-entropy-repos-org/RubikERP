@@ -103,6 +103,12 @@
             <artifactId>RubikERPDomain</artifactId>
             <version>1.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.byteowls</groupId>
+            <artifactId>vaadin-chartjs</artifactId>
+            <version>1.4.0</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 
     <build>

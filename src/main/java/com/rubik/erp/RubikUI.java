@@ -15,6 +15,7 @@ import com.rubik.erp.modulo.ventas.VentasCotizaciones;
 import com.rubik.erp.modulo.ventas.VentasProyectos;
 import com.rubik.erp.modulo.compras.ComprasRemisionesDeEntrega;
 import com.rubik.erp.modulo.ventas.VentasReporteGeneralCotizaciones;
+import com.rubik.erp.modulo.ventas.VentasReporteGeneralCotizacionesGrafica;
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
@@ -65,6 +66,7 @@ public class RubikUI extends UI {
         navigator.addView(ComprasRemisionesDeEntrega.NAME, ComprasRemisionesDeEntrega.class);
         navigator.addView(VentasProyectos.NAME, VentasProyectos.class);
         navigator.addView(VentasReporteGeneralCotizaciones.NAME, VentasReporteGeneralCotizaciones.class);
+        navigator.addView(VentasReporteGeneralCotizacionesGrafica.NAME, VentasReporteGeneralCotizacionesGrafica.class);
         
         navigator.navigateTo(Login.NAME);
     }

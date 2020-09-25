@@ -130,7 +130,7 @@ public class VentasReporteGeneralCotizaciones extends Panel implements View {
         downloader.extend(btnExcel);
        
         btnGraficaAnual.addClickListener((event) -> {
-           
+           getUI().getNavigator().navigateTo(VentasReporteGeneralCotizacionesGrafica.NAME);
         });
        
         btnExcel.addClickListener((event) -> {
@@ -180,19 +180,22 @@ public class VentasReporteGeneralCotizaciones extends Panel implements View {
         });
        
         btnPrint.addClickListener((event) -> {
-            if (gridCotizaciones.getSelectedItems().size() == 1) {
-                CotizacionVenta ocTemp = gridCotizaciones.getSelectedItems().iterator().next();
-
+            if (listCotizaciones.size() >= 1) {
                 try {
                     final HashMap map = new HashMap();
-                    map.put("folio", ocTemp.getFolio());
+                    SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
+                    
+                    map.put("TITULO", "REPORTE GENERAL DE COTIZACIONES");
+                    map.put("SUBTITULO", "Generado del " + ManageDates.getDateSimpleFormat(txtFechaIni.getValue()) + " al " + ManageDates.getDateSimpleFormat(txtFechaFin.getValue()));
+                    map.put("fecha_ini", dt.format(ManageDates.getDateFromLocalDate(txtFechaIni.getValue())) + " 00:00:00");
+                    map.put("fecha_fin", dt.format(ManageDates.getDateFromLocalDate(txtFechaFin.getValue())) + " 23:59:59'");
 
                     StreamResource.StreamSource source = new StreamResource.StreamSource() {
                         @Override
                         public InputStream getStream() {
                             byte[] b = null;
                             try {
-                                InputStream fileStream = getClass().getClassLoader().getResourceAsStream("/reportes/CotizacionDeVenta.jasper");
+                                InputStream fileStream = getClass().getClassLoader().getResourceAsStream("/reportes/ReporteGeneralCotizaciones.jasper");
                                 b = JasperRunManager.runReportToPdf(fileStream, map, FactorySession.getRubikConnection(DomainConfig.getEnvironment()));
 
                             } catch (JRException ex) {
@@ -202,10 +205,9 @@ public class VentasReporteGeneralCotizaciones extends Panel implements View {
                         }
                     };
 
-                    StreamResource resource = new StreamResource(source, "COTIZACION_" + ocTemp.getFolio() + ".pdf");
-
+                    StreamResource resource = new StreamResource(source, "Reporte_General_Cotizacion.pdf");
                     EmbedWindow windowPDF = new EmbedWindow(resource);
-                    windowPDF.setCaption("Cotizacion de Venta:");
+                    windowPDF.setCaption("Reporte general de Cotizaciones");
                     windowPDF.setHeight("100%");
                     windowPDF.setWidth("80%");
                     windowPDF.setMimeType("application/pdf");
