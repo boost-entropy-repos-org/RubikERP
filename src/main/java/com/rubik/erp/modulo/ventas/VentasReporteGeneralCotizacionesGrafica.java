@@ -18,7 +18,6 @@ import com.rubik.erp.dao.ReporteCotizacionesVentaDAO;
 import com.rubik.erp.domain.reports.ReporteCotizacionesVenta;
 import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.Empleado;
-import com.rubik.manage.ManageDates;
 import com.vaadin.navigator.View;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
@@ -46,95 +45,77 @@ public class VentasReporteGeneralCotizacionesGrafica extends Panel implements Vi
     Label lblTitulo = new Label("REPORTE ANUAL DE COTIZACIONES");
 
     NativeSelect<Integer> cboYear = new NativeSelect<>();
-
     List<ReporteCotizacionesVenta> reporteAnualList = new ArrayList<>();
-
-    Integer abiertos, pendientes, cerrados, cancelados = 0;
-
+    
     public VentasReporteGeneralCotizacionesGrafica() {
         initComponents();
         makeChart();
-
     }
 
     public void initComponents() {
         setSizeFull();
         vContainer.setHeight("100%");
         lblTitulo.setStyleName("h2");
+        
         cboYear.setItems(DomainConfig.YEAR);
         cboYear.setEmptySelectionAllowed(false);
-        cboYear.setValue(ManageDates.getYear());
-        fillReportData();
-
+        cboYear.setValue(2020);
+        
         cboYear.addValueChangeListener((event) -> {
             vContainer.removeAllComponents();
-            fillReportData();
             makeChart();
         });
-
+        
         Responsive.makeResponsive(this);
     }
 
-    public List<String> fillReportData() {
-        List<String> list_tickets = new ArrayList<>();
+    public void fillReportData() {
         ReporteCotizacionesVentaDAO dao = new ReporteCotizacionesVentaDAO(DomainConfig.getEnvironment());
-
-        dao.getCotizacionVentaEnero(cboYear.getValue());  // Valor seleccionado del combo-box
+        dao.getCotizacionVentaEnero(cboYear.getValue());
         ReporteCotizacionesVenta repoEnero = dao.getObject();
 
         ReporteCotizacionesVentaDAO dao2 = new ReporteCotizacionesVentaDAO(DomainConfig.getEnvironment());
-
-        dao2.getCotizacionVentaFebrero(cboYear.getValue());  // Valor seleccionado del combo-box
+        dao2.getCotizacionVentaFebrero(cboYear.getValue());
         ReporteCotizacionesVenta repoFebrero = dao2.getObject();
 
         ReporteCotizacionesVentaDAO dao3 = new ReporteCotizacionesVentaDAO(DomainConfig.getEnvironment());
-
-        dao3.getCotizacionVentaMarzo(cboYear.getValue());  // Valor seleccionado del combo-box
+        dao3.getCotizacionVentaMarzo(cboYear.getValue());
         ReporteCotizacionesVenta repoMarzo = dao3.getObject();
 
         ReporteCotizacionesVentaDAO dao4 = new ReporteCotizacionesVentaDAO(DomainConfig.getEnvironment());
-
-        dao4.getCotizacionVentaAbril(cboYear.getValue());  // Valor seleccionado del combo-box
+        dao4.getCotizacionVentaAbril(cboYear.getValue());
         ReporteCotizacionesVenta repoAbril = dao4.getObject();
 
         ReporteCotizacionesVentaDAO dao5 = new ReporteCotizacionesVentaDAO(DomainConfig.getEnvironment());
-
-        dao5.getCotizacionVentaMayo(cboYear.getValue());  // Valor seleccionado del combo-box
+        dao5.getCotizacionVentaMayo(cboYear.getValue());
         ReporteCotizacionesVenta repoMayo = dao5.getObject();
 
         ReporteCotizacionesVentaDAO dao6 = new ReporteCotizacionesVentaDAO(DomainConfig.getEnvironment());
-
-        dao6.getCotizacionVentaJunio(cboYear.getValue());  // Valor seleccionado del combo-box
+        dao6.getCotizacionVentaJunio(cboYear.getValue());
         ReporteCotizacionesVenta repoJunio = dao6.getObject();
 
         ReporteCotizacionesVentaDAO dao7 = new ReporteCotizacionesVentaDAO(DomainConfig.getEnvironment());
-
-        dao7.getCotizacionVentaJulio(cboYear.getValue());  // Valor seleccionado del combo-box
+        dao7.getCotizacionVentaJulio(cboYear.getValue());
         ReporteCotizacionesVenta repoJulio = dao7.getObject();
 
         ReporteCotizacionesVentaDAO dao8 = new ReporteCotizacionesVentaDAO(DomainConfig.getEnvironment());
-
-        dao8.getCotizacionVentaAgosto(cboYear.getValue());  // Valor seleccionado del combo-box
+        dao8.getCotizacionVentaAgosto(cboYear.getValue());
         ReporteCotizacionesVenta repoAgosto = dao8.getObject();
 
         ReporteCotizacionesVentaDAO dao9 = new ReporteCotizacionesVentaDAO(DomainConfig.getEnvironment());
-
-        dao9.getCotizacionVentaSeptiembre(cboYear.getValue());  // Valor seleccionado del combo-box
+        dao9.getCotizacionVentaSeptiembre(cboYear.getValue());
         ReporteCotizacionesVenta repoSeptiembre = dao9.getObject();
 
         ReporteCotizacionesVentaDAO dao10 = new ReporteCotizacionesVentaDAO(DomainConfig.getEnvironment());
-
-        dao10.getCotizacionVentaOctubre(cboYear.getValue());  // Valor seleccionado del combo-box
+        dao10.getCotizacionVentaOctubre(cboYear.getValue());
         ReporteCotizacionesVenta repoOctubre = dao10.getObject();
 
         ReporteCotizacionesVentaDAO dao11 = new ReporteCotizacionesVentaDAO(DomainConfig.getEnvironment());
-
-        dao11.getCotizacionVentaNoviembre(cboYear.getValue());  // Valor seleccionado del combo-box
+        dao11.getCotizacionVentaNoviembre(cboYear.getValue());
         ReporteCotizacionesVenta repoNoviembre = dao11.getObject();
 
         ReporteCotizacionesVentaDAO dao12 = new ReporteCotizacionesVentaDAO(DomainConfig.getEnvironment());
-
-        dao12.getCotizacionVentaDiciembre(cboYear.getValue());  // Valor seleccionado del combo-box
+        dao12.getCotizacionVentaDiciembre(cboYear.getValue());
         ReporteCotizacionesVenta repoDiciembre = dao12.getObject();
 
         reporteAnualList = new ArrayList<>();
@@ -150,11 +131,9 @@ public class VentasReporteGeneralCotizacionesGrafica extends Panel implements Vi
         reporteAnualList.add(repoOctubre);
         reporteAnualList.add(repoNoviembre);
         reporteAnualList.add(repoDiciembre);
-
-        return list_tickets;
     }
 
-    public List getList() {
+    public List getLabelList() {
         return new ArrayList<String>() {
             {
                 add("ENERO");
@@ -175,18 +154,17 @@ public class VentasReporteGeneralCotizacionesGrafica extends Panel implements Vi
 
     public void makeChart() {
         fillReportData();
-        List<String> ticketList = getList();
 
         BarChartConfig barConfig = new BarChartConfig();
         barConfig.
                 data().
-                labelsAsList(ticketList)
+                labelsAsList(getLabelList())
                 .addDataset(
-                        new BarDataset().backgroundColor("rgba(255, 83, 10, 1)").label("EN PROCESO").yAxisID("y-axis-1"))
+                        new BarDataset().backgroundColor("rgba(204, 204, 0, 1)").label("EN PROCESO").yAxisID("y-axis-1"))
                 .addDataset(
                         new BarDataset().backgroundColor("rgba(0, 163, 0, 1)").label("TERMINADOS").yAxisID("y-axis-1"))
                 .addDataset(
-                        new BarDataset().backgroundColor("rgba(0, 163, 0, 1)").label("CANCELADOS").yAxisID("y-axis-1"))
+                        new BarDataset().backgroundColor("rgba(255, 0, 0, 1)").label("CANCELADOS").yAxisID("y-axis-1"))
                 .and();
 
         barConfig.
@@ -199,7 +177,7 @@ public class VentasReporteGeneralCotizacionesGrafica extends Panel implements Vi
                 .and()
                 .title()
                 .display(true)
-                .text("TICKETS")
+                .text("Cotizaciones de Venta")
                 .and()
                 .scales()
                 .add(Axis.Y, new LinearScale().display(true).position(Position.LEFT).id("y-axis-1"))
@@ -208,20 +186,22 @@ public class VentasReporteGeneralCotizacionesGrafica extends Panel implements Vi
 
         int dataset_number = 1;
 
-        List<String> labels = barConfig.data().getLabels();
         for (Dataset<?, ?> ds : barConfig.data().getDatasets()) {
             BarDataset lds = (BarDataset) ds;
             List<Double> data = new ArrayList<>();
-            for (int i = 0; i < labels.size(); i++) {
+            for (int i = 0; i < barConfig.data().getLabels().size(); i++) {
+                
+                System.out.println("REPORTE POR MES " + i + " - " + reporteAnualList.get(i).toString());
+                
                 switch (dataset_number) {
                     case 1:
-                        data.add(reporteAnualList.get(i).getEn_proceso()+ 0.0);
+                        data.add(reporteAnualList.get(i).getEn_proceso() + 0.0);
                         break;
                     case 2:
-                        data.add(reporteAnualList.get(i).getTerminados()+  0.0);
+                        data.add(reporteAnualList.get(i).getTerminado() + 0.0);
                         break;
                     case 3:
-                        data.add(reporteAnualList.get(i).getCancelados()+  0.0);
+                        data.add(reporteAnualList.get(i).getCancelado() + 0.0);
                         break;
                     default:
                         break;
@@ -238,7 +218,10 @@ public class VentasReporteGeneralCotizacionesGrafica extends Panel implements Vi
         vContainer.setMargin(false);
         vContainer.addComponents(new FragmentTop(),
                 lblTitulo,
-                new HorizontalLayout(new Label("AÑO:"), cboYear),
+                new HorizontalLayout(new Label("AÑO:"), cboYear)
+                    {{
+                        setComponentAlignment(getComponent(0), Alignment.MIDDLE_CENTER);
+                    }},
                 chartsj);
 
         vContainer.setComponentAlignment(vContainer.getComponent(0), Alignment.MIDDLE_CENTER);
@@ -250,7 +233,6 @@ public class VentasReporteGeneralCotizacionesGrafica extends Panel implements Vi
         vContainer.setExpandRatio(chartsj, 10);
 
         setContent(vContainer);
-
     }
 
 }

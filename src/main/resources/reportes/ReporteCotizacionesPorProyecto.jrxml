@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.11.0.final using JasperReports Library version 6.11.0-0c4056ccaa4d25a5a8c45672d2f764ea3498bebb  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="25e6e094-9827-44ab-b813-de560aa07092">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="RubikERP"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="227"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="762"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="377"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="609"/>
+	<parameter name="TITULO" class="java.lang.String"/>
+	<parameter name="SUBTITULO" class="java.lang.String"/>
+	<parameter name="fecha_ini" class="java.lang.String"/>
+	<parameter name="fecha_fin" class="java.lang.String"/>
+	<parameter name="strWhere" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT *
+FROM cotizacion_venta
+WHERE 
+	 $P!{strWhere} 
+ORDER BY proyecto ASC]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="fecha_elaboracion" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_elaboracion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="fecha_modificacion" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="fecha_modificacion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="empresa_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="empresa_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="empresa" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="empresa"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="unidad_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="unidad_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="unidad" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="unidad"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="usuario_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="usuario_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="usuario" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="usuario"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="estado_doc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="estado_doc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="estado" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="estado"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="folio" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="folio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="serie" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="serie"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="observaciones" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="observaciones"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="tipo_documento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tipo_documento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="tipo_archivo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tipo_archivo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="razon_cancelar" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="razon_cancelar"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="cliente_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="cliente_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="cliente" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cliente"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="cliente_rfc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cliente_rfc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="metodo_pago" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="metodo_pago"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="moneda" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="moneda"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="tipo_cambio" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="tipo_cambio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="importe" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="importe"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="descuento" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="descuento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="subtotal" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="subtotal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="iva" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="iva"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="total" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="porc_iva" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="porc_iva"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="importe_letra" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="importe_letra"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="activo" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="activo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="emisor_rfc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="emisor_rfc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="emisor_nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="emisor_nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="emisor_calle" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="emisor_calle"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="emisor_numero_exterior" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="emisor_numero_exterior"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="emisor_numero_interior" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="emisor_numero_interior"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="emisor_codigo_postal" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="emisor_codigo_postal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="emisor_colonia" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="emisor_colonia"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="emisor_municipio" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="emisor_municipio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="emisor_estado" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="emisor_estado"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="emisor_pais" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="emisor_pais"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="receptor_nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="receptor_nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="receptor_calle" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="receptor_calle"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="receptor_numero_exterior" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="receptor_numero_exterior"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="receptor_numero_interior" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="receptor_numero_interior"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="receptor_codigo_postal" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="receptor_codigo_postal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="receptor_colonia" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="receptor_colonia"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="receptor_municipio" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="receptor_municipio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="receptor_estado" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="receptor_estado"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="receptor_pais" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="receptor_pais"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="vendedor_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="vendedor_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="vendedor" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="vendedor"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="dias_caduca" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="dias_caduca"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="condiciones_pago" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="condiciones_pago"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="condiciones_cotizacion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="condiciones_cotizacion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="tiempo_tentrega" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tiempo_tentrega"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="terminada_requisicion" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="terminada_requisicion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="terminada_no_requisicion" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="terminada_no_requisicion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="proyecto_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="proyecto_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="proyecto" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="proyecto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="solicitante" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="solicitante"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="atencion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="atencion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<field name="referencia_cliente" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="referencia_cliente"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
+	<variable name="total1" class="java.lang.Double" resetType="Group" resetGroup="CotizacionesPorProyecto" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
+	</variable>
+	<group name="CotizacionesPorProyecto">
+		<groupExpression><![CDATA[$F{proyecto}]]></groupExpression>
+		<groupHeader>
+			<band height="31">
+				<textField>
+					<reportElement x="0" y="0" width="554" height="15" uuid="264fa04b-2107-4e2c-89b2-61902229b14c">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["PROYECTO: " + $F{proyecto}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="0" y="16" width="40" height="15" backcolor="#CCCCCC" uuid="4b45e148-2e4e-488c-9b9f-e251addcd7cd">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[FOLIO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="40" y="16" width="44" height="15" backcolor="#CCCCCC" uuid="2ad55a6f-bcf7-4b68-9b85-9d348c154911"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[FECHA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="84" y="16" width="55" height="15" backcolor="#CCCCCC" uuid="04ab47e3-2668-42f0-8452-fb0435a16324"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[ESTADO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="139" y="16" width="250" height="15" backcolor="#CCCCCC" uuid="cbc6d6eb-976e-4076-8dda-04a03efd829e">
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[CLIENTE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="389" y="16" width="58" height="15" backcolor="#CCCCCC" uuid="ed5419df-d0cc-431a-9830-eba26c0b48d9">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[IMPORTE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="447" y="16" width="50" height="15" backcolor="#CCCCCC" uuid="c9e45a1d-4e6d-4e68-8aaa-1f5401c43760">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[IVA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="497" y="16" width="58" height="15" backcolor="#CCCCCC" uuid="1155cd65-4b97-4ba2-9546-298f91a2aa3f"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[TOTAL]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="15">
+				<textField pattern="¤#,##0.##;¤-#,##0.##" isBlankWhenNull="true">
+					<reportElement x="447" y="0" width="106" height="15" uuid="6253ce5f-c6d3-42f9-a04f-5fd248d4b086">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{total1}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="270" y="0" width="176" height="14" uuid="e120a3b1-f512-44df-85d7-24284b1f8fe4"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[TOTAL DE COTIZACIONES DEL PROYECTO:]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="70" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="555" height="41" uuid="52692011-7363-42a2-90f4-7462cd53f93e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TITULO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="41" width="555" height="17" uuid="10685307-ddbb-483c-a1ec-b18795efecbc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SUBTITULO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="4" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="40" height="13" uuid="1667ea37-17bc-4166-9eb2-b63121f8dcfb">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{folio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="497" y="0" width="58" height="13" uuid="c85a89f0-c48b-4465-8239-70891e2d891a"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="139" y="0" width="250" height="13" uuid="cfeafc9d-a8d2-4c32-9e40-017448848136"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="40" y="0" width="44" height="13" uuid="e1fc48f0-c181-48fd-9966-aa0690135e74"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_elaboracion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="389" y="0" width="58" height="13" uuid="e65d533d-7031-49c9-bff9-7e8af9781034"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="84" y="0" width="55" height="13" uuid="a0d1c7c9-3570-4f35-9cfe-d3bcfa9da6fa"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{estado_doc}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="447" y="0" width="50" height="13" uuid="b8a12f51-67e7-4308-bf72-9eccdad83e77"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{iva}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="13" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="15" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

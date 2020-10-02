@@ -264,33 +264,39 @@ public class WindowProducto extends Window {
         cboProveedor2.setWidth(strWidth);
 
         txtPrecioCompra.addBlurListener((event) -> {
-            DecimalFormat df = new DecimalFormat("#.##");
-            Double iva_porc = Double.parseDouble(txtPrecioCompra.getValue());
-            Double iva = 0.0;
-            
-            if(iva_porc > 0 && txtPrecioCompra.getValue().length() > 0){
-                Double precio = Double.parseDouble(txtPrecioCompra.getValue());
-                iva =  precio * 0.16;
-                txtIVACompra.setValue(df.format(iva));
-            }else{
+            try {
+                DecimalFormat df = new DecimalFormat("#.##");
+                Double iva_porc = Double.parseDouble(txtPrecioCompra.getValue());
+                Double iva = 0.0;
+
+                if(iva_porc > 0 && txtPrecioCompra.getValue().length() > 0){
+                    Double precio = Double.parseDouble(txtPrecioCompra.getValue());
+                    iva =  precio * 0.16;
+                    txtIVACompra.setValue(df.format(iva));
+                }else{
+                    txtIVACompra.setValue("0.0");
+                }                
+            } catch (Exception e) {
                 txtIVACompra.setValue("0.0");
             }
         });
 
         txtPrecioVenta.addBlurListener((event) -> {
-            DecimalFormat df = new DecimalFormat("#.##");
-            Double iva_porc = Double.parseDouble(txtPrecioVenta.getValue());
-            Double iva = 0.0;
-            
-            if(iva_porc > 0 && txtPrecioVenta.getValue().length() > 0){
-                Double precio = Double.parseDouble(txtPrecioVenta.getValue());
-                iva = precio  * 0.16;
-                txtIVAVenta.setValue(df.format(iva));
-            }else{
-                txtIVAVenta.setValue("0.0");
+            try {
+                DecimalFormat df = new DecimalFormat("#.##");
+                Double iva_porc = Double.parseDouble(txtPrecioVenta.getValue());
+                Double iva = 0.0;
+
+                if(iva_porc > 0 && txtPrecioVenta.getValue().length() > 0){
+                    Double precio = Double.parseDouble(txtPrecioVenta.getValue());
+                    iva = precio  * 0.16;
+                    txtIVAVenta.setValue(df.format(iva));
+                }else{
+                    txtIVAVenta.setValue("0.0");
+                }                
+            } catch (Exception e) {
+                txtIVACompra.setValue("0.0");
             }
-            
-            
         });
         
         txtIVACompra.setEnabled(false);
@@ -350,14 +356,15 @@ public class WindowProducto extends Window {
     }
     
     public boolean isFormOK(){
-        return (!txtDescripcion.getValue().isEmpty() 
-                || !txtDescripcionCorta.getValue().isEmpty()
-                || !"0.0".equals(txtPrecioCompra.getValue())
+        Boolean obligatorio = !txtDescripcion.getValue().isEmpty() 
+                && !txtDescripcionCorta.getValue().isEmpty();
+        
+        return ( obligatorio  && (!"0.0".equals(txtPrecioCompra.getValue())
                 || !"0".equals(txtPrecioCompra.getValue())
                 || !txtPrecioCompra.getValue().isEmpty()
                 || !"0.0".equals(txtPrecioVenta.getValue())
                 || !"0".equals(txtPrecioVenta.getValue())
-                || !txtPrecioVenta.getValue().isEmpty());
+                || !txtPrecioVenta.getValue().isEmpty()));
     }
     
 }

@@ -8,10 +8,13 @@ package com.rubik.erp.modulo.compras;
 import com.rubik.erp.config.DomainConfig;
 import com.rubik.erp.config.FactorySession;
 import com.rubik.erp.config._DocumentoEstados;
+import com.rubik.erp.config._Pais;
 import com.rubik.erp.domain.OrdenDeCompraDomain;
+import com.rubik.erp.domain.ProveedorDomain;
 import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.OrdenDeCompra;
+import com.rubik.erp.model.Proveedor;
 import com.rubik.erp.modulo.generic.WindowCancelarDocumento;
 import com.rubik.erp.util.EmbedWindow;
 import com.vaadin.navigator.View;
@@ -68,6 +71,7 @@ public class ComprasOrdenes extends Panel implements View {
     List<OrdenDeCompra> listOC = new ArrayList<>();
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    String reportName = "OrdenesDeCompra.jasper";
     
     public ComprasOrdenes() {
         initComponents();
@@ -170,6 +174,16 @@ public class ComprasOrdenes extends Panel implements View {
         btnPrint.addClickListener((event) -> {
             if (gridOC.getSelectedItems().size() == 1) {
                 OrdenDeCompra ocTemp = gridOC.getSelectedItems().iterator().next();
+                
+                ProveedorDomain proveedorDomain = new ProveedorDomain();
+                proveedorDomain.getProveedor(" id = " + ocTemp.getProveedor_id(), "", "");
+                Proveedor p = proveedorDomain.getObject();
+                if(p != null){
+                    if(p.getPais().equals(_Pais.USA)){
+                        reportName = "OrdenesDeCompra_En.jasper";
+                    }
+                }
+                
                 try {
                     final HashMap map = new HashMap();
                     map.put("folio", ocTemp.getFolio());
@@ -179,7 +193,7 @@ public class ComprasOrdenes extends Panel implements View {
                         public InputStream getStream() {
                             byte[] b = null;
                             try {
-                                InputStream fileStream = getClass().getClassLoader().getResourceAsStream("/reportes/OrdenesDeCompra.jasper");
+                                InputStream fileStream = getClass().getClassLoader().getResourceAsStream("/reportes/" + reportName);
                                 b = JasperRunManager.runReportToPdf(fileStream, map, FactorySession.getRubikConnection(DomainConfig.getEnvironment()));
 
                             } catch (JRException ex) {
