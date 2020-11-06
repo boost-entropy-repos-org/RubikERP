@@ -6,6 +6,18 @@
 package com.rubik.erp.modulo.ventas;
 
 import com.byteowls.vaadin.chartjs.ChartJs;
+import com.byteowls.vaadin.chartjs.config.BarChartConfig;
+import com.byteowls.vaadin.chartjs.data.BarDataset;
+import com.byteowls.vaadin.chartjs.data.Dataset;
+import com.byteowls.vaadin.chartjs.options.InteractionMode;
+import com.byteowls.vaadin.chartjs.options.Position;
+import com.byteowls.vaadin.chartjs.options.scale.Axis;
+import com.byteowls.vaadin.chartjs.options.scale.DefaultScale;
+import com.byteowls.vaadin.chartjs.options.scale.LinearScale;
+import com.rubik.erp.config.DomainConfig;
+import com.rubik.erp.dao.ReporteCotizacionesVentaPorEmpleadoDAO;
+import com.rubik.erp.domain.EmpleadoDomain;
+import com.rubik.erp.domain.reports.ReporteCotizacionesVentaPorEmpleado;
 import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.Empleado;
 import com.vaadin.navigator.View;
@@ -31,8 +43,8 @@ public class VentasReporteDeCotizacionesPorProyecto extends Panel implements Vie
     
     ChartJs chartsj;
   
-    Label lblTitulo = new Label("REPORTE DE TICKETS POR TECNICO DE SOPORTE");
-    List<Empleado> tecnicos = new ArrayList<>();
+    Label lblTitulo = new Label("REPORTE DE COTIZACIONES POR VENDEDOR");
+    List<ReporteCotizacionesVentaPorEmpleado> tecnicos = new ArrayList<>();
 
     public VentasReporteDeCotizacionesPorProyecto() {
         setSizeFull();
@@ -66,13 +78,13 @@ public class VentasReporteDeCotizacionesPorProyecto extends Panel implements Vie
     
     public List<String> fillTecnicos(){
         List<String> listaTecnicos = new ArrayList<>();
-        TecnicoDeSoporteService service = new TecnicoDeSoporteService();
-        service.getTecnicoDeSoporte(" activo = 1 ", "", "nombre ASC");
+        ReporteCotizacionesVentaPorEmpleadoDAO dao = new ReporteCotizacionesVentaPorEmpleadoDAO(DomainConfig.getEnvironment());
+        dao.getReporteCotizacionesVentaPorEmpleado();
         
-        tecnicos = service.getObjects();
+        tecnicos = dao.getObjects();
         
-        for (TecnicoDeSoporte tecnico : tecnicos) {
-            listaTecnicos.add(tecnico.toString());
+        for (ReporteCotizacionesVentaPorEmpleado tecnico : tecnicos) {
+            listaTecnicos.add(tecnico.getUsuario());
         }
         
         return listaTecnicos;
@@ -88,11 +100,7 @@ public class VentasReporteDeCotizacionesPorProyecto extends Panel implements Vie
                 data()
                 .labelsAsList(buquesList)
                 .addDataset(
-                        new BarDataset().backgroundColor("rgba(229, 229, 0, 1)").label("EN PROCESO").xAxisID("x-axis-1"))
-                .addDataset(
-                        new BarDataset().backgroundColor("rgba(0, 163, 0, 1)").label("TERMINADO").xAxisID("x-axis-1"))
-                .addDataset(
-                        new BarDataset().backgroundColor("rgba(214, 0, 0, 1)").label("CANCELADOS").xAxisID("x-axis-1"))
+                        new BarDataset().backgroundColor("rgba(229, 229, 0, 1)").label("COTIZACIONES").xAxisID("x-axis-1"))
                 .and();
         barConfig.
                 options()
@@ -120,13 +128,7 @@ public class VentasReporteDeCotizacionesPorProyecto extends Panel implements Vie
             for (int i = 0; i < labels.size(); i++) {
                 switch (dataset_number) {
                     case 1:
-                        data.add(tecnicos.get(i).getTickets_abiertos() + 0.0);
-                        break;
-                    case 2:
-                        data.add(tecnicos.get(i).getTickets_cerrados() + 0.0);
-                        break;
-                    case 3:
-                        data.add(tecnicos.get(i).getTickets_cancelados() + 0.0);
+                        data.add(tecnicos.get(i).getCantidad()+ 0.0);
                         break;
                     default:
                         break;
