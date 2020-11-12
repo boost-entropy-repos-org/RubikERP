@@ -15,181 +15,262 @@ import com.byteowls.vaadin.chartjs.options.scale.Axis;
 import com.byteowls.vaadin.chartjs.options.scale.DefaultScale;
 import com.byteowls.vaadin.chartjs.options.scale.LinearScale;
 import com.rubik.erp.config.DomainConfig;
+import com.rubik.erp.config.FactorySession;
 import com.rubik.erp.dao.ReporteCotizacionesVentaPorEmpleadoDAO;
-import com.rubik.erp.domain.EmpleadoDomain;
+import com.rubik.erp.domain.CotizacionVentaDomain;
 import com.rubik.erp.domain.reports.ReporteCotizacionesVentaPorEmpleado;
 import com.rubik.erp.fragments.FragmentTop;
+import com.rubik.erp.model.CotizacionVenta;
 import com.rubik.erp.model.Empleado;
+import com.rubik.erp.util.EmbedWindow;
+import com.rubik.erp.util.ExportExcelManager;
+import com.rubik.manage.ManageDates;
 import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.FileDownloader;
 import com.vaadin.server.Responsive;
+import com.vaadin.server.StreamResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.DateField;
+import com.vaadin.ui.Grid;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
+import de.steinwedel.messagebox.MessageBox;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperRunManager;
+import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
 
 /**
  *
  * @author GRUCAS
  */
 public class VentasReporteDeCotizacionesPorProyecto extends Panel implements View {
+
+    public static final String NAME = "REPORTE_COTIZACIONES_POR_PROYECTO";
     
-    public static final String NAME = "REPORTE_COTIZACIONES_PROYECTO";
-    VerticalLayout vContainer = new VerticalLayout();
+    VerticalLayout container = new VerticalLayout();
 
     Empleado empleado = (Empleado) VaadinSession.getCurrent().getSession().getAttribute("USUARIO_ACTIVO");
-    
-    ChartJs chartsj;
-  
-    Label lblTitulo = new Label("REPORTE DE COTIZACIONES POR VENDEDOR");
-    List<ReporteCotizacionesVentaPorEmpleado> tecnicos = new ArrayList<>();
+   
+    Grid<CotizacionVenta> gridCotizaciones = new Grid<>();
+   
+    DateField txtFechaIni = new DateField();
+    DateField txtFechaFin = new DateField();
+    Button btnSearch = new Button(Fam3SilkIcon.MAGNIFIER);
+   
+    Button btnExcel = new Button("Excel", Fam3SilkIcon.PAGE_EXCEL);
+    Button btnPrint = new Button("Imprimir", Fam3SilkIcon.PRINTER);
+
+    StreamResource.StreamSource resourceFile;
+    FileDownloader downloader;
+
+    Button btnGraficaAnual = new Button("Grafica Anual", Fam3SilkIcon.CHART_BAR);
+
+    List<CotizacionVenta> listCotizaciones = new ArrayList<>();
+
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public VentasReporteDeCotizacionesPorProyecto() {
-        setSizeFull();
         initComponents();
-        
-        chartsj = makeChart();
-        //chartsj2 = getChart();
-        
-        vContainer.setMargin(false);
-        vContainer.addComponents(new FragmentTop(),
-                lblTitulo,chartsj);
 
-        vContainer.setComponentAlignment(vContainer.getComponent(0), Alignment.MIDDLE_CENTER);
-        vContainer.setComponentAlignment(vContainer.getComponent(1), Alignment.MIDDLE_CENTER);
-        vContainer.setComponentAlignment(vContainer.getComponent(2), Alignment.MIDDLE_CENTER);
-      
-        vContainer.setExpandRatio(vContainer.getComponent(0), 0);
-        vContainer.setExpandRatio(lblTitulo, 0);
-        vContainer.setExpandRatio(chartsj, 10);
-        //vContainer.setExpandRatio(chartsj2, 10);
+        HorizontalLayout hLayoutAux = new HorizontalLayout(
+                new Label("Fecha: "),txtFechaIni,new Label("A: "),txtFechaFin,
+                btnSearch,btnGraficaAnual, btnExcel, btnPrint);
+       
+        hLayoutAux.setComponentAlignment(hLayoutAux.getComponent(0), Alignment.MIDDLE_CENTER);
+        hLayoutAux.setComponentAlignment(hLayoutAux.getComponent(2), Alignment.MIDDLE_CENTER);
+       
+        Label lblTitulo = new Label("REPORTE GENERAL DE COTIZACIONES") {
+            {
+                setStyleName("h1");
+            }
+        };
+        lblTitulo.setSizeUndefined();
+        
+        btnSearch.addClickListener((event) -> {
+            gridCotizaciones.setItems(getCotizacionesVentas());
+        });
 
-        setContent(vContainer);
+        container.setMargin(false);
+        container.addComponents(new FragmentTop(),
+                lblTitulo,
+                hLayoutAux,
+                gridCotizaciones);
+       
+        container.setComponentAlignment(container.getComponent(0), Alignment.MIDDLE_CENTER);
+        container.setComponentAlignment(container.getComponent(1), Alignment.MIDDLE_CENTER);
+        container.setComponentAlignment(container.getComponent(2), Alignment.MIDDLE_CENTER);
+        container.setComponentAlignment(container.getComponent(3), Alignment.MIDDLE_CENTER);
+
+        setContent(container);
     }
 
     public void initComponents() {
-        setSizeFull();
-        vContainer.setHeight("100%");
-        lblTitulo.setStyleName("h2");
-        Responsive.makeResponsive(this);
-    }
-    
-    public List<String> fillTecnicos(){
-        List<String> listaTecnicos = new ArrayList<>();
-        ReporteCotizacionesVentaPorEmpleadoDAO dao = new ReporteCotizacionesVentaPorEmpleadoDAO(DomainConfig.getEnvironment());
-        dao.getReporteCotizacionesVentaPorEmpleado();
-        
-        tecnicos = dao.getObjects();
-        
-        for (ReporteCotizacionesVentaPorEmpleado tecnico : tecnicos) {
-            listaTecnicos.add(tecnico.getUsuario());
-        }
-        
-        return listaTecnicos;
-    }
-    
-    public ChartJs makeChart() {
-         setSizeFull();
-        List<String> buquesList = fillTecnicos();
-        
-        BarChartConfig barConfig = new BarChartConfig();
-        barConfig.horizontal();
-        barConfig.
-                data()
-                .labelsAsList(buquesList)
-                .addDataset(
-                        new BarDataset().backgroundColor("rgba(229, 229, 0, 1)").label("COTIZACIONES").xAxisID("x-axis-1"))
-                .and();
-        barConfig.
-                options()
-                .responsive(true)
-                .hover()
-                .mode(InteractionMode.INDEX)
-                .intersect(true)
-                .animationDuration(1000)
-                .and()
-                .title()
-                .display(true)
-                .text("ESTADO DE TICKETS")
-                .and()
-                .scales()
-                .add(Axis.X, new LinearScale().display(true).position(Position.RIGHT).id("x-axis-1"))
-                .and()
-                .done();
+        setSizeFull();    
 
-        int dataset_number = 1;
+        txtFechaIni.setValue(ManageDates.getLocalDateFromDate(ManageDates.getFirstDayOfTheMonth()));
+        txtFechaFin.setValue(ManageDates.getLocalDateFromDate(ManageDates.getLastDayOfTheMonth()));
         
-        List<String> labels = barConfig.data().getLabels();
-        for (Dataset<?, ?> ds : barConfig.data().getDatasets()) {
-            BarDataset lds = (BarDataset) ds;
-            List<Double> data = new ArrayList<>();
-            for (int i = 0; i < labels.size(); i++) {
-                switch (dataset_number) {
-                    case 1:
-                        data.add(tecnicos.get(i).getCantidad()+ 0.0);
-                        break;
-                    default:
-                        break;
-                }
-            }
-            lds.dataAsList(data);
-            dataset_number++;
-        }
+        gridCotizaciones.addColumn(CotizacionVenta::getFolio).setCaption("FOLIO").setId("FOLIO").setWidth(120);
+        Grid.Column<CotizacionVenta, String> columnFecha = gridCotizaciones.addColumn(det -> ((det.getFecha_elaboracion()!= null) ? dateFormat.format(det.getFecha_elaboracion()) : ""));
+        columnFecha.setCaption("FECHA");
+        columnFecha.setId("FECHA");
+        columnFecha.setWidth(120);
+        gridCotizaciones.addColumn(CotizacionVenta::getEstado_doc).setCaption("ESTADO").setId("ESTADO").setWidth(130);
+        gridCotizaciones.addColumn(CotizacionVenta::getCliente).setCaption("CLIENTE").setId("CLIENTE");
+        gridCotizaciones.addColumn(CotizacionVenta::getImporte).setCaption("IMPORTE").setId("IMPORTE").setWidth(120);
+        gridCotizaciones.addColumn(CotizacionVenta::getIva).setCaption("IVA").setId("IVA").setWidth(120);
+        gridCotizaciones.addColumn(CotizacionVenta::getTotal).setCaption("TOTAL").setId("TOTAL").setWidth(120);
 
-        ChartJs chart = new ChartJs(barConfig);
-        chart.setJsLoggingEnabled(true);
-        chart.setWidth("70%");
+        gridCotizaciones.setItems(getCotizacionesVentas());
+        gridCotizaciones.setSelectionMode(Grid.SelectionMode.SINGLE);
+        gridCotizaciones.setSizeFull();
+        gridCotizaciones.setHeight("500px");
+
+        downloader = new FileDownloader(new StreamResource(resourceFile, ""));
+        downloader.extend(btnExcel);
        
-        
-        return chart;
-//        chart.addClickListener((a, b) -> DemoUtils.notification(a, b, barConfig.data().getDatasets().get(a)));
-//        chart.addLegendClickListener((dataSetIndex, visible, visibleDatasets) -> DemoUtils.legendNotification(dataSetIndex, visible, visibleDatasets));
-    }
-    
-      public ChartJs getChart() {
-        setSizeFull();
-        BarChartConfig config = new BarChartConfig();
-        config.data()
-            .labels("January", "February", "March", "April", "May", "June", "July")
-            .addDataset(new BarDataset().label("Dataset 1").backgroundColor("rgba(220,220,220,0.5)"))
-            .addDataset(new BarDataset().label("Dataset 2").backgroundColor("rgba(151,187,205,0.5)"))
-            .addDataset(new BarDataset().label("Dataset 3").backgroundColor("rgba(151,187,145,0.5)"))
-            .and()
-        .options()
-            .responsive(true)
-            .title()
-                .display(true)
-                .text("Chart.js Bar Chart - Stacked")
-                .and()
-            .tooltips()
-                .mode(InteractionMode.INDEX)
-                .intersect(false)
-                .and()
-            .scales()
-            .add(Axis.X, new DefaultScale()
-                    .stacked(true))
-            .add(Axis.Y, new DefaultScale()
-                    .stacked(true))
-            .and()
-            .done();
-        
-        // add random data for demo
-        List<String> labels = config.data().getLabels();
-        for (Dataset<?, ?> ds : config.data().getDatasets()) {
-            BarDataset lds = (BarDataset) ds;
-            List<Double> data = new ArrayList<>();
-            for (int i = 0; i < labels.size(); i++) {
-                data.add((double) (Math.random() > 0.5 ? -1 : 1) * Math.round(Math.random() * 100));
+        btnGraficaAnual.addClickListener((event) -> {
+           getUI().getNavigator().navigateTo(VentasReporteGeneralCotizacionesGrafica.NAME);
+        });
+       
+        btnExcel.addClickListener((event) -> {
+
+            ArrayList<String> headers = new ArrayList();
+            headers.add("FOLIO");
+            headers.add("FECHA");
+            headers.add("EDO DOC");
+            headers.add("CLIENTE");
+            headers.add("IMPORTE");
+            headers.add("IVA");
+            headers.add("TOTAL");
+
+            ArrayList data = new ArrayList();
+            SimpleDateFormat dts = new SimpleDateFormat("yyyy-MM-dd");
+
+            for (CotizacionVenta invTemp : listCotizaciones) {
+                ArrayList<String> cells = new ArrayList();
+                cells.add(invTemp.getFolio());
+                cells.add(invTemp.getFecha_elaboracion() != null ? dts.format(invTemp.getFecha_elaboracion()) : "");
+                cells.add(invTemp.getEstado_doc());
+                cells.add(invTemp.getCliente());
+                cells.add(invTemp.getImporte().toString());
+                cells.add(invTemp.getIva().toString());
+                cells.add(invTemp.getTotal().toString());
+                data.add(cells);
             }
-            lds.dataAsList(data);
+
+            try {
+
+                String fileName = "ReportCotizaciones_" + UUID.randomUUID() + ".xlsx";
+
+                ExportExcelManager exportToExcel = new ExportExcelManager("REPORTE GENERAL DE COTIZACIONES", "Generado del " + ManageDates.getDateSimpleFormat(txtFechaIni.getValue()) + " al " + ManageDates.getDateSimpleFormat(txtFechaFin.getValue()));
+                exportToExcel.setPositionCurrency(new int[]{4,5,6});
+                
+                resourceFile = () -> exportToExcel.getExcelFromListData("Reporte", headers, data);
+                downloader.setFileDownloadResource(new StreamResource(resourceFile, fileName));
+
+            } catch (Exception e) {
+                System.out.println(e.toString());
+                MessageBox.createError()
+                        .withCaption("Error!")
+                        .withMessage("Ha ocurrido un error al descargar el archivo Excel.")
+                        .withRetryButton()
+                        .open();
+            }
+        });
+       
+        btnPrint.addClickListener((event) -> {
+            if (listCotizaciones.size() >= 1) {
+                try {
+                    final HashMap map = new HashMap();
+                    SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
+                    
+                    map.put("TITULO", "REPORTE GENERAL DE COTIZACIONES");
+                    map.put("SUBTITULO", "Generado del " + ManageDates.getDateSimpleFormat(txtFechaIni.getValue()) + " al " + ManageDates.getDateSimpleFormat(txtFechaFin.getValue()));
+                    map.put("fecha_ini", dt.format(ManageDates.getDateFromLocalDate(txtFechaIni.getValue())) + " 00:00:00");
+                    map.put("fecha_fin", dt.format(ManageDates.getDateFromLocalDate(txtFechaFin.getValue())) + " 23:59:59'");
+
+                    StreamResource.StreamSource source = new StreamResource.StreamSource() {
+                        @Override
+                        public InputStream getStream() {
+                            byte[] b = null;
+                            try {
+                                InputStream fileStream = getClass().getClassLoader().getResourceAsStream("/reportes/ReporteGeneralCotizaciones.jasper");
+                                b = JasperRunManager.runReportToPdf(fileStream, map, FactorySession.getRubikConnection(DomainConfig.getEnvironment()));
+
+                            } catch (JRException ex) {
+                                ex.printStackTrace();
+                            }
+                            return new ByteArrayInputStream(b);
+                        }
+                    };
+
+                    StreamResource resource = new StreamResource(source, "Reporte_General_Cotizacion.pdf");
+                    EmbedWindow windowPDF = new EmbedWindow(resource);
+                    windowPDF.setCaption("Reporte general de Cotizaciones");
+                    windowPDF.setHeight("100%");
+                    windowPDF.setWidth("80%");
+                    windowPDF.setMimeType("application/pdf");
+                    windowPDF.setDraggable(false);
+                    windowPDF.setResizable(false);
+                    windowPDF.setScrollLeft(15);
+                    windowPDF.center();
+                    windowPDF.setModal(true);
+                    windowPDF.insertEmbedded();
+                    getUI().addWindow(windowPDF);
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+                MessageBox.createError()
+                        .withCaption("Error!")
+                        .withMessage("Debe seleccionar una Cotizacion de Venta para poder imprimirla.")
+                        .withRetryButton()
+                        .open();
+            }
+        });
+    }
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
+    }
+
+    public List getCotizacionesVentas() {
+        String strWhere = " activo = 1 ";
+       
+        if (txtFechaIni.getValue() != null && txtFechaFin.getValue() != null) {
+            SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
+
+            strWhere
+                    += " AND fecha_elaboracion >= '" + dt.format(ManageDates.getDateFromLocalDate(txtFechaIni.getValue())) + " 00:00:00"
+                    + "' AND fecha_elaboracion <= '" + dt.format(ManageDates.getDateFromLocalDate(txtFechaFin.getValue())) + " 23:59:59'";
         }
 
-        ChartJs chart = new ChartJs(config);
-        chart.setWidth("70%");    
-        chart.setJsLoggingEnabled(true);
-        return chart;
+        CotizacionVentaDomain service = new CotizacionVentaDomain();
+        service.getCotizacionVenta(strWhere, "", "fecha_elaboracion ASC");
+        listCotizaciones = service.getObjects();
+
+        if (!service.getOk()) {
+            MessageBox.createError()
+                    .withCaption("Error al cargar la informacion!")
+                    .withMessage("Err: " + service.getNotification())
+                    .withRetryButton()
+                    .open();
+        }
+        return listCotizaciones;
     }
-      
+   
 }
