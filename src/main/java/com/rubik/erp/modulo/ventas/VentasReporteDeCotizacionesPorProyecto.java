@@ -146,7 +146,7 @@ public class VentasReporteDeCotizacionesPorProyecto extends Panel implements Vie
         downloader.extend(btnExcel);
        
         btnGraficaAnual.addClickListener((event) -> {
-           getUI().getNavigator().navigateTo(VentasReporteGeneralCotizacionesGrafica.NAME);
+           getUI().getNavigator().navigateTo(VentasReporteDeCotizacionesPorProyectoGrafica.NAME);
         });
        
         btnExcel.addClickListener((event) -> {
