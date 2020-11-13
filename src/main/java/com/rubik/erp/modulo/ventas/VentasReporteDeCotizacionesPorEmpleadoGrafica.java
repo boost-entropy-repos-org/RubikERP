@@ -33,9 +33,9 @@ import java.util.List;
  *
  * @author GRUCAS
  */
-public class VentasReporteDeCotizacionesPorProyectoGrafica extends Panel implements View {
+public class VentasReporteDeCotizacionesPorEmpleadoGrafica extends Panel implements View {
     
-    public static final String NAME = "REPORTE_COTIZACIONES_PROYECTO_GRAFICA";
+    public static final String NAME = "REPORTE_COTIZACIONES_POR_EMPLEADO_GRAFICA";
     VerticalLayout vContainer = new VerticalLayout();
 
     Empleado empleado = (Empleado) VaadinSession.getCurrent().getSession().getAttribute("USUARIO_ACTIVO");
@@ -45,7 +45,7 @@ public class VentasReporteDeCotizacionesPorProyectoGrafica extends Panel impleme
     Label lblTitulo = new Label("REPORTE DE COTIZACIONES POR VENDEDOR");
     List<ReporteCotizacionesVentaPorEmpleado> tecnicos = new ArrayList<>();
 
-    public VentasReporteDeCotizacionesPorProyectoGrafica() {
+    public VentasReporteDeCotizacionesPorEmpleadoGrafica() {
         setSizeFull();
         initComponents();
         

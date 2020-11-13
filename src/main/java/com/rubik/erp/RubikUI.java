@@ -14,6 +14,9 @@ import com.rubik.erp.modulo.ventas.VentasClientes;
 import com.rubik.erp.modulo.ventas.VentasCotizaciones;
 import com.rubik.erp.modulo.ventas.VentasProyectos;
 import com.rubik.erp.modulo.compras.ComprasRemisionesDeEntrega;
+import com.rubik.erp.modulo.ventas.VentasReporteDeCotizacionesPorEmpleado;
+import com.rubik.erp.modulo.ventas.VentasReporteDeCotizacionesPorEmpleadoGrafica;
+import com.rubik.erp.modulo.ventas.VentasReporteDeCotizacionesPorProyecto;
 import com.rubik.erp.modulo.ventas.VentasReporteDeCotizacionesPorProyectoGrafica;
 import com.rubik.erp.modulo.ventas.VentasReporteGeneralCotizaciones;
 import com.rubik.erp.modulo.ventas.VentasReporteGeneralCotizacionesGrafica;
@@ -68,8 +71,10 @@ public class RubikUI extends UI {
         navigator.addView(VentasProyectos.NAME, VentasProyectos.class);
         navigator.addView(VentasReporteGeneralCotizaciones.NAME, VentasReporteGeneralCotizaciones.class);
         navigator.addView(VentasReporteGeneralCotizacionesGrafica.NAME, VentasReporteGeneralCotizacionesGrafica.class);
+        navigator.addView(VentasReporteDeCotizacionesPorProyecto.NAME, VentasReporteDeCotizacionesPorProyecto.class);
         navigator.addView(VentasReporteDeCotizacionesPorProyectoGrafica.NAME, VentasReporteDeCotizacionesPorProyectoGrafica.class);
-        
+        navigator.addView(VentasReporteDeCotizacionesPorEmpleado.NAME, VentasReporteDeCotizacionesPorEmpleado.class);
+        navigator.addView(VentasReporteDeCotizacionesPorEmpleadoGrafica.NAME, VentasReporteDeCotizacionesPorEmpleadoGrafica.class);        
         
         navigator.navigateTo(Login.NAME);
     }

@@ -8,11 +8,10 @@ package com.rubik.erp.modulo.ventas;
 import com.rubik.erp.config.DomainConfig;
 import com.rubik.erp.config.FactorySession;
 import com.rubik.erp.domain.CotizacionVentaDomain;
-import com.rubik.erp.domain.ProyectoDomain;
+import com.rubik.erp.domain.EmpleadoDomain;
 import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.CotizacionVenta;
 import com.rubik.erp.model.Empleado;
-import com.rubik.erp.model.Proyecto;
 import com.rubik.erp.util.EmbedWindow;
 import com.rubik.erp.util.ExportExcelManager;
 import com.rubik.manage.ManageDates;
@@ -46,9 +45,9 @@ import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
  *
  * @author GRUCAS
  */
-public class VentasReporteDeCotizacionesPorProyecto extends Panel implements View {
+public class VentasReporteDeCotizacionesPorEmpleado extends Panel implements View {
 
-    public static final String NAME = "REPORTE_COTIZACIONES_POR_PROYECTO";
+    public static final String NAME = "REPORTE_COTIZACIONES_POR_EMPLEADO";
     
     VerticalLayout container = new VerticalLayout();
 
@@ -70,16 +69,16 @@ public class VentasReporteDeCotizacionesPorProyecto extends Panel implements Vie
 
     List<CotizacionVenta> listCotizaciones = new ArrayList<>();
     
-    NativeSelect<Proyecto> cboProyecto = new NativeSelect();
-    List<Proyecto> listProyectos = new ArrayList<>();
+    NativeSelect<Empleado> cboEmpleados = new NativeSelect();
+    List<Empleado> listEmpleado = new ArrayList<>();
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-    public VentasReporteDeCotizacionesPorProyecto() {
+    public VentasReporteDeCotizacionesPorEmpleado() {
         initComponents();
 
         HorizontalLayout hLayoutAux = new HorizontalLayout(
-                new Label("Proyecto: "),cboProyecto,
+                new Label("Vendedor: "),cboEmpleados,
                 new Label("Fecha: "),txtFechaIni,
                 new Label("A: "),txtFechaFin,
                 btnSearch,btnGraficaAnual, btnExcel, btnPrint);
@@ -88,7 +87,7 @@ public class VentasReporteDeCotizacionesPorProyecto extends Panel implements Vie
         hLayoutAux.setComponentAlignment(hLayoutAux.getComponent(2), Alignment.MIDDLE_CENTER);
         hLayoutAux.setComponentAlignment(hLayoutAux.getComponent(4), Alignment.MIDDLE_CENTER);
        
-        Label lblTitulo = new Label("REPORTE GENERAL DE COTIZACIONES POR PROYECTOS") {
+        Label lblTitulo = new Label("REPORTE GENERAL DE COTIZACIONES POR VENEDOR") {
             {
                 setStyleName("h1");
             }
@@ -117,14 +116,14 @@ public class VentasReporteDeCotizacionesPorProyecto extends Panel implements Vie
         setSizeFull();    
 
         txtFechaIni.setWidth("120");
-        txtFechaFin.setWidth("120"); 
+        txtFechaFin.setWidth("120");   
         txtFechaIni.setValue(ManageDates.getLocalDateFromDate(ManageDates.getFirstDayOfTheMonth()));
         txtFechaFin.setValue(ManageDates.getLocalDateFromDate(ManageDates.getLastDayOfTheMonth()));
         
-        cboProyecto.setWidth("380");
-        cboProyecto.setItems(getProyectos());
-        cboProyecto.setEmptySelectionAllowed(false);
-        cboProyecto.setValue(listProyectos.get(0));
+        cboEmpleados.setWidth("380");
+        cboEmpleados.setItems(getEmpleados());
+        cboEmpleados.setEmptySelectionAllowed(false);
+        cboEmpleados.setValue(listEmpleado.get(0));
         
         gridCotizaciones.addColumn(CotizacionVenta::getFolio).setCaption("FOLIO").setId("FOLIO").setWidth(120);
         Grid.Column<CotizacionVenta, String> columnFecha = gridCotizaciones.addColumn(det -> ((det.getFecha_elaboracion()!= null) ? dateFormat.format(det.getFecha_elaboracion()) : ""));
@@ -150,11 +149,11 @@ public class VentasReporteDeCotizacionesPorProyecto extends Panel implements Vie
         });
        
         btnExcel.addClickListener((event) -> {
+
             ArrayList<String> headers = new ArrayList();
             headers.add("FOLIO");
             headers.add("FECHA");
             headers.add("EDO DOC");
-            headers.add("PROYECTO");
             headers.add("CLIENTE");
             headers.add("IMPORTE");
             headers.add("IVA");
@@ -168,7 +167,6 @@ public class VentasReporteDeCotizacionesPorProyecto extends Panel implements Vie
                 cells.add(invTemp.getFolio());
                 cells.add(invTemp.getFecha_elaboracion() != null ? dts.format(invTemp.getFecha_elaboracion()) : "");
                 cells.add(invTemp.getEstado_doc());
-                cells.add(invTemp.getProyecto());
                 cells.add(invTemp.getCliente());
                 cells.add(invTemp.getImporte().toString());
                 cells.add(invTemp.getIva().toString());
@@ -177,9 +175,10 @@ public class VentasReporteDeCotizacionesPorProyecto extends Panel implements Vie
             }
 
             try {
-                String fileName = "ReportCotizacionesProyecto_" + UUID.randomUUID() + ".xlsx";
 
-                ExportExcelManager exportToExcel = new ExportExcelManager("REPORTE DE COTIZACIONES POR PROYECTO", "Generado del " + ManageDates.getDateSimpleFormat(txtFechaIni.getValue()) + " al " + ManageDates.getDateSimpleFormat(txtFechaFin.getValue()));
+                String fileName = "ReportCotizaciones_" + UUID.randomUUID() + ".xlsx";
+
+                ExportExcelManager exportToExcel = new ExportExcelManager("REPORTE GENERAL DE COTIZACIONES", "Generado del " + ManageDates.getDateSimpleFormat(txtFechaIni.getValue()) + " al " + ManageDates.getDateSimpleFormat(txtFechaFin.getValue()));
                 exportToExcel.setPositionCurrency(new int[]{4,5,6});
                 
                 resourceFile = () -> exportToExcel.getExcelFromListData("Reporte", headers, data);
@@ -201,15 +200,17 @@ public class VentasReporteDeCotizacionesPorProyecto extends Panel implements Vie
                     final HashMap map = new HashMap();
                     SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
                     
-                    map.put("TITULO", "REPORTE DE COTIZACIONES POR PROYECTO");
+                    map.put("TITULO", "REPORTE GENERAL DE COTIZACIONES");
                     map.put("SUBTITULO", "Generado del " + ManageDates.getDateSimpleFormat(txtFechaIni.getValue()) + " al " + ManageDates.getDateSimpleFormat(txtFechaFin.getValue()));
+                    map.put("fecha_ini", dt.format(ManageDates.getDateFromLocalDate(txtFechaIni.getValue())) + " 00:00:00");
+                    map.put("fecha_fin", dt.format(ManageDates.getDateFromLocalDate(txtFechaFin.getValue())) + " 23:59:59'");
 
                     StreamResource.StreamSource source = new StreamResource.StreamSource() {
                         @Override
                         public InputStream getStream() {
                             byte[] b = null;
                             try {
-                                InputStream fileStream = getClass().getClassLoader().getResourceAsStream("/reportes/ReporteCotizacionesPorProyecto.jasper");
+                                InputStream fileStream = getClass().getClassLoader().getResourceAsStream("/reportes/ReporteGeneralCotizaciones.jasper");
                                 b = JasperRunManager.runReportToPdf(fileStream, map, FactorySession.getRubikConnection(DomainConfig.getEnvironment()));
 
                             } catch (JRException ex) {
@@ -219,9 +220,9 @@ public class VentasReporteDeCotizacionesPorProyecto extends Panel implements Vie
                         }
                     };
 
-                    StreamResource resource = new StreamResource(source, "Reporte_Cotizacion_Proyectos.pdf");
+                    StreamResource resource = new StreamResource(source, "Reporte_General_Cotizacion.pdf");
                     EmbedWindow windowPDF = new EmbedWindow(resource);
-                    windowPDF.setCaption("Reporte de Cotizaciones por Proyecto");
+                    windowPDF.setCaption("Reporte general de Cotizaciones");
                     windowPDF.setHeight("100%");
                     windowPDF.setWidth("80%");
                     windowPDF.setMimeType("application/pdf");
@@ -260,11 +261,6 @@ public class VentasReporteDeCotizacionesPorProyecto extends Panel implements Vie
                     += " AND fecha_elaboracion >= '" + dt.format(ManageDates.getDateFromLocalDate(txtFechaIni.getValue())) + " 00:00:00"
                     + "' AND fecha_elaboracion <= '" + dt.format(ManageDates.getDateFromLocalDate(txtFechaFin.getValue())) + " 23:59:59'";
         }
-        
-        if(!"TODOS".equals(cboProyecto.getValue().getNombre())){
-            strWhere
-                    += " AND proyecto = '" + cboProyecto.getValue().getNombre() + "'";
-        }
 
         CotizacionVentaDomain service = new CotizacionVentaDomain();
         service.getCotizacionVenta(strWhere, "", "fecha_elaboracion ASC");
@@ -280,11 +276,11 @@ public class VentasReporteDeCotizacionesPorProyecto extends Panel implements Vie
         return listCotizaciones;
     }
     
-    public List getProyectos(){
-        ProyectoDomain domain = new ProyectoDomain();
-        domain.getProyecto("", "", "");
-        listProyectos = domain.getObjects();
-        return listProyectos;
+    public List getEmpleados(){
+        EmpleadoDomain domain = new EmpleadoDomain();
+        domain.getEmpleado("", "", "");
+        listEmpleado = domain.getObjects();
+        return listEmpleado;
     }
-    
+   
 }

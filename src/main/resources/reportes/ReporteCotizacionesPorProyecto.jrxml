@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.11.0.final using JasperReports Library version 6.11.0-0c4056ccaa4d25a5a8c45672d2f764ea3498bebb  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="25e6e094-9827-44ab-b813-de560aa07092">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="RubikERP"/>
@@ -12,14 +11,9 @@
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="609"/>
 	<parameter name="TITULO" class="java.lang.String"/>
 	<parameter name="SUBTITULO" class="java.lang.String"/>
-	<parameter name="fecha_ini" class="java.lang.String"/>
-	<parameter name="fecha_fin" class="java.lang.String"/>
-	<parameter name="strWhere" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT *
 FROM cotizacion_venta
-WHERE 
-	 $P!{strWhere} 
 ORDER BY proyecto ASC]]>
 	</queryString>
 	<field name="id" class="java.lang.Integer">

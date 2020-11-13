@@ -21,7 +21,8 @@ import com.rubik.erp.modulo.ventas.VentasClientes;
 import com.rubik.erp.modulo.ventas.VentasCotizaciones;
 import com.rubik.erp.modulo.ventas.VentasProyectos;
 import com.rubik.erp.modulo.compras.ComprasRemisionesDeEntrega;
-import com.rubik.erp.modulo.ventas.VentasReporteDeCotizacionesPorProyectoGrafica;
+import com.rubik.erp.modulo.ventas.VentasReporteDeCotizacionesPorEmpleado;
+import com.rubik.erp.modulo.ventas.VentasReporteDeCotizacionesPorProyecto;
 import com.rubik.erp.modulo.ventas.VentasReporteGeneralCotizaciones;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinSession;
@@ -291,11 +292,11 @@ public class FragmentTop extends HorizontalLayout {
                     break;
                     
                 case "Reportes de Cotizaciones Por Proyecto":
-                    getUI().getNavigator().navigateTo(VentasReporteDeCotizacionesPorProyectoGrafica.NAME);
+                    getUI().getNavigator().navigateTo(VentasReporteDeCotizacionesPorProyecto.NAME);
                     break;
                     
                 case "Reportes de Cotizaciones Por Vendedor":
-//                    getUI().getNavigator().navigateTo(VentasCotizaciones.NAME);
+                    getUI().getNavigator().navigateTo(VentasReporteDeCotizacionesPorEmpleado.NAME);
                     break;
                     
  // ------------- RECURSOS HUMANOS
