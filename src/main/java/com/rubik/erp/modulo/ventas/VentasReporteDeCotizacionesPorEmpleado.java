@@ -65,8 +65,7 @@ public class VentasReporteDeCotizacionesPorEmpleado extends Panel implements Vie
     StreamResource.StreamSource resourceFile;
     FileDownloader downloader;
 
-    Button btnGraficaCotizaciones = new Button("Grafica por Cotizaciones", Fam3SilkIcon.CHART_BAR);
-    Button btnGraficaTotal = new Button("Grafica por Monto", Fam3SilkIcon.CHART_BAR);
+    Button btnGraficaCotizaciones = new Button("Grafica", Fam3SilkIcon.CHART_BAR);
 
     List<CotizacionVenta> listCotizaciones = new ArrayList<>();
     
@@ -84,7 +83,7 @@ public class VentasReporteDeCotizacionesPorEmpleado extends Panel implements Vie
                 new Label("A: "),txtFechaFin,
                 btnSearch);
         
-        HorizontalLayout hLayoutAux2 = new HorizontalLayout(btnGraficaCotizaciones,btnGraficaTotal, btnExcel, btnPrint);
+        HorizontalLayout hLayoutAux2 = new HorizontalLayout(btnGraficaCotizaciones, btnExcel, btnPrint);
         
         hLayoutAux.setComponentAlignment(hLayoutAux.getComponent(0), Alignment.MIDDLE_CENTER);
         hLayoutAux.setComponentAlignment(hLayoutAux.getComponent(2), Alignment.MIDDLE_CENTER);
@@ -151,11 +150,7 @@ public class VentasReporteDeCotizacionesPorEmpleado extends Panel implements Vie
         btnGraficaCotizaciones.addClickListener((event) -> {
            getUI().getNavigator().navigateTo(VentasReporteDeCotizacionesPorEmpleadoGrafica.NAME);
         });
-        
-        btnGraficaTotal.addClickListener((event) -> {
-           getUI().getNavigator().navigateTo(VentasReporteDeCotizacionesPorEmpleadoGrafica.NAME);
-        });
-       
+
         btnExcel.addClickListener((event) -> {
             ArrayList<String> headers = new ArrayList();
             headers.add("FOLIO");

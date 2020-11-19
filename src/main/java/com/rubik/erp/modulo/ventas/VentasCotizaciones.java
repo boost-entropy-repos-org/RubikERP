@@ -16,6 +16,7 @@ import com.rubik.erp.model.Empleado;
 import com.rubik.erp.modulo.generic.WindowCancelarDocumento;
 import com.rubik.erp.util.EmbedWindow;
 import com.rubik.manage.ManageDates;
+import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.StreamResource;
@@ -68,6 +69,7 @@ public class VentasCotizaciones extends Panel implements View {
     Button btnPrint = new Button("Imprimir", Fam3SilkIcon.PRINTER);
     
     List<CotizacionVenta> listOC = new ArrayList<>();
+    ListDataProvider<CotizacionVenta> listDataProviderProducto;
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     

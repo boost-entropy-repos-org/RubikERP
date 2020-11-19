@@ -19,17 +19,22 @@ import com.rubik.erp.dao.ReporteCotizacionesVentaPorEmpleadoDAO;
 import com.rubik.erp.domain.reports.ReporteCotizacionesVentaPorEmpleado;
 import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.Empleado;
+import com.rubik.manage.ManageDates;
 import com.vaadin.navigator.View;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
 
 /**
  *
@@ -45,7 +50,9 @@ public class VentasReporteDeCotizacionesPorEmpleadoGrafica extends Panel impleme
     ChartJs chartsj;
   
     Label lblTitulo = new Label("REPORTE DE COTIZACIONES POR VENDEDOR");
-    List<ReporteCotizacionesVentaPorEmpleado> tecnicos = new ArrayList<>();
+    List<ReporteCotizacionesVentaPorEmpleado> cotizacionesList = new ArrayList<>();
+    
+    Button btnSearch = new Button(Fam3SilkIcon.MAGNIFIER);
     
     DateField txtFechaIni = new DateField();
     DateField txtFechaFin = new DateField();
@@ -53,25 +60,31 @@ public class VentasReporteDeCotizacionesPorEmpleadoGrafica extends Panel impleme
     public VentasReporteDeCotizacionesPorEmpleadoGrafica() {
         setSizeFull();
         initComponents();
-        
+
+        txtFechaIni.setValue(ManageDates.getLocalDateFromDate(ManageDates.getFirstDayOfTheMonth()));
+        txtFechaFin.setValue(ManageDates.getLocalDateFromDate(ManageDates.getLastDayOfTheMonth()));
+
         chartsj = makeChart();
-        //chartsj2 = getChart();
         
         vContainer.setMargin(false);
         vContainer.addComponents(new FragmentTop(),
                 lblTitulo,
-                new HorizontalLayout(new Label("Periodo graficado: "), txtFechaIni, txtFechaFin)
+                new HorizontalLayout(new Label("Periodo graficado: "), txtFechaIni, txtFechaFin, btnSearch)
                 {{setComponentAlignment(this.getComponent(0), Alignment.MIDDLE_CENTER);}},
                 chartsj);
 
         vContainer.setComponentAlignment(vContainer.getComponent(0), Alignment.MIDDLE_CENTER);
         vContainer.setComponentAlignment(vContainer.getComponent(1), Alignment.MIDDLE_CENTER);
         vContainer.setComponentAlignment(vContainer.getComponent(2), Alignment.MIDDLE_CENTER);
+        vContainer.setComponentAlignment(vContainer.getComponent(3), Alignment.MIDDLE_CENTER);
       
         vContainer.setExpandRatio(vContainer.getComponent(0), 0);
         vContainer.setExpandRatio(lblTitulo, 0);
         vContainer.setExpandRatio(chartsj, 10);
-        //vContainer.setExpandRatio(chartsj2, 10);
+
+        btnSearch.addClickListener((event) -> {
+            makeChart();
+        });
 
         setContent(vContainer);
     }
@@ -83,14 +96,25 @@ public class VentasReporteDeCotizacionesPorEmpleadoGrafica extends Panel impleme
         Responsive.makeResponsive(this);
     }
     
-    public List<String> fillTecnicos(){
+    public List<String> fillCotizaciones(){
         List<String> listaTecnicos = new ArrayList<>();
+        
+        String strWhere = "";
+        
+        if (txtFechaIni.getValue() != null && txtFechaFin.getValue() != null) {
+            SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
+
+            strWhere
+                    += " AND fecha_elaboracion >= '" + dt.format(ManageDates.getDateFromLocalDate(txtFechaIni.getValue())) + " 00:00:00"
+                    + "' AND fecha_elaboracion <= '" + dt.format(ManageDates.getDateFromLocalDate(txtFechaFin.getValue())) + " 23:59:59'";
+        }
+        
         ReporteCotizacionesVentaPorEmpleadoDAO dao = new ReporteCotizacionesVentaPorEmpleadoDAO(DomainConfig.getEnvironment());
-        dao.getReporteCotizacionesVentaPorEmpleado();
+        dao.getReporteCotizacionesVentaPorEmpleado(strWhere);
         
-        tecnicos = dao.getObjects();
+        cotizacionesList = dao.getObjects();
         
-        for (ReporteCotizacionesVentaPorEmpleado tecnico : tecnicos) {
+        for (ReporteCotizacionesVentaPorEmpleado tecnico : cotizacionesList) {
             listaTecnicos.add(tecnico.getUsuario());
         }
         
@@ -98,8 +122,8 @@ public class VentasReporteDeCotizacionesPorEmpleadoGrafica extends Panel impleme
     }
     
     public ChartJs makeChart() {
-         setSizeFull();
-        List<String> buquesList = fillTecnicos();
+        setSizeFull();
+        List<String> buquesList = fillCotizaciones();
         
         BarChartConfig barConfig = new BarChartConfig();
         barConfig.horizontal();
@@ -108,18 +132,19 @@ public class VentasReporteDeCotizacionesPorEmpleadoGrafica extends Panel impleme
                 .labelsAsList(buquesList)
                 .addDataset(
                         new BarDataset().backgroundColor("rgba(229, 229, 0, 1)").label("COTIZACIONES").xAxisID("x-axis-1"))
+                .addDataset(
+                        new BarDataset().backgroundColor("rgba(21, 99, 4, 1)").label("VENTAS").xAxisID("x-axis-1"))
                 .and();
         barConfig.
                 options()
                 .responsive(true)
                 .hover()
-                .mode(InteractionMode.INDEX)
+                .mode(InteractionMode.DATASET)
                 .intersect(true)
                 .animationDuration(1000)
                 .and()
                 .title()
                 .display(true)
-                .text("ESTADO DE TICKETS")
                 .and()
                 .scales()
                 .add(Axis.X, new LinearScale().display(true).position(Position.RIGHT).id("x-axis-1"))
@@ -135,7 +160,10 @@ public class VentasReporteDeCotizacionesPorEmpleadoGrafica extends Panel impleme
             for (int i = 0; i < labels.size(); i++) {
                 switch (dataset_number) {
                     case 1:
-                        data.add(tecnicos.get(i).getCantidad()+ 0.0);
+                        data.add(cotizacionesList.get(i).getCantidad()+ 0.0);
+                        break;
+                    case 2:
+                        data.add(cotizacionesList.get(i).getTotal());
                         break;
                     default:
                         break;
@@ -149,53 +177,6 @@ public class VentasReporteDeCotizacionesPorEmpleadoGrafica extends Panel impleme
         chart.setJsLoggingEnabled(true);
         chart.setWidth("70%");
        
-        
-        return chart;
-//        chart.addClickListener((a, b) -> DemoUtils.notification(a, b, barConfig.data().getDatasets().get(a)));
-//        chart.addLegendClickListener((dataSetIndex, visible, visibleDatasets) -> DemoUtils.legendNotification(dataSetIndex, visible, visibleDatasets));
-    }
-    
-      public ChartJs getChart() {
-        setSizeFull();
-        BarChartConfig config = new BarChartConfig();
-        config.data()
-            .labels("January", "February", "March", "April", "May", "June", "July")
-            .addDataset(new BarDataset().label("Dataset 1").backgroundColor("rgba(220,220,220,0.5)"))
-            .addDataset(new BarDataset().label("Dataset 2").backgroundColor("rgba(151,187,205,0.5)"))
-            .addDataset(new BarDataset().label("Dataset 3").backgroundColor("rgba(151,187,145,0.5)"))
-            .and()
-        .options()
-            .responsive(true)
-            .title()
-                .display(true)
-                .text("Chart.js Bar Chart - Stacked")
-                .and()
-            .tooltips()
-                .mode(InteractionMode.INDEX)
-                .intersect(false)
-                .and()
-            .scales()
-            .add(Axis.X, new DefaultScale()
-                    .stacked(true))
-            .add(Axis.Y, new DefaultScale()
-                    .stacked(true))
-            .and()
-            .done();
-        
-        // add random data for demo
-        List<String> labels = config.data().getLabels();
-        for (Dataset<?, ?> ds : config.data().getDatasets()) {
-            BarDataset lds = (BarDataset) ds;
-            List<Double> data = new ArrayList<>();
-            for (int i = 0; i < labels.size(); i++) {
-                data.add((double) (Math.random() > 0.5 ? -1 : 1) * Math.round(Math.random() * 100));
-            }
-            lds.dataAsList(data);
-        }
-
-        ChartJs chart = new ChartJs(config);
-        chart.setWidth("70%");    
-        chart.setJsLoggingEnabled(true);
         return chart;
     }
       
