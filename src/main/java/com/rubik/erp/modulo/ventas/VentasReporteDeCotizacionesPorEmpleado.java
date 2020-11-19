@@ -65,7 +65,8 @@ public class VentasReporteDeCotizacionesPorEmpleado extends Panel implements Vie
     StreamResource.StreamSource resourceFile;
     FileDownloader downloader;
 
-    Button btnGraficaAnual = new Button("Grafica Anual", Fam3SilkIcon.CHART_BAR);
+    Button btnGraficaCotizaciones = new Button("Grafica por Cotizaciones", Fam3SilkIcon.CHART_BAR);
+    Button btnGraficaTotal = new Button("Grafica por Monto", Fam3SilkIcon.CHART_BAR);
 
     List<CotizacionVenta> listCotizaciones = new ArrayList<>();
     
@@ -81,8 +82,10 @@ public class VentasReporteDeCotizacionesPorEmpleado extends Panel implements Vie
                 new Label("Vendedor: "),cboEmpleados,
                 new Label("Fecha: "),txtFechaIni,
                 new Label("A: "),txtFechaFin,
-                btnSearch,btnGraficaAnual, btnExcel, btnPrint);
-       
+                btnSearch);
+        
+        HorizontalLayout hLayoutAux2 = new HorizontalLayout(btnGraficaCotizaciones,btnGraficaTotal, btnExcel, btnPrint);
+        
         hLayoutAux.setComponentAlignment(hLayoutAux.getComponent(0), Alignment.MIDDLE_CENTER);
         hLayoutAux.setComponentAlignment(hLayoutAux.getComponent(2), Alignment.MIDDLE_CENTER);
         hLayoutAux.setComponentAlignment(hLayoutAux.getComponent(4), Alignment.MIDDLE_CENTER);
@@ -102,6 +105,7 @@ public class VentasReporteDeCotizacionesPorEmpleado extends Panel implements Vie
         container.addComponents(new FragmentTop(),
                 lblTitulo,
                 hLayoutAux,
+                hLayoutAux2,
                 gridCotizaciones);
        
         container.setComponentAlignment(container.getComponent(0), Alignment.MIDDLE_CENTER);
@@ -144,16 +148,20 @@ public class VentasReporteDeCotizacionesPorEmpleado extends Panel implements Vie
         downloader = new FileDownloader(new StreamResource(resourceFile, ""));
         downloader.extend(btnExcel);
        
-        btnGraficaAnual.addClickListener((event) -> {
-           getUI().getNavigator().navigateTo(VentasReporteGeneralCotizacionesGrafica.NAME);
+        btnGraficaCotizaciones.addClickListener((event) -> {
+           getUI().getNavigator().navigateTo(VentasReporteDeCotizacionesPorEmpleadoGrafica.NAME);
+        });
+        
+        btnGraficaTotal.addClickListener((event) -> {
+           getUI().getNavigator().navigateTo(VentasReporteDeCotizacionesPorEmpleadoGrafica.NAME);
         });
        
         btnExcel.addClickListener((event) -> {
-
             ArrayList<String> headers = new ArrayList();
             headers.add("FOLIO");
             headers.add("FECHA");
             headers.add("EDO DOC");
+            headers.add("VENDEDOR");
             headers.add("CLIENTE");
             headers.add("IMPORTE");
             headers.add("IVA");
@@ -167,6 +175,7 @@ public class VentasReporteDeCotizacionesPorEmpleado extends Panel implements Vie
                 cells.add(invTemp.getFolio());
                 cells.add(invTemp.getFecha_elaboracion() != null ? dts.format(invTemp.getFecha_elaboracion()) : "");
                 cells.add(invTemp.getEstado_doc());
+                cells.add(invTemp.getUsuario());
                 cells.add(invTemp.getCliente());
                 cells.add(invTemp.getImporte().toString());
                 cells.add(invTemp.getIva().toString());
@@ -175,10 +184,9 @@ public class VentasReporteDeCotizacionesPorEmpleado extends Panel implements Vie
             }
 
             try {
-
                 String fileName = "ReportCotizaciones_" + UUID.randomUUID() + ".xlsx";
 
-                ExportExcelManager exportToExcel = new ExportExcelManager("REPORTE GENERAL DE COTIZACIONES", "Generado del " + ManageDates.getDateSimpleFormat(txtFechaIni.getValue()) + " al " + ManageDates.getDateSimpleFormat(txtFechaFin.getValue()));
+                ExportExcelManager exportToExcel = new ExportExcelManager("REPORTE DE COTIZACIONES POR VENDEDOR", "Generado del " + ManageDates.getDateSimpleFormat(txtFechaIni.getValue()) + " al " + ManageDates.getDateSimpleFormat(txtFechaFin.getValue()));
                 exportToExcel.setPositionCurrency(new int[]{4,5,6});
                 
                 resourceFile = () -> exportToExcel.getExcelFromListData("Reporte", headers, data);
@@ -200,7 +208,7 @@ public class VentasReporteDeCotizacionesPorEmpleado extends Panel implements Vie
                     final HashMap map = new HashMap();
                     SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
                     
-                    map.put("TITULO", "REPORTE GENERAL DE COTIZACIONES");
+                    map.put("TITULO", "REPORTE DE COTIZACIONES POR VENDEDOR");
                     map.put("SUBTITULO", "Generado del " + ManageDates.getDateSimpleFormat(txtFechaIni.getValue()) + " al " + ManageDates.getDateSimpleFormat(txtFechaFin.getValue()));
                     map.put("fecha_ini", dt.format(ManageDates.getDateFromLocalDate(txtFechaIni.getValue())) + " 00:00:00");
                     map.put("fecha_fin", dt.format(ManageDates.getDateFromLocalDate(txtFechaFin.getValue())) + " 23:59:59'");
@@ -220,9 +228,9 @@ public class VentasReporteDeCotizacionesPorEmpleado extends Panel implements Vie
                         }
                     };
 
-                    StreamResource resource = new StreamResource(source, "Reporte_General_Cotizacion.pdf");
+                    StreamResource resource = new StreamResource(source, "Reporte_Cotizacion_Vendedor.pdf");
                     EmbedWindow windowPDF = new EmbedWindow(resource);
-                    windowPDF.setCaption("Reporte general de Cotizaciones");
+                    windowPDF.setCaption("Reporte de Cotizaciones por Vendedor");
                     windowPDF.setHeight("100%");
                     windowPDF.setWidth("80%");
                     windowPDF.setMimeType("application/pdf");
@@ -240,7 +248,7 @@ public class VentasReporteDeCotizacionesPorEmpleado extends Panel implements Vie
             } else {
                 MessageBox.createError()
                         .withCaption("Error!")
-                        .withMessage("Debe seleccionar una Cotizacion de Venta para poder imprimirla.")
+                        .withMessage("Debe tener una Cotizacion de Venta para poder imprimirla.")
                         .withRetryButton()
                         .open();
             }
@@ -262,6 +270,10 @@ public class VentasReporteDeCotizacionesPorEmpleado extends Panel implements Vie
                     + "' AND fecha_elaboracion <= '" + dt.format(ManageDates.getDateFromLocalDate(txtFechaFin.getValue())) + " 23:59:59'";
         }
 
+        if(cboEmpleados.getValue().getId()!=0){
+            strWhere+= " AND usuario_id = '" + cboEmpleados.getValue().getId()+ "'";
+        }
+        
         CotizacionVentaDomain service = new CotizacionVentaDomain();
         service.getCotizacionVenta(strWhere, "", "fecha_elaboracion ASC");
         listCotizaciones = service.getObjects();
@@ -280,6 +292,13 @@ public class VentasReporteDeCotizacionesPorEmpleado extends Panel implements Vie
         EmpleadoDomain domain = new EmpleadoDomain();
         domain.getEmpleado("", "", "");
         listEmpleado = domain.getObjects();
+        
+        Empleado eTodos = new Empleado();
+        eTodos.setId(0);
+        eTodos.setNombre("TODOS");
+        eTodos.setApellido_paterno("");
+        eTodos.setApellido_materno("");
+        listEmpleado.add(0,eTodos);
         return listEmpleado;
     }
    

@@ -12,17 +12,17 @@ import com.byteowls.vaadin.chartjs.data.Dataset;
 import com.byteowls.vaadin.chartjs.options.InteractionMode;
 import com.byteowls.vaadin.chartjs.options.Position;
 import com.byteowls.vaadin.chartjs.options.scale.Axis;
-import com.byteowls.vaadin.chartjs.options.scale.DefaultScale;
 import com.byteowls.vaadin.chartjs.options.scale.LinearScale;
 import com.rubik.erp.config.DomainConfig;
-import com.rubik.erp.dao.ReporteCotizacionesVentaPorEmpleadoDAO;
-import com.rubik.erp.domain.reports.ReporteCotizacionesVentaPorEmpleado;
+import com.rubik.erp.dao.ReporteCotizacionesVentaPorProyectoDAO;
+import com.rubik.erp.domain.reports.ReporteCotizacionesVentaPorProyecto;
 import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.Empleado;
 import com.vaadin.navigator.View;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
@@ -42,19 +42,20 @@ public class VentasReporteDeCotizacionesPorProyectoGrafica extends Panel impleme
     
     ChartJs chartsj;
   
-    Label lblTitulo = new Label("REPORTE DE COTIZACIONES POR VENDEDOR");
-    List<ReporteCotizacionesVentaPorEmpleado> tecnicos = new ArrayList<>();
+    Label lblTitulo = new Label("REPORTE DE COTIZACIONES POR PROYECTO");
+    List<ReporteCotizacionesVentaPorProyecto> proyectos = new ArrayList<>();
+    
+    CheckBox checkTotales = new CheckBox("Monto total de cotizaciones");
 
     public VentasReporteDeCotizacionesPorProyectoGrafica() {
         setSizeFull();
         initComponents();
         
         chartsj = makeChart();
-        //chartsj2 = getChart();
         
         vContainer.setMargin(false);
         vContainer.addComponents(new FragmentTop(),
-                lblTitulo,chartsj);
+                lblTitulo, chartsj);
 
         vContainer.setComponentAlignment(vContainer.getComponent(0), Alignment.MIDDLE_CENTER);
         vContainer.setComponentAlignment(vContainer.getComponent(1), Alignment.MIDDLE_CENTER);
@@ -63,7 +64,6 @@ public class VentasReporteDeCotizacionesPorProyectoGrafica extends Panel impleme
         vContainer.setExpandRatio(vContainer.getComponent(0), 0);
         vContainer.setExpandRatio(lblTitulo, 0);
         vContainer.setExpandRatio(chartsj, 10);
-        //vContainer.setExpandRatio(chartsj2, 10);
 
         setContent(vContainer);
     }
@@ -76,21 +76,21 @@ public class VentasReporteDeCotizacionesPorProyectoGrafica extends Panel impleme
     }
     
     public List<String> fillTecnicos(){
-        List<String> listaTecnicos = new ArrayList<>();
-        ReporteCotizacionesVentaPorEmpleadoDAO dao = new ReporteCotizacionesVentaPorEmpleadoDAO(DomainConfig.getEnvironment());
-        dao.getReporteCotizacionesVentaPorEmpleado();
+        List<String> listaProyectos = new ArrayList<>();
+        ReporteCotizacionesVentaPorProyectoDAO dao = new ReporteCotizacionesVentaPorProyectoDAO(DomainConfig.getEnvironment());
+        dao.getReporteCotizacionesVentaPorProyecto();
         
-        tecnicos = dao.getObjects();
+        proyectos = dao.getObjects();
         
-        for (ReporteCotizacionesVentaPorEmpleado tecnico : tecnicos) {
-            listaTecnicos.add(tecnico.getUsuario());
+        for (ReporteCotizacionesVentaPorProyecto proyectoTemp : proyectos) {
+            listaProyectos.add(proyectoTemp.getProyecto());
         }
         
-        return listaTecnicos;
+        return listaProyectos;
     }
     
     public ChartJs makeChart() {
-         setSizeFull();
+        setSizeFull();
         List<String> buquesList = fillTecnicos();
         
         BarChartConfig barConfig = new BarChartConfig();
@@ -111,7 +111,7 @@ public class VentasReporteDeCotizacionesPorProyectoGrafica extends Panel impleme
                 .and()
                 .title()
                 .display(true)
-                .text("ESTADO DE TICKETS")
+                .text("COTIZACIONES REALIZADAS POR PROYECTO")
                 .and()
                 .scales()
                 .add(Axis.X, new LinearScale().display(true).position(Position.RIGHT).id("x-axis-1"))
@@ -127,7 +127,7 @@ public class VentasReporteDeCotizacionesPorProyectoGrafica extends Panel impleme
             for (int i = 0; i < labels.size(); i++) {
                 switch (dataset_number) {
                     case 1:
-                        data.add(tecnicos.get(i).getCantidad()+ 0.0);
+                        data.add(proyectos.get(i).getCantidad()+ 0.0);
                         break;
                     default:
                         break;
@@ -142,52 +142,6 @@ public class VentasReporteDeCotizacionesPorProyectoGrafica extends Panel impleme
         chart.setWidth("70%");
        
         
-        return chart;
-//        chart.addClickListener((a, b) -> DemoUtils.notification(a, b, barConfig.data().getDatasets().get(a)));
-//        chart.addLegendClickListener((dataSetIndex, visible, visibleDatasets) -> DemoUtils.legendNotification(dataSetIndex, visible, visibleDatasets));
-    }
-    
-      public ChartJs getChart() {
-        setSizeFull();
-        BarChartConfig config = new BarChartConfig();
-        config.data()
-            .labels("January", "February", "March", "April", "May", "June", "July")
-            .addDataset(new BarDataset().label("Dataset 1").backgroundColor("rgba(220,220,220,0.5)"))
-            .addDataset(new BarDataset().label("Dataset 2").backgroundColor("rgba(151,187,205,0.5)"))
-            .addDataset(new BarDataset().label("Dataset 3").backgroundColor("rgba(151,187,145,0.5)"))
-            .and()
-        .options()
-            .responsive(true)
-            .title()
-                .display(true)
-                .text("Chart.js Bar Chart - Stacked")
-                .and()
-            .tooltips()
-                .mode(InteractionMode.INDEX)
-                .intersect(false)
-                .and()
-            .scales()
-            .add(Axis.X, new DefaultScale()
-                    .stacked(true))
-            .add(Axis.Y, new DefaultScale()
-                    .stacked(true))
-            .and()
-            .done();
-        
-        // add random data for demo
-        List<String> labels = config.data().getLabels();
-        for (Dataset<?, ?> ds : config.data().getDatasets()) {
-            BarDataset lds = (BarDataset) ds;
-            List<Double> data = new ArrayList<>();
-            for (int i = 0; i < labels.size(); i++) {
-                data.add((double) (Math.random() > 0.5 ? -1 : 1) * Math.round(Math.random() * 100));
-            }
-            lds.dataAsList(data);
-        }
-
-        ChartJs chart = new ChartJs(config);
-        chart.setWidth("70%");    
-        chart.setJsLoggingEnabled(true);
         return chart;
     }
       

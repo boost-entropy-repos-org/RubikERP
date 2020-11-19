@@ -23,6 +23,8 @@ import com.vaadin.navigator.View;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.DateField;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
@@ -35,7 +37,7 @@ import java.util.List;
  */
 public class VentasReporteDeCotizacionesPorEmpleadoGrafica extends Panel implements View {
     
-    public static final String NAME = "REPORTE_COTIZACIONES_POR_EMPLEADO_GRAFICA";
+    public static final String NAME = "REPORTE_COTIZACIONES_EMPLEADO_GRAFICA";
     VerticalLayout vContainer = new VerticalLayout();
 
     Empleado empleado = (Empleado) VaadinSession.getCurrent().getSession().getAttribute("USUARIO_ACTIVO");
@@ -44,6 +46,9 @@ public class VentasReporteDeCotizacionesPorEmpleadoGrafica extends Panel impleme
   
     Label lblTitulo = new Label("REPORTE DE COTIZACIONES POR VENDEDOR");
     List<ReporteCotizacionesVentaPorEmpleado> tecnicos = new ArrayList<>();
+    
+    DateField txtFechaIni = new DateField();
+    DateField txtFechaFin = new DateField();
 
     public VentasReporteDeCotizacionesPorEmpleadoGrafica() {
         setSizeFull();
@@ -54,7 +59,10 @@ public class VentasReporteDeCotizacionesPorEmpleadoGrafica extends Panel impleme
         
         vContainer.setMargin(false);
         vContainer.addComponents(new FragmentTop(),
-                lblTitulo,chartsj);
+                lblTitulo,
+                new HorizontalLayout(new Label("Periodo graficado: "), txtFechaIni, txtFechaFin)
+                {{setComponentAlignment(this.getComponent(0), Alignment.MIDDLE_CENTER);}},
+                chartsj);
 
         vContainer.setComponentAlignment(vContainer.getComponent(0), Alignment.MIDDLE_CENTER);
         vContainer.setComponentAlignment(vContainer.getComponent(1), Alignment.MIDDLE_CENTER);
