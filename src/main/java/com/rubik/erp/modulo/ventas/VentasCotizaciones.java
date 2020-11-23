@@ -114,8 +114,8 @@ public class VentasCotizaciones extends Panel implements View {
         txtFechaIni.setWidth("115");
         txtFechaFin.setWidth("115");
         
-        txtBusqueda.setWidth("200");
-        txtBusqueda.setPlaceholder("Folio Cotizacion");
+        txtBusqueda.setWidth("350");
+        txtBusqueda.setPlaceholder("Folio o Cliente");
         
         cboEstadoDocumento.setItems("TODOS", _DocumentoEstados.EN_PROCESO, _DocumentoEstados.TERMINADO,_DocumentoEstados.CANCELADO);
         cboEstadoDocumento.setEmptySelectionAllowed(false);
@@ -329,7 +329,7 @@ public class VentasCotizaciones extends Panel implements View {
         }
 
         if (!"".equals(txtBusqueda.getValue())) {
-            strWhere += " AND folio = '" + txtBusqueda.getValue().toUpperCase() + "'";
+            strWhere += " AND (folio = '" + txtBusqueda.getValue().toUpperCase() + "' OR cliente LIKE '%" + txtBusqueda.getValue().toUpperCase() + "%')";
         }
         
         if (txtFechaIni.getValue() != null && txtFechaFin.getValue() != null) {
@@ -355,6 +355,8 @@ public class VentasCotizaciones extends Panel implements View {
                     .withRetryButton()
                     .open();
         }
+        
+        System.out.println("WHERE " + strWhere);
         return listOC;
     }
     

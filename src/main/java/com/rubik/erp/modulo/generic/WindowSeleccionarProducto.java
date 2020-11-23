@@ -58,9 +58,9 @@ public class WindowSeleccionarProducto extends Window {
         gridSelecProd.setSelectionMode(SelectionMode.SINGLE);
         gridSelecProd.addColumn(Producto::getCodigo_interno).setCaption("CODIGO").setId("CODIGO");
         gridSelecProd.addColumn(Producto::getDescripcion_corta).setCaption("DESCRIPCION CORTA").setId("DESCRIPCION CORTA");
-        gridSelecProd.addColumn(Producto::getNo_serie).setCaption("NO SERIE").setId("NO SERIE");
         gridSelecProd.addColumn(Producto::getModelo).setCaption("MODELO").setId("MODELO");
         gridSelecProd.addColumn(Producto::getMarca).setCaption("MARCA").setId("MARCA");
+        gridSelecProd.addColumn(Producto::getNo_serie).setCaption("NO SERIE").setId("NO SERIE");
 
         cont.addComponents(new HorizontalLayout(btnAdd,btnSeleccionar), gridSelecProd);
         cont.setComponentAlignment(cont.getComponent(0), Alignment.MIDDLE_CENTER);
@@ -112,6 +112,15 @@ public class WindowSeleccionarProducto extends Window {
             if (null != column.getId()) {
                 switch (column.getId()) {
                     case "DESCRIPCION CORTA":
+                        headerCell.setComponent(createFilterTextField(column));
+                        break;
+                    case "CODIGO":
+                        headerCell.setComponent(createFilterTextField(column));
+                        break;
+                    case "MODELO":
+                        headerCell.setComponent(createFilterTextField(column));
+                        break;
+                    case "MARCA":
                         headerCell.setComponent(createFilterTextField(column));
                         break;
                     default:

@@ -69,7 +69,7 @@ public class WindowVentasCotizaciones extends Window {
     NativeSelect<String> cboMoneda = new NativeSelect("Moneda:");
     TextField txtTipoCambio = new TextField("Tipo de Cambio:");
     TextField txtVendedor = new TextField("Vendedor:");
-    TextField txtTiempoEntrega = new TextField("Tiempo de Entrega:");
+//    TextField txtTiempoEntrega = new TextField("Tiempo de Entrega:");
     TextField txtSolicitante = new TextField("Solicita:");
     TextField txtAtencion = new TextField("Atencion:");
     TextField txtReferanciaCliente = new TextField("Referencia:");
@@ -137,7 +137,7 @@ public class WindowVentasCotizaciones extends Window {
         binder.forField(cboMoneda).bind(CotizacionVenta::getMoneda, CotizacionVenta::setMoneda);
         binder.forField(txtTipoCambio).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(CotizacionVenta::getTipo_cambio, CotizacionVenta::setTipo_cambio);
         binder.forField(txtVendedor).bind(CotizacionVenta::getVendedor, CotizacionVenta::setVendedor);
-        binder.forField(txtTiempoEntrega).bind(CotizacionVenta::getTiempo_tentrega, CotizacionVenta::setTiempo_tentrega);
+//        binder.forField(txtTiempoEntrega).bind(CotizacionVenta::getTiempo_tentrega, CotizacionVenta::setTiempo_tentrega);
         
         binder.forField(txtSolicitante).bind(CotizacionVenta::getSolicitante, CotizacionVenta::setSolicitante);
         binder.forField(txtAtencion).bind(CotizacionVenta::getAtencion, CotizacionVenta::setAtencion);
@@ -403,7 +403,7 @@ public class WindowVentasCotizaciones extends Window {
         txtSolicitante.setWidth(strWidth);
         txtAtencion.setWidth(strWidth);
         txtReferanciaCliente.setWidth(strWidth);
-        txtTiempoEntrega.setWidth(strWidth);
+//        txtTiempoEntrega.setWidth(strWidth);
         cboCondicionesPago.setWidth(strWidth);
         cboMetodoPago.setWidth(strWidth);
         cboMoneda.setWidth(strWidth);
@@ -463,7 +463,7 @@ public class WindowVentasCotizaciones extends Window {
         
         // ACOMODO =============================================================
         FormLayout fLay1 = new FormLayout();
-        fLay1.addComponents(cboVigencia,txtVendedor,txtTiempoEntrega, cboCliente, txtSolicitante, txtAtencion);
+        fLay1.addComponents(cboVigencia,txtVendedor, cboCliente, txtSolicitante, txtAtencion);
         fLay1.setSpacing(false);
         
         FormLayout fLay2 = new FormLayout();
@@ -531,7 +531,7 @@ public class WindowVentasCotizaciones extends Window {
     public void toUpperCase() {
         cotizacionDeVenta.setCondiciones_cotizacion(txtCondicionesDeCotizacion.getValue().toUpperCase());
         cotizacionDeVenta.setObservaciones(txtNotas.getValue().toUpperCase());
-        cotizacionDeVenta.setTiempo_tentrega(txtTiempoEntrega.getValue().toUpperCase());
+//        cotizacionDeVenta.setTiempo_tentrega(txtTiempoEntrega.getValue().toUpperCase());
         cotizacionDeVenta.setSolicitante(txtSolicitante.getValue().toUpperCase());
         cotizacionDeVenta.setAtencion(txtAtencion.getValue().toUpperCase());
         cotizacionDeVenta.setReferencia_cliente(txtReferanciaCliente.getValue().toUpperCase());
