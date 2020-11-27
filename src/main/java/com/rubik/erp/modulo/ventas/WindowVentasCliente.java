@@ -64,6 +64,8 @@ public class WindowVentasCliente extends Window {
     TextField txtCuentaAnticipos = new TextField("Cuenta Anticipos:");
     TextField txtCuentaHonorarios = new TextField("Cuenta Honorarios:");
     CheckBox chkActivo = new CheckBox("Activo", true);
+    
+    Button btnContactos = new Button("Contactos de Cliente", Fam3SilkIcon.USER_SUIT);
 
     public WindowVentasCliente() {
         setCaption("ALTA DEL CLIENTE");
@@ -71,6 +73,7 @@ public class WindowVentasCliente extends Window {
         
         ClienteDomain service = new ClienteDomain();
         txtClaveCliente.setValue(service.getMaxID().toString());
+        btnContactos.setEnabled(false);
     }
 
     public WindowVentasCliente(Cliente cliente) {
@@ -169,6 +172,13 @@ public class WindowVentasCliente extends Window {
                         .open();
             }
         });
+        
+        btnContactos.addClickListener((event) -> {
+            WindowVentanasClienteContactoGrid windows = new WindowVentanasClienteContactoGrid(cliente);
+            windows.center();
+            windows.setModal(true);
+            getUI().addWindow(windows);
+        });
 
         txtClaveCliente.setEnabled(false);
         txtRazonSocial.setMaxLength(250);
@@ -235,7 +245,7 @@ public class WindowVentasCliente extends Window {
         FormLayout fLay = new FormLayout();
         
         fLay.addComponents(new Label("Informacion Cliente"){{setStyleName("h3");}});
-        fLay.addComponents(txtClaveCliente, chkActivo, txtRazonSocial, txtRfc, txtDomicilio, txtCiudad, txtEstado, cboPais, txtCp);
+        fLay.addComponents(txtClaveCliente, chkActivo, txtRazonSocial, txtRfc, txtDomicilio, txtCiudad, txtEstado, cboPais, txtCp, btnContactos);
         fLay.addComponents(new Label("Credito"){{setStyleName("h3");}});
         fLay.addComponents(cboTipo, cboDiasCredito, txtLimiteCredito);
         fLay.addComponents(new Label("Contacto General"){{setStyleName("h3");}});
