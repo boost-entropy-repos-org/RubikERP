@@ -12,17 +12,20 @@ import com.rubik.erp.config._DocumentoTipos;
 import com.rubik.erp.config._Folios;
 import com.rubik.erp.config._Pago_Documentos;
 import com.rubik.erp.config._Pais;
+import com.rubik.erp.domain.ClienteContactoDomain;
 import com.rubik.erp.domain.ClienteDomain;
 import com.rubik.erp.domain.ConfiguracionDomain;
 import com.rubik.erp.domain.CotizacionVentaDetDomain;
 import com.rubik.erp.domain.CotizacionVentaDomain;
 import com.rubik.erp.domain.ProyectoDomain;
 import com.rubik.erp.model.Cliente;
+import com.rubik.erp.model.ClienteContacto;
 import com.rubik.erp.model.Configuracion;
 import com.rubik.erp.model.CotizacionVenta;
 import com.rubik.erp.model.CotizacionVentaDet;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.Proyecto;
+import com.rubik.erp.util.components.ComboBoxSelectable;
 import com.rubik.manage.ManageNumbers;
 import com.rubik.manage.ManageString;
 import com.rubik.manage.Numero_Letras;
@@ -87,6 +90,8 @@ public class WindowVentasCotizaciones extends Window {
     TextField txtSubtotal = new TextField("Subtotal:");
     TextField txtIVA = new TextField("IVA:");
     TextField txtTotal = new TextField("Total:");
+
+    ComboBoxSelectable cboSolicita = new ComboBoxSelectable(null, "250", "",WindowVentanasClienteContacto.class, ClienteContacto.class, ClienteContactoDomain.class);
     
     Button btnGuardar = new Button("Guardar", Fam3SilkIcon.DISK);
     Button btnCancelar = new Button("Cancelar", Fam3SilkIcon.CANCEL);
@@ -463,7 +468,7 @@ public class WindowVentasCotizaciones extends Window {
         
         // ACOMODO =============================================================
         FormLayout fLay1 = new FormLayout();
-        fLay1.addComponents(cboVigencia,txtVendedor, cboCliente, txtSolicitante, txtAtencion);
+        fLay1.addComponents(cboVigencia,txtVendedor, cboCliente, txtSolicitante, txtAtencion, cboSolicita);
         fLay1.setSpacing(false);
         
         FormLayout fLay2 = new FormLayout();
