@@ -162,7 +162,7 @@ public class WindowSeleccionarProducto extends Window {
     
     public List getProducto() {
         ProductoDomain service = new ProductoDomain();
-        service.getProducto("activo = 1", "", " descripcion_corta ASC");
+        service.getProducto("activo = 1", "", " id ASC");
         listProducto = service.getObjects();
 
         if (!service.getOk()) {

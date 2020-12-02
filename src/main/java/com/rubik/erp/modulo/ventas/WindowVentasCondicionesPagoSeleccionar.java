@@ -5,16 +5,15 @@
  */
 package com.rubik.erp.modulo.ventas;
 
-import com.rubik.erp.domain.ProyectoDomain;
+import com.rubik.erp.domain.CondicionesPagoDomain;
+import com.rubik.erp.model.CondicionesPago;
 import com.rubik.erp.model.Empleado;
-import com.rubik.erp.model.Proyecto;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import de.steinwedel.messagebox.MessageBox;
@@ -26,25 +25,22 @@ import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
  *
  * @author GRUCAS
  */
-public class WindowVentasProyectosSeleccionar extends Window {
+public class WindowVentasCondicionesPagoSeleccionar extends Window {
 
     VerticalLayout container = new VerticalLayout();
     Empleado empleado = (Empleado) VaadinSession.getCurrent().getSession().getAttribute("USUARIO_ACTIVO");
-
-    TextField txtBusqueda = new TextField();
     
-    Grid<Proyecto> gridProyecto = new Grid<>();
+    Grid<CondicionesPago> gridCondiciones = new Grid<>();
     Button btnAdd = new Button(Fam3SilkIcon.ADD);
     Button btnModify = new Button(Fam3SilkIcon.PENCIL);
-    Button btnSearch = new Button(Fam3SilkIcon.MAGNIFIER);
-    List<Proyecto> listProyecto = new ArrayList<>();
+    List<CondicionesPago> listCondiciones = new ArrayList<>();
 
-    public WindowVentasProyectosSeleccionar() {
+    public WindowVentasCondicionesPagoSeleccionar() {
         initComponents();
 
-        HorizontalLayout hLayoutAux = new HorizontalLayout(txtBusqueda,btnSearch,btnAdd, btnModify);
+        HorizontalLayout hLayoutAux = new HorizontalLayout(btnAdd, btnModify);
 
-        Label lblTitulo = new Label("PROYECTOS / CONTRATOS") {
+        Label lblTitulo = new Label("CONDICIONES DE PAGO") {
             {
                 setStyleName("h1");
             }
@@ -54,10 +50,9 @@ public class WindowVentasProyectosSeleccionar extends Window {
         setContent(container);
 
         container.setMargin(false);
-        container.addComponents(
-                lblTitulo,
+        container.addComponents(lblTitulo,
                 hLayoutAux,
-                gridProyecto);
+                gridCondiciones);
         
         container.setComponentAlignment(container.getComponent(0), Alignment.MIDDLE_CENTER);
         container.setComponentAlignment(container.getComponent(1), Alignment.MIDDLE_CENTER);
@@ -71,64 +66,49 @@ public class WindowVentasProyectosSeleccionar extends Window {
         setResizable(false);
         
         setWidth("600");
-        setHeight("90%");
-        
-        txtBusqueda.setWidth("310");
-        txtBusqueda.setPlaceholder("Proyecto / Contrato");      
+        setHeight("90%");  
 
-        gridProyecto.addColumn(Proyecto::getNombre).setCaption("PROYETO/CONTRATO").setId("PROYETO/CONTRATO");
-        gridProyecto.addColumn(Proyecto::getNombre_cliente).setCaption("CLIENTE").setId("CLIENTE");
+        gridCondiciones.addColumn(CondicionesPago::getCondicion_pago).setCaption("NOMBRE").setId("NOMBRE");
         
-        gridProyecto.setItems(getProyecto());
-        gridProyecto.setSelectionMode(Grid.SelectionMode.SINGLE);
-        gridProyecto.setSizeFull();
-        gridProyecto.setHeight("500px");
+        gridCondiciones.setItems(getCondiciones());
+        gridCondiciones.setSelectionMode(Grid.SelectionMode.SINGLE);
+        gridCondiciones.setSizeFull();
+        gridCondiciones.setHeight("500px");
 
         btnAdd.addClickListener((event) -> {
-            WindowVentasProyectos windows = new WindowVentasProyectos();
+            WindowVentasCondicionesPago windows = new WindowVentasCondicionesPago();
             windows.center();
             windows.setModal(true);
             windows.addCloseListener(ev -> {
-                gridProyecto.setItems(getProyecto());
+                gridCondiciones.setItems(getCondiciones());
             });
             getUI().addWindow(windows);
         });
 
         btnModify.addClickListener((event) -> {
-            if (gridProyecto.getSelectedItems().size() == 1) {
-                WindowVentasProyectos windows = new WindowVentasProyectos(gridProyecto.getSelectedItems().iterator().next());
+            if (gridCondiciones.getSelectedItems().size() == 1) {
+                WindowVentasCondicionesPago windows = new WindowVentasCondicionesPago(gridCondiciones.getSelectedItems().iterator().next());
                 windows.center();
                 windows.setModal(true);
                 windows.addCloseListener((e) -> {
-                    gridProyecto.setItems(getProyecto());
+                    gridCondiciones.setItems(getCondiciones());
                 });
                 getUI().addWindow(windows);
             } else {
                 MessageBox.createError()
                         .withCaption("Error!")
-                        .withMessage("Debe tener un Proyecto/Contrato seleccionado para poder modificarlo.")
+                        .withMessage("Debe tener una Condicion de pago seleccionada para poder modificarlo.")
                         .withRetryButton()
                         .open();
             }
         });
-        
-        btnSearch.addClickListener((event) -> {
-            gridProyecto.setItems(getProyecto());
-            txtBusqueda.setValue("");
-        });
 
     }
 
-    public List getProyecto() {
-        String strWhere = " activo = 1 ";
-
-        if (txtBusqueda.getValue() != "") {
-            strWhere += " AND nombre LIKE '%" + txtBusqueda.getValue().toUpperCase() + "%'";
-        }
-
-        ProyectoDomain service = new ProyectoDomain();
-        service.getProyecto(strWhere, "", "nombre ASC");
-        listProyecto = service.getObjects();
+    public List getCondiciones() {
+        CondicionesPagoDomain service = new CondicionesPagoDomain();
+        service.getCondicionesPago("", "", "condicion_pago ASC");
+        listCondiciones = service.getObjects();
 
         if (!service.getOk()) {
             MessageBox.createError()
@@ -137,7 +117,7 @@ public class WindowVentasProyectosSeleccionar extends Window {
                     .withRetryButton()
                     .open();
         }
-        return listProyecto;
+        return listCondiciones;
     }
     
 }

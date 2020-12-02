@@ -41,7 +41,7 @@ public class WindowVentanasClienteContactoGrid extends Window {
     List<ClienteContacto> listProveedor = new ArrayList<>();
 
     public WindowVentanasClienteContactoGrid(Cliente cliente) {
-        setCaption("CONTACTOS DEL CLIENTE");
+        setCaption("CONTACTOS DE " + cliente.getRazon_social());
         this.cliente = cliente;
         initComponents();
     }

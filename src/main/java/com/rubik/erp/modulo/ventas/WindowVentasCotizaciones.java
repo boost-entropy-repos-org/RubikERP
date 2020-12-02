@@ -12,12 +12,16 @@ import com.rubik.erp.config._DocumentoTipos;
 import com.rubik.erp.config._Folios;
 import com.rubik.erp.config._Pago_Documentos;
 import com.rubik.erp.config._Pais;
+import com.rubik.erp.domain.ClienteContactoDomain;
 import com.rubik.erp.domain.ClienteDomain;
+import com.rubik.erp.domain.CondicionesPagoDomain;
 import com.rubik.erp.domain.ConfiguracionDomain;
 import com.rubik.erp.domain.CotizacionVentaDetDomain;
 import com.rubik.erp.domain.CotizacionVentaDomain;
 import com.rubik.erp.domain.ProyectoDomain;
 import com.rubik.erp.model.Cliente;
+import com.rubik.erp.model.ClienteContacto;
+import com.rubik.erp.model.CondicionesPago;
 import com.rubik.erp.model.Configuracion;
 import com.rubik.erp.model.CotizacionVenta;
 import com.rubik.erp.model.CotizacionVentaDet;
@@ -71,8 +75,6 @@ public class WindowVentasCotizaciones extends Window {
     TextField txtVendedor = new TextField("Vendedor:");
     NativeSelect<String> cboSolicitante = new NativeSelect("Solicita:");
     NativeSelect<String> cboAtencion = new NativeSelect("Atencion:");
-//    TextField cboSolicitante = new TextField("Solicita:");
-//    TextField cboAtencion = new TextField("Atencion:");
     TextField txtReferanciaCliente = new TextField("Referencia:");
     NativeSelect<Proyecto> cboProyecto = new NativeSelect("Proyecto:");
     TextArea txtCondicionesDeCotizacion = new TextArea("Condiciones de Cotizacion:");
@@ -380,9 +382,22 @@ public class WindowVentasCotizaciones extends Window {
         txtCondicionesDeCotizacion.setRows(3);
         txtMontoLetra.setRows(3);
         
-        cboCondicionesPago.setItems(_Pago_Documentos.CONDICIONES_PAGO);
-        cboCondicionesPago.setValue(_Pago_Documentos.CONDICIONES_PAGO.get(0));
+        List<String> strCondicionesPagoList = getListCondicionesPago();
+        cboCondicionesPago.setItems(strCondicionesPagoList);
+        cboCondicionesPago.setValue(strCondicionesPagoList.get(1));
         cboCondicionesPago.setEmptySelectionAllowed(false);
+        cboCondicionesPago.addSelectionListener((event) -> {
+            if(DomainConfig.OTROS.equals(cboCondicionesPago.getValue())){
+                WindowVentasCondicionesPagoSeleccionar windows = new WindowVentasCondicionesPagoSeleccionar();
+                windows.center();
+                windows.setModal(true);
+                windows.addCloseListener((e) -> {
+                    cboCondicionesPago.setItems(strCondicionesPagoList);
+                    cboCondicionesPago.setSelectedItem(null);
+                });
+                getUI().addWindow(windows);
+            }
+        });
         
         cboVigencia.setItems(7,15,30,45);
         cboVigencia.setValue(7);
@@ -431,6 +446,13 @@ public class WindowVentasCotizaciones extends Window {
 //            }
 //        });
         
+        cboCliente.addSelectionListener((event) -> {
+            cboSolicitante.setItems(getListClienteContacto(cboCliente.getValue().getId()));
+            cboSolicitante.setSelectedItem(null);
+            cboAtencion.setItems(getListClienteContacto(cboCliente.getValue().getId()));
+            cboAtencion.setSelectedItem(null);
+        });
+
         cboProyecto.setItems(getProyectos());
         cboProyecto.setSelectedItem(proyectoList.get(1));
         cboProyecto.setEmptySelectionAllowed(false);
@@ -444,6 +466,36 @@ public class WindowVentasCotizaciones extends Window {
                 windows.addCloseListener((e) -> {
                     cboProyecto.setItems(getProyectos());
                     cboProyecto.setSelectedItem(null);
+                });
+                getUI().addWindow(windows);
+            }
+        });
+        
+        cboSolicitante.setItems(getListClienteContacto(cboCliente.getValue().getId()));
+        cboSolicitante.setEmptySelectionAllowed(false);
+        cboSolicitante.addSelectionListener((event) -> {
+            if(DomainConfig.OTROS.equals(cboSolicitante.getValue())){
+                WindowVentanasClienteContactoGrid windows = new WindowVentanasClienteContactoGrid(cboCliente.getValue());
+                windows.center();
+                windows.setModal(true);
+                windows.addCloseListener((e) -> {
+                    cboSolicitante.setItems(getListClienteContacto(cboCliente.getValue().getId()));
+                    cboSolicitante.setSelectedItem(null);
+                });
+                getUI().addWindow(windows);
+            }
+        });
+        
+        cboAtencion.setItems(getListClienteContacto(cboCliente.getValue().getId()));
+        cboAtencion.setEmptySelectionAllowed(false);
+        cboAtencion.addSelectionListener((event) -> {
+            if(DomainConfig.OTROS.equals(cboAtencion.getValue())){
+                WindowVentanasClienteContactoGrid windows = new WindowVentanasClienteContactoGrid(cboCliente.getValue());
+                windows.center();
+                windows.setModal(true);
+                windows.addCloseListener((e) -> {
+                    cboAtencion.setItems(getListClienteContacto(cboCliente.getValue().getId()));
+                    cboAtencion.setSelectedItem(null);
                 });
                 getUI().addWindow(windows);
             }
@@ -544,8 +596,6 @@ public class WindowVentasCotizaciones extends Window {
     public void toUpperCase() {
         cotizacionDeVenta.setCondiciones_cotizacion(txtCondicionesDeCotizacion.getValue().toUpperCase());
         cotizacionDeVenta.setObservaciones(txtNotas.getValue().toUpperCase());
-        cotizacionDeVenta.setSolicitante(cboSolicitante.getValue().toUpperCase());
-        cotizacionDeVenta.setAtencion(cboAtencion.getValue().toUpperCase());
         cotizacionDeVenta.setReferencia_cliente(txtReferanciaCliente.getValue().toUpperCase());
     }
     
@@ -673,11 +723,37 @@ public class WindowVentasCotizaciones extends Window {
     }
     
     public List<String> getListClienteContacto(Integer cliente_id){
-        List clienteContactosList = new ArrayList<>();
+        List<String> clienteContactosList = new ArrayList<>();
         
+        ClienteContactoDomain domain = new ClienteContactoDomain();
+        domain.getClienteContacto(" cliente_id = " + cliente_id, "", "");
+        
+        List<ClienteContacto> list = domain.getObjects();
+        
+        for (ClienteContacto clienteContacto : list) {
+            clienteContactosList.add(clienteContacto.getNombre());
+        }
+        
+        clienteContactosList.add(0, DomainConfig.OTROS);
         
         return clienteContactosList;
-    } 
+    }
     
+    public List<String> getListCondicionesPago(){
+        List<String> strCondicionesList = new ArrayList<>();
+        
+        CondicionesPagoDomain condPagoDomain = new CondicionesPagoDomain();
+        condPagoDomain.getCondicionesPago("", "", "id ASC");
+        
+        List<CondicionesPago> condicionesList = condPagoDomain.getObjects();
+        
+        for (CondicionesPago condicionPago : condicionesList) {
+            strCondicionesList.add(condicionPago.getCondicion_pago());
+        }
+        
+        strCondicionesList.add(0, DomainConfig.OTROS);
+        
+        return strCondicionesList;
+    } 
     
 }
