@@ -12,6 +12,7 @@ import com.vaadin.ui.Window;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
 
 /**
  *
@@ -21,22 +22,19 @@ public class ComboBoxSelectable extends HorizontalLayout {
     
     NativeSelect<Object> cboGeneric = new NativeSelect<>();
     List<Object> objectList = new ArrayList<>();
-    Button btnWindow = new Button();
+    Button btnWindow = new Button("",Fam3SilkIcon.MAGNIFIER);
     
     Object objetoSeleccionado;
     Object objetoDomain;
     String strWidth;
     String strWhere;
     
-    Class windowClass;
     Class objectClass;
     Class domainClass;
 
-    public ComboBoxSelectable(Object objetoSeleccionado, String strWidth, String strWhere, Class window, Class clase, Class domain) {
+    public ComboBoxSelectable(String strWidth, Class clase, Class domain, Object objetoSeleccionado) {
         this.objetoSeleccionado = objetoSeleccionado;
         this.strWidth = strWidth;
-        this.strWhere = strWhere;
-        this.windowClass = window;
         this.objectClass = clase;
         this.domainClass = domain;
         
@@ -44,16 +42,32 @@ public class ComboBoxSelectable extends HorizontalLayout {
     }
 
     public void initComponents(){
+        cboGeneric.setCaption("Solicita:");
         cboGeneric.setWidth(strWidth);
         cboGeneric.setEmptySelectionAllowed(false);
-        cboGeneric.setItems(getListObjects());
+        cboGeneric.setItems(getListObjects(""));
         cboGeneric.setValue(objetoSeleccionado);
-        
-        
+ 
         addComponents(cboGeneric,btnWindow);
     }
+
+    public NativeSelect<Object> getCboGeneric() {
+        return cboGeneric;
+    }
+
+    public void setCboGeneric(NativeSelect<Object> cboGeneric) {
+        this.cboGeneric = cboGeneric;
+    }
+
+    public Button getBtnWindow() {
+        return btnWindow;
+    }
+
+    public void setBtnWindow(Button btnWindow) {
+        this.btnWindow = btnWindow;
+    }
     
-    public List getListObjects(){
+    public List getListObjects(String strWhere){
         String[] params = {strWhere,"",""};
         
         List listObjetos = new ArrayList<>();

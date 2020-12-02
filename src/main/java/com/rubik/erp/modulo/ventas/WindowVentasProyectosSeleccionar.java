@@ -6,20 +6,17 @@
 package com.rubik.erp.modulo.ventas;
 
 import com.rubik.erp.domain.ProyectoDomain;
-import com.rubik.erp.fragments.FragmentTop;
 import com.rubik.erp.model.Empleado;
 import com.rubik.erp.model.Proyecto;
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 import de.steinwedel.messagebox.MessageBox;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,26 +25,22 @@ import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
 
 /**
  *
- * @author Dev
+ * @author GRUCAS
  */
-public class VentasProyectos extends Panel implements View {
+public class WindowVentasProyectosSeleccionar extends Window {
 
-    public static final String NAME = "PROYECTOS";
     VerticalLayout container = new VerticalLayout();
-
     Empleado empleado = (Empleado) VaadinSession.getCurrent().getSession().getAttribute("USUARIO_ACTIVO");
 
     TextField txtBusqueda = new TextField();
     
     Grid<Proyecto> gridProyecto = new Grid<>();
-    Button btnAdd = new Button("Agregar", Fam3SilkIcon.ADD);
-    Button btnModify = new Button("Modificar", Fam3SilkIcon.PENCIL);
+    Button btnAdd = new Button(Fam3SilkIcon.ADD);
+    Button btnModify = new Button(Fam3SilkIcon.PENCIL);
     Button btnSearch = new Button(Fam3SilkIcon.MAGNIFIER);
     List<Proyecto> listProyecto = new ArrayList<>();
-    
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-    public VentasProyectos() {
+    public WindowVentasProyectosSeleccionar() {
         initComponents();
 
         HorizontalLayout hLayoutAux = new HorizontalLayout(txtBusqueda,btnSearch,btnAdd, btnModify);
@@ -62,7 +55,7 @@ public class VentasProyectos extends Panel implements View {
         setContent(container);
 
         container.setMargin(false);
-        container.addComponents(new FragmentTop(),
+        container.addComponents(
                 lblTitulo,
                 hLayoutAux,
                 gridProyecto);
@@ -70,25 +63,20 @@ public class VentasProyectos extends Panel implements View {
         container.setComponentAlignment(container.getComponent(0), Alignment.MIDDLE_CENTER);
         container.setComponentAlignment(container.getComponent(1), Alignment.MIDDLE_CENTER);
         container.setComponentAlignment(container.getComponent(2), Alignment.MIDDLE_CENTER);
-        container.setComponentAlignment(container.getComponent(3), Alignment.MIDDLE_CENTER);
 
         setContent(container);
     }
 
     public void initComponents() {
-        setSizeFull();
+        setContent(container);
+        setResizable(false);
+        
+        setWidth("600");
+        setHeight("90%");
         
         txtBusqueda.setWidth("310");
         txtBusqueda.setPlaceholder("Proyecto / Contrato");      
 
-        Grid.Column<Proyecto, String> columnInicio = gridProyecto.addColumn(det -> ((det.getFecha_inicio()!= null) ? dateFormat.format(det.getFecha_inicio()) : ""));
-        columnInicio.setCaption("INICIO");
-        columnInicio.setId("INICIO");
-        columnInicio.setWidth(120);
-        Grid.Column<Proyecto, String> columnFin= gridProyecto.addColumn(det -> ((det.getFecha_fin()!= null) ? dateFormat.format(det.getFecha_fin()) : ""));
-        columnFin.setCaption("FIN");
-        columnFin.setId("FIN");
-        columnFin.setWidth(120);
         gridProyecto.addColumn(Proyecto::getNombre).setCaption("PROYETO/CONTRATO").setId("PROYETO/CONTRATO");
         gridProyecto.addColumn(Proyecto::getNombre_cliente).setCaption("CLIENTE").setId("CLIENTE");
         
@@ -128,13 +116,8 @@ public class VentasProyectos extends Panel implements View {
         btnSearch.addClickListener((event) -> {
             gridProyecto.setItems(getProyecto());
             txtBusqueda.setValue("");
-
         });
 
-    }
-
-    @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event) {
     }
 
     public List getProyecto() {
