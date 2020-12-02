@@ -69,8 +69,10 @@ public class WindowVentasCotizaciones extends Window {
     NativeSelect<String> cboMoneda = new NativeSelect("Moneda:");
     TextField txtTipoCambio = new TextField("Tipo de Cambio:");
     TextField txtVendedor = new TextField("Vendedor:");
-    TextField txtSolicitante = new TextField("Solicita:");
-    TextField txtAtencion = new TextField("Atencion:");
+    NativeSelect<String> cboSolicitante = new NativeSelect("Solicita:");
+    NativeSelect<String> cboAtencion = new NativeSelect("Atencion:");
+//    TextField cboSolicitante = new TextField("Solicita:");
+//    TextField cboAtencion = new TextField("Atencion:");
     TextField txtReferanciaCliente = new TextField("Referencia:");
     NativeSelect<Proyecto> cboProyecto = new NativeSelect("Proyecto:");
     TextArea txtCondicionesDeCotizacion = new TextArea("Condiciones de Cotizacion:");
@@ -137,8 +139,8 @@ public class WindowVentasCotizaciones extends Window {
         binder.forField(txtTipoCambio).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(CotizacionVenta::getTipo_cambio, CotizacionVenta::setTipo_cambio);
         binder.forField(txtVendedor).bind(CotizacionVenta::getVendedor, CotizacionVenta::setVendedor);
         
-        binder.forField(txtSolicitante).bind(CotizacionVenta::getSolicitante, CotizacionVenta::setSolicitante);
-        binder.forField(txtAtencion).bind(CotizacionVenta::getAtencion, CotizacionVenta::setAtencion);
+        binder.forField(cboSolicitante).bind(CotizacionVenta::getSolicitante, CotizacionVenta::setSolicitante);
+        binder.forField(cboAtencion).bind(CotizacionVenta::getAtencion, CotizacionVenta::setAtencion);
         binder.forField(txtReferanciaCliente).bind(CotizacionVenta::getReferencia_cliente, CotizacionVenta::setReferencia_cliente);
         
         binder.forField(txtNotas).bind(CotizacionVenta::getObservaciones, CotizacionVenta::setObservaciones);
@@ -398,8 +400,8 @@ public class WindowVentasCotizaciones extends Window {
         cboCliente.setWidth(strWidth);
         cboProyecto.setWidth(strWidth);
         
-        txtSolicitante.setWidth(strWidth);
-        txtAtencion.setWidth(strWidth);
+        cboSolicitante.setWidth(strWidth);
+        cboAtencion.setWidth(strWidth);
         txtReferanciaCliente.setWidth(strWidth);
         cboCondicionesPago.setWidth(strWidth);
         cboMetodoPago.setWidth(strWidth);
@@ -474,7 +476,7 @@ public class WindowVentasCotizaciones extends Window {
         
         // ACOMODO =============================================================
         FormLayout fLay1 = new FormLayout();
-        fLay1.addComponents(cboVigencia,txtVendedor, cboCliente, txtSolicitante, txtAtencion);
+        fLay1.addComponents(cboVigencia,txtVendedor, cboCliente, cboSolicitante, cboAtencion);
         fLay1.setSpacing(false);
         
         FormLayout fLay2 = new FormLayout();
@@ -542,8 +544,8 @@ public class WindowVentasCotizaciones extends Window {
     public void toUpperCase() {
         cotizacionDeVenta.setCondiciones_cotizacion(txtCondicionesDeCotizacion.getValue().toUpperCase());
         cotizacionDeVenta.setObservaciones(txtNotas.getValue().toUpperCase());
-        cotizacionDeVenta.setSolicitante(txtSolicitante.getValue().toUpperCase());
-        cotizacionDeVenta.setAtencion(txtAtencion.getValue().toUpperCase());
+        cotizacionDeVenta.setSolicitante(cboSolicitante.getValue().toUpperCase());
+        cotizacionDeVenta.setAtencion(cboAtencion.getValue().toUpperCase());
         cotizacionDeVenta.setReferencia_cliente(txtReferanciaCliente.getValue().toUpperCase());
     }
     
@@ -669,5 +671,13 @@ public class WindowVentasCotizaciones extends Window {
         
         gridCotizacionDeVentaDet.getDataProvider().refreshAll();
     }
+    
+    public List<String> getListClienteContacto(Integer cliente_id){
+        List clienteContactosList = new ArrayList<>();
+        
+        
+        return clienteContactosList;
+    } 
+    
     
 }

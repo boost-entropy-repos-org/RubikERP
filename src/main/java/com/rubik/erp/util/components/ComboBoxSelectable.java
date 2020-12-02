@@ -8,7 +8,6 @@ package com.rubik.erp.util.components;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.NativeSelect;
-import com.vaadin.ui.Window;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
