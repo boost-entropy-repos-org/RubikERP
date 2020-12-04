@@ -59,8 +59,8 @@ public class WindowVentasCondicionesPago extends Window {
         
         String strWidth = "400";
         
-        setWidth("600");
-        setHeight("90%");
+        setWidth("520");
+        setHeight("280");
         
         Button btnGuardar = new Button("Guardar", Fam3SilkIcon.DISK);
         Button btnCancelar = new Button("Cancelar", Fam3SilkIcon.CANCEL);

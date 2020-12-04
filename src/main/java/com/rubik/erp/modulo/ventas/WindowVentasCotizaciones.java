@@ -392,7 +392,7 @@ public class WindowVentasCotizaciones extends Window {
                 windows.center();
                 windows.setModal(true);
                 windows.addCloseListener((e) -> {
-                    cboCondicionesPago.setItems(strCondicionesPagoList);
+                    cboCondicionesPago.setItems(getListCondicionesPago());
                     cboCondicionesPago.setSelectedItem(null);
                 });
                 getUI().addWindow(windows);
