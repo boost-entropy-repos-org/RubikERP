@@ -76,6 +76,7 @@ public class WindowVentasCotizaciones extends Window {
     NativeSelect<String> cboSolicitante = new NativeSelect("Solicita:");
     NativeSelect<String> cboAtencion = new NativeSelect("Atencion:");
     TextField txtReferanciaCliente = new TextField("Referencia:");
+    TextField txtCondEnvio = new TextField("Cond de envio:");
     NativeSelect<Proyecto> cboProyecto = new NativeSelect("Proyecto:");
     TextArea txtCondicionesDeCotizacion = new TextArea("Condiciones de Cotizacion:");
     TextArea txtNotas = new TextArea("Notas:");
@@ -154,6 +155,7 @@ public class WindowVentasCotizaciones extends Window {
         binder.forField(txtSubtotal).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(CotizacionVenta::getSubtotal, CotizacionVenta::setSubtotal);
         binder.forField(txtIVA).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(CotizacionVenta::getIva, CotizacionVenta::setIva);
         binder.forField(txtTotal).withConverter(new StringToDoubleConverter(0.0, "El valor debe ser numerico")).bind(CotizacionVenta::getTotal, CotizacionVenta::setTotal);
+        binder.forField(txtCondEnvio).bind(CotizacionVenta::getCondiciones_envio, CotizacionVenta::setCondiciones_envio);
         
         gridCotizacionDeVentaDet.setHeight("450");
         gridCotizacionDeVentaDet.setWidth("100%");
@@ -423,6 +425,9 @@ public class WindowVentasCotizaciones extends Window {
         cboMoneda.setWidth(strWidth);
         txtTipoCambio.setWidth(strWidth);
         cboVigencia.setWidth(strWidth);
+        txtCondEnvio.setWidth(strWidth);
+        
+        txtCondEnvio.setMaxLength(200);
         
         txtCondicionesDeCotizacion.setWidth("580");
         txtNotas.setWidth("580");
@@ -528,7 +533,7 @@ public class WindowVentasCotizaciones extends Window {
         
         // ACOMODO =============================================================
         FormLayout fLay1 = new FormLayout();
-        fLay1.addComponents(cboVigencia,txtVendedor, cboCliente, cboSolicitante, cboAtencion);
+        fLay1.addComponents(cboVigencia,txtVendedor, cboCliente, cboSolicitante, cboAtencion, txtCondEnvio);
         fLay1.setSpacing(false);
         
         FormLayout fLay2 = new FormLayout();
