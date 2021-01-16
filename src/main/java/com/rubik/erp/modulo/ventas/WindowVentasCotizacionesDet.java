@@ -125,6 +125,9 @@ public class WindowVentasCotizacionesDet extends Window {
                     partida.setUnidad_medida(p.getUnidad_medida());
                     partida.setPrecio_unitario(p.getPrecio_venta());
                     partida.setPorc_iva(p.getPorc_iva());
+//                    partida.setSubtotal(p.getPrecio_venta());
+                    partida.setIva(p.getIva_venta());
+//                    partida.setTotal(p.getPrecio_venta());
                     
                     partida.setNo_parte(p.getNo_parte());
                     partida.setNo_serie(p.getNo_serie());

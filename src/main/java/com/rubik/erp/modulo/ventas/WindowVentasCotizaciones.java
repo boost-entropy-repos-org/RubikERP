@@ -189,6 +189,7 @@ public class WindowVentasCotizaciones extends Window {
             }
         });
 
+        gridCotizacionDeVentaDet.addColumn(CotizacionVentaDet::getCodigo_interno).setCaption("CODIGO").setWidth(75);
         gridCotizacionDeVentaDet.addColumn(CotizacionVentaDet::getCantidad).setCaption("CTD").setWidth(75);
         gridCotizacionDeVentaDet.addColumn(CotizacionVentaDet::getDescripcion).setCaption("DESCRIPCION");
         gridCotizacionDeVentaDet.addColumn(CotizacionVentaDet::getPrecio_unitario).setCaption("P.U.").setWidth(120);
@@ -700,6 +701,9 @@ public class WindowVentasCotizaciones extends Window {
         subtotal = importe - descuento;
         
         if(cboCliente.getValue().getPais().equals(_Pais.NACIONAL)){
+//            if(){
+//                
+//            }
             IVA = subtotal * ((float)_CONTABILIDAD.IVA_NACIONAL/100);
             cotizacionDeVenta.setPorc_iva(_CONTABILIDAD.IVA_NACIONAL);
         }else{

@@ -23,6 +23,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import de.steinwedel.messagebox.MessageBox;
+import java.text.DecimalFormat;
 import java.util.Date;
 import org.rubicone.vaadin.fam3.silk.Fam3SilkIcon;
 

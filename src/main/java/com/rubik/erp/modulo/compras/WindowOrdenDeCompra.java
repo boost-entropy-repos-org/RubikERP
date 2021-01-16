@@ -397,7 +397,7 @@ public class WindowOrdenDeCompra extends Window {
 
                     ordenDeCompra.setRequisicion_id(requisicion.getId());
 
-                    txtSolicita.setValue(requisicion.getSolicita());
+//                    txtSolicita.setValue(requisicion.getSolicita());
                     ordenDeCompra.setComprador(requisicion.getSolicita());
                     ordenDeCompra.setCotizacion_id(requisicion.getCotizacion_id());
                     ordenDeCompra.setCotizacion(requisicion.getFolio_cotizacion());

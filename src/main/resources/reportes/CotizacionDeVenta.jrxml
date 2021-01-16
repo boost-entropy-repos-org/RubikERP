@@ -311,6 +311,10 @@ ORDER BY t2.id ASC]]>
 		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="condiciones_envio" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="condiciones_envio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
+	</field>
 	<field name="tiempo_tentrega" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="tiempo_tentrega"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="cotizacion_venta"/>
@@ -467,6 +471,13 @@ ORDER BY t2.id ASC]]>
 	</background>
 	<title>
 		<band height="205" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="260" y="170" width="130" height="15" backcolor="#CCCCCC" uuid="97726ae6-ccc3-4e4a-b1d4-38d902a56415"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COND. ENVIO]]></text>
+			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="393" y="170" width="179" height="15" backcolor="#CCCCCC" uuid="d5604859-ad0f-4846-9d6c-ef8e175e0d67"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -730,6 +741,16 @@ www.impeller.com.mx]]></text>
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{email_empresa} + " / " + $F{telefono_empresa}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement mode="Transparent" x="260" y="170" width="130" height="30" uuid="ef334488-3586-4714-8d3e-1bb277ab0715"/>
+			</rectangle>
+			<textField isBlankWhenNull="true">
+				<reportElement x="260" y="185" width="130" height="15" uuid="539cec3d-a23e-4488-9598-e6c0ca926ae0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{condiciones_envio}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
