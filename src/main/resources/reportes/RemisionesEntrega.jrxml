@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.11.0.final using JasperReports Library version 6.11.0-0c4056ccaa4d25a5a8c45672d2f764ea3498bebb  -->
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Requisiciones" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e3751d5e-8725-4e8e-8903-40f4a45612e9">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
@@ -193,46 +193,46 @@ ORDER BY t2.id ASC]]>
 				<reportElement mode="Transparent" x="352" y="0" width="220" height="82" uuid="73ffb37b-33b5-4f51-8ff3-0fef52c8fcfd"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="358" y="31" width="70" height="16" uuid="17145cde-1d4d-46e1-9d48-0d4be290d675"/>
+				<reportElement x="358" y="31" width="92" height="16" uuid="17145cde-1d4d-46e1-9d48-0d4be290d675"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Fecha de Entrega]]></text>
+				<text><![CDATA[FECHA ENTREGA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="358" y="14" width="70" height="16" uuid="48a911a5-9732-46af-9aee-0e1611082fdc"/>
+				<reportElement x="358" y="15" width="92" height="16" uuid="48a911a5-9732-46af-9aee-0e1611082fdc"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Folio:]]></text>
+				<text><![CDATA[FOLIO:]]></text>
 			</staticText>
 			<image>
 				<reportElement x="0" y="7" width="93" height="75" uuid="b07ec704-550b-41b4-85fb-af464981be2e"/>
 				<imageExpression><![CDATA["logo.png"]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement mode="Transparent" x="428" y="15" width="144" height="15" forecolor="#CC0000" uuid="33bc8e20-ae30-45f3-89b6-26e6049c2b85"/>
+				<reportElement mode="Transparent" x="450" y="15" width="122" height="16" forecolor="#CC0000" uuid="33bc8e20-ae30-45f3-89b6-26e6049c2b85"/>
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{folio}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="428" y="31" width="144" height="16" uuid="6ffa4933-d21a-4602-98e3-954510a0c3c5"/>
+				<reportElement x="450" y="31" width="122" height="16" uuid="6ffa4933-d21a-4602-98e3-954510a0c3c5"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha_entrega}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="358" y="47" width="70" height="16" uuid="2c4eb918-79ac-41b3-aef2-4c4737ce9953"/>
+				<reportElement x="358" y="47" width="92" height="16" uuid="2c4eb918-79ac-41b3-aef2-4c4737ce9953"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Entrega:]]></text>
+				<text><![CDATA[ENTREGA:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="428" y="47" width="144" height="16" uuid="70d15dce-afbb-46ba-b955-de28a382c609"/>
+				<reportElement x="450" y="47" width="122" height="16" uuid="70d15dce-afbb-46ba-b955-de28a382c609"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -244,9 +244,9 @@ ORDER BY t2.id ASC]]>
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[RFC: IWS140818UY0
-Emilio Castan No. 203, Col. 2 de Junio, 
-Tampico, Tamps. Mexico, Cp. 89327,
-Tel. +52 (833) 3992231, ventas@impeller.com.mx, 
+EMILIO CASTAN NO. 203, COL. 2 DE JUNIO, 
+TAMPICO, TAMPS. MEXICO, CP. 89327,
+TEL. +52 (833) 3992231, ventas@impeller.com.mx, 
 www.impeller.com.mx]]></text>
 			</staticText>
 			<staticText>
@@ -271,56 +271,56 @@ www.impeller.com.mx]]></text>
 				<reportElement mode="Transparent" x="0" y="0" width="572" height="47" uuid="f42fac92-ba98-45b5-86c7-5c2476c1e21a"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="352" y="31" width="42" height="16" uuid="b3b4cf21-1a3d-45d8-ac31-575dd13d8ce9"/>
+				<reportElement x="358" y="31" width="72" height="16" uuid="b3b4cf21-1a3d-45d8-ac31-575dd13d8ce9"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Telefono:]]></text>
+				<text><![CDATA[TELEFONO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="15" width="42" height="16" uuid="d2e28f77-aa32-4c70-a047-9c5b71bc79b5"/>
+				<reportElement x="3" y="15" width="70" height="16" uuid="d2e28f77-aa32-4c70-a047-9c5b71bc79b5"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Proveedor:]]></text>
+				<text><![CDATA[PROVEEDOR:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="352" y="15" width="42" height="16" uuid="0fb2e9e9-1684-4a67-b012-867760f4ca9d"/>
+				<reportElement x="358" y="15" width="72" height="16" uuid="0fb2e9e9-1684-4a67-b012-867760f4ca9d"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[RFC:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="31" width="42" height="16" uuid="b063af6e-d8f1-4e2c-9814-7b04ebb1035c"/>
+				<reportElement x="3" y="31" width="70" height="16" uuid="b063af6e-d8f1-4e2c-9814-7b04ebb1035c"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Localidad:]]></text>
+				<text><![CDATA[LOCALIDAD:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="45" y="15" width="300" height="16" uuid="97524c4f-8fed-49d0-84d5-d5db78e4a342"/>
+				<reportElement x="73" y="15" width="285" height="16" uuid="97524c4f-8fed-49d0-84d5-d5db78e4a342"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{razon_social}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="394" y="15" width="178" height="16" uuid="ae1a9919-333b-41fa-9cdc-9e0e4ea23748"/>
+				<reportElement x="430" y="15" width="142" height="16" uuid="ae1a9919-333b-41fa-9cdc-9e0e4ea23748"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{rfc}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="45" y="31" width="300" height="16" uuid="d2a38706-b167-4a4f-857d-84061ea3dfae"/>
+				<reportElement x="73" y="31" width="285" height="16" uuid="d2a38706-b167-4a4f-857d-84061ea3dfae"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{localidad}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="394" y="31" width="97" height="16" uuid="8134cecf-220a-425d-9f3c-8d4827fc7ee7"/>
+				<reportElement x="430" y="31" width="142" height="16" uuid="8134cecf-220a-425d-9f3c-8d4827fc7ee7"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
