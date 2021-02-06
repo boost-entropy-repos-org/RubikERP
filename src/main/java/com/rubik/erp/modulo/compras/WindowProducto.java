@@ -150,10 +150,10 @@ public class WindowProducto extends Window {
         btnGuardar.addClickListener((event) -> {
             if (isFormOK()) {
                 try {
+                    
+                    ProductoDomain service = new ProductoDomain();
                     binder.writeBean(producto);
                     toUpperCase();
-
-                    ProductoDomain service = new ProductoDomain();
 
                     Proveedor prov1 = cboProveedor1.getValue();
                     Proveedor prov2 = cboProveedor2.getValue();
@@ -178,6 +178,7 @@ public class WindowProducto extends Window {
                         producto.setFecha_modificacion(new Date());
                         service.ProductoUpdate(producto);
                     } else {
+                        producto.setCodigo_interno(service.getMaxID().toString());
                         producto.setFecha_elaboracion(new Date());
                         producto.setFecha_modificacion(new Date());
                         service.ProductoInsert(producto);
